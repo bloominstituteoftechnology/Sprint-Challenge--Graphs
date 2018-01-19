@@ -45,12 +45,12 @@ class Graph {
 		while (queue.length) {
 			let u = queue.shift();
 
-			for (let e of u.edges) {
-			let vert = e.destination;
-			if (vert.color === "white") {
-				vert.color = "gray";
-				vert.parent = u;
-				queue.push(vert);
+			for (let edge of u.edges) {
+			let v = edge.destination;
+			if (v.color === "white") {
+				v.color = "gray";
+				v.parent = u;
+				queue.push(v);
 			}
 			}
 			u.color = "black";
