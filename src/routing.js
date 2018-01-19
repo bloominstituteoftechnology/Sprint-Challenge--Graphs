@@ -30,27 +30,56 @@ class Graph {
 	 * Breadth-First search from a starting vertex
 	 */
 	bfs(start) {
-		// !!! IMPLEMENT ME
-	}
+		let queue = [];
 
-	/**
-	 * Find a vertex by its value
-	 * 
-	 * Return null if the vertex isn't found
-	 */
-	findVertex(value) {
-		// !!! IMPLEMENT ME
-	}
+		for (let  vert of this. vertexes) {
+			 vert.color = 'white';
+			 vert.parent = null;
+		}
 
-	/**
-	 * Print out the route from the start vert back along the parent
-	 * pointers (set in the previous BFS)
-	 */
-	route(start) {
-		// !!! IMPLEMENT ME
-	}
+		start.color = 'gray';
+		queue.push(start);
+
+		while(queue.length > 0) {
+			let next = queue[0];
+
+			for (let edge of next.edges) {
+				let  vert = edge.destination;
+
+				if ( vert.color === 'white') {
+					 vert.color = 'gray';
+					 vert.parent = next;
+					queue.push(vert);
+				}
+			}
+
+			queue.shift();
+			next.color = 'black';
+		}
 }
 
+	
+	findVertex(value) {
+		for (let vert of graph.vertexes) {
+			if (vert.value === value){
+				return vert;
+			}
+		}
+		return null;
+	}
+
+	route(start) {
+		let nodes = [];
+		let node = start;
+
+		while(node.parent) {
+			nodes.push(node.value);
+			node = node.parent;
+		}
+		nodes.push(node.value);
+	console.log(nodes.join(' ==> '));
+	}
+}
 /**
  * Helper function to add bidirectional edges
  */
