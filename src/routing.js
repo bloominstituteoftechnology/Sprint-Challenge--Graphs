@@ -1,3 +1,6 @@
+const colors = { reset:      (string='') => `\x1b[0m${string}`}
+Object.assign(colors, { dim:(string='') => `\x1b[2m${string}${colors.reset()}`,});
+
 /**
  * Edge class
  */
@@ -30,8 +33,29 @@ class Graph {
 	 * Breadth-First search from a starting vertex
 	 */
 	bfs(start) {
-		// !!! IMPLEMENT ME
-	}
+		const queue = [];
+		for (let v of this.vertexes) {
+			v.color = "white";
+			v.parent = null;
+		}
+
+		start.color = "gray";
+		queue.push(start);
+
+		while (queue.length) {
+			let u = queue.shift();
+
+			for (let e of u.edges) {
+			let vert = e.destination;
+			if (vert.color === "white") {
+				vert.color = "gray";
+				vert.parent = u;
+				queue.push(vert);
+			}
+			}
+			u.color = "black";
+		}
+	}	
 
 	/**
 	 * Find a vertex by its value
@@ -39,17 +63,30 @@ class Graph {
 	 * Return null if the vertex isn't found
 	 */
 	findVertex(value) {
-		// !!! IMPLEMENT ME
+	for (let v of this.vertexes) {
+		if (v.value === value) {
+		return v;
+		}
 	}
+
+	return null;
+	  }
 
 	/**
 	 * Print out the route from the start vert back along the parent
 	 * pointers (set in the previous BFS)
 	 */
 	route(start) {
-		// !!! IMPLEMENT ME
+		const path = [start.value];
+		while (start.parent) {
+		  path.push(start.parent.value);
+		  start = start.parent;
+		}
+	
+		console.log(path.join(colors.dim(" --> ")));
+		// console.log(colors.red("I'm gonna be red boi"))
+	  }
 	}
-}
 
 /**
  * Helper function to add bidirectional edges
@@ -67,7 +104,7 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-	console.error('usage: routing hostA hostB');
+	console.error('usage: routing HostA HostB');
 	process.exit(1);
 }
 
