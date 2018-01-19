@@ -31,6 +31,28 @@ class Graph {
 	 */
 	bfs(start) {
 		// !!! IMPLEMENT ME
+		const queue = [];
+		for (let i = 0; i < this.vertexes.length; i++){
+			this.vertexes[i].color = 'white';
+			this.vertexes[i].parent = null ;
+		}
+		start.color = 'grey';
+		queue.push(start);
+		while (queue.length > 0){
+			let u = queue[0];
+			for (let i = 0; i < u.edges.length; i++){
+				if (u.edges[i].destination.color == 'white'){
+					u.edges[i].destination.color = 'grey';
+					u.edges[i].destination.parent = u;     
+					queue.push(u.edges[i].destination);
+				}
+			}
+			this.route(queue.shift());
+			console.log("||");
+			console.log("||");
+			console.log("\\\/");
+			u.color = 'black';
+		} 
 	}
 
 	/**
@@ -39,7 +61,10 @@ class Graph {
 	 * Return null if the vertex isn't found
 	 */
 	findVertex(value) {
-		// !!! IMPLEMENT ME
+		for(let i = 0; i < this.vertexes.length; i++){
+			if(value === this.vertexes[i].value) return this.vertexes[i];
+			if(value !== this.vertexes[i].value && i === this.vertexes.length - 1) return null;
+		}
 	}
 
 	/**
@@ -47,7 +72,8 @@ class Graph {
 	 * pointers (set in the previous BFS)
 	 */
 	route(start) {
-		// !!! IMPLEMENT ME
+		console.log(start.value);
+		if(start.value === args[1]) process.exit(1);
 	}
 }
 
@@ -121,5 +147,5 @@ if (hostBVert === null) {
 
 // Route from one host to another
 
-graph.bfs(hostBVert);
-graph.route(hostAVert);
+graph.bfs(hostAVert);
+graph.route(hostBVert);
