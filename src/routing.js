@@ -31,6 +31,25 @@ class Graph {
 	 */
 	bfs(start) {
 		// !!! IMPLEMENT ME
+		console.log(start)
+		const queue = [];
+		queue.push(start);
+		start.parent = null;
+		start.color = 'white';
+		const breadth = (node) => {
+			if (node.color === 'black') return;
+			node.color = 'black'
+			for (let i = 0; i < node.edges.length; i++) {
+				if (!node.edges[i].destination.color || node.edges[i].destination.color === 'white' ) {
+					queue.push(node.edges[i].destination)
+					node.edges[i].destination.parent = node
+					node.edges[i].destination.color = 'white'
+				} 
+			}
+		}
+		while (queue.length > 0) {
+			breadth(queue.shift())
+		}
 	}
 
 	/**
@@ -40,6 +59,12 @@ class Graph {
 	 */
 	findVertex(value) {
 		// !!! IMPLEMENT ME
+		for (let i = 0; i < this.vertexes.length; i++) {
+			if (this.vertexes[i].value === value) {
+				return this.vertexes[i];
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -48,6 +73,15 @@ class Graph {
 	 */
 	route(start) {
 		// !!! IMPLEMENT ME
+		const parentFinder = (node) => {
+			if (node.parent !== null) {
+				console.log(`node ${node.value} child to `);
+				parentFinder(node.parent);
+			}else {
+				console.log(`final parent node ${node.value}`);
+			}
+		}
+		parentFinder(start);
 	}
 }
 
