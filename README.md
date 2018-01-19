@@ -40,7 +40,7 @@ BFS(graph, startVert):
         v.color = gray
 		v.parent = u     // <-- Keep a parent link
         queue.enqueue(v)
-    
+
     queue.dequeue()
     u.color = black
 ```
@@ -63,3 +63,5 @@ HostA
 $ node routing.js HostE HostB
 HostE --> HostF --> HostC --> HostA --> HostB
 ```
+
+![Results](img/results.png)
