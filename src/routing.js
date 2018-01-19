@@ -31,6 +31,31 @@ class Graph {
 	 */
 	bfs(start) {
 		// !!! IMPLEMENT ME
+		const queue = [];
+
+		for (let v of this.vertexes) {
+			v.color = 'white';
+			v.parent = null;
+		}
+
+		start.color = 'gray';
+		queue.push(start);
+
+		while(queue.length) {
+			const u = queue[0];
+
+			for (let e of u.edges) {
+				const v = e.destination;
+				if (v.color === 'white') {
+					v.color = 'gray';
+					v.parent = u;
+					queue.push(v);
+				}
+			}
+			queue.shift();
+			u.color = 'black';
+		}
+
 	}
 
 	/**
@@ -40,6 +65,12 @@ class Graph {
 	 */
 	findVertex(value) {
 		// !!! IMPLEMENT ME
+		for (let v of this.vertexes) {
+			if (v.value === value) {	
+				return v;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -48,6 +79,15 @@ class Graph {
 	 */
 	route(start) {
 		// !!! IMPLEMENT ME
+		//console.log(start);
+		let str = '';
+		while(start.parent) {
+			//console.log(start)
+			str += start.value + ' --> ';
+			start = this.findVertex(start.parent.value);
+		}
+		str += start.value;
+		console.log(str);
 	}
 }
 
@@ -120,6 +160,5 @@ if (hostBVert === null) {
 }
 
 // Route from one host to another
-
 graph.bfs(hostBVert);
 graph.route(hostAVert);
