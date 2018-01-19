@@ -30,7 +30,34 @@ class Graph {
 	 * Breadth-First search from a starting vertex
 	 */
 	bfs(start) {
-		// !!! IMPLEMENT ME
+		let q = [];
+
+		for (let v of this.vertexes) {
+			v.color = 'white';
+			v.parent = null;
+		}
+
+		start.color = 'gray';
+		q.push(start);
+
+		while(q.length > 0) {
+			let peekVertex = q[0];
+
+			// console.log(peekVertex.value);
+
+			for (let e of peekVertex.edges) {
+				let v = e.destination;
+
+				if (v.color === 'white') {
+					v.color = 'gray';
+					v.parent = peekVertex;
+					q.push(v);
+				}
+			}
+
+			q.shift();
+			peekVertex.color = 'black';
+		}
 	}
 
 	/**
@@ -39,7 +66,39 @@ class Graph {
 	 * Return null if the vertex isn't found
 	 */
 	findVertex(value) {
-		// !!! IMPLEMENT ME
+		let q = [];
+
+		for (let v of this.vertexes) {
+			v.color = 'white';
+			v.parent = null;
+		}
+
+		let start = this.vertexes[0];
+
+		if (start.value === value) return start;
+		start.color = 'gray';
+		q.push(start);
+
+		while (q.length > 0) {
+			let peekVertex = q[0];
+
+			for (let e of peekVertex.edges) {
+				let v = e.destination;
+
+				if (v.value === value) return v;
+
+				if (v.color === 'white') {
+					v.color = 'gray';
+					v.parent = peekVertex;
+					q.push(v);
+				}
+			}
+
+			q.shift();
+			peekVertex.color = 'black';
+		}
+
+		return null;
 	}
 
 	/**
@@ -47,7 +106,20 @@ class Graph {
 	 * pointers (set in the previous BFS)
 	 */
 	route(start) {
-		// !!! IMPLEMENT ME
+		let nodes = [];
+		let node = start;
+
+		while (node.parent) {
+			// console.log(node.value);
+			nodes.push(node.value)
+			node = node.parent;
+		}
+
+		// console.log(node.value);
+		nodes.push(node.value);
+
+		const finalStr = nodes.join(' -> ')
+		console.log(finalStr);
 	}
 }
 
@@ -102,6 +174,10 @@ graph.vertexes.push(vertF);
 graph.vertexes.push(vertG);
 graph.vertexes.push(vertH);
 
+// graph.bfs(graph.vertexes[0]);
+// console.log(graph.findVertex('HostJ'));
+// graph.route(graph.vertexes[0]);
+
 // Look up the hosts passed on the command line by name to see if we can
 // find them.
 
@@ -119,7 +195,7 @@ if (hostBVert === null) {
 	process.exit(2);
 }
 
-// Route from one host to another
+// // Route from one host to another
 
 graph.bfs(hostBVert);
 graph.route(hostAVert);
