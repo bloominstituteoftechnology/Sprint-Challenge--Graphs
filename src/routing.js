@@ -30,7 +30,31 @@ class Graph {
 	 * Breadth-First search from a starting vertex
 	 */
 	bfs(start) {
-		// !!! IMPLEMENT ME
+		for (let i = 0; i < this.vertexes.length; i++) {
+			this.vertexes[i].color = 'white'
+			this.vertexes[i].parent = null
+		}
+		let queue = []
+		start.color = 'gray'
+  
+		queue.push(start)
+  
+		while (queue.length > 0) {
+			let u = queue[0]
+			if (!u.edges) {
+				return
+			}
+			for (let v = 0; v < u.edges.length; v++) {
+				if (u.edges[v].destination.color === 'white') {
+					u.edges[v].destination.color = 'gray'
+					u.edges[v].destination.parent = u
+					queue.push(u.edges[v].destination)
+				}
+			}
+			queue.shift()
+			u.color = 'black'
+		}
+		return 
 	}
 
 	/**
@@ -39,7 +63,13 @@ class Graph {
 	 * Return null if the vertex isn't found
 	 */
 	findVertex(value) {
-		// !!! IMPLEMENT ME
+		let vertex = null;
+		for (let i = 0; i < this.vertexes.length; i++) {
+			if (this.vertexes[i].value === value) {
+				vertex = this.vertexes[i]
+			}
+		}
+		return vertex
 	}
 
 	/**
@@ -47,7 +77,27 @@ class Graph {
 	 * pointers (set in the previous BFS)
 	 */
 	route(start) {
-		// !!! IMPLEMENT ME
+		let current = start;
+		let colorCount = 0;
+		let color = this.color(colorCount)
+		while (current.parent != null) {
+			process.stdout.write(`${color}${current.value}${color}-->`)
+			current = current.parent
+			colorCount++
+			color = this.color(colorCount)
+		}
+		process.stdout.write(`${color}${current.value}${color}\n`)
+	}
+
+	color(i) {
+		const colors = [
+		"\x1b[32m",
+		"\x1b[36m",
+		"\x1b[34m",
+		"\x1b[35m",
+		"\x1b[33m"
+		]
+		return colors[i]
 	}
 }
 
