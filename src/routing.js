@@ -84,6 +84,7 @@ class Graph {
       if (!(node instanceof Vertex) || node._color === black)
         continue;
       node._color = black;
+      nodes.push(node);
       queue.push(...node.edges.map((edge) => {
         const dest = edge.destination;
         if (dest._color !== black)
