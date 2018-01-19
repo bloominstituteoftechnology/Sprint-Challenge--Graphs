@@ -14,7 +14,9 @@ class Edge {
 class Vertex {
 	constructor(value='vertex') {
 		this.value = value;
-		this.edges = [];
+    this.edges = [];
+    this.color = "white";
+    this.parent = null;
 	}
 }
 
@@ -30,7 +32,21 @@ class Graph {
 	 * Breadth-First search from a starting vertex
 	 */
 	bfs(start) {
-		// !!! IMPLEMENT ME
+    const queue = [];
+		start.color = "gray";
+		queue.push(start);
+		while (queue.length > 0) {
+      const head = queue.shift();
+      for(let i = 0; i < head.edges.length; i++) {
+        const neighbor =  head.edges[i].destination;
+        if(neighbor.color === "white") {
+          neighbor.color = "gray";
+          neighbor.parent = head;
+          queue.push(neighbor);
+        }
+      }
+      head.color = "black";
+		}
 	}
 
 	/**
@@ -39,15 +55,28 @@ class Graph {
 	 * Return null if the vertex isn't found
 	 */
 	findVertex(value) {
-		// !!! IMPLEMENT ME
+    // !!! IMPLEMENT ME
+    for(let i = 0; i < this.vertexes.length; i++) {
+      if(this.vertexes[i].value === value) {
+        return this.vertexes[i]
+      }
+    }
+    return null;
 	}
 
 	/**
 	 * Print out the route from the start vert back along the parent
 	 * pointers (set in the previous BFS)
 	 */
-	route(start) {
-		// !!! IMPLEMENT ME
+	route(start, end) {
+    // !!! IMPLEMENT ME
+    let currentNode = start;
+    let output = currentNode.value + " --> ";
+    while(currentNode.value !== end.value){
+      currentNode = currentNode.parent;
+      output += currentNode.value + " --> ";
+    }
+    console.log(output.slice(0, -5));
 	}
 }
 
@@ -122,4 +151,5 @@ if (hostBVert === null) {
 // Route from one host to another
 
 graph.bfs(hostBVert);
-graph.route(hostAVert);
+
+graph.route(hostAVert, hostBVert);
