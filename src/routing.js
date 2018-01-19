@@ -30,15 +30,11 @@ class Graph {
    * Breadth-First search from a starting vertex
    */
   bfs(start) {
-    const component = []
     const queue = []
-
     start.color = 'gray'
     queue.push(start)
-
     while (!!queue.length) {
       const curr = queue[0]
-
       for (let edge of curr.edges) {
         const vert = edge.destination
         if (!vert.color) {
@@ -49,10 +45,7 @@ class Graph {
       }
       queue.shift()
       curr.color = 'black'
-      component.push(curr)
     }
-
-    return component
   }
 
   /**
@@ -72,7 +65,8 @@ class Graph {
    */
   route(start) {
     const colors = ['\x1b[32m','\x1b[33m','\x1b[34m','\x1b[35m','\x1b[36m','\x1b[37m']
-    let output = [`\x1b[31m${start.value}`], i = 0
+    const output = [`\x1b[31m${start.value}`]
+    let i = 0
     while (start.parent) {
       output.push(`${colors[i]}${start.parent.value}`)
       i++
@@ -154,4 +148,3 @@ if (hostBVert === null) {
 
 graph.bfs(hostBVert)
 graph.route(hostAVert)
-
