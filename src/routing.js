@@ -78,7 +78,7 @@ class Graph {
       i++
       start = start.parent
     }
-    console.log(output.join(' 👉 '))
+    console.log(output.join(' 👉 ') + ' 🥔')
   }
 }
 
