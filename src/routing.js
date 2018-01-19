@@ -24,6 +24,7 @@ class Vertex {
 class Graph {
 	constructor() {
 		this.vertexes = [];
+		this.path = [];
 	}
 
 	/**
@@ -48,9 +49,6 @@ class Graph {
 				}
 			}
 			this.route(queue.shift());
-			console.log("||");
-			console.log("||");
-			console.log("\\\/");
 			u.color = 'black';
 		} 
 	}
@@ -72,8 +70,11 @@ class Graph {
 	 * pointers (set in the previous BFS)
 	 */
 	route(start) {
-		console.log(start.value);
-		if(start.value === args[1]) process.exit(1);
+		this.path.push(start.value);
+		if(start.value === args[1]) {
+			console.log(this.path.join(' ==> '));
+			process.exit(1);
+		};
 	}
 }
 
