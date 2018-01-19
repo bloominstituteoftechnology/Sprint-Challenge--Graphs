@@ -1,3 +1,48 @@
+const Queue = require('./queue.js');
+const ansiregex = require('./ansi-regex.js');
+const colors = {
+    Reset       : "\x1b[0m",
+    Bright      : "\x1b[1m",
+    Dim         : "\x1b[2m",
+    Underscore  : "\x1b[4m",
+    Blink       : "\x1b[5m",
+    Reverse     : "\x1b[7m",
+    Hidden      : "\x1b[8m",
+    
+    FgBlack     : "\x1b[30m",
+    FgRed       : "\x1b[31m",
+    FgGreen     : "\x1b[32m",
+    FgYellow    : "\x1b[33m",
+    FgBlue      : "\x1b[34m",
+    FgMagenta   : "\x1b[35m",
+    FgCyan      : "\x1b[36m",
+    FgWhite     : "\x1b[37m",
+    
+    BgBlack     : "\x1b[40m",
+    BgRed       : "\x1b[41m",
+    BgGreen     : "\x1b[42m",
+    BgYellow    : "\x1b[43m",
+    BgBlue      : "\x1b[44m",
+    BgMagenta   : "\x1b[45m",
+    BgCyan      : "\x1b[46m",
+    BgWhite     : "\x1b[47m"
+};
+
+const cI = [
+    colors.FgCyan,
+    colors.FgMagenta,
+    colors.FgYellow,
+    colors.FgRed,
+    colors.FgGreen,
+    colors.FgWhite,
+    colors.FgCyan,
+    colors.FgMagenta,
+    colors.FgYellow,
+    colors.FgRed,
+    colors.FgGreen,
+    colors.FgWhite
+]
+
 /**
  * Edge class
  */
@@ -29,8 +74,38 @@ class Graph {
 	/**
 	 * Breadth-First search from a starting vertex
 	 */
-	bfs(start) {
-		// !!! IMPLEMENT ME
+	bfs(start, colors = {white: '#ffffff', gray: '#efefef', black: '#3f3f3c'}) {
+	    // !!! IMPLEMENT ME
+	 	const queue = new Queue();
+	 	const visited = [];
+	
+		for (let v in this.vertexes) {
+	 		// if (!this.vertexes[v].color) this.vertexes[v].color = 'colors.white';
+	 		this.vertexes[v].color = 'colors.white';
+	    }
+	
+		start.color = colors.gray;
+	 	start.parent = null;
+	    queue.enqueue(start);
+        visited.push(start);
+	
+	    while (!queue.isEmpty()) {
+	        let u = queue.next();  // Peek at head of queue, but do not dequeue!
+		    for (let v in u.edges) {
+		        if (u.edges[v].destination.color !== colors.black) {
+					u.edges[v].color = colors.gray;
+					u.edges[v].destination.parent = u;
+					u.edges[v].destination.theme = 3;
+	
+					queue.enqueue(u.edges[v].destination);
+					visited.push(u.edges[v].destination);
+	            }
+	        }
+			queue.dequeue();
+	 		u.color = colors.black;
+		}
+
+		return visited;
 	}
 
 	/**
@@ -39,7 +114,10 @@ class Graph {
 	 * Return null if the vertex isn't found
 	 */
 	findVertex(value) {
-		// !!! IMPLEMENT ME
+		for (let vert in this.vertexes) {
+		    if (this.vertexes[vert].value === value) return this.vertexes[vert];
+		}
+		return null;
 	}
 
 	/**
@@ -47,7 +125,41 @@ class Graph {
 	 * pointers (set in the previous BFS)
 	 */
 	route(start) {
-		// !!! IMPLEMENT ME
+	    
+	    let path = "";
+		let parent = start;
+		let cnt = 0;
+		while (parent !== null) {
+		    path += (path === "") ? `${cI[cnt]}${parent.value}` : ` --> ${cI[cnt]}${parent.value}`;
+		    parent = parent.parent;
+		    cnt++;
+		}
+
+        path = `${colors.BgBlack}  ` + path + '  ';
+		
+		let formatFlag = false;
+		
+		//const strLen = path.replace(ansiregex(), ' ').split('').reduce((reduced, char) => {
+		//    console.log(char)
+		//    if (formatFlag && char === 'm') {
+		//        formatFlag = false;
+		//        return reduced;
+		//    } else if (!formatFlag && char === '\\') {
+		//       formatFlag = true;
+		//        return reduced;
+		//   } else if (char === '$') {
+		//        return reduced;
+		//    } else {
+		//        return reduced + 1;
+		//    }
+        //   //formatFlag = (formatFlag && char === 'm') ? formatFlag = false : formatFlag;
+		//}, 0);
+
+        const strLen = path.replace(ansiregex(), ' ').length;
+
+        console.log(colors.BgBlack + colors.FgWhite + '░' + '░'.repeat(strLen - 5) + '░' + colors.Reset);
+		console.log(colors.BgBlack + colors.FgWhite + '░' + path + colors.FgWhite + '░' + colors.Reset);
+		console.log(colors.BgBlack + colors.FgWhite + '░' + '░'.repeat(strLen - 5) + '░' + colors.Reset);
 	}
 }
 
