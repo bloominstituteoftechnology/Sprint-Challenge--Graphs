@@ -38,17 +38,20 @@ BFS(graph, startVert):
     for v of u.neighbors:
       if v.color == white:
         v.color = gray
-		v.parent = u     // <-- Keep a parent link
+        v.parent = u     // <-- Keep a parent link
         queue.enqueue(v)
     
     queue.dequeue()
     u.color = black
 ```
 
-## Algorithm
+## Procedure
 
-1. Perform a BFS from the ending vert (host).
-2. Follow the parent pointers from starting vert printing the values as you go.
+1. Perform a BFS from the _ending vert_ (host). This will set up all the
+   `parent` pointers across the graph.
+
+2. Output the route by following the parent pointers from the _starting_ vert
+   printing the values as you go.
 
 
 ## Sample Run

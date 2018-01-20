@@ -1,3 +1,5 @@
+// Search for "!!! IMPLEMENT ME" comments
+
 /**
  * Edge class
  */
@@ -22,32 +24,59 @@ class Vertex {
  * Graph class
  */
 class Graph {
+
+	/**
+	 * Constructor
+	 */
 	constructor() {
 		this.vertexes = [];
 	}
 
 	/**
-	 * Breadth-First search from a starting vertex
-	 */
-	bfs(start) {
-		// !!! IMPLEMENT ME
-	}
-
-	/**
-	 * Find a vertex by its value
-	 * 
-	 * Return null if the vertex isn't found
+	 * This function looks through all the vertexes in the graph and returns the
+	 * first one it finds that matches the value parameter.
+	 *
+	 * Used from the main code to look up the verts passed in on the command
+	 * line.
+	 *
+	 * @param {*} value The value of the Vertex to find
+	 *
+	 * @return null if not found.
 	 */
 	findVertex(value) {
 		// !!! IMPLEMENT ME
 	}
 
 	/**
+	 * Breadth-First search from a starting vertex. This should keep parent
+	 * pointers back from neighbors to their parent.
+	 *
+	 * @param {Vertex} start The starting vertex for the BFS
+	 */
+	bfs(start) {
+		// !!! IMPLEMENT ME
+	}
+
+	/**
 	 * Print out the route from the start vert back along the parent
 	 * pointers (set in the previous BFS)
+	 *
+	 * @param {Vertex} start The starting vertex to follow parent
+	 *                       pointers from
 	 */
-	route(start) {
+	outputRoute(start) {
 		// !!! IMPLEMENT ME
+	}
+
+	/**
+	 * Show the route from a starting vert to an ending vert.
+	 */
+	route(start, end) {
+		// Do BFS and build parent pointer tree
+		this.bfs(end);
+
+		// Show the route from the start
+		this.outputRoute(start);
 	}
 }
 
@@ -119,7 +148,6 @@ if (hostBVert === null) {
 	process.exit(2);
 }
 
-// Route from one host to another
+// Show the route from one host to another
 
-graph.bfs(hostBVert);
-graph.route(hostAVert);
+graph.route(hostAVert, hostBVert);
