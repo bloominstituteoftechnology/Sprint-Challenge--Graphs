@@ -81,27 +81,28 @@ class Graph {
 
     //   queue.dequeue()
     //   u.color = black
-    for (v of this.vertexes) {
+    let queue = [];
+    for (let v of this.vertexes) {
       v.color = 'white';
       v.parent = null; //<-- parent initialization
     }
 
     start.color = 'gray';
-    queue.enqueue(start);
+    queue.push(start);
 
-    while (!queue.isEmpty()) {
-      u = queue[0];
+    while (queue.length > 0) {
+      let u = queue[0];
 
       for (let e of u.edges) {
         const v = e.destination;
         if (v.color === 'white') {
           v.color = 'gray';
           v.parent = u;
-          queue.enqueue(v);
+          queue.push(v);
         }
       }
-      queue.dequeue();
-      u.color = black;
+      queue.shift();
+      u.color = 'black';
     }
   }
 
@@ -114,6 +115,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let path = '';
+
+    while(start.parent) {
+      path += `${start.value} --> `;
+      start = start.parent;
+    }
+
+    console.log(path);
   }
 
   /**
