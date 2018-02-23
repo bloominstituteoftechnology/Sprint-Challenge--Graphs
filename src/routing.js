@@ -90,18 +90,15 @@ class Graph {
 	 */
 	outputRoute(start) {
 		// !!! IMPLEMENT ME
-		//starts path at the sent value
-		const path = [start.value];
-
-		//while start has a parent
-		while (start.parent) {
-			//add the start.parent.value to the path
-			path.push(start.parent.value);
-			//sets the starting point for the next iteration to be the old parent
-			start = start.parent;
-		}
-		//prints the path
-		console.log('path: ', path.join('-->'));
+		let route = [start.value];
+		const route_path = v => {
+			if (v.parent) {
+				route.push(v.parent.value);
+				route_path(v.parent);
+			}
+		};
+		route_path(start);
+		console.log('path: ', route.join(' --> '));
 	}
 
 	/**
