@@ -45,6 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value === value) {
+        return this.vertexes[i];
+      }
+    }
+    return null;
   }
 
   /**
@@ -55,6 +61,32 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    this.vertexes.forEach((v) => {
+      v.color = 'white';
+    });
+
+    start.color = 'gray';
+    start.parent = null;
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      u.edges.forEach((e) => {
+        const dest = e.destination;
+
+        if (dest.color === 'white') {
+          dest.color = 'gray';
+          dest.parent = u;
+          queue.push(dest);
+        }
+      });
+
+      queue.shift();
+      u.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +98,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let route = '';
+    let vrtx = start;
+
+    while(vrtx) {
+      route += ' -->' + `${vrtx.value}`;
+      vrtx = vrtx.parent;
+    }
+    console.log(route);
   }
 
   /**
