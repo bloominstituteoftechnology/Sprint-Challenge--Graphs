@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight= 1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -50,7 +50,7 @@ class Graph {
       if (v[i].value === value) return v[i];
     }
     return null;
-	}
+  }
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
