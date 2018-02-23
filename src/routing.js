@@ -94,12 +94,12 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    console.log(start.value);
-    while(start.parent !== null) 
+    while(start !== null) 
     {
-      console.log(start.parent.value);
+      process.stdout.write(start.parent !== null ?  `${start.value} --> ` : `${start.value}`);
       start = start.parent;
     }
+    process.stdout.write('\n');
   }
 
   /**
