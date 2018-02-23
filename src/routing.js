@@ -1,3 +1,5 @@
+const Queue = require('./storage/queue');
+const colors = { black: ["black", "white"], white: ["white", "black"], grey: ["gray", "green"] }
 // Search for "!!! IMPLEMENT ME" comments
 
 /**
@@ -17,6 +19,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.parent = null;
+    this.color = colors.white;
   }
 }
 
@@ -30,6 +34,8 @@ class Graph {
    */
   constructor() {
     this.vertexes = [];
+    this.q = new Queue();
+    this.update = () => {}
   }
 
   /**
@@ -44,17 +50,40 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    const vs = this.vertexes.filter(v => v.value === value);
+    return vs.length === 1 ? vs[0] : null;
   }
-
+  bfsStep() {
+    if (!this.q.isEmpty) {
+      const parent = this.q.dequeue();
+      parent.color = colors.black;
+      parent.edges.forEach(edge => {
+        if (edge.destination.color === colors.white) {
+          edge.destination.color = colors.grey;
+          edge.destination.parent = parent;
+          this.q.enqueue(edge.destination);
+          this.cv(edge.destination);
+        }
+      });
+      this.update(parent);
+      return true;
+    } else return false;
+  }
   /**
    * Breadth-First search from a starting vertex. This should keep parent
    * pointers back from neighbors to their parent.
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
+
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const q = this.q.clear();
+    this.cv = (v) => {}; //this.dumpVertex;
+    this.vertexes.forEach(v => v.color = colors.white);
+    start.color = colors.grey;
+    q.enqueue(start);
+    this.cv(start);
+    while(this.bfsStep());
   }
 
   /**
@@ -65,13 +94,20 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    console.log(start.value);
+    while(start.parent !== null) 
+    {
+      console.log(start.parent.value);
+      start = start.parent;
+    }
   }
 
   /**
    * Show the route from a starting vert to an ending vert.
    */
   route(start, end) {
+    // const path = [];
+    //this.update =  v => path.push(v); 
     // Do BFS and build parent pointer tree
     this.bfs(end);
 
