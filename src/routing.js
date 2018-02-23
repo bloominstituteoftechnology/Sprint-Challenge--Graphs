@@ -4,116 +4,124 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
-    this.destination = destination;
-    this.weight = weight;
-  }
+	constructor(destination, weight = 1) {
+		this.destination = destination;
+		this.weight = weight;
+	}
 }
 
 /**
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
-    this.value = value;
-    this.edges = [];
-  }
+	constructor(value = 'vertex') {
+		this.value = value;
+		this.edges = [];
+	}
 }
 
 /**
  * Graph class
  */
 class Graph {
+	/**
+	 * Constructor
+	 */
+	constructor() {
+		this.vertexes = [];
+	}
 
-  /**
-   * Constructor
-   */
-  constructor() {
-    this.vertexes = [];
-  }
+	/**
+	 * This function looks through all the vertexes in the graph and returns the
+	 * first one it finds that matches the value parameter.
+	 *
+	 * Used from the main code to look up the verts passed in on the command
+	 * line.
+	 *
+	 * @param {*} value The value of the Vertex to find
+	 *
+	 * @return null if not found.
+	 */
+	findVertex(value) {
+		for (let v of this.vertexes) {
+			if (v.value === value) {
+				return v;
+			}
+		}
+		return null;
+	}
 
-  /**
-   * This function looks through all the vertexes in the graph and returns the
-   * first one it finds that matches the value parameter.
-   *
-   * Used from the main code to look up the verts passed in on the command
-   * line.
-   *
-   * @param {*} value The value of the Vertex to find
-   *
-   * @return null if not found.
-   */
-  findVertex(value) {
-    for (let v of this.vertexes) {
-      if (v.value === value) {
-        return v;
-      }
+	/**
+	 * Breadth-First search from a starting vertex. This should keep parent
+	 * pointers back from neighbors to their parent.
+	 *
+	 * @param {Vertex} start The starting vertex for the BFS
+	 */
+	bfs(start) {
+
+		const stack = [];
+
+		this.vertexes.forEach(vert => {
+			vert.color = 'white';
+			vert.parent = null;
+		});
+
+		stack.push(start);
+
+		while (stack.length > 0) {
+			let current = stack[0];
+			// console.log(current);
+
+			current.edges.forEach(e => {
+				let vert = e.destination;
+
+				if (vert.color === 'white') {
+					vert.color = 'grey';
+					vert.parent = current;
+					stack.push(vert);
+				}
+			});
+			current.color = 'black';
+			stack.shift();
+		}
+	}
+
+	/**
+	 * Print out the route from the start vert back along the parent
+	 * pointers (set in the previous BFS)
+	 *
+	 * @param {Vertex} start The starting vertex to follow parent
+	 *                       pointers from
+	 */
+	outputRoute(start) {
+    let route = "";
+
+		while (start.parent) {
+      route += `${start.value} ----> `;
+			start = start.parent;
     }
-    return null;
-  }
+    route += start.value;
+		console.log(route);
+	}
 
-  /**
-   * Breadth-First search from a starting vertex. This should keep parent
-   * pointers back from neighbors to their parent.
-   *
-   * @param {Vertex} start The starting vertex for the BFS
-   */
-  bfs(start) {
+	/**
+	 * Show the route from a starting vert to an ending vert.
+	 */
+	route(start, end) {
+		// Do BFS and build parent pointer tree
+		this.bfs(end);
 
-    start = this.vertexes[start];
-
-    const queue = [];
-
-    this.vertexes.forEach(v => {
-      v.color = 'white';
-    })
-
-    queue.push(start);
-
-    while (queue.length > 0) {
-      let u = queue.shift();
-      console.log(u);
-      u.edges.forEach(e => {
-        let vert = e.destination;
-        if (vert.color === 'white') {
-          vert.color = 'grey';
-          queue.push(vert);
-        }
-      })
-      u.color = 'black';
-      queue.shift();
-    }
-  };
-
-  /**
-   * Print out the route from the start vert back along the parent
-   * pointers (set in the previous BFS)
-   *
-   * @param {Vertex} start The starting vertex to follow parent
-   *                       pointers from
-   */
-  outputRoute(start) {
-    // !!! IMPLEMENT ME
-  }
-
-  /**
-   * Show the route from a starting vert to an ending vert.
-   */
-  route(start, end) {
-    // Do BFS and build parent pointer tree
-    this.bfs(end);
-
-    // Show the route from the start
-    this.outputRoute(start);
-  }
+		// Show the route from the start
+		this.outputRoute(start);
+	}
 }
 
 /**
  * Helper function to add bidirectional edges
  */
 function addEdge(v0, v1) {
-  v0.edges.push(new Edge(v1));
-  v1.edges.push(new Edge(v0));
+	v0.edges.push(new Edge(v1));
+	v1.edges.push(new Edge(v0));
 }
 
 /**
@@ -124,8 +132,8 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error('usage: routing hostA hostB');
-  process.exit(1);
+	console.error('usage: routing hostA hostB');
+	process.exit(1);
 }
 
 // Build the entire Internet
@@ -165,15 +173,15 @@ graph.vertexes.push(vertH);
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
-  console.error('routing: could not find host: ' + args[0]);
-  process.exit(2);
+	console.error('routing: could not find host: ' + args[0]);
+	process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
-  process.exit(2);
+	console.error('routing: could not find host: ' + args[1]);
+	process.exit(2);
 }
 
 // Show the route from one host to another
