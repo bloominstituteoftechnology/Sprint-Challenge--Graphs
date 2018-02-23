@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -45,6 +45,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        return v;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -54,7 +61,49 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    // !!! IMPLEMENT MEconst component = [];
+    //   BFS(graph, startVert):
+    // for v of graph.vertexes:
+    //   v.color = white
+    //   v.parent = null   // <-- Add parent initialization
+
+    // startVert.color = gray
+    // queue.enqueue(startVert)
+
+    // while !queue.isEmpty():
+    //   u = queue[0]
+
+    //   for v of u.neighbors:
+    //     if v.color == white:
+    //       v.color = gray
+    //       v.parent = u     // <-- Keep a parent link
+    //       queue.enqueue(v)
+
+    //   queue.dequeue()
+    //   u.color = black
+    let queue = [];
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null; //<-- parent initialization
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let e of u.edges) {
+        const v = e.destination;
+        if (v.color === 'white') {
+          v.color = 'gray';
+          v.parent = u;
+          queue.push(v);
+        }
+      }
+      queue.shift();
+      u.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +115,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let path = '';
+
+    while(start.parent) {
+      path += `${start.value} --> `;
+      start = start.parent;
+    }
+    path += start.value;
+    console.log(path);
   }
 
   /**
