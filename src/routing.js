@@ -55,9 +55,10 @@ class Graph {
 	bfs(start) {
 		// !!! IMPLEMENT ME
 		// standard bfs search
+		// borrowed the bfs from my graphs assignment - modified the queue.
 		const queue = [];
 		for (let n of this.vertexes) {
-			n.color = 'white'; // yeah I know im setting some weird state LOL I just borrowed the bfs from my graphs assignment.
+			n.color = 'white';
 			n.parent = null;
 		}
 		queue.push(start);
@@ -107,7 +108,7 @@ class Graph {
 	 */
 	route(start, end) {
 		// Do BFS and build parent pointer tree
-		console.log('start', start, 'end', end);
+		//console.log('start', start, 'end', end);
 		this.bfs(end);
 
 		// Show the route from the start
