@@ -67,7 +67,7 @@ class Graph {
     });
     queue.push(start);
 
-    while (queue.length) {
+    while (queue.length !== 0) {
       let dequeue = queue.shift();
       dequeue.edges.forEach(e => {
         let vertex = e.destination;
@@ -98,7 +98,7 @@ class Graph {
       }
     };
     path(start);
-    console.log('path = ' + arr.join(' -> '));
+    console.log('path = ', arr.join(' -> '));
   }
 
   /**
@@ -170,7 +170,7 @@ graph.vertexes.push(vertH);
 // find them.
 
 const hostAVert = graph.findVertex(args[0]);
-console.log(hostAVert);
+// console.log(hostAVert);
 
 if (hostAVert === null) {
   console.error('routing: could not find host: ' + args[0]);
