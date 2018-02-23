@@ -121,7 +121,7 @@ class Graph {
       path += `${start.value} --> `;
       start = start.parent;
     }
-
+    path += start.value;
     console.log(path);
   }
 
