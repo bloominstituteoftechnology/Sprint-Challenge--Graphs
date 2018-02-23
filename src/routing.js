@@ -1,5 +1,21 @@
 // Search for "!!! IMPLEMENT ME" comments
+class Queue {
+  constructor() {
+      this.storage = [];
+  }
 
+  enqueue(x) {
+      this.storage.push(x);
+  }
+
+  dequeue() {
+      return this.storage.shift();
+  }
+
+  isEmpty() {
+      return this.storage.length === 0;
+  }
+}
 /**
  * Edge class
  */
@@ -44,7 +60,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i ++) {
+      if (this.vertexes[i].value === value) {
+        return this.vertexes[i];
+      }
+    }
+    return null;
   }
 
   /**
@@ -54,7 +75,27 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i ++) {
+      this.vertexes[i].color = 'white';
+      this.vertexes[i].parent = null;
+    }
+
+    start.color = 'gray';
+    const queue = new Queue();
+    queue.enqueue(start);
+
+    while (!queue.isEmpty()) {
+      const u = queue.storage[0];
+      for (let k = 0; k < u.edges.length; k++) {
+        if (u.edges[k].destination.color === 'white') {
+          u.edges[k].destination.color = 'gray';
+          u.edges[k].destination.parent = u;
+          queue.enqueue(u.edges[k].destination);
+        }
+      }
+      queue.dequeue();
+      u.color = 'black';
+    }
   }
 
   /**
@@ -65,7 +106,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    const result = [start.value];
+    let currentNode = start;
+    while (currentNode.parent !== null) {
+      currentNode = currentNode.parent;
+      result.push(currentNode.value);
+    }
+    console.log(result.join(' --> '));
   }
 
   /**
