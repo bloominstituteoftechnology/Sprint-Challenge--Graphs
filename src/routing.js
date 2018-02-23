@@ -106,13 +106,12 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    const result = [start.value];
-    let currentNode = start;
-    while (currentNode.parent !== null) {
-      currentNode = currentNode.parent;
-      result.push(currentNode.value);
+    let result = start.value;
+    while (start.parent !== null) {
+      start = start.parent;
+      result += ' --> ' + start.value;
     }
-    console.log(result.join(' --> '));
+    console.log(result);
   }
 
   /**
