@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -62,36 +62,47 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT MEconst component = [];
-    const queue = [];
+    //   BFS(graph, startVert):
+    // for v of graph.vertexes:
+    //   v.color = white
+    //   v.parent = null   // <-- Add parent initialization
 
-    if (reset) {
-      for (let v of this.vertexes) {
-        v.color = 'white';
-      }
+    // startVert.color = gray
+    // queue.enqueue(startVert)
+
+    // while !queue.isEmpty():
+    //   u = queue[0]
+
+    //   for v of u.neighbors:
+    //     if v.color == white:
+    //       v.color = gray
+    //       v.parent = u     // <-- Keep a parent link
+    //       queue.enqueue(v)
+
+    //   queue.dequeue()
+    //   u.color = black
+    for (v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null; //<-- parent initialization
     }
 
     start.color = 'gray';
+    queue.enqueue(start);
 
-    queue.push(start);
-
-    while (queue.length > 0) {
-      const u = queue[0];
+    while (!queue.isEmpty()) {
+      u = queue[0];
 
       for (let e of u.edges) {
         const v = e.destination;
         if (v.color === 'white') {
           v.color = 'gray';
-          queue.push(v);
+          v.parent = u;
+          queue.enqueue(v);
         }
       }
-
-      queue.shift(); // de-queue
-      u.color = 'black';
-
-      component.push(u);
+      queue.dequeue();
+      u.color = black;
     }
-
-    return component;
   }
 
   /**
