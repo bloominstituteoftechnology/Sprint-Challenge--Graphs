@@ -59,10 +59,6 @@ class Graph {
   bfs(start) {
     // !!! IMPLEMENT ME
     const stack = [];
-    this.vertexes.forEach(v => {
-      v.color = 'white';
-      v.parent = null;
-    })
 
     start.color = 'grey';
     stack.push(start);
@@ -91,6 +87,30 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let path = [start.value];
+    let hasParent = true;
+    let currentVertex = start;
+
+    let outputString = '';
+
+    while(hasParent) {
+      if (currentVertex.parent) {
+        path.push(currentVertex.parent.value);
+        currentVertex = currentVertex.parent;
+      } else {
+        hasParent = false;
+      }
+    }
+
+    path.forEach((v,i) => {
+      if (i <= path.length - 2){
+        outputString += `${v} --> `
+      } else {
+        outputString += `${v}`
+      }
+    })
+
+    console.log(outputString);
   }
 
   /**
@@ -177,5 +197,4 @@ if (hostBVert === null) {
 // Show the route from one host to another
 
 graph.route(hostAVert, hostBVert);
-console.log(graph);
 
