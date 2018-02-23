@@ -1,5 +1,4 @@
 // Search for "!!! IMPLEMENT ME" comments
-
 //Edge class
 class Edge {
 	constructor(destination, weight = 1) {
@@ -66,11 +65,11 @@ class Graph {
 		while (queue.length) {
 			//shifts vertex off queue
 			let dequeue = queue.shift();
-			console.log('dequeue', dequeue);
+			//console.log('dequeue', dequeue);
 			for (let edge of dequeue.edges) {
 				//fiddles with it and makes it used
 				let vertex = edge.destination;
-				console.log('vertex', vertex);
+				//console.log('vertex', vertex);
 				if (vertex.color === 'white') {
 					vertex.color = 'pink'; //visited
 					vertex.parent = dequeue;
@@ -91,6 +90,18 @@ class Graph {
 	 */
 	outputRoute(start) {
 		// !!! IMPLEMENT ME
+		//starts path at the sent value
+		const path = [start.value];
+
+		//while start has a parent
+		while (start.parent) {
+			//add the start.parent.value to the path
+			path.push(start.parent.value);
+			//sets the starting point for the next iteration to be the old parent
+			start = start.parent;
+		}
+		//prints the path
+		console.log('path: ', path.join('-->'));
 	}
 
 	/**
@@ -174,3 +185,24 @@ if (hostBVert === null) {
 // Show the route from one host to another
 
 graph.route(hostAVert, hostBVert);
+
+// My output:
+// C:\Users\Crites\Desktop\Lambda School Masters\Sprint-Challenge--Graphs\src>node routing.js HostE HostB
+// start Vertex {
+//   value: 'HostE',
+//   edges:
+//    [ Edge { destination: [Object], weight: 1 },
+//      Edge { destination: [Object], weight: 1 } ] } end Vertex {
+//   value: 'HostB',
+//   edges:
+//    [ Edge { destination: [Object], weight: 1 },
+//      Edge { destination: [Object], weight: 1 } ] }
+// vertex:  HostB   dq color:  black
+// vertex:  HostA   dq color:  black
+// vertex:  HostD   dq color:  black
+// vertex:  HostC   dq color:  black
+// vertex:  HostF   dq color:  black
+// vertex:  HostG   dq color:  black
+// vertex:  HostE   dq color:  black
+// vertex:  HostH   dq color:  black
+// path:  HostE-->HostF-->HostC-->HostA-->HostB
