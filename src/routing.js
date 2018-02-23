@@ -90,6 +90,7 @@ class Graph {
 	 */
 	outputRoute(start) {
 		// !!! IMPLEMENT ME
+		// recursive function to push the route to an array and print
 		let route = [start.value];
 		const route_path = v => {
 			if (v.parent) {
