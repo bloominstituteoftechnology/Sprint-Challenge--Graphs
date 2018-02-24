@@ -44,7 +44,6 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
     for (let i = 0; i < this.vertexes.length; i++) {
       if (value == this.vertexes[i].value) {
         return this.vertexes[i];
@@ -68,10 +67,8 @@ class Graph {
     start.color = 'grey';
     queue.push(start);
     queue[0].edges
-   // console.log(queue[0].edges);
+
     while(queue.length > 0) {
-      let node = queue[0];
-    //  console.log(node.edges.length);
       for (let i = 0; i < queue[0].edges.length; i++) {
         if (queue[0].edges[i].destination.color === 'white') {
           queue[0].edges[i].destination.color = 'gray';
@@ -95,7 +92,7 @@ class Graph {
   outputRoute(start) {
     // value at the first node
     let route = start.value;
-    
+    console.log(start.parent);
     // start becomes start.parent at the end of each while loop 
     while(start.parent.value !== undefined) {
       route += ' --> ' + start.parent.value;
