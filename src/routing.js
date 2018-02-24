@@ -43,9 +43,16 @@ class Graph {
    *
    * @return null if not found.
    */
+
   findVertex(value) {
     // !!! IMPLEMENT ME
+      for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value === value) {
+        return this.vertexes[i];
+    }
+    return null;
   }
+}
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
@@ -55,6 +62,32 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let visited = [];
+    for (let i = 0; i < this.noOfVertices; i++) {
+      visited[i] = false;
+    }
+    
+    q = new Queue();
+
+    visited(start) = true;
+    q.enqueue(start);
+
+    while (!q.isEmpty()) {
+      let getQueueElement = q.dequeue();
+      console.log(getQueueElement);
+    }
+
+    let get_List = this.AdjList.get(getQueueElement);
+
+    for (let i in get_List) {
+      let neigh = get_List[i];
+
+      if (!visited[neigh]) {
+        visited[neigh] = true;
+        q.enqueue(neigh);
+      }
+      console.log(neigh);
+    }
   }
 
   /**
@@ -66,6 +99,12 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let g = new Graph(start);
+    let vertices = ['vertA', 'vertB', 'vertC', 'vertD', 'vertE', 'vertF', 'vertG', 'vertH'];
+    for (let i = 0; i < vertices.length; i++) {
+    g.findVertex(vertices[i]);
+    }
+    
   }
 
   /**
