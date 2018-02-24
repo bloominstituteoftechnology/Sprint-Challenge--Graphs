@@ -92,14 +92,11 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-   console.log(start.value);
-   let x = start.parent;
-   if (x.parent){ 
+   let x = start;
      while (x.parent) {
      console.log(` --> ${x.value}`)
      x = x.parent;
       }
-    }
     console.log(` --> ${x.value}`)
   }
 
