@@ -17,6 +17,8 @@ class Vertex {
   constructor(value = "vertex") {
     this.value = value;
     this.edges = [];
+    this.parent = null;
+    this.color = "white";
   }
 }
 
@@ -25,6 +27,7 @@ class Vertex {
  */
 class Graph {
   constructor() {
+    this.stack = [];
     this.vertexes = [];
   }
 
@@ -35,23 +38,13 @@ class Graph {
    * Used from the main code to look up the verts passed in on the command
    * line.
    *
-   * @param {*} value The value of the Vertex to find
-   *  this ^^ tripped me up for the longest time, even though I knew it was a comment, the fact that it was highlighted by the syntax highlighter gave me pause. Though I did learn a thing or two about @param...
-   *
-   * @return null if not found
-   *
    */
   findVertex(value) {
-    // loop through the vertexes
     for (let v of this.vertexes) {
-      // if the current vertex matches the passed in value
       if (v.value === value) {
-        // console.log(v);
-        // return the found vertex
         return v;
       }
     }
-    // otherwise return null
     return null;
   }
 
@@ -62,47 +55,40 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // create a stack here to stash our vertexes in during the search
-    const stack = [];
-
-    // loop through the vertexes
-    for (let v of this.vertexes) {
-      // set the color to white and the parent to null
-      v.color = "white";
-      v.parent = null;
+    if (start === undefined) {
+      start = this.vertexes[0];
+    } else {
+      start = this.vertexes[start];
     }
+    // make stack local so you don't have to type this.stack every time
+    let stack = this.stack;
 
-    // set the color to grey indicating we're investigating it
-    start.color = "grey";
+    // if the stack has no length, push the start to the stack - shouldn't be needed as it was pushed in find vertex
+    // if (this.stack.length === 0) stack.push(start);
 
-    // push the starting value into the stack for future use
-    stack.push(start);
+    // initialize a variable to the zeroth index of the stack
+    let u = stack[0];
 
-    // while there's something in the stack
-    while (stack.length > 0) {
-      // set u to the zeroth value
-      let u = stack[0];
+    // iterate through the edges of that variable
+    u.edges.forEach(e => {
+      // set vert to the destination = next node
+      let vert = e.destination;
 
-      // loop through the edges of u
-      for (let edge of u.edges) {
-        // set vert to the destination node of the edge
-        let vert = edge.destination;
-
-        // if the color of that node is white, that means we haven't investigated the node
-        if (vert.color === "white") {
-          // set it to grey
-          vert.color = "grey";
-          // set the parent of this node to u
-          vert.parent = u;
-          // push the node to the stack for future use
-          stack.push(vert);
-        }
+      // if that vert is white
+      if (vert.color === "white") {
+        // set the color to grey indication we're investigating it
+        vert.color = "grey";
+        // set its parent pointer
+        vert.parent = u;
+        // push the vert to the stack for future use
+        stack.push(vert);
       }
-      // set u to black to indicate we're finished with this node
-      u.color = "black";
-      // remove the zeroth value from the stack - aka dequeue
-      stack.shift();
-    }
+    });
+
+    // we're done investigating this vert so make it black
+    u.color = "black";
+    // remove it from the stack
+    stack.shift();
   }
 
   /**
