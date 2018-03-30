@@ -100,11 +100,13 @@ class Graph {
    */
   outputRoute(start) {
     // implemented
-    console.log(start.value);
+    let route = '';
+    route += start.value;
     while (start.parent) {
-      console.log(start.parent.value);
+      route += ' --> '+ start.parent.value;
       start = start.parent;
     }
+    console.log(route);
   }
 
   /**
