@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.fillColor = "white";
+    this.parent = null;
   }
 }
 
@@ -45,6 +47,18 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    while (this.vertexes.length > 0) {
+      // console.log("this.vertexes", this.vertexes);
+      let current = this.vertexes[0];
+      for (let edge of current.edges) {
+        // console.log(edge.destination.value);
+        if (edge.destination.value === value) {
+          return edge.destination.value;
+        } else {
+          return null;
+        }
+      }
+    }
   }
 
   /**
@@ -55,6 +69,22 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    queue.push(start);
+    start.fillColor = currentGroup;
+
+    while (queue.length > 0) {
+      let current = queue[0];
+      for (let edge of current.edges) {
+        if (edge.destination.fillColor === "white") {
+          edge.destination.parent = edge
+          queue.push(edge.destination);
+          edge.destination.fillColor = currentGroup;
+          edge.destination.parent = current; // set parent of child node
+        }
+      }
+      queue.shift();
+    }
   }
 
   /**
@@ -66,6 +96,23 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    queue.push(start);
+    start.parent = null;
+    start.fillColor = currentGroup;
+
+
+    while (queue.length > 0) {
+      let current = queue[0];
+      for (let edge of current.edges) {
+        if (edge.destination.fillColor === "white") {
+          edge.destination.parent = edge
+          queue.push(edge.destination);
+          edge.destination.parent = current; // set parent of child node
+          console.log("parent node", edge.destination.parent);
+        }
+      }
+    }
   }
 
   /**
