@@ -16,6 +16,7 @@ class Edge {
 class Vertex {
   constructor(value='vertex') {
     this.value = value;
+    this.parent = null;
     this.edges = [];
   }
 }
@@ -45,6 +46,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+  let filetered = this.vertexes.filter(ele => {
+          if(ele.value === value){
+              return ele 
+          }
+      })
+      return filetered[0]
   }
 
   /**
@@ -55,6 +62,24 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let visited =[]
+    let queue = [start];
+    visited[start.value] = true
+    while(queue.length){
+      let removed = queue.shift();
+      //path.push(removed.value)
+      let edges = removed.edges;
+      if(edges !== undefined){
+          for(let i = 0; i < edges.length; i++){
+              let currentEdgeVal = edges[i].destination.value
+              if(!(visited[currentEdgeVal])){
+                edges[i].destination.parent = removed
+                queue.push(edges[i].destination)
+                visited[currentEdgeVal] = true
+              }
+          }
+      }
+    }
   }
 
   /**
@@ -66,6 +91,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    
+    let currentVertex = start;
+    let str = `${currentVertex.value}`
+    while(currentVertex.parent){
+      str += '--->'+ currentVertex.parent.value 
+      currentVertex = currentVertex.parent
+    }
+    console.log (str)
   }
 
   /**
@@ -74,7 +107,6 @@ class Graph {
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
-
     // Show the route from the start
     this.outputRoute(start);
   }
@@ -94,6 +126,7 @@ function addEdge(v0, v1) {
 
 // Test for valid command line
 const args = process.argv.slice(2);
+
 
 if (args.length != 2) {
   console.error('usage: routing hostA hostB');
