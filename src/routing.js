@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
   }
 }
 
@@ -59,7 +61,37 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    // !!! IMPLEMENT ME - Completed
+    const queue = [];
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+
+      const currentNode = queue[0];
+      
+      // console.log(currentNode.value);
+
+      currentNode.edges.forEach(edge => {
+        const { destination } = edge;
+
+        if (destination.color === 'white') {
+          destination.color = 'gray';
+          destination.parent = currentNode;
+          queue.push(destination);
+        }
+
+        destination.parent = currentNode;
+
+      });
+
+      queue.shift();
+      
+      currentNode.color = 'black';
+
+    }
+
   }
 
   /**
