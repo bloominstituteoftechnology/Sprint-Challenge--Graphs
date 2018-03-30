@@ -44,7 +44,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    // implemented
+    for (let vertex of graph.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
   }
 
   /**
@@ -149,5 +154,5 @@ if (hostBVert === null) {
 }
 
 // Show the route from one host to another
-
+console.log(graph.findVertex('HostE'));
 graph.route(hostAVert, hostBVert);
