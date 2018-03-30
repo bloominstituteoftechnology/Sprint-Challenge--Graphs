@@ -73,19 +73,20 @@ class Graph {
     while (queueToVisit.length > 0) {
       let current = queueToVisit[0];
 
-      nodesVisited.push(current);
       current.color = 'gray';
+      nodesVisited.push(current);
 
       for (let edge of current.edges) {
         if (edge.destination.color == 'white') {
+          //console.log("edge", edge);
           queueToVisit.push(edge.destination);
           edge.destination.color = 'gray';
           edge.destination.parent = current;
         }
-
-        current.color = 'black';
-        queueToVisit = queueToVisit.slice(1);
       }
+      //console.log("queue", queueToVisit);
+      current.color = 'black';
+      queueToVisit = queueToVisit.slice(1);
     }
     return nodesVisited;
   }
@@ -99,8 +100,9 @@ class Graph {
    */
   outputRoute(start) {
     // implemented
+    console.log(start.value);
     while (start.parent) {
-      console.log(start.parent);
+      console.log(start.parent.value);
       start = start.parent;
     }
   }
@@ -186,5 +188,5 @@ if (hostBVert === null) {
 }
 
 // Show the route from one host to another
-//console.log(graph.findVertex('HostE'));
+//console.log(hostBVert);
 graph.route(hostAVert, hostBVert);
