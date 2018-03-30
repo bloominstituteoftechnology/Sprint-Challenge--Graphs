@@ -82,7 +82,7 @@ class Graph {
           queue.push(destination);
         }
 
-        destination.parent = currentNode;
+        // destination.parent = currentNode;
 
       });
 
@@ -103,6 +103,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const nodes = [];
+    while (start !== null) {
+      nodes.push(start.value);
+      start = start.parent;
+    }
+    const path = nodes.join(' --> ');
+    console.log(path);
   }
 
   /**
