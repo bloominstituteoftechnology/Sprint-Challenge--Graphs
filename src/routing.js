@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
     this.color = 'white';
@@ -26,7 +26,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -73,7 +72,7 @@ class Graph {
     queue.push(start);
 
     while (queue.length) {
-      // 
+      //
       const dequeue = queue.shift();
       // grab a neighbors
       for (let edge of dequeue.edges) {
@@ -81,12 +80,11 @@ class Graph {
         if (vertex.color === 'white') {
           vertex.color = 'lightblue'; // visited
           vertex.parent = dequeue;
-          queue.push(vertex)
+          queue.push(vertex);
         }
       }
       dequeue.color = 'black'; // finished
     }
-
   }
 
   /**
@@ -98,6 +96,16 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // push routes into a printing array
+    const currentVertex = start;
+    const route = [currentVertex.value];
+    while (currentVertex.parent) {
+      currentVertex = currentVertex.parent;
+      route.push(currentVertex);
+    }
+
+    // turn it into a string and output it
+    console.log(route.join('-->'));
   }
 
   /**
