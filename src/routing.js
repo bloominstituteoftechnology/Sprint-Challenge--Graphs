@@ -44,7 +44,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    console.log(this.vertexes.find (x => x.value === value)
+  );
+    return this.vertexes.find (x => x.value === value);
+    
   }
 
   /**
@@ -55,6 +58,30 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    return;
+    let queue = [];
+    let visited = [];
+    let bfs = [];
+    queue.push(start);
+    while ( queue.length !== 0) {
+      const vertex = queue.pop();
+      console.log(vertex.value);
+      const edges = vertex.edges;
+      bfs.push(vertex);
+      visited.push(vertex.value);
+      if (edges !== undefined) {
+      edges.forEach (e => {
+        console.log(e.destination.value + " " + visited)
+        if(visited.find(x => x === e.destination.value) === undefined) {
+          e.destination.parent = vertex;
+          queue.push(e.destination);
+          
+        }
+      });
+    }
+    }
+    return bfs;
+
   }
 
   /**
@@ -66,6 +93,11 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    while (start !== undefined){
+      console.log (start.value);
+      start = start.parent
+    }
+    
   }
 
   /**
