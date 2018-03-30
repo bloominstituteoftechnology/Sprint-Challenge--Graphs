@@ -95,6 +95,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // Print start route
+    // Change current node to parent if there is one
+    // Print until no longer has a parent
+    let currentNode = start;
+    console.log(`${currentNode.value} -->`);
+    while (currentNode.parent != null) {
+      currentNode = currentNode.parent;
+      console.log(`${currentNode.value} --> `);
+    }
   }
 
   /**
