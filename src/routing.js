@@ -46,12 +46,9 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-    for (let i = 0; i < this.vertexes.length; i++) {
-      if (this.vertexes[i].value === value) {
-        return this.vertexes[i];
-      }
-      return null;
-    }
+    let found = this.vertexes.find(element => element.value === value);
+    if (!found) found = null;
+    return found;
   }
 
   /**
@@ -64,14 +61,14 @@ class Graph {
     // !!! IMPLEMENT ME
     // queue to keep track of neighbors
     const queue = [];
-    for (let n of this.vertexes) {
-      n.color = white;
-      n.parent = null;
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
     }
-    start.color = gray;
+    //start.color = gray;
     queue.push(start);
 
-    while (queue.length) {
+    while (queue.length > 0) {
       //
       const dequeue = queue.shift();
       // grab a neighbors
@@ -84,6 +81,7 @@ class Graph {
         }
       }
       dequeue.color = 'black'; // finished
+      //console.log('vertex: ', dequeue.value, ' ', 'dq color: ', dequeue.color);
     }
   }
 
@@ -97,15 +95,15 @@ class Graph {
   outputRoute(start) {
     // !!! IMPLEMENT ME
     // push routes into a printing array
-    const currentVertex = start;
+    let currentVertex = start;
     const route = [currentVertex.value];
     while (currentVertex.parent) {
       currentVertex = currentVertex.parent;
-      route.push(currentVertex);
+      route.push(currentVertex.value);
     }
 
     // turn it into a string and output it
-    console.log(route.join('-->'));
+    console.log(route.join(' --> '));
   }
 
   /**
