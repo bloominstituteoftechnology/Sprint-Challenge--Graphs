@@ -60,6 +60,35 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queueToVisit = [];
+    const nodesVisited = [];
+
+    for (let vertex of graph.vertexes) {
+      vertex.color = 'white';
+      vertex.parent = null;
+    }
+    start.color = 'gray';
+    queueToVisit.push(start);
+
+    while (queueToVisit.length > 0) {
+      let current = queueToVisit[0];
+
+      nodesVisited.push(curent);
+      current.color = 'gray';
+
+      for (let edge of current.edges) {
+        if (queueToVisit.indexOf(edge.destination) == -1 && nodesVisited.indexOf(edge.destination) == -1) {
+          queueToVisit.push(edge.destination);
+          edge.destination.color = 'gray';
+          edge.destination.parent = current;
+        }
+        
+        current.color = 'black';
+        queueToVisit = queueToVisit.slice(1);
+      }
+      
+
+    }
   }
 
   /**
