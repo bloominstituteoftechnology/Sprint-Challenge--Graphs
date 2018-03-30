@@ -45,6 +45,15 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    console.log(graph.vertexes);
+    for(let vertex of graph.vertexes) {
+      if(vertex.value === value) {
+        return vertex;
+        console.log('we found the value that matches the searched vertex');
+      }
+      console.log('wedidnt find anything');
+      return null;
+    }
   }
 
   /**
@@ -66,6 +75,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let vertex = start;
+    let output = '';
+    while(vertex != null) {
+      output += vertex.value;
+      vertex = vertex.parentVertex;
+      if(vertex != null) {
+        output += " -->";
+      }
+      console.log(output);
+    }
+    console.log(output);
   }
 
   /**
