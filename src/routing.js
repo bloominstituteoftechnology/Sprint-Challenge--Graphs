@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -45,6 +45,19 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    if (this.vertexes.length > 0) {
+      this.vertexes.forEach(v => {
+        if (value = v.value) {
+          // Debugging line for this function
+          // console.log("Vertex with value: ", value, " was found!");
+          return v;
+        } else {
+          // Error line for this function
+          console.log("Error vertex with value: ", value, " is not found!");
+          return -1;
+        }
+      });
+    }
   }
 
   /**
@@ -53,8 +66,23 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
+  bfs(start = this.vertexes[0]) {
     // !!! IMPLEMENT ME
+    //console.log(start)
+    let visitedHierarchy = { [`${start.value}`]: start }
+    const neighborsExplore = (root) => {
+      root.edges.forEach(edge => {
+        let val = edge.destination.value;
+        if (!visitedHierarchy.hasOwnProperty(val)) {
+          visitedHierarchy = { ...visitedHierarchy, [val]: edge.destination };
+          neighborsExplore(edge.destination);
+        }
+      })
+    }
+    for (let n in visitedHierarchy) {
+      console.log(n);
+    }
+    return visitedHierarchy;
   }
 
   /**
