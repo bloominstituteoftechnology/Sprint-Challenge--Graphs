@@ -44,8 +44,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    const b = this.bfs(this.vertexes[0]) ;
-    return b.find(x => x.value === value);
+    console.log(this.vertexes.find (x => x.value === value)
+  );
+    return this.vertexes.find (x => x.value === value);
+    
   }
 
   /**
@@ -56,6 +58,7 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    return;
     let queue = [];
     let visited = [];
     let bfs = [];
