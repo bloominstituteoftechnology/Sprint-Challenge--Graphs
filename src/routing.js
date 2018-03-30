@@ -47,11 +47,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-    while (queue.length > 0) {
-      let current = queue[0];
+    while (this.vertexes.length > 0) {
+      // console.log("this.vertexes", this.vertexes);
+      let current = this.vertexes[0];
       for (let edge of current.edges) {
-        if (edge.destination === value) {
-          return edge.destination;
+        // console.log(edge.destination.value);
+        if (edge.destination.value === value) {
+          return edge.destination.value;
         } else {
           return null;
         }
@@ -70,7 +72,6 @@ class Graph {
     let queue = [];
     queue.push(start);
     start.fillColor = currentGroup;
-    start.parent = null;
 
     while (queue.length > 0) {
       let current = queue[0];
@@ -80,7 +81,6 @@ class Graph {
           queue.push(edge.destination);
           edge.destination.fillColor = currentGroup;
           edge.destination.parent = current; // set parent of child node
-          console.log("parent node", edge.destination.parent);
         }
       }
       queue.shift();
@@ -99,6 +99,8 @@ class Graph {
     let queue = [];
     queue.push(start);
     start.parent = null;
+    start.fillColor = currentGroup;
+
 
     while (queue.length > 0) {
       let current = queue[0];
@@ -107,9 +109,9 @@ class Graph {
           edge.destination.parent = edge
           queue.push(edge.destination);
           edge.destination.parent = current; // set parent of child node
+          console.log("parent node", edge.destination.parent);
         }
       }
-      console.log();
     }
   }
 
