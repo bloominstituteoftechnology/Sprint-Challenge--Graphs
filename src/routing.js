@@ -17,6 +17,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
   }
 }
 
@@ -60,35 +61,33 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    const queueToVisit = [];
+    let queueToVisit = [];
     const nodesVisited = [];
 
     for (let vertex of graph.vertexes) {
       vertex.color = 'white';
       vertex.parent = null;
     }
-    start.color = 'gray';
     queueToVisit.push(start);
 
     while (queueToVisit.length > 0) {
       let current = queueToVisit[0];
 
-      nodesVisited.push(curent);
+      nodesVisited.push(current);
       current.color = 'gray';
 
       for (let edge of current.edges) {
-        if (queueToVisit.indexOf(edge.destination) == -1 && nodesVisited.indexOf(edge.destination) == -1) {
+        if (edge.destination.color == 'white') {
           queueToVisit.push(edge.destination);
           edge.destination.color = 'gray';
           edge.destination.parent = current;
         }
-        
+
         current.color = 'black';
         queueToVisit = queueToVisit.slice(1);
       }
-      
-
     }
+    return nodesVisited;
   }
 
   /**
@@ -99,7 +98,11 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    // implemented
+    while (start.parent) {
+      console.log(start.parent);
+      start = start.parent;
+    }
   }
 
   /**
@@ -176,12 +179,12 @@ if (hostAVert === null) {
 }
 
 const hostBVert = graph.findVertex(args[1]);
-
+//console.log(hostBVert);
 if (hostBVert === null) {
   console.error('routing: could not find host: ' + args[1]);
   process.exit(2);
 }
 
 // Show the route from one host to another
-console.log(graph.findVertex('HostE'));
+//console.log(graph.findVertex('HostE'));
 graph.route(hostAVert, hostBVert);
