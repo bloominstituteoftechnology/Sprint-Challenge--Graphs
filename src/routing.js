@@ -5,7 +5,10 @@
  */
 class Edge {
   constructor(destination, weight=1) {
+    /** @type {Vertex} */
     this.destination = destination;
+
+    /** @type {number} */
     this.weight = weight;
   }
 }
@@ -22,7 +25,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
 
-    /** @type {Array<Vertex>} */
+    /** @type {Array<Edge>} */
     this.edges = [];
 
     /** @type {string} */
