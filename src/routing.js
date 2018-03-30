@@ -106,7 +106,7 @@ class Graph {
       currentNode = currentNode.parent;
       route.push(currentNode.value);
     }
-
+    // Made array then joined to print on one line
     const str = route.join(' --> ');
     console.log(str);
   }
