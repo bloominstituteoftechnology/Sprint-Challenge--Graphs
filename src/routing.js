@@ -44,7 +44,8 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    const b = bfs(this.vertexes[0]) ;
+    return b.find(x => x.value === value);
   }
 
   /**
@@ -55,6 +56,25 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    let visited = [];
+    let bfs = [];
+    queue.push(start);
+    while ( queue.length !== 0) {
+      const vertex = queue.pop();
+      const edges = vertex.edges;
+      bfs.push(vertex);
+      visited.push(vertex);
+      edges.forEach (v => {
+        if(visited.find(v) === 'undefined') {
+          v.parent = vertex;
+          queue.push(v);
+          
+        }
+      });
+    }
+    return bfs;
+
   }
 
   /**
