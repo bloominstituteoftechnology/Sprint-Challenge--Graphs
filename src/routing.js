@@ -45,6 +45,7 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    return this.vertexes.indexOf(value) >= 0;
   }
 
   /**
@@ -55,7 +56,19 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+      let distances = [];
+      let preceded = [];
+      for(let i = 0; i < this.vertexes.length; i++) {
+        distances[this.vertexes[i]] = -1;
+        if(this.vertexes[i] === start) {
+          distances[this.vertexes[i]] = 0;
+          preceded[this.vertexes[i]] = start;
+      } else {
+          preceded[this.vertexes[i]] = null;
+    }
   }
+}
+
 
   /**
    * Print out the route from the start vert back along the parent
@@ -66,6 +79,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let result = [start.value]; // make result array with start value
+        let current = start; // set current to start value
+        while (current.parent !== null) {   // while current has a parent
+          result.push(current.parent.value); // add current's parent value to result array
+          current= current.parent; // make current's parent the new current
+        }
+        console.log(result.join(' --> '));  // print the array
   }
 
   /**
