@@ -65,20 +65,20 @@ class Graph {
     queue.push(start);//pushing the starting V to the queue
 
     while (queue.length > 0) {
-      const currentNode =  queue[0];
+      const currentNode =  queue[0]; //the currentNode is first in the queue
 
       currentNode.edges.forEach(edge => {
-        const { destination } = edge;
+        const { destination } = edge; //creating a destination object in the currentNode
 
-        if (destination.visited === false) {
-          destination.visited = true;
-          destination.parent = currentNode;
-          queue.push(destination);
+        if (destination.visited === false) { //checking the visited flag
+          destination.visited = true; //switching it to true
+          destination.parent = currentNode;// assigning the currentNode as the parent
+          queue.push(destination);//pushing the edge to queue?
         }
       });
-      queue.shift();
+      queue.shift();//shift off the currentNode
 
-      currentNode.visited = true;
+      currentNode.visited = true;//switch visited flag to true
     }
   }
 
@@ -93,10 +93,10 @@ class Graph {
     const nodes = [];
 
     while (start !== null) {
-      nodes.push(start.value);
-      start = start.parent;
+      nodes.push(start.value);//push the vertex value to node array
+      start = start.parent;//then start is now equal to start.parent
     }
-    const path = nodes.join('-->');
+    const path = nodes.join('-->');//add a pointer 
     console.log(path);
   }
 
