@@ -55,6 +55,28 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let currentGroup = 'red';  // todo start with random color 
+    const queue = [];
+    start.fillColor = currentGroup;
+    queue.push(start);
+    console.log(queue[0]);
+
+    // group is 0
+    
+    while(queue.length > 0) { 
+      let current = queue[0];
+      for(let edge of current.edges) {
+         // if not visited add to the queue
+         if(edge.destination.fillColor === 'white') { 
+          edge.destination.fillColor = currentGroup;
+          queue.push(edge.destination);
+           
+
+         }
+
+      }
+      queue.shift();
+    }
   }
 
   /**
