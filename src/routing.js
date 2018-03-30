@@ -99,11 +99,16 @@ class Graph {
     // Change current node to parent if there is one
     // Print until no longer has a parent
     let currentNode = start;
-    console.log(`${currentNode.value} -->`);
+    const route = [];
+
+    route.push(currentNode.value);
     while (currentNode.parent != null) {
       currentNode = currentNode.parent;
-      console.log(`${currentNode.value} --> `);
+      route.push(currentNode.value);
     }
+
+    const str = route.join(' --> ');
+    console.log(str);
   }
 
   /**
