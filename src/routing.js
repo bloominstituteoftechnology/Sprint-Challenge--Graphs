@@ -56,7 +56,34 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {}
+  bfs(start) {
+    for (let v of this.vertexes) {
+      v.visited = false;
+      v.parent = null;
+    }
+
+    const q = [];
+
+    start.visited = true;
+
+    q.push(start);
+
+    while (q.length > 0) {
+      const vertex = q[0];
+
+      for (let edge of vertex.edges) {
+        const edgeV = edge.destination;
+
+        if (!edgeV.visited) {
+          edgeV.visited = true;
+          edgeV.parent = vertex;
+          q.push(edgeV);
+        }
+      }
+
+      q.shift();
+    }
+  }
 
   /**
    * Print out the route from the start vert back along the parent
@@ -66,7 +93,17 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let output = '';
+
+    let u = start;
+
+    while (u.parent !== null) {
+      output += `${u.value} --> `;
+
+      u = u.parent;
+    }
+
+    console.log(`${output}${u.value}`);
   }
 
   /**
