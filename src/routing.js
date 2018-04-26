@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +43,11 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) return vertex;
+    }
+
+    return null;
   }
 
   /**
@@ -53,9 +56,7 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+  bfs(start) {}
 
   /**
    * Print out the route from the start vert back along the parent
