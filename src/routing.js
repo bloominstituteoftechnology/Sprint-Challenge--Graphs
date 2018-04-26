@@ -1,5 +1,3 @@
-// Search for "!!! IMPLEMENT ME" comments
-
 /**
  * Edge class
  */
@@ -57,15 +55,18 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
+    const q = [];
+
+    /**
+     *  add visited and parent props to each vertex
+     *  these props are deleted after finding output
+     */
     for (let v of this.vertexes) {
       v.visited = false;
       v.parent = null;
     }
 
-    const q = [];
-
     start.visited = true;
-
     q.push(start);
 
     while (q.length > 0) {
@@ -101,6 +102,12 @@ class Graph {
       output += `${u.value} --> `;
 
       u = u.parent;
+    }
+
+    /* delete vertex props made for routing */
+    for (let v of this.vertexes) {
+      delete v.visited;
+      delete v.parent;
     }
 
     console.log(`${output}${u.value}`);
