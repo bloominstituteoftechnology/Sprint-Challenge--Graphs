@@ -65,11 +65,11 @@ class Graph {
     start.visited = true;
     queue.push(start);
 
-    while (!queue.isEmpty()) {
-      let vertex = queue[0];
+    while (queue.length > 0) {
+      const vertex = queue[0];
 
       for (let edge of vertex.edges) {
-        let destEdge = edge.destination;
+        const destEdge = edge.destination;
 
         if (!destEdge.visited) {
           destEdge.visited = true;
@@ -89,7 +89,21 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let temp = start;
+
+    let output = '';
+
+    while (temp.parent !== null) {
+      output += `${temp.value} --->`;
+
+      temp = temp.parent;
+    }
+    for (let v of this.vertexes) {
+      delete v.visited;
+      delete v.parent;
+    }
+
+    console.log(output);
   }
 
   /**
