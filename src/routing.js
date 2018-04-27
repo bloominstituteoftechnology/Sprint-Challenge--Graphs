@@ -44,8 +44,9 @@ class Graph {
    */
   findVertex(value) {
     for (let vertex of this.vertexes) {
-      return vertex.value === value ? vertex : null;
+      if (vertex.value === value) return vertex;
     }
+    return null;
   }
 
   /**
@@ -57,7 +58,7 @@ class Graph {
   bfs(start) {
     let queue = [];
 
-    for (let v of this.vertex) {
+    for (let v of this.vertexes) {
       v.visited = false;
       v.parent = null;
     }
@@ -94,7 +95,7 @@ class Graph {
     let output = '';
 
     while (temp.parent !== null) {
-      output += `${temp.value} --->`;
+      output += `${temp.value} ---> `;
 
       temp = temp.parent;
     }
