@@ -57,7 +57,24 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const visited = [];
+    let queue = [start];
+    visited[start.value] = true;
+    while (queue.length) {
+      let removed = queue.shift();
+      //path.push(removed.value)
+      let edges = removed.edges;
+      if (edges !== undefined) {
+        for (let i = 0; i < edges.length; i++) {
+          let currentEdgeVal = edges[i].destination.value;
+          if (!visited[currentEdgeVal]) {
+            edges[i].destination.parent = removed;
+            queue.push(edges[i].destination);
+            visited[currentEdgeVal] = true;
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -68,7 +85,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let currentVertex = start;
+    let str = `${currentVertex.value}`;
+    while (currentVertex.parent) {
+      str += "--->" + currentVertex.parent.value;
+      currentVertex = currentVertex.parent;
+    }
+    console.log(str);
   }
 
   /**
