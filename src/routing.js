@@ -45,8 +45,8 @@ class Graph {
       if (vertex.value === value) {
         return vertex;
       }
-      return null;
     }
+    return null;
   }
 
   /**
@@ -57,7 +57,7 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    const queue = [];
+    let queue = [];
 
     for (let v of this.vertexes) {
       v.color = 'white';
@@ -67,8 +67,8 @@ class Graph {
     start.color = 'gray';
     queue.push(start);
 
-    while(queue.length) {
-      const u = queue[0];
+    while(queue.length > 0) {
+      let u = queue[0];
 
       for (let e of u.edges) {
         const v = e.destination;
@@ -79,7 +79,7 @@ class Graph {
         }
       }
       queue.shift();
-      u.color = 'black'
+      u.color = 'black';
     }
   }
 
@@ -92,13 +92,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    let result = '';
-    while (start.parent) {
-      result += start.value + ' --> ';
+
+    let str = '';
+    while(start.parent) {
+      str += start.value + ' --> ';
       start = this.findVertex(start.parent.value);
     }
-    result += start.value;
-    console.log(result)
+    str += start.value;
+    console.log(str);
   }
 
   /**
