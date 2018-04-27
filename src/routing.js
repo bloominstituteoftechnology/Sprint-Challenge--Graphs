@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.visited = false;
+    this.parent = null;
   }
 }
 
@@ -45,6 +47,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value.toLowerCase() === value.toLowerCase()) return vertex;
+    }
+    return null;
   }
 
   /**
@@ -55,6 +61,22 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    queue.push(start);
+    // console.log("start: ", start);
+    start.visited = true;
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+      for (let edge of vertex.edges) {
+        if (!edge.destination.visited) {
+          edge.destination.parent = vertex;
+          queue.push(edge.destination);
+          edge.destination.visited = true;
+        }
+      }
+      queue.shift();
+    }
   }
 
   /**
@@ -66,6 +88,21 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let result = [];
+    let output = "";
+    result.push(start.value);
+    while (start.parent) {
+      result.push(start.parent.value);
+      start = start.parent;
+    }
+    for (let i = 0; i < result.length; i++) {
+      if (result[i + 1]) {
+        output += result[i] + " --> ";
+      } else {
+        output += result[i];
+      }
+    }
+    console.log(output);
   }
 
   /**
