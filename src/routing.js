@@ -57,6 +57,30 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    const compArray = [];
+
+    for (let v of this.vertexes) {
+      v.visited = false;
+    }
+
+    start.visited = true;
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let next = queue[0];
+      for (let e of next.edges) {
+        let v = e.destination;
+        if (v.visited === false) {
+          queue.push(v);
+        }
+      }
+      queue.shift();
+      next.visited = true;
+
+      compArray.push(next);
+    }
+    return compArray;
   }
 
   /**
