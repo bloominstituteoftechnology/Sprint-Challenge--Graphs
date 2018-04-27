@@ -94,7 +94,19 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentNode = start;
+    const route = [];
+
+    route.push(currentNode.value);
+    while (currentNode.parent != null) {
+      currentNode = currentNode.parent;
+      route.push(currentNode.value);
   }
+
+  const str = route.join('-->');
+  console.log(str);
+
+}
 
   /**
    * Show the route from a starting vert to an ending vert.
