@@ -51,6 +51,7 @@ class Graph {
         return v;
       }
     }
+    return null;
   }
 
   /**
@@ -80,7 +81,7 @@ class Graph {
       }
 
       queue.shift();
-      current.color = 'black';
+      current.color = 'black'; 
     }
     // console.log(this.vertexes);
   }
