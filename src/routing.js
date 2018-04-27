@@ -1,10 +1,11 @@
+/* eslint no-restricted-syntax: off */
 // Search for "!!! IMPLEMENT ME" comments
 
 /**
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +15,12 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
+    this.visited = false;
   }
 }
 
@@ -45,6 +49,8 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    // console.log(this.vertexes);
+    return this.vertexes.find(vertex => vertex.value === value);
   }
 
   /**
@@ -53,9 +59,29 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+  bfs(s) {
+    // console.log('calling bfs() at vert', s.value);
+    // let color = this.getRandomColor();
+    let queue = [];
+    s.visited = true;
+    queue.push(s);
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+      vertex.color = 'gray';
+
+      for (let edge of vertex.edges) {
+        if (edge.destination.color === 'white') {
+          edge.destination.visited = true;
+          edge.destination.parent = vertex;
+          queue.push(edge.destination);
+          // console.log('found edge: ', edge.destination.value);
+        }
+      }
+      queue.shift();
+    }
+    // console.log(this.vertexes);    
+  };
 
   /**
    * Print out the route from the start vert back along the parent
@@ -66,6 +92,7 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    console.log(start);
   }
 
   /**
@@ -74,7 +101,9 @@ class Graph {
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
-
+    // console.log(start, end);
+    // console.log(this.vertexes);
+    
     // Show the route from the start
     this.outputRoute(start);
   }
@@ -95,7 +124,7 @@ function addEdge(v0, v1) {
 // Test for valid command line
 const args = process.argv.slice(2);
 
-if (args.length != 2) {
+if (args.length !== 2) {
   console.error('usage: routing hostA hostB');
   process.exit(1);
 }
