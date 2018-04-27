@@ -91,7 +91,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    console.log(this.vertexes);
+    let val = start;
+    let str = '';
+    while (val.parent) {
+      str+= `${val.value} --> `
+      val = val.parent;
+    }
+
+    str += val.value;
+    console.log(str);
   }
 
   /**
