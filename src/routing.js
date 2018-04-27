@@ -62,6 +62,7 @@ class Graph {
 
     for (let v of this.vertexes) {
       v.visited = false;
+      v.parent = null;
     }
 
     start.visited = true;
@@ -72,6 +73,7 @@ class Graph {
       for (let e of next.edges) {
         let v = e.destination;
         if (v.visited === false) {
+          v.parent = next;
           queue.push(v);
         }
       }
