@@ -45,6 +45,11 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) return vertex;
+    }
+
+    return null;
   }
 
   /**
@@ -55,7 +60,37 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const q = [];
+
+    /**
+     *  add visited and parent props to each vertex
+     *  these props are deleted after finding output
+     */
+    for (let v of this.vertexes) {
+      v.visited = false;
+      v.parent = null;
+    }
+
+    start.visited = true;
+    q.push(start);
+
+    while (q.length > 0) {
+      const vertex = q[0];
+
+      for (let edge of vertex.edges) {
+        const edgeV = edge.destination;
+
+        if (!edgeV.visited) {
+          edgeV.visited = true;
+          edgeV.parent = vertex;
+          q.push(edgeV);
+        }
+      }
+
+      q.shift();
+    }
   }
+
 
   /**
    * Print out the route from the start vert back along the parent
