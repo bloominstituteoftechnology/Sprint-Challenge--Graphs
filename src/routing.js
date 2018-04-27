@@ -1,5 +1,5 @@
 /* eslint no-restricted-syntax: off */
-// Search for "!!! IMPLEMENT ME" comments
+/* eslint class-methods-use-this: off */
 
 /**
  * Edge class
@@ -28,10 +28,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
-  /**
-   * Constructor
-   */
   constructor() {
     this.vertexes = [];
   }
@@ -47,11 +43,6 @@ class Graph {
    *
    * @return null if not found.
    */
-  findVertex(value) {
-    // !!! IMPLEMENT ME
-    // console.log(this.vertexes);
-    return this.vertexes.find(vertex => vertex.value === value);
-  }
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
@@ -59,10 +50,13 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
+
+  findVertex(value) {
+    return this.vertexes.find(vertex => vertex.value === value);
+  }
+
   bfs(s) {
-    // console.log('calling bfs() at vert', s.value);
-    // let color = this.getRandomColor();
-    let queue = [];
+    const queue = [];
     s.visited = true;
     queue.push(s);
 
@@ -70,18 +64,16 @@ class Graph {
       const vertex = queue[0];
       vertex.color = 'gray';
 
-      for (let edge of vertex.edges) {
+      for (const edge of vertex.edges) {
         if (edge.destination.color === 'white') {
           edge.destination.visited = true;
           edge.destination.parent = vertex;
           queue.push(edge.destination);
-          // console.log('found edge: ', edge.destination.value);
         }
       }
       queue.shift();
     }
-    // console.log(this.vertexes);    
-  };
+  }
 
   /**
    * Print out the route from the start vert back along the parent
@@ -91,8 +83,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
-    console.log(start);
+    const path = [];
+    while (start) {
+      path.push(start.value);
+      start = start.parent;
+    }
+
+    const route = path.join(' --> ');
+    console.log(route);
   }
 
   /**
@@ -101,17 +99,15 @@ class Graph {
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
-    // console.log(start, end);
-    // console.log(this.vertexes);
-    
     // Show the route from the start
     this.outputRoute(start);
   }
+
+  /**
+   * Helper function to add bidirectional edges
+   */
 }
 
-/**
- * Helper function to add bidirectional edges
- */
 function addEdge(v0, v1) {
   v0.edges.push(new Edge(v1));
   v1.edges.push(new Edge(v0));
