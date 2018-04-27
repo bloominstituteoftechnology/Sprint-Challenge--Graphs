@@ -62,7 +62,6 @@ class Graph {
     visited[start.value] = true;
     while (queue.length) {
       let removed = queue.shift();
-      //path.push(removed.value)
       let edges = removed.edges;
       if (edges !== undefined) {
         for (let i = 0; i < edges.length; i++) {
