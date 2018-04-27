@@ -103,7 +103,7 @@ class Graph {
       delete v.parent;
     }
 
-    console.log(output);
+    console.log(`${output}${temp.value}`);
   }
 
   /**
