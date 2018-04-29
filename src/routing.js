@@ -65,7 +65,8 @@ class Graph {
       vertex.color = 'gray';
 
       for (const edge of vertex.edges) {
-        if (edge.destination.color === 'white') {
+        if (!edge.destination.visited) {
+        // if (edge.destination.color === 'white') {
           edge.destination.visited = true;
           edge.destination.parent = vertex;
           queue.push(edge.destination);
@@ -176,3 +177,14 @@ if (hostBVert === null) {
 // Show the route from one host to another
 
 graph.route(hostAVert, hostBVert);
+
+/* Sample Runs
+$ node routing.js HostA HostD
+HostA --> HostB --> HostD
+$ node routing.js HostA HostH
+HostA --> HostC --> HostF --> HostH
+$ node routing.js HostA HostA
+HostA
+$ node routing.js HostE HostB
+HostE --> HostF --> HostC --> HostA --> HostB
+*/
