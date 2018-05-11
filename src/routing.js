@@ -59,23 +59,26 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    start.parent = null;
     const queue = [start];
     const result = [];
 
-    while (queue.length) {
+    while (queue.length > 0) {
       if (queue[0].edges.length === 0) {
         result.push(queue[0]);
       }
 
       for (let i = 0; i < queue[0].edges.length; i++) {
-        if (queue.edges[i].destination.parent === undefined) {
-          queue.edges[i].destination.parent = queue[0];
-          queue.push(queue.edges[i].destination);
-          result.push(queue.edges[i].destination);
+        if (queue[0].edges[i].destination.parent === undefined) {
+          queue[0].edges[i].destination.parent = queue[0];
+          queue.push(queue[0].edges[i].destination);
+          result.push(queue[0].edges[i].destination);
         }
       }
-
+      // console.log("here is queue before the shift", queue);
       queue.shift();
+      // console.log("here is queue AFTER the shift", queue);
+      
     }
 
     // return result;
@@ -95,7 +98,7 @@ class Graph {
     let currentVertex = start;
     let returnString = '';
 
-    while (currentVertex.parent) {
+    while (currentVertex) {
       if (returnString.length === 0) {
         returnString += `${currentVertex.value}`;
       } else {
