@@ -30,8 +30,6 @@ class Graph {
    */
   constructor(args) {
     this.vertexes = [];
-    this.start = args[0];
-    this.end = args[1];
   }
 
   /**
@@ -63,6 +61,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (const vertex of this.vertexes) {
+      vertex.color = 'white';
+      vertex.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue[0] != null) {
+      const node = queue[0];
+
+      for (const edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          vertex.parent = node;
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+    }
   }
 
   /**
@@ -110,7 +133,7 @@ if (args.length != 2) {
 
 // Build the entire Internet
 // (it's only a model)
-const graph = new Graph(args);
+const graph = new Graph();
 const vertA = new Vertex('HostA');
 const vertB = new Vertex('HostB');
 const vertC = new Vertex('HostC');
