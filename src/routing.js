@@ -61,7 +61,30 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    console.log('starting vertex', start)
+    const queue = [];
+
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        const edgeDestination = edge.destination;
+        if (edgeDestination.color === 'white') {
+          edgeDestination.color = 'gray';
+          edgeDestination.parent = vertex;
+          queue.push(edgeDestination);
+        }
+      }
+      queue.shift();
+      vertex.color = 'black';
+    }
   }
 
   /**
@@ -73,6 +96,7 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    console.log(this.vertexes);
   }
 
   /**
