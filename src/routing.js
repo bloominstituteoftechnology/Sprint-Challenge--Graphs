@@ -98,7 +98,14 @@ class Graph {
     // for (let i = 0; i <= edgesLength; i++){
     //   if (!start.edges[i].destination)
     // }
-    console.log(start.edges);
+    let result = `${start.value} --> `;
+    let currentVertex = start;
+    while (start.parent) {
+      currentVertex = currentVertex.parent;
+      result += `${currentVertex.value} --> `;
+    }
+
+    console.log(result);
   }
 
   /**
