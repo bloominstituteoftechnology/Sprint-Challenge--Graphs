@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = "white";
+    this.parent = null;
   }
 }
 
@@ -45,6 +47,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+    return null;
   }
 
   /**
@@ -55,6 +63,23 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    start.color = "gray";
+    queue.push(start);
+
+    while(queue.length > 0) {
+      let vertex = queue[0];
+
+        for (let edge of vertex.edges) {
+          if (edge.destination.color === "white") {
+            edge.destination.color = "gray";
+            edge.destination.parent = vertex;
+            queue.push(edge.destination);
+          }
+        }
+      vertex.color = "black";
+      queue.shift();
+    }
   }
 
   /**
@@ -66,6 +91,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let val = start;
+    let str = '';
+    while (val.parent) {
+      str+= `${val.value} --> `
+      val = val.parent;
+    }
+
+    str += val.value;
+    console.log(str);
   }
 
   /**
