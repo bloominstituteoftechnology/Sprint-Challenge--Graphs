@@ -45,7 +45,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      // console.log(vertex.value)
+      if (vertex.value === value) return vertex;
+    }
   }
 
   /**
@@ -86,7 +89,10 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    if (start.parent !== null) {
+      console.log(start.value)
+      this.outputRoute(start.parent);
+    }
   }
 
   /**
@@ -157,14 +163,14 @@ graph.vertexes.push(vertH);
 
 const hostAVert = graph.findVertex(args[0]);
 
-if (hostAVert === null) {
+if (hostAVert === null || hostAVert === undefined) {
   console.error('routing: could not find host: ' + args[0]);
   process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
-if (hostBVert === null) {
+if (hostBVert === null || hostBVert === undefined) {
   console.error('routing: could not find host: ' + args[1]);
   process.exit(2);
 }
