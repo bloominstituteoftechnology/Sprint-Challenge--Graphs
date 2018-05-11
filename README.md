@@ -1,4 +1,4 @@
-# Shortest Path across the Internet
+# Shortest Path across the Internet..
 
 For a computer network, it's useful to know how to get a packet from one
 host to another across the Internet.
@@ -40,7 +40,7 @@ BFS(graph, startVert):
         v.color = gray
         v.parent = u     // <-- Keep a parent link
         queue.enqueue(v)
-    
+
     queue.dequeue()
     u.color = black
 ```
