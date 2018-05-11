@@ -1,10 +1,11 @@
-// Search for "!!! IMPLEMENT ME" comments
+/* eslint no-restricted-syntax: off */
+/* eslint class-methods-use-this: off */
 
 /**
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +15,12 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
+    this.visited = false;
   }
 }
 
@@ -24,10 +28,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
-  /**
-   * Constructor
-   */
   constructor() {
     this.vertexes = [];
   }
@@ -43,9 +43,6 @@ class Graph {
    *
    * @return null if not found.
    */
-  findVertex(value) {
-    // !!! IMPLEMENT ME
-  }
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
@@ -53,8 +50,30 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
-    // !!! IMPLEMENT ME
+
+  findVertex(value) {
+    return this.vertexes.find(vertex => vertex.value === value);
+  }
+
+  bfs(s) {
+    const queue = [];
+    s.visited = true;
+    queue.push(s);
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+      vertex.color = 'gray';
+
+      for (const edge of vertex.edges) {
+        if (!edge.destination.visited) {
+        // if (edge.destination.color === 'white') {
+          edge.destination.visited = true;
+          edge.destination.parent = vertex;
+          queue.push(edge.destination);
+        }
+      }
+      queue.shift();
+    }
   }
 
   /**
@@ -65,7 +84,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    const path = [];
+    while (start) {
+      path.push(start.value);
+      start = start.parent;
+    }
+
+    const route = path.join(' --> ');
+    console.log(route);
   }
 
   /**
@@ -74,15 +100,15 @@ class Graph {
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
-
     // Show the route from the start
     this.outputRoute(start);
   }
+
+  /**
+   * Helper function to add bidirectional edges
+   */
 }
 
-/**
- * Helper function to add bidirectional edges
- */
 function addEdge(v0, v1) {
   v0.edges.push(new Edge(v1));
   v1.edges.push(new Edge(v0));
@@ -95,7 +121,7 @@ function addEdge(v0, v1) {
 // Test for valid command line
 const args = process.argv.slice(2);
 
-if (args.length != 2) {
+if (args.length !== 2) {
   console.error('usage: routing hostA hostB');
   process.exit(1);
 }
@@ -151,3 +177,14 @@ if (hostBVert === null) {
 // Show the route from one host to another
 
 graph.route(hostAVert, hostBVert);
+
+/* Sample Runs
+$ node routing.js HostA HostD
+HostA --> HostB --> HostD
+$ node routing.js HostA HostH
+HostA --> HostC --> HostF --> HostH
+$ node routing.js HostA HostA
+HostA
+$ node routing.js HostE HostB
+HostE --> HostF --> HostC --> HostA --> HostB
+*/
