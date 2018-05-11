@@ -17,7 +17,6 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
-    
   }
 }
 
@@ -46,6 +45,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    this.vertexes.forEach(vert => {
+      if (vert.value === value) return vert;
+      else return null;
+    })
   }
 
   /**
