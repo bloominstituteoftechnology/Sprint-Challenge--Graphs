@@ -96,7 +96,16 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let output = '';
+    let currentVertex = start;
+    while (currentVertex.parent) {
+      output += `${currentVertex.value} -->`;
+      currentVertex = currentVertex.parent;
+    }
+    output += currentVertex.value;
+    console.log(output);
   }
+
 
   /**
    * Show the route from a starting vert to an ending vert.
