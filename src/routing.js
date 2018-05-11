@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value="vertex") {
     this.value = value;
     this.edges = [];
     this.color = "white";
@@ -91,7 +91,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    
+    let val = start;
+    let string = " ";
+
+    while(val.parent) {
+    string += `${val.value} -->`
+    val += val.parent;
+    }
+    string += val.value;
+    console.log(string);
   }
 
   /**
