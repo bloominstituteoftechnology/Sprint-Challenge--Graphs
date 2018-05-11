@@ -35,7 +35,6 @@ class GraphView extends Component {
    * Draw the given verts
    */
   drawVerts(vertexes, color='blue', clear=true) {
-    console.log(this.props.graph)
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
     
@@ -51,7 +50,7 @@ class GraphView extends Component {
 
     for (let v of vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
-        const v2 = e.destination;
+        let v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
