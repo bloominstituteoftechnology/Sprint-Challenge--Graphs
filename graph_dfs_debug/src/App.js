@@ -12,7 +12,7 @@ const circleSize = 150;
 // Figure out the canvas size
 // const canvasWidth = boxSize * xCount;
 const canvasWidth = 750;
-const canvasHeight = boxSize * yCount;
+const canvasHeight = 650;
 const radius = circleSize / 8;
 
 /**
