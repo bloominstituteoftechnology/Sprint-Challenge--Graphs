@@ -59,6 +59,26 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [start];
+    const result = [];
+
+    while (queue.length) {
+      if (queue[0].edges.length === 0) {
+        result.push(queue[0]);
+      }
+
+      for (let i = 0; i < queue[0].edges.length; i++) {
+        if (queue.edges[i].destination.parent === undefined) {
+          queue.edges[i].destination.parent = queue[0];
+          queue.push(queue.edges[i].destination);
+          result.push(queue.edges[i].destination);
+        }
+      }
+
+      queue.shift();
+    }
+
+    // return result;
   }
 
   /**
