@@ -61,17 +61,17 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    start.color = "gray";
+    //start.color = "gray";
     const connectedQueue = [start];
     const connectedVerts = [];
 
     while (connectedQueue.length > 0) {
-      const currentVert = connectedQueue.shift();
-      currentVert.color = 'black';
+      const currentVert = connectedQueue[0];
+      //currentVert.color = 'black';
       if (currentVert.found) continue;
       else {
         currentVert.found = true;
-        currentVert.color = 'gray';
+       // currentVert.color = 'gray';
         connectedVerts.push(currentVert);
         currentVert.edges.forEach(edge => {
           edge.destination.parent = currentVert; //keeping parent link
@@ -79,6 +79,8 @@ class Graph {
             connectedQueue.push(edge.destination);
           }
         })
+        console.log(connectedQueue);
+        connectedQueue.shift();
       }
     }
     return connectedVerts;
@@ -93,11 +95,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    console.log(" This is the result object: ",start.value);
-     start.forEach(vert => {
-      console.log(i.parent.value);
-      console.log(" --> ")
-    }); 
+    //console.log(" This is the result object: ",start.value);
+    let val = start;
+    let cancat = "";
+    while(val.parent) {
+      cancat += `${val.value} --> `;
+      val = val.parent;
+    }
+     cancat += val.value;
+     console.log(cancat);
   }
 
   /**
@@ -107,7 +113,7 @@ class Graph {
     // Do BFS and build parent pointer tree
     const groups  = [];
     this.vertexes.forEach(vert => {
-      vert.color = "white";
+      // vert.color = "white";
       vert.parent = null;
       let vertex = this.findVertex(vert.value);
       if(end.value === vertex.value) {
