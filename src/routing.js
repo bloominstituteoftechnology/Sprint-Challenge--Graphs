@@ -61,6 +61,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        const edgeDest = edge.destination;
+
+        if(!edgeDest.visited) {
+          edgeDest.visited = true;
+          edgeDest.parent = vertex;
+          queue.push(edgeDest);
+        }
+      }
+    }
+    queue.shift();
+
   }
 
   /**
