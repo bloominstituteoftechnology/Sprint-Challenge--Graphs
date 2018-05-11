@@ -43,7 +43,13 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    const found = this.vertexes.find(val => {
+      return val.value === value;
+    });
+    if (!found) {
+      found = null;
+    }
+    return found;
   }
 
   /**
