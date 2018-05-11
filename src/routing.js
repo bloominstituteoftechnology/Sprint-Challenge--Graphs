@@ -17,6 +17,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.visited = false;
   }
 }
 
@@ -59,6 +60,24 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    queue.push(start);
+    start.visited = true;
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+    }
+
+    for (let edge of vertex.edges) {
+      if (!edge.destination.visited) {
+        edge.destination.parent = vertex;
+        queue.push(edge.destination);
+        edge.destination.visited = true;
+      }
+    }
+
+    queue.shift();
   }
 
   /**
