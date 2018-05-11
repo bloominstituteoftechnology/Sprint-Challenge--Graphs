@@ -111,7 +111,6 @@ class GraphView extends Component {
 
     for (let component of connectedComponents) {
       // Color just like in CSS
-      console.log('component is', component);
       const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
 
       this.drawVerts(component, curColor, clear);
