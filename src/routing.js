@@ -1,5 +1,5 @@
 // Search for "!!! IMPLEMENT ME" comments
-import {Graph} from './graph';
+import {Graph} from '../graph_dfs_debug/src/graph';
 
 
 /**
@@ -19,6 +19,9 @@ class Vertex {
     constructor(value = 'vertex') {
         this.value = value;
         this.edges = [];
+        this.visited = false;
+        this.queue = [];
+        this.parent = null;
     }
 }
 
