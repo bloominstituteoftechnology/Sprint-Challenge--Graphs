@@ -59,6 +59,29 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let v of graph.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let head = queue[ 0 ];
+
+      for (let v of head.edges) {
+        if (v.destination.color === 'white') {
+          v.destination.color = 'gray';
+          v.destination.parent = head;
+          queue.push(v.destination);
+        }
+      }
+      queue.shift();
+      head.color = 'black';
+    }
   }
 
   /**
@@ -70,6 +93,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let current = start;
+    let route = '';
+    while (current.parent !== null) {
+      route += `${current.value} --> `;
+      current = current.parent;
+    }
+    route += current.value;
+    console.log(route);
   }
 
   /**
