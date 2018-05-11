@@ -44,7 +44,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    
+    for(let v of this.vertexes) {
+      if (v.value == value) return v;
+      return null;
+    }
   }
 
   /**
