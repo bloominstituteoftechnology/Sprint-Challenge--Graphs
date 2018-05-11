@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
   }
 }
 
@@ -44,7 +46,8 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    // return the vertex or null if not found
+    return this.vertexes.find(vertex => vertex.value === value) || null;
   }
 
   /**
@@ -53,8 +56,27 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
-    // !!! IMPLEMENT ME
+  bfs(end) {
+    // traverse from the end vertex; change it's color to gray, then queue it
+    end.color = 'gray';
+    const queue = [end];
+
+    // repeat while there are vertexes in the queue
+    while (queue.length > 0) {
+      const vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        // if the edge destination is white it hasn't been visited yet, so visit it
+        if (edge.destination.color === 'white') {
+          edge.destination.color = 'gray';
+          edge.destination.parent = vertex;
+          queue.push(edge.destination);
+        }
+      }
+      // finish visit by setting it to black and removing it from queue
+      vertex.color = 'black';
+      queue.shift();
+    }
   }
 
   /**
@@ -65,7 +87,17 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    // traverse from the start and initialize the route with the starting vertex
+    let vertex = start;
+    let route = vertex.value;
+
+    // while the vertex has a parent, go to parent and add it to route
+    while (vertex.parent) {
+      vertex = vertex.parent;
+      route += ` --> ${vertex.value}`;
+    }
+
+    console.log(route);
   }
 
   /**
