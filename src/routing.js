@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -45,6 +44,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+    return null;
   }
 
   /**
@@ -53,8 +58,28 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
+  bfs(startingVertex) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    let found = [];
+    queue.push(startingVertex);
+    found.push(startingVertex);
+
+    while (queue.length) {
+      let current = queue.shift();
+      for (let edge of current.edges) {
+        let isNew = true;
+        for (let i = 0; i < found.length; i++) {
+          if (found[i].value === edge.destination.value) isNew = false;
+        }
+        if (isNew) {
+          edge.destination.origin = current;
+          queue.push(edge.destination);
+          found.push(edge.destination);
+        }
+      }
+      
+    }
   }
 
   /**
@@ -66,6 +91,12 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const toPrint = [];
+    while (start) {
+      toPrint.push(start.value);
+      start = start.origin;
+    }
+    console.log(toPrint.join(' --> '));
   }
 
   /**
