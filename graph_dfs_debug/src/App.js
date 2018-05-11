@@ -56,6 +56,7 @@ class GraphView extends Component {
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
         ctx.stroke();
+        ctx.closePath();
       }
     }
 
@@ -69,6 +70,7 @@ class GraphView extends Component {
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
       ctx.fill();
+      ctx.closePath();
     }
 
     // Draw the vert names
@@ -161,8 +163,9 @@ class App extends Component {
 
   render() {
     return (
+      // There was a typo in the onClick handler variable
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
