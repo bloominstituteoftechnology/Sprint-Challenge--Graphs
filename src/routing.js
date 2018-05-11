@@ -45,6 +45,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    const vertex = this.vertexes.find((elem) => {
+      return elem.value === value;
+    });
+    return vertex === undefined ? null : vertex;
   }
 
   /**
