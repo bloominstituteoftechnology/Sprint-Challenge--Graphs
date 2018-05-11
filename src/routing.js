@@ -44,7 +44,9 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    return this.vertexes.find(vertex => {
+      if (vertex.value === value) return vertex;
+    });
   }
 
   /**
@@ -54,7 +56,23 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    console.log("Going to BFS");
+    const vertexesToExplore = [];
+    vertexesToExplore.push(start);
+
+    while (vertexesToExplore.length) {
+      vertexesToExplore[0].edges.forEach(edge => {
+        if (!edge.destination.explored) {
+          edge.destination.prevVertexExplored = vertexesToExplore[0];
+          vertexesToExplore.push(edge.destination);
+        }
+        vertexesToExplore[0].explored = true;
+      });
+      vertexesToExplore.shift();
+    }
+    const res = this.vertexes.filter(vertex => vertex.explored === true);
+    this.vertexes.forEach(vertex => (vertex.explored = false));
+    return res;
   }
 
   /**
@@ -65,7 +83,21 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    if (!start.prevVertexExplored) {
+      console.log("No route found");
+      return;
+    }
+
+    const walker = (current) => {
+      if (current.prevVertexExplored) {
+        console.log(`Step from ${current.value} to ${current.prevVertexExplored.value}`);
+        walker(current.prevVertexExplored);
+      } else {
+        console.log(`You have arrived at ${current.value}`);
+      }
+    }
+    walker(start);
+
   }
 
   /**
