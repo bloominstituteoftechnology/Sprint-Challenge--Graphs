@@ -28,8 +28,10 @@ class Graph {
   /**
    * Constructor
    */
-  constructor() {
+  constructor(args) {
     this.vertexes = [];
+    this.start = args[0];
+    this.end = args[1];
   }
 
   /**
@@ -108,7 +110,7 @@ if (args.length != 2) {
 
 // Build the entire Internet
 // (it's only a model)
-const graph = new Graph();
+const graph = new Graph(args);
 const vertA = new Vertex('HostA');
 const vertB = new Vertex('HostB');
 const vertC = new Vertex('HostC');
