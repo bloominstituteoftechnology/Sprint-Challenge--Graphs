@@ -98,10 +98,12 @@ class Graph {
     start.forEach((each, i) => {
       if (i === start.length - 1) {
         path += each.value;
+      } else if (i > 0 && i < start.length - 2) {
+        path += each.value + ' || ';
       } else {
         path += each.value + '-->';
       }
-    })
+    });
     console.log(path);
   }
 
@@ -110,7 +112,7 @@ class Graph {
    */
   route(start, end) {
     // Do BFS and build parent pointer tree
-    const path = this.bfs(start, end)
+    const path = this.bfs(start, end);
     // console.log(path)
     // Show the route from the start
     this.outputRoute(path);
