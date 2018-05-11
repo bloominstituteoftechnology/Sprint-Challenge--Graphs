@@ -45,6 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+      return null;
   }
 
   /**
@@ -55,7 +61,25 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-  }
+    const queue = [];
+    
+    queue.push(start);
+    start.color = 'gray';
+    
+    while (queue.length) {
+      current = queue[0];
+
+      current.edges.forEach(edge => {
+        const { destination } = edge;
+
+      if (destination.color == 'white') {
+          destination.color = 'gray';
+          destinatino.parent = current;
+          queue.push(destination);
+      }
+      current.color = 'black';
+    })
+  };
 
   /**
    * Print out the route from the start vert back along the parent
@@ -66,6 +90,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentNode = [];
+
+    while (start !==null) {
+      currentNode.push(start.value);
+      start = start.parent;
+    }
+    const output = currentNode.join('-->');
+    console.log(output);
   }
 
   /**
