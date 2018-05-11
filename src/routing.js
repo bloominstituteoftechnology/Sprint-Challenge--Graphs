@@ -78,7 +78,6 @@ class Graph {
           found.push(edge.destination);
         }
       }
-      
     }
   }
 
