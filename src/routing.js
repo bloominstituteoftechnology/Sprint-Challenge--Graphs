@@ -43,7 +43,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    const found = this.vertexes.find(val => {
+    let found = this.vertexes.find(val => {
       return val.value === value;
     });
     if (!found) {
@@ -62,21 +62,23 @@ class Graph {
     const queue = [];
     for (let v of this.vertexes) {
       v.color = 'white';
-      v.parent = 'null';
+      v.parent = null;
     }
     start.color = 'gray';
     queue.push(start);
     while (queue.length > 0) {
       const u = queue[0];
       for (let v of u.edges) {
-        if (v.color === 'white') {
-          v.color = 'gray';
-          v.parent = u;
+        let x = v.destination
+        if (x.color === 'white') {
+          x.color = 'gray';
+          x.parent = u;
+          queue.push(x);
         }
       }
+      u.color = 'black';
+      queue.shift();
     }
-    queue.shift();
-    vertexes.color = 'black';
   }
 
   /**
@@ -92,7 +94,7 @@ class Graph {
       route = [...route].concat(start.value);
       start = start.parent;
     }
-    const final = route.join(' -> ');
+    const final = route.join(' --> ');
     console.log(final);
   }
 
