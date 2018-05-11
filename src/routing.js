@@ -40,7 +40,7 @@ class Graph {
       for (let edge of currentVert.edges) { // iterates over edges of vertex
         let next = edge.destination // assigns next to be the destination of the vertex
         if (next.color === 'white') { // checks if vertex has been visited
-          next.color = 'gray'; // change to working color if so
+          next.color = 'gray'; // change to working color if not visited
           next.parent = currentVert; // assigns parent key of next as the current vertex
           queue.push(next); // pushes the next vertex to the queue
         }
@@ -53,10 +53,10 @@ class Graph {
   outputRoute(start) {
     let route = []; // initialize an array to hold the route
     while (start) { // runs while additional backwards travel path exists
-      route = [...route].concat(start.value); // assigns route to old route plus new vertex moving backwards
+      route = [...route].concat(start.value); // assigns route to old route concatenated with new vertex, moving backwards
       start = start.parent; // reassigns start, will be checked in next potential loop cycle
     }
-    const finalOutput = route.join(' --> '); // join array with arrow as specified in pseudocode
+    const finalOutput = route.join(' --> '); // join array to string with connecting arrows as specified in pseudocode
     console.log(finalOutput); // console log the output
   }
 
