@@ -45,9 +45,16 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-    if (this.vertexes.indexOf(value) === -1){
-      return null;
-    } else return this.vertexes[this.vertexes.indexOf(value)];
+    // console.log("this is in findVertex", value);
+    // if (this.vertexes.indexOf(value) === -1){
+    //   console.log(this.vertexes.indexOf("found this for node: ", value));
+    //   return null;
+    // } else return this.vertexes[this.vertexes.indexOf(value)];
+    const vert = this.vertexes.map(el => {
+      return el.value === value;
+    });
+    console.log(vert);
+    return vert === undefined? null : vert;
   }
 
   /**
@@ -57,47 +64,12 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
-
-    ///////////
-  //   bfs(start, reset=true) {
-  //   const component = [];
-  //   const queue = [];
-
-  //   if (reset) {
-  //     for (let v of this.vertexes) {
-  //       v.color = 'white';
-  //     }
-  //   }
-
-  //   start.color = 'gray';
-
-  //   queue.push(start);
-
-  //   while (queue.length > 0) {
-  //     const u = queue[0];
-
-  //     for (let e of u.edges) {
-  //       const v = e.destination;
-  //       if (v.color === 'white') {
-  //         v.color = 'gray';
-  //         queue.push(v);
-  //       }
-  //     }
-
-  //     queue.shift(); // de-queue
-  //     u.color = 'black';
-
-  //     component.push(u);
-  //   }
-
-  //   return component;
-  // }
-  ///////////////////
+    
       const queue = [start];
       const result = [];
   
       while (queue.length > 0) {
+        // console.log("this is Q: ", queue);
         //case where the vertex is isloated
         if (queue[0].edges.length === 0){
           result.push(queue[0]);
@@ -113,6 +85,7 @@ class Graph {
         })
         queue.shift();
     }
+  }
   
   
 
@@ -125,6 +98,18 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let current = start;
+    let valueStr = '';
+
+    while (current.parent) {
+      if (valueStr.length === 0){
+        valueStr += `${current.value}`;
+      } else {
+        valueStr += `---> ${current.value}`;
+      }
+      current = current.parent;
+    }
+    // console.log(valueStr);
   }
 
   /**
