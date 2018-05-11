@@ -4,7 +4,7 @@ import './App.css';
 
 // Define the size of the random graph
 const xCount = 4;
-const yCount = 3;
+const yCount = xCount;
 const boxSize = 150;
 const probability = 0.6;
 
@@ -59,7 +59,8 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    // ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color;
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -155,7 +156,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        {/* <button onClick={this.Button}>Random</button> */}
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
