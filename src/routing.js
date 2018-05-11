@@ -45,6 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+    return null;
   }
 
   /**
@@ -55,6 +61,30 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        const edgeDestination = edge.destination;
+        if (edgeDestination.color === 'white') {
+          edgeDestination.color = 'gray';
+          edgeDestination.parent = vertex;
+          queue.push(edgeDestination);
+        }
+      }
+      queue.shift();
+      vertex.color = 'black';
+    }
   }
 
   /**
@@ -66,7 +96,16 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let output = '';
+    let currentVertex = start;
+    while (currentVertex.parent) {
+      output += `${currentVertex.value} -->`;
+      currentVertex = currentVertex.parent;
+    }
+    output += currentVertex.value;
+    console.log(output);
   }
+
 
   /**
    * Show the route from a starting vert to an ending vert.
