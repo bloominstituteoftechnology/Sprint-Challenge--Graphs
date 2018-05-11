@@ -50,22 +50,26 @@ class GraphView extends Component {
 
     for (let v of vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
-        const v2 = e.destination;
+        let v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
         ctx.stroke();
+        ctx.closePath();
       }
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    // You had the blue color value hardcoded here
+    // Replacing with the color variable fixes all component being colored blue
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
       ctx.fill();
+      ctx.closePath();
     }
 
     // Draw the vert names
@@ -83,8 +87,9 @@ class GraphView extends Component {
    */
   updateCanvasEntireGraph() {
     const g = this.props.graph;
+    console.log(this.props.graph);
     this.drawVerts(g.vertexes);
-    //g.dump();
+    // g.dump();
   }
 
   /**
@@ -103,6 +108,7 @@ class GraphView extends Component {
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
+    console.log('CONNECTED: ', connectedComponents);
 
     let clear = true;
 
@@ -119,7 +125,9 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    // You were incorrectly passing the canvasHeight into the width property 
+    // Changed to canvasWidth fixes the graph getting cut off
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
@@ -154,8 +162,9 @@ class App extends Component {
 
   render() {
     return (
+      // There was a typo in the onClick handler variable
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );

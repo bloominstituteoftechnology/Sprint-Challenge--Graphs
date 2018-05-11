@@ -136,7 +136,12 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      /* 
+       * This line was not necessary because
+       * the vert is already being popped on line 131
+      */
+      // stack.shift(); // de-stack
+
       u.color = 'black';
 
       component.push(u);
