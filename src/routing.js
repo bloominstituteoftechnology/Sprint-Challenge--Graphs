@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,10 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.parent = null;
   }
 }
 
@@ -30,6 +31,7 @@ class Graph {
    */
   constructor() {
     this.vertexes = [];
+    this.parent = [];
   }
 
   /**
@@ -45,6 +47,14 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i++) {
+
+      if (this.vertexes[i].value === value) {
+
+        return this.vertexes[i];
+      }
+    }
+
   }
 
   /**
@@ -55,6 +65,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let q = []; // push,shift-pop
+    let visited = new Set();
+    q.push(start);
+    visited.add(start);
+
+    while (q) {
+
+      let popped = q.shift();
+      if (popped === undefined)
+        break;
+
+      for (let i = 0; popped.edges != null && i < popped.edges.length; i++) {
+        let target = popped.edges[i].destination;
+
+        if (!(visited.has(target))) {
+          target.parent = popped;
+          q.push(target);
+          visited.add(target)
+        }
+
+
+      }
+
+    }
+
   }
 
   /**
@@ -66,6 +101,11 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    while (start != null) {
+      console.log(start.value + "->");
+      start = start.parent;
+    }
+
   }
 
   /**
@@ -121,7 +161,7 @@ addEdge(vertG, vertF);
 addEdge(vertE, vertF);
 addEdge(vertH, vertF);
 addEdge(vertH, vertE);
-
+// 
 graph.vertexes.push(vertA);
 graph.vertexes.push(vertB);
 graph.vertexes.push(vertC);
