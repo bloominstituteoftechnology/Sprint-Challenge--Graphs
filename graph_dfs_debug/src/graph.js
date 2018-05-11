@@ -161,7 +161,8 @@ export class Graph {
         componentsList.push(component);
       }
     }
-
+    console.log(componentsList);
     return componentsList;
+
   }
 }
