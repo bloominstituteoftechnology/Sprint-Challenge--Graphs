@@ -1,13 +1,13 @@
 Hello Pal,
 
-You suck for the following reasons:
+You erred in the following ways:
 
-You didn't use a .gitignore for some damn reason.
+1. You didn't include a .gitignore for some reason.
 
-You use the word `vertexes` instead of `vertices`
+2. You use the word `vertexes` instead of `vertices`
 
-For some fucking reason, you used `ctx.fillStyle = '#77f';` instead of `ctx.fillStyle = color;` before drawing your vertices.
+3. You used `ctx.fillStyle = '#77f';` instead of `ctx.fillStyle = color;` before drawing your vertices.
 
-Your current setup is designed for squares, so xCount and yCount need to be the same for the graph to draw correctly.
+4. You called for `this.Button` instead of `this.onButton` for the Random button's onClick.
 
-You called for `this.Button` instead of `this.onButton` for the Random button's onClick.
+5. Your current setup is designed for square grids, so xCount and yCount need to be the same for the graph to draw correctly.
