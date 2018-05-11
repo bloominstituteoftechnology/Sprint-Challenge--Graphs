@@ -16,6 +16,7 @@ class Edge {
 class Vertex {
   constructor(value = 'vertex') {
     this.value = value;
+    this.origin = null;
     this.edges = [];
   }
 }
