@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -45,6 +44,11 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    let vertex = null;
+    graph.vertexes.forEach(v => {
+      if (v.value === value) vertex = v;
+    });
+    return vertex;
   }
 
   /**
@@ -134,17 +138,17 @@ graph.vertexes.push(vertH);
 // Look up the hosts passed on the command line by name to see if we can
 // find them.
 
-const hostAVert = graph.findVertex(args[0]);
+const hostAVert = graph.findVertex(args[ 0 ]);
 
 if (hostAVert === null) {
-  console.error('routing: could not find host: ' + args[0]);
+  console.error('routing: could not find host: ' + args[ 0 ]);
   process.exit(2);
 }
 
-const hostBVert = graph.findVertex(args[1]);
+const hostBVert = graph.findVertex(args[ 1 ]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
+  console.error('routing: could not find host: ' + args[ 1 ]);
   process.exit(2);
 }
 
