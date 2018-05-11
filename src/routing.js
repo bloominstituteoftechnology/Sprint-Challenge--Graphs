@@ -45,6 +45,9 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    if (this.vertexes.indexOf(value) === -1){
+      return null;
+    } else return this.vertexes[this.vertexes.indexOf(value)];
   }
 
   /**
@@ -55,7 +58,63 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-  }
+
+    ///////////
+  //   bfs(start, reset=true) {
+  //   const component = [];
+  //   const queue = [];
+
+  //   if (reset) {
+  //     for (let v of this.vertexes) {
+  //       v.color = 'white';
+  //     }
+  //   }
+
+  //   start.color = 'gray';
+
+  //   queue.push(start);
+
+  //   while (queue.length > 0) {
+  //     const u = queue[0];
+
+  //     for (let e of u.edges) {
+  //       const v = e.destination;
+  //       if (v.color === 'white') {
+  //         v.color = 'gray';
+  //         queue.push(v);
+  //       }
+  //     }
+
+  //     queue.shift(); // de-queue
+  //     u.color = 'black';
+
+  //     component.push(u);
+  //   }
+
+  //   return component;
+  // }
+  ///////////////////
+      const queue = [start];
+      const result = [];
+  
+      while (queue.length > 0) {
+        //case where the vertex is isloated
+        if (queue[0].edges.length === 0){
+          result.push(queue[0]);
+        }
+        
+        //case where vertex is connected
+        queue[0].edges.map(edge => {
+          if (edge.destination.parent === null){
+            edge.destination.parent = queue[0];
+            queue.push(edge.destination);
+            result.push(edge.destination);
+          }
+        })
+        queue.shift();
+    }
+  
+  
 
   /**
    * Print out the route from the start vert back along the parent
