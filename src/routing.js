@@ -59,7 +59,7 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    
   }
 
   /**
@@ -70,7 +70,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let route = [];
+    while (start) {
+      route = [...route].concat(start.value);
+      start = start.parent;
+    }
+    const final = route.join(' -> ');
+    console.log(final);
   }
 
   /**
