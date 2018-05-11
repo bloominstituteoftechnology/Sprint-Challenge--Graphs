@@ -44,17 +44,11 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
-    // console.log("this is in findVertex", value);
-    // if (this.vertexes.indexOf(value) === -1){
-    //   console.log(this.vertexes.indexOf("found this for node: ", value));
-    //   return null;
-    // } else return this.vertexes[this.vertexes.indexOf(value)];
-    const vert = this.vertexes.map(el => {
-      return el.value === value;
-    });
-    console.log(vert);
-    return vert === undefined? null : vert;
+    console.log("we are looking for: ", value);
+    for (let vert of this.vertexes){
+      if (vert.value === value) return vert;
+    }
+    return null;
   }
 
   /**
@@ -64,26 +58,26 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    
-      const queue = [start];
-      const result = [];
-  
-      while (queue.length > 0) {
-        // console.log("this is Q: ", queue);
-        //case where the vertex is isloated
-        if (queue[0].edges.length === 0){
-          result.push(queue[0]);
+    let queue = [];
+    start.flag = true;
+    queue.push(start);
+
+    //while stuff is in the queue
+    while (queue.length > 0) {
+      const currentVert = queue[0];
+      //for edges in current vertex
+      for (let edge of currentVert.edges) {
+        //if connected vertex not visited yet
+        if (edge.destination.flag === false) {
+          //push neighbors into queue
+          queue.push(edge.destination);
+          //trigger flags
+          edge.destination.flag = true;
+          //set current vertex as parent
+          edge.destination.parent = currentVert;
         }
-        
-        //case where vertex is connected
-        queue[0].edges.map(edge => {
-          if (edge.destination.parent === null){
-            edge.destination.parent = queue[0];
-            queue.push(edge.destination);
-            result.push(edge.destination);
-          }
-        })
-        queue.shift();
+      }
+      queue.shift();
     }
   }
   
@@ -97,19 +91,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
-    let current = start;
-    let valueStr = '';
-
-    while (current.parent) {
-      if (valueStr.length === 0){
-        valueStr += `${current.value}`;
-      } else {
-        valueStr += `---> ${current.value}`;
-      }
-      current = current.parent;
+    let currentVert = start;
+    let route = "";
+    while(currentVert != null) {
+      route += currentVert.value;
+      if(currentVert.parent) route += " --> ";
+      currentVert = currentVert.parent;
     }
-    // console.log(valueStr);
+    console.log(route);
   }
 
   /**
@@ -118,7 +107,7 @@ class Graph {
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
-
+    // console.log("this is after BFS");
     // Show the route from the start
     this.outputRoute(start);
   }
@@ -138,6 +127,7 @@ function addEdge(v0, v1) {
 
 // Test for valid command line
 const args = process.argv.slice(2);
+// console.log(args);
 
 if (args.length != 2) {
   console.error('usage: routing hostA hostB');
