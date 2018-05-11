@@ -1,6 +1,4 @@
 // Search for "!!! IMPLEMENT ME" comments
-import {Graph} from '../graph_dfs_debug/src/graph';
-
 
 /**
  * Edge class
@@ -50,6 +48,14 @@ class Graph {
      */
     findVertex(value) {
         // !!! IMPLEMENT ME
+        for(let i = 0; i < this.vertexes.length; i++) {
+
+            if(this.vertexes[i].value === value){
+                console.log('found:::', value);
+                return value;
+            }
+        }
+        return false;
     }
 
     /**
