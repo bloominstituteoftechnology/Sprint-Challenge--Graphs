@@ -63,17 +63,6 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-  }
-
-  /**
-   * Print out the route from the start vert back along the parent
-   * pointers (set in the previous BFS)
-   *
-   * @param {Vertex} start The starting vertex to follow parent
-   *                       pointers from
-   */
-  outputRoute(start) {
-    // !!! IMPLEMENT ME
     let queue = [];
     start.color = "gray";
     queue.push = start;
@@ -91,6 +80,18 @@ class Graph {
       vertex.color = "black";
       queue.shift();
     }
+  }
+
+  /**
+   * Print out the route from the start vert back along the parent
+   * pointers (set in the previous BFS)
+   *
+   * @param {Vertex} start The starting vertex to follow parent
+   *                       pointers from
+   */
+  outputRoute(start) {
+    // !!! IMPLEMENT ME
+    
   }
 
   /**
