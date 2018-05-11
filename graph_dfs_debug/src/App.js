@@ -3,8 +3,8 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 5;
-const yCount = 5;
+const xCount = 4;
+const yCount = 3;
 const boxSize = 150;
 const probability = 0.6;
 
@@ -122,7 +122,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />;
   }
 }
 

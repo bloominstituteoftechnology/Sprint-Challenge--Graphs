@@ -21,4 +21,4 @@ Thanks!
 
     - Problem 2 - line 64  fix : ctx.fillstyle = color,  was: ctx.fillstyle = '#77f'; so that the color can be defined in the updateCanvasConnectedComponents() function
     - Problem 3 - line 164 this.button -> this.onButton as it is a previously named function
-    - Promblem 4 -  Line 7 yCount should be 5 to make room for all vertexes
+    - Promblem 4 -  Line 125 width on canvas was set as cavasHeight not canvasWidth
