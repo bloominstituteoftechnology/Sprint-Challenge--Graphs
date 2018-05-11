@@ -54,7 +54,6 @@ class Graph {
                 return this.vertexes[i];
             }
         }
-        return false;
     }
 
     /**
@@ -100,11 +99,14 @@ class Graph {
     outputRoute(start) {
         // !!! IMPLEMENT ME
         let printOut = '';
-        let parent = '';
 
-        console.log('start:',  start);
-        console.log('start parent', start.parent);
+        while(start.parent !== null){
+            printOut += `${start.value} --> `;
+            start = start.parent; // re-assign to start till parent is null that mean is the first one
+        }
 
+        console.log(`${printOut}${start.value}`);
+        return true;
     }
 
     /**
