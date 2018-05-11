@@ -18,6 +18,7 @@ class Vertex {
     this.value = value;
     this.edges = [];
     this.visited = false;
+    this.parent = null;
   }
 }
 
@@ -67,17 +68,17 @@ class Graph {
 
     while (queue.length > 0) {
       const vertex = queue[0];
-    }
 
-    for (let edge of vertex.edges) {
-      if (!edge.destination.visited) {
-        edge.destination.parent = vertex;
-        queue.push(edge.destination);
-        edge.destination.visited = true;
+      for (let edge of vertex.edges) {
+        if (!edge.destination.visited) {
+          edge.destination.parent = vertex;
+          queue.push(edge.destination);
+          edge.destination.visited = true;
+        }
       }
-    }
 
-    queue.shift();
+      queue.shift();
+    }
   }
 
   /**
@@ -89,6 +90,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let v = start;
+    let output = '';
+
+    while (v.parent) {
+      v = v.parent;
+      output += `${v.value} --> `
+    }
+
+    console.log(`${output}${v.value}`);
   }
 
   /**
