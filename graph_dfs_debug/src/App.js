@@ -35,6 +35,7 @@ class GraphView extends Component {
    * Draw the given verts
    */
   drawVerts(vertexes, color='blue', clear=true) {
+    console.log(this.props.graph)
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
     
@@ -59,7 +60,9 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    // You had the blue color value hardcoded here
+    // Replacing with the color variable fixes all component being colored blue
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -83,8 +86,9 @@ class GraphView extends Component {
    */
   updateCanvasEntireGraph() {
     const g = this.props.graph;
+    console.log(this.props.graph);
     this.drawVerts(g.vertexes);
-    //g.dump();
+    // g.dump();
   }
 
   /**
@@ -103,6 +107,7 @@ class GraphView extends Component {
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
+    console.log('CONNECTED: ', connectedComponents);
 
     let clear = true;
 
