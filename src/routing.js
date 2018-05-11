@@ -61,6 +61,27 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    start.color = "gray";
+    const connectedQueue = [start];
+    const connectedVerts = [];
+
+    while (connectedQueue.length > 0) {
+      const currentVert = connectedQueue.shift();
+      currentVert.color = 'black';
+      if (currentVert.found) continue;
+      else {
+        currentVert.found = true;
+        currentVert.color = 'gray';
+        connectedVerts.push(currentVert);
+        currentVert.edges.forEach(edge => {
+          edge.destination.parent = currentVert; //keeping parent link
+          if (!edge.destination.found) {
+            connectedQueue.push(edge.destination);
+          }
+        })
+      }
+    }
+    return connectedVerts;
   }
 
   /**
@@ -72,7 +93,11 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-
+    console.log(" This is the result object: ",start.value);
+     start.forEach(vert => {
+      console.log(i.parent.value);
+      console.log(" --> ")
+    }); 
   }
 
   /**
@@ -80,10 +105,33 @@ class Graph {
    */
   route(start, end) {
     // Do BFS and build parent pointer tree
-    this.bfs(end);
-
+    const groups  = [];
+    this.vertexes.forEach(vert => {
+      vert.color = "white";
+      vert.parent = null;
+      let vertex = this.findVertex(vert.value);
+      if(end.value === vertex.value) {
+        if(!vert.found) {
+          groups.push(this.bfs(vert));
+        }
+      }
+    })
+    this.vertexes.forEach(vert => {
+      vert.found = false;
+    })
     // Show the route from the start
-    this.outputRoute(start);
+
+    for(let i of groups) {
+      //console.log("connected groups ", i.value);
+        for(let j in i) {
+          //console.log("any connected groups ", i[j]);
+          //console.log(i[j].value);
+          if(i[j].value === start.value) {
+            //console.log(i[j]);
+            this.outputRoute(i[j]);
+        }   
+      }
+    }
   }
 }
 
