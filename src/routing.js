@@ -87,9 +87,24 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex to follow parent
    *                       pointers from
+   * $ node routing.js HostE HostB
+   * HostE --> HostF --> HostC --> HostA --> HostB
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentVertex = start;
+    let returnString = '';
+
+    while (currentVertex.parent) {
+      if (returnString.length === 0) {
+        returnString += `${currentVertex.value}`;
+      } else {
+        returnString += ` --> ${currentVertex.value}`;
+      }
+      currentVertex = currentVertex.parent;
+    }
+
+    console.log(returnString);
   }
 
   /**
