@@ -47,10 +47,10 @@ BFS(graph, startVert):
 
 ## Procedure
 
-1. Perform a BFS from the _ending vert_ (host). This will set up all the
+* [x] 1. Perform a BFS from the _ending vert_ (host). This will set up all the
    `parent` pointers across the graph.
 
-2. Output the route by following the parent pointers from the _starting_ vert
+* [x] 2. Output the route by following the parent pointers from the _starting_ vert
    printing the values as you go.
 
 
