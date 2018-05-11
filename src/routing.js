@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -45,6 +45,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    let found = this.vertexes.find(element => element.value === value);
+    if (!found) found = null;
+    return found;
+
   }
 
   /**
@@ -52,9 +56,56 @@ class Graph {
    * pointers back from neighbors to their parent.
    *
    * @param {Vertex} start The starting vertex for the BFS
+   * bfs from END not start
+   */
+
+  /**
+   * for v of graph.vertexes:
+   v.color = white
+   v.parent = null   // <-- Add parent initialization
+
+   startVert.color = gray
+   queue.enqueue(startVert)
+
+   while !queue.isEmpty():
+   u = queue[0]
+
+   for v of u.neighbors:
+   if v.color == white:
+   v.color = gray
+   v.parent = u     // <-- Keep a parent link
+   queue.enqueue(v)
+
+   queue.dequeue()
+   u.color = black
+   * @param start
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'grey';
+    queue.push(start);
+
+    while (queue.length) {
+      const vertexes = queue[0];
+
+      for (let e of vertexes.edges) {
+        let u = e.destination;
+        if (u.color === 'white') {
+          u.color = 'grey';
+          u.parent = vertexes;
+          queue.push(u);
+        }
+      }
+      queue.shift();
+      vertexes.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +117,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const route = [];
+    while (start) {
+      route.push(start.value);
+      start = start.parent;
+      }
+    const output = route.join(' --> ');
+    console.log(output);
+
   }
 
   /**
