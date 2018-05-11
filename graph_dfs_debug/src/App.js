@@ -34,10 +34,10 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
+  drawVerts(vertexes, color = 'blue', clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
-    
+
     // Clear it
     if (clear) {
       ctx.fillStyle = 'white';
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = '#77f';
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -77,7 +77,7 @@ class GraphView extends Component {
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
     }
   }
-  
+
   /**
    * Draw the entire graph
    */
@@ -92,7 +92,7 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
         color = '0' + color; // leading zero for values less than 0x10
@@ -130,12 +130,13 @@ class GraphView extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.onButton = this.onButton.bind(this);
+
 
     this.state = {
       graph: new Graph()
     };
 
+    this.onButton = this.onButton.bind(this);
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
   }
 
