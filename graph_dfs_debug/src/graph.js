@@ -135,8 +135,8 @@ export class Graph {
           stack.push(e.destination);
         }
       }
-
-      stack.shift(); // de-stack
+      // Line 131 takes care of de-stacking
+      // stack.shift(); // de-stack
       u.color = 'black';
 
       component.push(u);

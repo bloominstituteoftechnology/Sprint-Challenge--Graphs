@@ -59,7 +59,10 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+
+    // color was hardcoded, replaced with the color variable
+    // ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color;
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -119,7 +122,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>; // typo width prop was passed in the wrong prop
   }
 }
 
@@ -143,7 +146,7 @@ class App extends Component {
    * Handle the button press
    */
   onButton() {
-    // console.log('hitting onButton');
+    console.log('hitting onButton');
     const state = {
       graph: new Graph()
     };
@@ -157,7 +160,7 @@ class App extends Component {
     return (
       <div className="App">
         <GraphView graph={this.state.graph}></GraphView>
-        {/* this.Button */}
+        {/* Fixed this typo -> this.Button */}
         <button onClick={this.onButton}>Random</button>
       </div>
     );
