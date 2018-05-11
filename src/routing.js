@@ -45,6 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    const foundVertex = this.vertexes.find(function(vertex) {
+      return vertex.value === value;
+    });
+
+    if(foundVertex) return foundVertex;
+    return null;
   }
 
   /**
@@ -149,5 +155,4 @@ if (hostBVert === null) {
 }
 
 // Show the route from one host to another
-
 graph.route(hostAVert, hostBVert);
