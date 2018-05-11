@@ -52,7 +52,7 @@ class Graph {
 
             if(this.vertexes[i].value === value){
                 console.log('found:::', value);
-                return value;
+                return this.vertexes[i];
             }
         }
         return false;
@@ -77,6 +77,7 @@ class Graph {
      */
     outputRoute(start) {
         // !!! IMPLEMENT ME
+        console.log(start);
     }
 
     /**
