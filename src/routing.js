@@ -60,8 +60,8 @@ class Graph {
   bfs(start) {
     const queue = [start];
     for (let vert of this.vertexes) {
-      v.color = 'teal';
-      v.parent = null;  // <-- Add parent initialization
+      vert.color = 'teal';
+      vert.parent = null;  // <-- Add parent initialization
 
     }
     start.color = 'pink';
@@ -70,12 +70,12 @@ class Graph {
       for (let vert of begin.edges) {
         if (vert.destination.color === 'pink') {
           vert.destination.color = 'teal';
-          v.destination.parent = begin; // Keep a parent link
+          vert.destination.parent = begin; // Keep a parent link
           queue.push(vert.destination);
         }
       }
       queue.shift(); // dequeue
-      vertexes.color = 'black';
+      begin.color = 'black';
     }
   }
 
