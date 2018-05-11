@@ -1,5 +1,3 @@
-// Search for "!!! IMPLEMENT ME" comments
-
 /**
  * Edge class
  */
@@ -32,17 +30,6 @@ class Graph {
     this.vertexes = [];
   }
 
-  /**
-   * This function looks through all the vertexes in the graph and returns the
-   * first one it finds that matches the value parameter.
-   *
-   * Used from the main code to look up the verts passed in on the command
-   * line.
-   *
-   * @param {*} value The value of the Vertex to find
-   *
-   * @return null if not found.
-   */
   findVertex(value) {
     for (let v of this.vertexes) {
       if (v.value == value) return v;
@@ -50,29 +37,23 @@ class Graph {
     return null;
   }
 
-  /**
-   * Breadth-First search from a starting vertex. This should keep parent
-   * pointers back from neighbors to their parent.
-   *
-   * @param {Vertex} start The starting vertex for the BFS
-   */
   bfs(start) {
     let queue = [];
     start.flag = true;
     queue.push(start);
 
-    //while stuff is in the queue
+    
     while (queue.length > 0) {
       const currentVert = queue[0];
-      //for edges in current vertex
+      
       for (let edge of currentVert.edges) {
-        //if connected vertex not visited yet
+        
         if (edge.destination.flag === false) {
-          //push neighbors into queue
+          
           queue.push(edge.destination);
-          //trigger flags
+          
           edge.destination.flag = true;
-          //set current vertex as parent
+          
           edge.destination.parent = currentVert;
         }
       }
@@ -80,16 +61,17 @@ class Graph {
     }
   }
 
-  /**
-   * Print out the route from the start vert back along the parent
-   * pointers (set in the previous BFS)
-   *
-   * @param {Vertex} start The starting vertex to follow parent
-   *                       pointers from
-   */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let currentVert = start;
+    let route = "";
+    while(currentVert != null) {
+      route += currentVert.value;
+      if(currentVert.parent != null) route += " --> ";
+      currentVert = currentVert.parent;
+    }
+    console.log(route);
   }
+
 
   /**
    * Show the route from a starting vert to an ending vert.
