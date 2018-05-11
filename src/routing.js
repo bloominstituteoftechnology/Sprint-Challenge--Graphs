@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
   }
 }
 
@@ -30,6 +32,8 @@ class Graph {
    */
   constructor() {
     this.vertexes = [];
+    this.queue = [];
+    // this.found = [];
   }
 
   /**
@@ -45,6 +49,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    return this.vertexes.find(element => {
+      if (element.value === value) {
+        return element;
+      } else {
+        return null;
+      }
+    });
   }
 
   /**
@@ -55,6 +66,49 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+
+    const parentTree = [];
+
+    let { queue } = this;
+    start.color = 'gray';
+    queue.push(start)
+    while (queue.length > 0) {
+
+      let u = queue[0];
+
+      for (let v of u.edges) {
+        let { destination: vert } = v;
+        if (vert.color === 'white') {
+          
+          vert.color = 'gray';
+          vert.parent = u;     // <-- Keep a parent link
+          queue.push(vert);
+          if (u.color === 'gray') parentTree.push(u.value); 
+        }
+    
+      }
+      queue.shift();
+      u.color = 'black';
+    }
+    console.log({parentTree});
+    return parentTree;
+    // console.log({start});
+    // let { found, queue } = this;
+    // queue.push(start);
+    // found.push(start);
+    // while (queue.length > 0) {
+    //   console.log('queue', queue);
+    //   queue[0].edges.forEach((edge) => {
+    //     if (!found.includes(edge.destination)) {
+    //       found.push(edge.destination);
+    //       queue.push(edge.destination);
+    //       edge.destination.parent = queue[0];
+    //     }
+    //   });
+    //   queue.shift();
+    // }
+    // // console.log('found', found);
+    // return found;
   }
 
   /**
@@ -64,8 +118,16 @@ class Graph {
    * @param {Vertex} start The starting vertex to follow parent
    *                       pointers from
    */
-  outputRoute(start) {
+  outputRoute(start, routeArray) {
     // !!! IMPLEMENT ME
+    let returnString = start.value;
+    console.log(this.hostBvert.value);
+    routeArray.forEach((value) => {
+      if (value !== start.value) {
+        returnString += ' --> ' + value;
+      }
+    });
+    console.log(returnString);
   }
 
   /**
@@ -73,10 +135,10 @@ class Graph {
    */
   route(start, end) {
     // Do BFS and build parent pointer tree
-    this.bfs(end);
+    // this.bfs(end);
 
     // Show the route from the start
-    this.outputRoute(start);
+    this.outputRoute(start, this.bfs(end));
   }
 }
 
@@ -96,7 +158,6 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error('usage: routing hostA hostB');
   process.exit(1);
 }
 
@@ -149,5 +210,4 @@ if (hostBVert === null) {
 }
 
 // Show the route from one host to another
-
 graph.route(hostAVert, hostBVert);
