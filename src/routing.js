@@ -1,62 +1,121 @@
+// Search for "!!! IMPLEMENT ME" comments
+
 /**
  * Edge class
  */
 class Edge {
-	constructor(destination, weight=1) {
-		this.destination = destination;
-		this.weight = weight;
-	}
+  constructor(destination, weight=1) {
+    this.destination = destination;
+    this.weight = weight;
+  }
 }
 
 /**
  * Vertex class
  */
 class Vertex {
-	constructor(value='vertex') {
-		this.value = value;
-		this.edges = [];
-	}
+  constructor(value='vertex') {
+    this.value = value;
+    this.edges = [];
+    this.parent = null;
+    this.visited = false;
+  }
 }
 
 /**
  * Graph class
  */
 class Graph {
-	constructor() {
-		this.vertexes = [];
-	}
 
-	/**
-	 * Breadth-First search from a starting vertex
-	 */
-	bfs(start) {
-		// !!! IMPLEMENT ME
-	}
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.vertexes = [];
+  }
 
-	/**
-	 * Find a vertex by its value
-	 * 
-	 * Return null if the vertex isn't found
-	 */
-	findVertex(value) {
-		// !!! IMPLEMENT ME
-	}
+  /**
+   * This function looks through all the vertexes in the graph and returns the
+   * first one it finds that matches the value parameter.
+   *
+   * Used from the main code to look up the verts passed in on the command
+   * line.
+   *
+   * @param {*} value The value of the Vertex to find
+   *
+   * @return null if not found.
+   */
+  findVertex(value) {
+    // !!! IMPLEMENT ME
+    const found = this.vertexes.filter(v => {
+      return v.value === value;
+    });
+    if(found.length > 0){
+      return found[0];
+    }
+    return null;
+  }
 
-	/**
-	 * Print out the route from the start vert back along the parent
-	 * pointers (set in the previous BFS)
-	 */
-	route(start) {
-		// !!! IMPLEMENT ME
-	}
+  /**
+   * Breadth-First search from a starting vertex. This should keep parent
+   * pointers back from neighbors to their parent.
+   *
+   * @param {Vertex} start The starting vertex for the BFS
+   */
+  bfs(start) {
+    // !!! IMPLEMENT ME
+    const queue = [];
+    queue.push(start);
+    while(queue.length > 0){
+      queue[0].edges.forEach(e =>{
+        if(!e.destination.visited){
+          queue.push(e.destination);
+          e.destination.parent = queue[0];
+        }
+      });
+      queue[0].visited = true;
+      queue.shift();
+    }
+  }
+
+  /**
+   * Print out the route from the start vert back along the parent
+   * pointers (set in the previous BFS)
+   *
+   * @param {Vertex} start The starting vertex to follow parent
+   *                       pointers from
+   */
+  outputRoute(start) {
+    // !!! IMPLEMENT ME
+    let route = '';
+    while(start != null){
+      route += start.value;
+      if(start.parent != null){
+        route += '-->';
+      }
+      start = start.parent;
+    }
+    console.log(route);
+  }
+
+  /**
+   * Show the route from a starting vert to an ending vert.
+   */
+  route(start, end) {
+    // Do BFS and build parent pointer tree
+    this.bfs(end);
+
+    // Show the route from the start
+    this.outputRoute(start);
+  }
 }
 
 /**
  * Helper function to add bidirectional edges
  */
 function addEdge(v0, v1) {
-	v0.edges.push(new Edge(v1));
-	v1.edges.push(new Edge(v0));
+  v0.edges.push(new Edge(v1));
+  v1.edges.push(new Edge(v0));
 }
 
 /**
@@ -67,8 +126,8 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-	console.error('usage: routing hostA hostB');
-	process.exit(1);
+  console.error('usage: routing hostA hostB');
+  process.exit(1);
 }
 
 // Build the entire Internet
@@ -106,20 +165,18 @@ graph.vertexes.push(vertH);
 // find them.
 
 const hostAVert = graph.findVertex(args[0]);
-
 if (hostAVert === null) {
-	console.error('routing: could not find host: ' + args[0]);
-	process.exit(2);
+  console.error('routing: could not find host: ' + args[0]);
+  process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-	console.error('routing: could not find host: ' + args[1]);
-	process.exit(2);
+  console.error('routing: could not find host: ' + args[1]);
+  process.exit(2);
 }
 
-// Route from one host to another
+// Show the route from one host to another
 
-graph.bfs(hostBVert);
-graph.route(hostAVert);
+graph.route(hostAVert, hostBVert);
