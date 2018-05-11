@@ -119,7 +119,9 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    // You were incorrectly passing the canvasHeight into the width property 
+    // Changed to canvasWidth fixes the graph getting cut off
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
