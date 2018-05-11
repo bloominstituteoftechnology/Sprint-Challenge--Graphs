@@ -85,8 +85,7 @@ class Graph {
       }
     }
     queue.shift();
-
-  }
+}
 
   /**
    * Print out the route from the start vert back along the parent
@@ -97,6 +96,20 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let current = start;
+
+    let output = '';
+
+    while (current.parent !== null) {
+      output +=`${current.value} -->`;
+
+      current = current.parent;
+    }
+    for (let v of this.vertexes) {
+      delete v.visited;
+      delete v.parent;
+    }
+    console.log(`${output}${current.value}`);
   }
 
   /**
