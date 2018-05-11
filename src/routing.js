@@ -17,6 +17,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.found = false;
   }
 }
 
@@ -54,7 +55,27 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [start];
+    const found = [];
+
+    start.found = true;
+    start.parent = null;
+
+    while (queue.length > 0) {
+      const head = queue[0];
+
+      for (let edge of head.edges) {
+        const vert = edge.destination;
+        if (vert.found === false) {
+          vert.found = true;
+          vert.parent = head;
+          queue.push(vert);
+        }
+      }
+      queue.shift();
+      found.push(head);
+    }
+    return found;
   }
 
   /**
