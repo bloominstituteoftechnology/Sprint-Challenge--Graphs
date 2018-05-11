@@ -1,8 +1,3 @@
-// Search for "!!! IMPLEMENT ME" comments
-
-/**
- * Edge class
- */
 class Edge {
   constructor(destination, weight = 1) {
     this.destination = destination;
@@ -10,9 +5,6 @@ class Edge {
   }
 }
 
-/**
- * Vertex class
- */
 class Vertex {
   constructor(value = "vertex") {
     this.value = value;
@@ -20,28 +12,11 @@ class Vertex {
   }
 }
 
-/**
- * Graph class
- */
 class Graph {
-  /**
-   * Constructor
-   */
   constructor() {
     this.vertexes = [];
   }
 
-  /**
-   * This function looks through all the vertexes in the graph and returns the
-   * first one it finds that matches the value parameter.
-   *
-   * Used from the main code to look up the verts passed in on the command
-   * line.
-   *
-   * @param {*} value The value of the Vertex to find
-   *
-   * @return null if not found.
-   */
   findVertex(value) {
     let found = this.vertexes.find(val => {
       return val.value === value;
@@ -52,12 +27,6 @@ class Graph {
     return found;
   }
 
-  /**
-   * Breadth-First search from a starting vertex. This should keep parent
-   * pointers back from neighbors to their parent.
-   *
-   * @param {Vertex} start The starting vertex for the BFS
-   */
   bfs(start) {
     const queue = [];
     for (let v of this.vertexes) {
@@ -81,13 +50,6 @@ class Graph {
     }
   }
 
-  /**
-   * Print out the route from the start vert back along the parent
-   * pointers (set in the previous BFS)
-   *
-   * @param {Vertex} start The starting vertex to follow parent
-   *                       pointers from
-   */
   outputRoute(start) {
     let route = [];
     while (start) {
