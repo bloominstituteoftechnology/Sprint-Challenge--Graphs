@@ -59,8 +59,8 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f';
-
+    ctx.fillStyle = color;
+    
     for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
