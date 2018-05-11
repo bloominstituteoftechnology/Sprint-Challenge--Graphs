@@ -74,6 +74,23 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+    start.color = "gray";
+    queue.push = start;
+
+    while (queue.length > 0) {
+      let vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        if (edge.destination.color === "white") {
+          edge.destination.color === "gray";
+          edge.destination.parent === vertex;
+          queue.push(edge.destination);
+        }
+      }
+      vertex.color = "black";
+      queue.shift();
+    }
   }
 
   /**
