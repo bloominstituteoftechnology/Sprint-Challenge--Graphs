@@ -96,7 +96,6 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    console.log(this.vertexes);
   }
 
   /**
