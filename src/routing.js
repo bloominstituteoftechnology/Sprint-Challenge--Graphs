@@ -17,6 +17,9 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.visited = false;
+    this.color = '';
+    this.parent = null;
   }
 }
 
@@ -45,6 +48,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value == value) return v;
+    }
+    return null;
   }
 
   /**
@@ -55,6 +62,25 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queue = [];
+
+    queue.push(start);
+    start.visited = true;
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        if (!edge.destination.visited) {
+          queue.push(edge.destination);
+          edge.destination.visited = true;
+          edge.destination.parent = vertex;
+        }
+      }
+
+      queue.shift();
+    }
+    // console.log("started bfs at: ", start);
   }
 
   /**
@@ -66,6 +92,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let vertex = start;
+    let route = "";
+
+    while (vertex != null) {
+      route += vertex.value;
+      if (vertex.parent !== null) route += " --> ";
+      vertex = vertex.parent;
+    }
+    console.log(route);
   }
 
   /**
@@ -74,7 +109,6 @@ class Graph {
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
-
     // Show the route from the start
     this.outputRoute(start);
   }
