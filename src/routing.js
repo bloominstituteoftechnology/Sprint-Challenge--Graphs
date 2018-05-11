@@ -1,37 +1,30 @@
-// Search for "!!! IMPLEMENT ME" comments
-
 /**
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
 }
-
 /**
- * Vertex class
- */
+ * Vertex class*/
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
 }
-
 /**
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
   constructor() {
     this.vertexes = [];
   }
-
   /**
    * This function looks through all the vertexes in the graph and returns the
    * first one it finds that matches the value parameter.
@@ -44,7 +37,11 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) return vertex;
+    }
+
+    return null;
   }
 
   /**
@@ -54,9 +51,35 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+    const q = [];
+    /**
+    *  add visited and parent props to each vertex
+    *  these props are deleted after finding output
+    */
+    for (let v of this.vertexes) {
+      v.visited = false;
+      v.parent = null;
+    }
 
+    start.visited = true;
+    q.push(start);
+
+    while (q.length > 0) {
+      const vertex = q[0];
+
+      for (let edge of vertex.edges) {
+        const edgeV = edge.destination;
+
+        if (!edgeV.visited) {
+          edgeV.visited = true;
+          edgeV.parent = vertex;
+          q.push(edgeV);
+        }
+      }
+
+      q.shift();
+    }
+  }
   /**
    * Print out the route from the start vert back along the parent
    * pointers (set in the previous BFS)
@@ -65,7 +88,23 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let output = '';
+
+    let u = start;
+
+    while (u.parent !== null) {
+      output += `${u.value} --> `;
+
+      u = u.parent;
+    }
+
+    /* vertex deletion */
+    for (let v of this.vertexes) {
+      delete v.visited;
+      delete v.parent;
+    }
+
+    console.log(`${output}${u.value}`);
   }
 
   /**
