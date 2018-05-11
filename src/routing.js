@@ -67,16 +67,16 @@ class Graph {
     start.color = 'gray';
     queue.push(start);
     while (queue.length > 0) {
-      const u = queue[0];
-      for (let v of u.edges) {
-        let x = v.destination
-        if (x.color === 'white') {
-          x.color = 'gray';
-          x.parent = u;
-          queue.push(x);
+      const currentVert = queue[0];
+      for (let edge of currentVert.edges) {
+        let next = edge.destination
+        if (next.color === 'white') {
+          next.color = 'gray';
+          next.parent = currentVert;
+          queue.push(next);
         }
       }
-      u.color = 'black';
+      currentVert.color = 'black';
       queue.shift();
     }
   }
@@ -94,8 +94,8 @@ class Graph {
       route = [...route].concat(start.value);
       start = start.parent;
     }
-    const final = route.join(' --> ');
-    console.log(final);
+    const finalOutput = route.join(' --> ');
+    console.log(finalOutput);
   }
 
   /**
