@@ -1,10 +1,8 @@
-// Search for "!!! IMPLEMENT ME" comments
-
 /**
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +12,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.color;
+    this.parent;
   }
 }
 
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +43,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value === value) return value;
+    }
+    return null;
   }
 
   /**
@@ -53,8 +55,36 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
+
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value === start) start = this.vertexes[i];
+    }
+
+    for (let i = 0; i < this.vertexes.length; i++) {
+      this.vertexes[i].color = 'white';
+      this.vertexes[i].parent = null;
+    }
+
+    start.color = 'grey';
+    queue.push(start);
+
+    while (queue.length) {
+      let current = queue[0];
+      if (current.edges) {
+        for (let i = 0; i < current.edges.length; i++) {
+          if (current.edges[i].destination.color === 'white') {
+            current.edges[i].destination.color = 'grey';
+            current.edges[i].destination.parent = current;
+            queue.push(current.edges[i].destination);
+          }
+        }
+      }
+      current.color = 'black';
+      queue.shift();
+    }
   }
 
   /**
@@ -65,7 +95,18 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let str = start;
+    let current;
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value === start) current = this.vertexes[i];
+    }
+
+    while (current.parent) {
+      str += ' --> ' + current.parent.value;
+      current = current.parent;
+    }
+
+    console.log(str);
   }
 
   /**
