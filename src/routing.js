@@ -94,8 +94,9 @@ class Graph {
     let output = '';
 
     while (v.parent) {
-      v = v.parent;
       output += `${v.value} --> `
+      
+      v = v.parent;
     }
 
     console.log(`${output}${v.value}`);
