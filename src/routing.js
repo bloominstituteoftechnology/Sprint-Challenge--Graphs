@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -45,6 +44,11 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value == value) {
+        return vertex;
+      }
+    }
   }
 
   /**
@@ -55,6 +59,27 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+
+    //might refactor to do the black white grey thing, not really sure about all this
+    // just kind of used what I did in the other project
+
+    const visited = [];
+    let queue = [start];
+    visited[start.value] = true;
+    while (queue.length > 0) {
+      let removed = queue.shift();
+      let edges = removed.edges;
+      if (edges !== null) {
+        for (let edge of edges) {
+          let current = edge.destination.value;
+          if (!visited[current]) {
+            edge.destination.parent = removed;
+            queue.push(edge.destination);
+            visited[current] = true;
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -66,6 +91,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let current = start;
+    let route = current.value;
+    while (current.parent) {
+      current = current.parent;
+      route += ' --> ' + current.value;
+    }
+    console.log(route);
   }
 
   /**
