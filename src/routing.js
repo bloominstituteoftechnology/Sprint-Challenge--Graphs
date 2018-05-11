@@ -88,6 +88,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const path = [];
+    let vert = start;
+    while (vert) {
+      path.push(vert.value);
+      vert = vert.parent;
+    }
+    console.log(path.join(' --> '));
   }
 
   /**
