@@ -46,7 +46,6 @@ class Graph {
    */
   findVertex(value) {
     for (let vertex of this.vertexes) {
-      // console.log(vertex.value)
       if (vertex.value === value) return vertex;
     }
   }
@@ -78,7 +77,6 @@ class Graph {
       queue.shift();
       found.push(head);
     }
-    return found;
   }
 
   /**
