@@ -97,6 +97,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let vertex = start;
+    let output = '';
+
+    while (vertex != null) {
+      output += vertex.value;
+      if (vertex.parent) {
+        output += ' --> ';
+      }
+      vertex = vertex.parent;
+    }
+    console.log(output);
   }
 
   /**
