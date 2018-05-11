@@ -12,9 +12,10 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', pos = {x: 0, y: 0}) {
     this.value = value;
     this.edges = [];
+    this.pos = pos;
   }
 }
 
@@ -161,7 +162,6 @@ export class Graph {
         componentsList.push(component);
       }
     }
-
     return componentsList;
   }
 }
