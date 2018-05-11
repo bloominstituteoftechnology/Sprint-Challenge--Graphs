@@ -4,7 +4,8 @@ import './App.css';
 
 // Define the size of the random graph
 const xCount = 4;
-const yCount = 3;
+// const yCount = 3; <-- This graph generation style favors square displays of equal height and width, so having different numbers will cause cutoff.
+const yCount = 4;
 const boxSize = 150;
 const probability = 0.6;
 
@@ -59,7 +60,8 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    // ctx.fillStyle = '#77f'; <-- this is what was causing the vertices to draw only one color, as it overrides the color arg set above
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -155,7 +157,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        {/* <button onClick={this.Button}>Random</button> simple typo here, this says "this.Button" instead of "this.onButton" */}
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );

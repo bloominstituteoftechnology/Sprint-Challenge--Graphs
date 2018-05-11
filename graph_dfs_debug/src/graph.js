@@ -136,7 +136,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      //stack.shift(); // de-stack <-- This extra shift is what causes the graph to draw incorrectly, as we're already using pop above.
       u.color = 'black';
 
       component.push(u);

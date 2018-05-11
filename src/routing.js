@@ -90,7 +90,7 @@ class Graph {
    */
   outputRoute(start) {
     if (start.parent !== null) {
-      process.stdout.write(`${start.value} --> `)
+      process.stdout.write(`${start.value} --> `);
       this.outputRoute(start.parent);
     } else {
       process.stdout.write(`${start.value}`);
