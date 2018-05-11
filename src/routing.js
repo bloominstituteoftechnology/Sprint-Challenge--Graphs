@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value="vertex") {
+  constructor(value='vertex') {
     this.value = value;
     this.edges = [];
     this.color = "white";
@@ -65,15 +65,15 @@ class Graph {
     // !!! IMPLEMENT ME
     let queue = [];
     start.color = "gray";
-    queue.push = start;
+    queue.push(start);
 
-    while (queue.length > 0) {
+    while(queue.length > 0) {
       let vertex = queue[0];
 
       for (let edge of vertex.edges) {
         if (edge.destination.color === "white") {
-          edge.destination.color === "gray";
-          edge.destination.parent === vertex;
+          edge.destination.color = "gray";
+          edge.destination.parent = vertex;
           queue.push(edge.destination);
         }
       }
@@ -92,11 +92,11 @@ class Graph {
   outputRoute(start) {
     // !!! IMPLEMENT ME
     let val = start;
-    let string = " ";
+    let string = '';
 
     while(val.parent) {
     string += `${val.value} -->`
-    val += val.parent;
+    val = val.parent;
     }
     string += val.value;
     console.log(string);
