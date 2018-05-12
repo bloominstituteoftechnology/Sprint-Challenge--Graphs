@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.visited = false;
+    this.parent = null;
   }
 }
 
@@ -45,6 +47,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value == value) {
+        return this.vertexes[i];
+      }
+      // Loops through vertexes
+    }
   }
 
   /**
@@ -55,6 +64,28 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    start.visited = 'true';
+    queue.push(start);
+    //pushes nodes into queue
+      while (queue.length > 0) {
+        const currentNode = queue[0];
+
+        currentNode.edges.forEach(edge => {
+          const {destination} = edge;
+//as long as there are more edges in the queue, they will be assigned to the edges array
+          if (destination.visited == false) {
+            destination.visited = true;
+
+            destination.parent = currentNode;
+            queue.push(destination);
+            //makes sure the process 'visits' all the edges
+          }
+        });
+        queue.shift();
+        currentNode.visited = true;
+      }
   }
 
   /**
@@ -66,8 +97,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+   const nodes = [];
+   while (start !== null) {
+     nodes.push(start.value);
+     start = start.parent;
+   } 
+   const path = nodes.join('-->');
+   console.log(path);
   }
-
   /**
    * Show the route from a starting vert to an ending vert.
    */
