@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.touched = false;
+    this.parentNode = null;
   }
 }
 
@@ -45,6 +47,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+
+    for ( let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value == value) {
+        return this.vertexes[i];
+      }
+    }
   }
 
   /**
@@ -55,6 +63,20 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    start.touched = 'true';
+    queue.push(start);
+
+      while (queue.length > 0) {
+        //Implement the search function
+        // 1.const for activeNode starting with the head node ex[0];
+        // 2.for each edge of the active node, see if its been visited,
+        //   if it hasnt then connect and set the state of "touched".
+        // 3.push it to the queue array, end the curly brackets
+        // 4.shift the queue to get rid of the node you just visited recursively,
+        // 5.set touched = true;
+      }
   }
 
   /**
@@ -65,6 +87,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
+    let nodes = [];
+
+    if (start !== null ) {
+      nodes.push(start.value);//push value
+      start = start.parent;
+    }
+    console.log("these are the nodes youre looking for", nodes);
     // !!! IMPLEMENT ME
   }
 
