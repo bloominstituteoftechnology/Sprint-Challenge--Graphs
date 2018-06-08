@@ -17,6 +17,8 @@ class Vertex {
   constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
   }
 }
 
@@ -43,15 +45,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
-    // console.log('vertexes', this.vertexes);
-    // console.log('a vertex value', this.vertexes[0].value);
     for (let vertex of this.vertexes) {
-      // console.log('vert', vertex.value);
       if (vertex.value === value) {
         return vertex;
       }
     }
+
     return null;
   }
 
@@ -62,7 +61,25 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    start.color = 'gray';
+
+    let queue = [];
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const currVert = queue[0];
+
+      for (let vertex of currVert.edges) {
+        if (vertex.destination.color === 'white') {
+          vertex.destination.color = 'gray';
+          vertex.destination.parent = currVert;
+          queue.push(vertex.destination);
+        }
+      }
+
+      queue.shift();
+      currVert.color = 'black';
+    }
   }
 
   /**
@@ -74,6 +91,7 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // console.log('outputRoute', start);
   }
 
   /**
@@ -144,14 +162,14 @@ graph.vertexes.push(vertH);
 
 const hostAVert = graph.findVertex(args[0]);
 
-if (hostAVert !== null) {
+if (hostAVert === null) {
   console.error('routing: could not find host: ' + args[0]);
   process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
-if (hostBVert !== null) {
+if (hostBVert === null) {
   console.error('routing: could not find host: ' + args[1]);
   process.exit(2);
 }
@@ -160,4 +178,4 @@ if (hostBVert !== null) {
 
 graph.route(hostAVert, hostBVert);
 
-console.log(graph.findVertex('hostA'));
+// console.log(graph.findVertex('HostA'));
