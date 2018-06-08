@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.visited = false;
+    this.parent = null;
   }
 }
 
@@ -45,6 +47,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i++) {
+           if(this.vertexes[i].value === value) {
+              return this.vertexes[i];
+            }
+        }
+    return null;
   }
 
   /**
@@ -55,6 +63,21 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    queue.push(start);
+    start.visited = true;
+
+    while(queue.length > 0) {
+      const currentVertex = queue[0];
+      for (let e of currentVertex.edges) {
+        if (!e.destination.visited) {
+          e.destination.parent = currentVertex;
+          queue.push(e.destination);
+          e.destination.visited = true;
+        }
+      }
+      queue.shift();
+    }
   }
 
   /**
@@ -66,6 +89,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentVertex = start;
+    let output = '';
+    while (currentVertex.parent !== null) {
+      output += (currentVertex.value + '===>');
+      currentVertex = currentVertex.parent;
+    }
+    output += currentVertex.value;
+    console.log(output);
   }
 
   /**
@@ -73,10 +104,10 @@ class Graph {
    */
   route(start, end) {
     // Do BFS and build parent pointer tree
-    this.bfs(end);
+    this.bfs(start);
 
     // Show the route from the start
-    this.outputRoute(start);
+    this.outputRoute(end);
   }
 }
 
@@ -141,7 +172,7 @@ if (hostAVert === null) {
   process.exit(2);
 }
 
-const hostBVert = graph.findVertex(args[1]);
+const hostBVert = graph.findVertex(args[2]);
 
 if (hostBVert === null) {
   console.error('routing: could not find host: ' + args[1]);
