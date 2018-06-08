@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
     this.color = 'white';
@@ -26,7 +26,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -69,10 +68,10 @@ class Graph {
       v.parent = null;
     }
 
-    start.color = grey;
+    start.color = 'grey';
     queue.push(start);
 
-    while(queue.length > 0) {
+    while (queue.length > 0) {
       let u = queue[0];
 
       for (let edge of u.edges) {
@@ -100,7 +99,7 @@ class Graph {
     let output = '';
 
     while (currentVert.parent != null) {
-      output += `${currentVert.value} -->`;
+      output += `${currentVert.value} --> `;
       currentVert = currentVert.parent;
     }
     output += `${currentVert.value}`;
