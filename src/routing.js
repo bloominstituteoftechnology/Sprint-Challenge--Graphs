@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
+    this.parent = null;
   }
 }
 
@@ -24,7 +26,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +45,13 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -54,7 +61,25 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    start.color = 'gray';
+
+    let queue = [];
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const currVert = queue[0];
+
+      for (let vertex of currVert.edges) {
+        if (vertex.destination.color === 'white') {
+          vertex.destination.color = 'gray';
+          vertex.destination.parent = currVert;
+          queue.push(vertex.destination);
+        }
+      }
+
+      queue.shift();
+      currVert.color = 'black';
+    }
   }
 
   /**
@@ -65,7 +90,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let route = start.value;
+
+    let vertex = start;
+    while (vertex.parent) {
+      route += ' --> ' + vertex.parent.value;
+      vertex = vertex.parent;
+    }
+    console.log(route);
   }
 
   /**
