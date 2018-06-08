@@ -45,10 +45,11 @@ class Graph {
   findVertex(value) {
     for (let v of this.vertexes) {
       if (v.value === value) {
-        console.log('FOUND IT');
+        console.log(`vertex with matching value(${value}) found!`);
         return v;
       }
     }
+    console.log(`No matches found!`);
   }
 
   /**
@@ -58,7 +59,36 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    // QUESTION: Still not entirely clear on what this doing??
+    console.log(`bfs started with "start" = ${start.value}`);
+    const queue = [];
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      // console.log(`inside bfs: ${v.value} color now ${v.color}`);
+    }
+    start.color = 'gray';
+    // console.log(`${start.value} color now ${start.color}`);
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let e of u.edges) {
+        // console.log(`1: ${e.destination.value} color now ${e.destination.color}`);
+        // For each edge, if destination is not found (e.g. color = 'white'), then do the following:
+        if (e.destination.color === 'white') {
+          e.destination.color = 'gray';
+          // console.log(
+          //   `2: ${e.destination.value} color now ${e.destination.color}`
+          // );
+          // console.log(`\nHi my name is ${e.destination.value}\nMy parent is ${u.value}\n`);
+          e.destination.parent = u; // reference back to parent
+          queue.push(e.destination); // #QUESTION: What is this doing???
+        }
+      }
+      queue.shift();
+      u.color = 'black';
+    }
   }
 
   /**
