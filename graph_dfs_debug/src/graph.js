@@ -71,9 +71,9 @@ export class Graph {
     }
 
     // Last pass, set the x and y coordinates for drawing
-    const boxBuffer = 0.8;
+    const boxBuffer = 0.7;
     const boxInner = pxBox * boxBuffer;
-    const boxInnerOffset = (pxBox - boxInner) / 2;
+    const boxInnerOffset = (pxBox - boxInner) / 2 + 10;
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
@@ -128,7 +128,11 @@ export class Graph {
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack.pop();
+
+      // Should shift instead of pop to simulate FIFO.
+      // const u = stack.pop();
+
+      const u = stack.shift();
       if(u.color === 'white') {
         u.color = 'gray';
         for (let e of u.edges) {
@@ -136,7 +140,8 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // Only need to do this once. 
+      // stack.shift(); // de-stack
       u.color = 'black';
 
       component.push(u);
