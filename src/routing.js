@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,8 +14,9 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
+    this.parent = null;
     this.edges = [];
   }
 }
@@ -24,7 +25,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -55,6 +55,22 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const q = [];
+    start.color = 'gray';
+    start.parent = null;
+
+    q.push(start);
+    while (q.length > 0) {
+      q[0].edges.forEach(edge => {
+        if (edge.destination.color === 'white') {
+          edge.destination.color = 'gray';
+          edge.destination.parent = q[0];
+          q.push(edge.destination);
+        }
+      });
+      q[0].color = 'black';
+      q.shift();
+    }
   }
 
   /**
