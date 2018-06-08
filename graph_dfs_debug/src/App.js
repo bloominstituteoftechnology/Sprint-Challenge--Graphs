@@ -44,6 +44,9 @@ class GraphView extends Component {
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
+    // ctx.fillStyle = 'lightblue';
+    // ctx.fillRect(0,0,canvasWidth,canvasHeight);
+
     // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
@@ -59,7 +62,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; // color was hardcoded 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -81,11 +84,11 @@ class GraphView extends Component {
   /**
    * Draw the entire graph
    */
-  updateCanvasEntireGraph() {
-    const g = this.props.graph;
-    this.drawVerts(g.vertexes);
-    //g.dump();
-  }
+  // updateCanvasEntireGraph() {
+  //   const g = this.props.graph;
+  //   this.drawVerts(g.vertexes);
+  //   g.dump();
+  // }
 
   /**
    * Draw the connected components
@@ -118,8 +121,8 @@ class GraphView extends Component {
   /**
    * Render
    */
-  render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+  render() { // canvasWidth replaced where it said canvasHeight
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
@@ -137,6 +140,7 @@ class App extends Component {
     };
 
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
+    // this.state.graph.getConnectedComponents(); // added a call for getConnectedComponents()
   }
 
   /**
@@ -148,14 +152,14 @@ class App extends Component {
     };
 
     state.graph.randomize(xCount, yCount, boxSize, probability);
-
+    // state.graph.getConnectedComponents();
     this.setState(state);
   }
 
-  render() {
+  render() { // this.onButton misspelled as this.Button
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
