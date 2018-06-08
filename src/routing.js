@@ -60,7 +60,7 @@ class Graph {
    */
   bfs(start) {
     // QUESTION: Still not entirely clear on what this doing??
-    console.log(`bfs started with "start" = ${start.value}`);
+    console.log(`bfs started: start = ${start.value}`);
     const queue = [];
     for (let v of this.vertexes) {
       v.color = 'white';
@@ -100,6 +100,18 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let cV = start; // Current Vertex
+    let output = ''; // string output compiled throughout this
+
+    while (cV.parent) {
+      output += `${cV.value} --> `;
+      cV = cV.parent;
+    }
+    // The last cV will not have a parent, but needs to be appended:
+    // console.log(`Last cV = ${cV.value}`);
+    output += `${cV.value}`; // ???
+    console.log(`Output Route: ${output}`);
+    // return output; -- #QUESTION: Is this necessary???
   }
 
   /**
