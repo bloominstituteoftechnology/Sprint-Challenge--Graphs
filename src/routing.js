@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +43,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        console.log('FOUND IT');
+        return v;
+      }
+    }
   }
 
   /**
