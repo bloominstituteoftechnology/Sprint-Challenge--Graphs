@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -45,6 +44,9 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    let found = this.vertexes.find(element => element.value === value);
+    if (!found) found = null;
+    return found;
   }
 
   /**
@@ -55,6 +57,32 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    const compArray = [];
+
+    for (let v of this.vertexes) {
+      v.visited = false;
+      v.parent = null;
+    }
+
+    start.visited = true;
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let next = queue[0];
+      for (let e of next.edges) {
+        let v = e.destination;
+        if (v.visited === false) {
+          v.parent = next;
+          queue.push(v);
+        }
+      }
+      queue.shift();
+      next.visited = true;
+
+      compArray.push(next);
+    }
+    return compArray;
   }
 
   /**
@@ -66,7 +94,19 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentNode = start;
+    const route = [];
+
+    route.push(currentNode.value);
+    while (currentNode.parent != null) {
+      currentNode = currentNode.parent;
+      route.push(currentNode.value);
   }
+
+  const str = route.join('-->');
+  console.log(str);
+
+}
 
   /**
    * Show the route from a starting vert to an ending vert.
