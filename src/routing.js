@@ -90,8 +90,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
-    // console.log('outputRoute', start);
+    let route = start.value;
+
+    let vertex = start;
+    while (vertex.parent) {
+      route += ' --> ' + vertex.parent.value;
+      vertex = vertex.parent;
+    }
+    console.log(route);
   }
 
   /**
@@ -177,5 +183,3 @@ if (hostBVert === null) {
 // Show the route from one host to another
 
 graph.route(hostAVert, hostBVert);
-
-// console.log(graph.findVertex('HostA'));
