@@ -4,88 +4,128 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
-    this.destination = destination;
-    this.weight = weight;
-  }
+    constructor(destination, weight = 1) {
+        this.destination = destination;
+        this.weight = weight;
+    }
 }
 
 /**
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
-    this.value = value;
-    this.edges = [];
-  }
+    constructor(value = "vertex") {
+        this.value = value;
+        this.edges = [];
+        this.parent = null;
+        this.color = "white";
+    }
 }
 
 /**
  * Graph class
  */
 class Graph {
+    /**
+     * Constructor
+     */
+    constructor() {
+        this.vertexes = [];
+    }
 
-  /**
-   * Constructor
-   */
-  constructor() {
-    this.vertexes = [];
-  }
+    /**
+     * This function looks through all the vertexes in the graph and returns the
+     * first one it finds that matches the value parameter.
+     *
+     * Used from the main code to look up the verts passed in on the command
+     * line.
+     *
+     * @param {*} value The value of the Vertex to find
+     *
+     * @return null if not found.
+     */
+    findVertex(value) {
+        // !!! IMPLEMENT ME
+        for (let vert of this.vertexes) {
+            if (value === vert.value) {
+                return vert;
+            }
+        }
+        return false;
+    }
 
-  /**
-   * This function looks through all the vertexes in the graph and returns the
-   * first one it finds that matches the value parameter.
-   *
-   * Used from the main code to look up the verts passed in on the command
-   * line.
-   *
-   * @param {*} value The value of the Vertex to find
-   *
-   * @return null if not found.
-   */
-  findVertex(value) {
-    // !!! IMPLEMENT ME
-  }
+    /**
+     * Breadth-First search from a starting vertex. This should keep parent
+     * pointers back from neighbors to their parent.
+     *
+     * @param {Vertex} start The starting vertex for the BFS
+     */
+    bfs(start) {
+        // !!! IMPLEMENT ME
+        const queue = [start];
 
-  /**
-   * Breadth-First search from a starting vertex. This should keep parent
-   * pointers back from neighbors to their parent.
-   *
-   * @param {Vertex} start The starting vertex for the BFS
-   */
-  bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+        for (let vertex of this.vertexes) {
+            vertex.color = "white";
+        }
 
-  /**
-   * Print out the route from the start vert back along the parent
-   * pointers (set in the previous BFS)
-   *
-   * @param {Vertex} start The starting vertex to follow parent
-   *                       pointers from
-   */
-  outputRoute(start) {
-    // !!! IMPLEMENT ME
-  }
+        while (queue.length > 0) {
+            const vert = queue[0];
 
-  /**
-   * Show the route from a starting vert to an ending vert.
-   */
-  route(start, end) {
-    // Do BFS and build parent pointer tree
-    this.bfs(end);
+            for (let edge of vert.edges) {
+                const destination = edge.destination;
 
-    // Show the route from the start
-    this.outputRoute(start);
-  }
+                if (destination.color === "white") {
+                    destination.color = "grey";
+                    destination.parent = vert;
+                    queue.push(destination);
+                }
+            }
+            queue.shift();
+            vert.color = "black";
+        }
+    }
+
+    /**
+     * Print out the route from the start vert back along the parent
+     * pointers (set in the previous BFS)
+     *
+     * @param {Vertex} start The starting vertex to follow parent
+     *                       pointers from
+     */
+    outputRoute(start) {
+        // !!! IMPLEMENT ME
+        let current = start;
+        let results = "";
+
+        // console.log("===", current);
+
+        while (current.parent !== null) {
+            results += `${current.value} --> `;
+            current = current.parent;
+        }
+        results += `${current.value}`;
+        console.log(results);
+        return results;
+    }
+
+    /**
+     * Show the route from a starting vert to an ending vert.
+     */
+    route(start, end) {
+        // Do BFS and build parent pointer tree
+        this.bfs(end);
+
+        // Show the route from the start
+        this.outputRoute(start);
+    }
 }
 
 /**
  * Helper function to add bidirectional edges
  */
 function addEdge(v0, v1) {
-  v0.edges.push(new Edge(v1));
-  v1.edges.push(new Edge(v0));
+    v0.edges.push(new Edge(v1));
+    v1.edges.push(new Edge(v0));
 }
 
 /**
@@ -96,21 +136,21 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error('usage: routing hostA hostB');
-  process.exit(1);
+    console.error("usage: routing hostA hostB");
+    process.exit(1);
 }
 
 // Build the entire Internet
 // (it's only a model)
 const graph = new Graph();
-const vertA = new Vertex('HostA');
-const vertB = new Vertex('HostB');
-const vertC = new Vertex('HostC');
-const vertD = new Vertex('HostD');
-const vertE = new Vertex('HostE');
-const vertF = new Vertex('HostF');
-const vertG = new Vertex('HostG');
-const vertH = new Vertex('HostH');
+const vertA = new Vertex("HostA");
+const vertB = new Vertex("HostB");
+const vertC = new Vertex("HostC");
+const vertD = new Vertex("HostD");
+const vertE = new Vertex("HostE");
+const vertF = new Vertex("HostF");
+const vertG = new Vertex("HostG");
+const vertH = new Vertex("HostH");
 
 addEdge(vertA, vertB);
 addEdge(vertB, vertD);
@@ -137,15 +177,15 @@ graph.vertexes.push(vertH);
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
-  console.error('routing: could not find host: ' + args[0]);
-  process.exit(2);
+    console.error("routing: could not find host: " + args[0]);
+    process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
-  process.exit(2);
+    console.error("routing: could not find host: " + args[1]);
+    process.exit(2);
 }
 
 // Show the route from one host to another
