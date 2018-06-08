@@ -17,6 +17,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'white';
   }
 }
 
@@ -44,7 +45,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    // implemented
+    for (let vertex of graph.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
   }
 
   /**
@@ -55,6 +61,34 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queueToVisit = [];
+    const nodesVisited = [];
+
+    for (let vertex of graph.vertexes) {
+      vertex.color = 'white';
+      vertex.parent = null;
+    }
+    queueToVisit.push(start);
+
+    while (queueToVisit.length > 0) {
+      let current = queueToVisit[0];
+
+      current.color = 'gray';
+      nodesVisited.push(current);
+
+      for (let edge of current.edges) {
+        if (edge.destination.color == 'white') {
+          //console.log("edge", edge);
+          queueToVisit.push(edge.destination);
+          edge.destination.color = 'gray';
+          edge.destination.parent = current;
+        }
+      }
+      //console.log("queue", queueToVisit);
+      current.color = 'black';
+      queueToVisit = queueToVisit.slice(1);
+    }
+    return nodesVisited;
   }
 
   /**
@@ -65,7 +99,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    // implemented
+    let route = '';
+    route += start.value;
+    while (start.parent) {
+      route += ' --> '+ start.parent.value;
+      start = start.parent;
+    }
+    console.log(route);
   }
 
   /**
@@ -142,12 +183,12 @@ if (hostAVert === null) {
 }
 
 const hostBVert = graph.findVertex(args[1]);
-
+//console.log(hostBVert);
 if (hostBVert === null) {
   console.error('routing: could not find host: ' + args[1]);
   process.exit(2);
 }
 
 // Show the route from one host to another
-
+//console.log(hostBVert);
 graph.route(hostAVert, hostBVert);
