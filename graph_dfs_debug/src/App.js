@@ -167,11 +167,17 @@ class App extends Component {
 
     this.setState(state);
   }
+  // 8. debug - if button isn't responding look where button code is implemented
+  // (App: constructor, onButton function, onClick)
+  // Observation - no errors occurring, so probably not onButton function
+  //    and binding in constructor looks fine
+  // Search - onClick first to see if it is called correctly
 
   render() {
+    // this.Button was used instead of this.onButton
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph} />
       </div>
     );
