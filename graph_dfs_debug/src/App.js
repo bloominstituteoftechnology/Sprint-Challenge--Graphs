@@ -9,8 +9,11 @@ const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+// I'm not sure what the reasoning is for tying the canvas width and height to the box size,
+// but the graph is getting cut off because the canvas isn't big enough, so I made it bigger and now it's
+// not getting cut off
+const canvasWidth = boxSize * xCount + 500;
+const canvasHeight = boxSize * yCount + 200;
 const radius = boxSize / 8;
 
 /**
@@ -59,7 +62,8 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    //the color was hardcoded in instead of using the randomly generated color
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -146,16 +150,16 @@ class App extends Component {
     const state = {
       graph: new Graph()
     };
-
     state.graph.randomize(xCount, yCount, boxSize, probability);
-
+    console.log(state);
     this.setState(state);
   }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        {/*the onclick wasn't calling the correct function*/}
+        <button onClick={()=>this.onButton()}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );

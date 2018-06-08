@@ -135,8 +135,8 @@ export class Graph {
           stack.push(e.destination);
         }
       }
-
-      stack.shift(); // de-stack
+      //there's no such thing as de-stack. the top vert is already being poped off above.
+      //stack.shift(); // de-stack
       u.color = 'black';
 
       component.push(u);
