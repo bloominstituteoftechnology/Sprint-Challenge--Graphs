@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -45,6 +44,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    const foundVertex = this.vertexes.find(vertex => vertex.value === value);
+
+    if (foundVertex) return foundVertex;
+    return null;
   }
 
   /**
@@ -55,6 +58,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (const vertex of this.vertexes) {
+      vertex.color = 'white';
+      vertex.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue[0]) {
+      const node = queue[0];
+
+      for (const edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          vertex.parent = node;
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +94,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let vertex = start;
+    let output = '';
+
+    while (vertex) {
+      output += vertex.value;
+      if (vertex.parent) {
+        output += ' --> ';
+      }
+      vertex = vertex.parent;
+    }
+    console.log(output);
   }
 
   /**
