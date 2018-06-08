@@ -12,3 +12,13 @@ After learning about breadth-first-search, I decided to give depth-first-search 
 I'm still trying to learn this stuff, so please don't just fix the code for me.  Let me know where my bugs are and what you did to fix them, so I can have an easier time watching out for them next time!
 
 Thanks!
+
+
+#Corrections:
+
+Check comments for:
+
+1. @line 132 & 143 in graph.js
+2. @line 67 in App.js
+3. @line 158-159 in App.js.
+4. @line 7 in App.js
