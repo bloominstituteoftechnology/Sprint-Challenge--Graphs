@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Graph } from './graph';
 import { NewGraph } from './utils';
+import { colors } from './colors';
 import './App.css';
 
 // Define the size of the random graph
@@ -41,13 +42,14 @@ class GraphView extends Component {
 
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      //ctx.fillStyle = 'white';
+      ctx.fillStyle = color.hex;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
     // Draw the edges
     ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.hex;
 
     for (let v of vertexes) {
       // From this vert
@@ -62,7 +64,8 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f';
+    //ctx.fillStyle = '#77f';
+    ctx.fillStyle = color.hex;
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -74,7 +77,17 @@ class GraphView extends Component {
     // Draw the vert names
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillStyle = 'white';
+    //ctx.fillStyle = 'white';
+    let compColor = color.complimentary[0];
+
+    if (color.complimentary.includes('White')) {
+      const index = color.complimentary.indexOf('White');
+      compColor = color.complimentary[index];
+    } else if (color.complimentary.includes('Black')) {
+      const index = color.complimentary.indexOf('Black');
+      compColor = color.complimentary[index];
+    }
+    ctx.fillStyle = compColor;
 
     for (let v of vertexes) {
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
@@ -94,6 +107,8 @@ class GraphView extends Component {
    * Draw the connected components
    */
   updateCanvasConnectedComponents() {
+    // I will re-write this
+    /*
     function randomHexColor() {
       let color = ((Math.random() * 240) | 0).toString(16);
 
@@ -103,6 +118,7 @@ class GraphView extends Component {
 
       return color;
     }
+    */
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
@@ -111,9 +127,9 @@ class GraphView extends Component {
 
     for (let component of connectedComponents) {
       // Color just like in CSS
-      const curColor =
-        '#' + randomHexColor() + randomHexColor() + randomHexColor();
-
+      //const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
+      // my way of randomizing color
+      const curColor = colors[Math.floor(Math.random() * colors.length)];
       this.drawVerts(component, curColor, clear);
       clear = false;
     }
