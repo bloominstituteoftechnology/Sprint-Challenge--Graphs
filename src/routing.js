@@ -17,8 +17,6 @@ class Vertex {
   constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
-    // this.color = 'white';
-    // this.parent = null;
   }
 }
 
@@ -64,7 +62,7 @@ class Graph {
     // !!! IMPLEMENT ME
     const queue = [];
 
-    for (vertex of this.vertexes) {
+    for (let vertex of this.vertexes) {
       vertex.color = 'white';
       vertex.parent = null;
     }
@@ -72,7 +70,7 @@ class Graph {
     start.color = 'gray';
     queue.push(start);
 
-    while (queue.length < 0) {
+    while (queue.length > 0) {
       const vertex = queue[0];
 
       for (let edge of vertex.edges) {
@@ -96,6 +94,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentVertex = start;
+    let output = '';
+
+    while (currentVertex.parent !== null) {
+      output += currentVertex.value + ' --> ';
+      currentVertex = currentVertex.parent;
+    }
+    output += currentVertex.value;
+    console.log(output);
   }
 
   /**
