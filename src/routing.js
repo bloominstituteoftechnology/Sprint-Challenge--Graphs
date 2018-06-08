@@ -44,7 +44,9 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    let found = this.vertexes.find(element =>element.value === value);
+    if (!found) found = null;
+    return found;
   }
 
   /**
@@ -55,6 +57,34 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let queue = []; 
+    let visited = [];
+
+    for (let v of graph.vertexes) {
+      v.color = "white";
+      v.parent = null;
+    }
+
+    start.color = "gray";
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let v of u.edges) {
+        if (v.destination.color === "white") {
+          v.destination.color = "gray";
+          v.destination.parent = u;
+          queue.push(v.destination);
+        }
+      }
+
+      let parent = queue.shift();
+      visited.push(parent);
+      u.color = "black";
+    }
+    return visited;
+   
   }
 
   /**
@@ -66,6 +96,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentNode = start;
+    const route = [];
+    route.push(currentNode.value);
+    while (currentNode.parent != null) {
+      currentNode = currentNode.parent;
+      route.push(currentNode.value);
+    }
+  
+    const str = route.join(' --> ');
+    console.log(str);
+  
   }
 
   /**
