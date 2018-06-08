@@ -11,8 +11,10 @@ const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+//const canvasWidth = boxSize * xCount;
+//const canvasHeight = boxSize * yCount;
+const canvasWidth = boxSize * (xCount + 1);
+const canvasHeight = boxSize * (yCount + 1);
 const radius = boxSize / 8;
 
 /**
@@ -43,7 +45,7 @@ class GraphView extends Component {
     // Clear it
     if (clear) {
       //ctx.fillStyle = 'white';
-      ctx.fillStyle = color.hex;
+      ctx.fillStyle = color.complimentary[color.complimentary.length - 1];
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
