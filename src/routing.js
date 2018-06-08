@@ -60,26 +60,29 @@ class Graph {
    */
   bfs(start) {
     const queue = [];
-    for (let v of graph.vertexes) {
-    v.color = white
-    v.parent = null   
-    }
-
-  startVert.color = gray
-  queue.enqueue(startVert)
-
-  while !queue.isEmpty():
-    u = queue[0]
-
-    for v of u.neighbors:
-      if v.color == white:
-        v.color = gray
-        v.parent = u     
-        queue.enqueue(v)
     
-    queue.dequeue()
-    u.color = black
-  }
+        for (let vertex of this.vertexes) {
+          vertex.color = 'white';
+          vertex.parent = null;
+        }
+    
+        start.color = 'gray';
+        queue.push(start);
+    
+        while (queue.length > 0) {
+          const vertex = queue[0];
+    
+          for (let edge of vertex.edges) {
+            if (edge.destination.color === 'white') {
+              edge.destination.color = 'gray';
+              edge.destination.parent = vertex;
+              queue.push(edge.destination);
+            }
+          }
+          queue.shift();
+          vertex.color = 'black';
+        }
+      }
 
   /**
    * Print out the route from the start vert back along the parent
@@ -89,7 +92,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let route = start.value;
+    
+        let vertex = start;
+        while (vertex.parent) {
+          route += ' --> ' + vertex.parent.value;
+          vertex = vertex.parent;
+        }
+        console.log(route);
   }
 
   /**
