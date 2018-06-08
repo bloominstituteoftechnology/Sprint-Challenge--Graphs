@@ -17,6 +17,8 @@ class Vertex {
   constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.searched = false;
+    this.parent = null;
   }
 }
 
@@ -44,7 +46,7 @@ class Graph {
    */
   findVertex(value) {
     for (let vertex of this.vertexes) {
-      if (value === vertex.value) {
+      if (vertex.value === value) {
         return vertex;
       }
     }
@@ -58,7 +60,24 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [];
+
+    queue.push(start);
+    start.searched = true;
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+
+      for (let edge of vertex.edges) {
+        if (!edge.destination.searched) {
+          edge.destination.parent = vertex;
+          queue.push(edge.destination);
+          edge.destination.searched = true;
+        }
+      }
+
+      queue.shift();
+    }
   }
 
   /**
@@ -69,7 +88,16 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let v = start;
+    let output = '';
+
+    while (v.parent) {
+      output += `${v.value} --> `;
+
+      v = v.parent;
+    }
+
+    console.log(`${output}${v.value}`);
   }
 
   /**
