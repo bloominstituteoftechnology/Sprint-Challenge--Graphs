@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -45,6 +45,11 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    let v = this.vertexes;
+    for (let i = 0; i < v.length; i++) {
+      if (v[i].value === value) return v[i];
+    }
+    return null;
   }
 
   /**
@@ -55,6 +60,25 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    this.vertexes.forEach(v => {
+      v.color = 'white';
+      v.parent = null;
+    });
+    queue.push(start);
+
+    while (queue.length !== 0) {
+      let dequeue = queue.shift();
+      dequeue.edges.forEach(e => {
+        let vertex = e.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'grey';
+          vertex.parent = dequeue;
+          queue.push(vertex);
+        }
+      });
+      dequeue.color = 'green';
+    }
   }
 
   /**
@@ -66,6 +90,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let arr = [start.value];
+    const path = p => {
+      if (p.parent) {
+        arr.push(p.parent.value);
+        path(p.parent);
+      }
+    };
+    path(start);
+    console.log('path = ', arr.join(' -> '));
   }
 
   /**
@@ -94,6 +127,8 @@ function addEdge(v0, v1) {
 
 // Test for valid command line
 const args = process.argv.slice(2);
+// console.log('arg 0 = ', args[0]);
+// console.log('arg 1 = ', args[1]);
 
 if (args.length != 2) {
   console.error('usage: routing hostA hostB');
@@ -135,6 +170,7 @@ graph.vertexes.push(vertH);
 // find them.
 
 const hostAVert = graph.findVertex(args[0]);
+// console.log(hostAVert);
 
 if (hostAVert === null) {
   console.error('routing: could not find host: ' + args[0]);
