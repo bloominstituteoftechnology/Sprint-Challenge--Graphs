@@ -34,10 +34,10 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
+  drawVerts(vertexes, color, clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
-    
+
     // Clear it
     if (clear) {
       ctx.fillStyle = 'white';
@@ -48,10 +48,12 @@ class GraphView extends Component {
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
-    for (let v of vertexes) { // From this vert
-      for (let e of v.edges) { // To all these verts
-        const v2 = e.destination;
+    for (let v of vertexes) {
+      // From this vert
+      for (let e of v.edges) {
+        // To all these verts
         ctx.beginPath();
+        const v2 = e.destination;
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
         ctx.stroke();
@@ -59,11 +61,11 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
 
     for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
+      ctx.fillStyle = color; // added this from line 63 to add color to vertexes
       ctx.stroke();
       ctx.fill();
     }
@@ -77,14 +79,14 @@ class GraphView extends Component {
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
     }
   }
-  
+
   /**
    * Draw the entire graph
    */
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
-    //g.dump();
+    g.dump();
   }
 
   /**
@@ -92,7 +94,7 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
         color = '0' + color; // leading zero for values less than 0x10
@@ -108,7 +110,8 @@ class GraphView extends Component {
 
     for (let component of connectedComponents) {
       // Color just like in CSS
-      const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
+      const curColor =
+        '#' + randomHexColor() + randomHexColor() + randomHexColor();
 
       this.drawVerts(component, curColor, clear);
       clear = false;
@@ -119,10 +122,9 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />; // changed from width=canvasheight
   }
 }
-
 
 /**
  * App
@@ -154,9 +156,10 @@ class App extends Component {
 
   render() {
     return (
+      // fixed type from this.Button
       <div className="App">
-        <button onClick={this.Button}>Random</button>
-        <GraphView graph={this.state.graph}></GraphView>
+        <button onClick={this.onButton}>Random</button>
+        <GraphView graph={this.state.graph} />
       </div>
     );
   }
