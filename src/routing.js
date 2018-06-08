@@ -17,6 +17,10 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    // Give each vert a default color of white
+    this.visited = false;
+    // Set each vert to have a parent property ready in case of a subsequent node
+    this.parent = null;
   }
 }
 
@@ -43,18 +47,67 @@ class Graph {
    *
    * @return null if not found.
    */
+
+   // This function looks through all the vertices and returns the first match to the value parameter
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    // !!! IMPLEMENT ME - Completed
+    // Looping through all the verticies
+    for (let i = 0; i < this.vertexes.length; i++) {
+      // If vertex matches the value parameter...
+      if (this.vertexes[i].value === value) {
+        // Return the vertex
+        return this.vertexes[i];
+      }
+    }
   }
 
   /**
-   * Breadth-First search from a starting vertex. This should keep parent
-   * pointers back from neighbors to their parent.
+   * Breadth-First search from a starting vertex. 
+   * This should keep parent pointers back from neighbors to their parent.
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    // Create a queue array to store vertices as we traverse the graph
+    const queue = [];
+
+    // Have each vertex default to gray
+    start.visited = 'true';
+    // Push the first node into the queue array
+    queue.push(start);
+
+    // The following code will execute as long as there are vertices in the queue
+    while (queue.length > 0) {
+
+      // Set the variable "currentNode" to equal the first (0th) place in the queue
+      const currentNode = queue[0];
+      
+      // Searching the current node for edges in the "edges" array...
+      currentNode.edges.forEach(edge => {
+        // if an edge is found, it is added to the "destination" property
+        const { destination } = edge;
+
+        // If the vertex was previously unvisited..
+        if (destination.visited === false) {
+          // Switch its status to "visited"
+          destination.visited = true;
+          // Add the name of the currentNode to the edge's parent property
+          destination.parent = currentNode;
+          // Push the new vertex under the "destination" label from the edge into the the queue
+          queue.push(destination);
+        }
+
+        // destination.parent = currentNode;
+
+      });
+
+      queue.shift();
+      
+      currentNode.visited = true;
+
+    }
+
   }
 
   /**
@@ -66,6 +119,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const nodes = [];
+    while (start !== null) {
+      nodes.push(start.value);
+      start = start.parent;
+    }
+    const path = nodes.join(' --> ');
+    console.log(path);
   }
 
   /**
