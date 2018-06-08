@@ -45,6 +45,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+    return null;
   }
 
   /**
@@ -55,6 +62,33 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    
+    let queue = [];
+    let currentNode = null;
+    let neighbor = null;
+
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      currentNode = queue.pop();
+
+      for (let edge of currentNode.edges) {
+        neighbor = edge.destination;
+        
+        if (neighbor.color == 'white') {
+          neighbor.color = 'gray';
+          neighbor.parent = currentNode;
+          queue.push(neighbor);
+        }
+      }
+      currentNode.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +100,18 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentNode = start;
+    let route = '';
+    
+    while (currentNode.parent !== null) {
+      route += currentNode.value;
+      route += ' --> ';
+      currentNode = currentNode.parent;
+    }
+
+    route += currentNode.value;
+
+    console.log(route);
   }
 
   /**
