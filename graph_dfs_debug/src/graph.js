@@ -136,7 +136,6 @@ export class Graph {
         }
       }
 
-      stack.unshift(); // de-stack
       u.color = 'black';
 
       component.push(u);

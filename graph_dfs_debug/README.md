@@ -6,7 +6,7 @@ After learning about breadth-first-search, I decided to give depth-first-search 
 
 1.  The graph draws crazily.
 
-In graph.js change `shift()` to `unshift()` in your dfs method
+In graph.js change take out `stack.shift()`
 
 2.  All the vertexes are the same color. They're supposed to match the color of the edges for each connected component.
 

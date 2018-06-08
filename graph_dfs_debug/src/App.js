@@ -4,7 +4,7 @@ import './App.css';
 
 // Define the size of the random graph
 const xCount = 4;
-const yCount = 4;
+const yCount = 3;
 const boxSize = 170;
 const probability = 0.6;
 
@@ -73,7 +73,7 @@ class GraphView extends Component {
     }
 
     // Draw the vert names
-    ctx.font = '10px sans-serif';
+    ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
 
@@ -124,7 +124,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />;
   }
 }
 
@@ -152,7 +152,6 @@ class App extends Component {
     };
 
     state.graph.randomize(xCount, yCount, boxSize, probability);
-    state.graph.getConnectedComponents();
 
     this.setState(state);
   }
