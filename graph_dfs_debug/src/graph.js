@@ -132,13 +132,13 @@ export class Graph {
       const u = stack.pop();
       if (u.color === 'white') {
         u.color = 'gray';
-        component.push(u);
         for (let e of u.edges) {
           stack.push(e.destination);
         }
       }
 
-      stack.shift(); // de-stack
+      component.push(u);
+      // stack.shift(); // de-stack
       u.color = 'black';
     }
 

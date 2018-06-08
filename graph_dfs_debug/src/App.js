@@ -22,6 +22,8 @@ class GraphView extends Component {
    */
   componentDidMount() {
     this.updateCanvasConnectedComponents();
+    console.log(this.props.graph.getConnectedComponents());
+    console.log(this.props.graph.dump());
   }
 
   /**
