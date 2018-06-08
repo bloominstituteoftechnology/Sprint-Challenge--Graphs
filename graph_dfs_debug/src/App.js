@@ -11,14 +11,14 @@ const xCount = 4;
 const yCount = 3;
 const boxSize = 150;
 const probability = 0.6;
+const radius = boxSize / 8;
 
-// Figure out the canvas size
 //TODO: Figure out the canvas size
 
 //The canvas size should be set to numbers not the random graph variables
-const canvasWidth = 800;
+const canvasWidth = 850;
 const canvasHeight = 600;
-const radius = boxSize / 8;
+// const radius = boxSize / 8; //This should be moved up with the global variables
 
 /**
  * GraphView
@@ -41,9 +41,12 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
+  //TODO: Draw verts should have been drawn after edges?
   drawVerts(vertexes, color = 'blue', clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
+    //TODO: Need to remove console.log
+    console.log(this.drawVerts);
 
     // Clear it
     if (clear) {
@@ -51,12 +54,16 @@ class GraphView extends Component {
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
+
+
     // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
-    for (let v of vertexes) { // From this vert
-      for (let e of v.edges) { // To all these verts
+    for (let v of vertexes) {
+      // From this vert
+      for (let e of v.edges) {
+        // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
@@ -71,8 +78,9 @@ class GraphView extends Component {
     for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
-      ctx.stroke();
       ctx.fill();
+      ctx.stroke();
+
     }
 
     // Draw the vert names
@@ -115,7 +123,8 @@ class GraphView extends Component {
 
     for (let component of connectedComponents) {
       // Color just like in CSS
-      const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
+      const curColor =
+        '#' + randomHexColor() + randomHexColor() + randomHexColor();
 
       this.drawVerts(component, curColor, clear);
       clear = false;
@@ -126,27 +135,32 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref = "canvas"
-    width = {
-      canvasHeight
-    }
-    height = {
-      canvasHeight
-    } > < /canvas>;
+    return ( <
+      canvas ref = "canvas"
+      width = {
+        canvasHeight
+      }
+      height = {
+        canvasHeight
+      } > {
+        ' '
+      } <
+      /canvas>
+    );
   }
 }
-
 
 /**
  * App
  */
 class App extends Component {
+  //TODO: Get button to be functional COMPLETED!
   constructor(props) {
     super(props);
     this.onButton = this.onButton.bind(this);
 
     this.state = {
-      graph: new Graph()
+      graph: new Graph(),
     };
 
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
@@ -157,7 +171,7 @@ class App extends Component {
    */
   onButton() {
     const state = {
-      graph: new Graph()
+      graph: new Graph(),
     };
 
     state.graph.randomize(xCount, yCount, boxSize, probability);
@@ -166,17 +180,20 @@ class App extends Component {
   }
 
   render() {
+    //The GraphView and the Button need to be refactored
     return ( <
       div className = "App" >
       <
-      button onClick = {
-        this.Button
-      } > Random < /button> <
       GraphView graph = {
         this.state.graph
-      } > < /GraphView> < /
+      }
+      /> <
+      button onClick = {
+        this.onButton
+      } > Random < /button>< /
       div >
     );
+
   }
 }
 
