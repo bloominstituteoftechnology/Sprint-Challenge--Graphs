@@ -141,7 +141,6 @@ export class Graph {
       component.push(u);
     }
 
-    console.log(component)
     return component;
   }
 
