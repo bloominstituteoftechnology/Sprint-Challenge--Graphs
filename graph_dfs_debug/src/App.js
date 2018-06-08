@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = 'color'; 
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
