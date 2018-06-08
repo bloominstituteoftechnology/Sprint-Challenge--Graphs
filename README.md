@@ -9,9 +9,9 @@ to another on the console.
 Even though we're using this to see how packets are routed on a network,
 the exact same procedure could be used to:
 
-* find how you're connected to a friend of a friend
-* route an AI through a level
-* etc.
+- find how you're connected to a friend of a friend
+- route an AI through a level
+- etc.
 
 ## Map of the Internet
 
@@ -40,19 +40,18 @@ BFS(graph, startVert):
         v.color = gray
         v.parent = u     // <-- Keep a parent link
         queue.enqueue(v)
-    
+
     queue.dequeue()
     u.color = black
 ```
 
 ## Procedure
 
-1. Perform a BFS from the _ending vert_ (host). This will set up all the
-   `parent` pointers across the graph.
+1.  Perform a BFS from the _ending vert_ (host). This will set up all the
+    `parent` pointers across the graph.
 
-2. Output the route by following the parent pointers from the _starting_ vert
-   printing the values as you go.
-
+2.  Output the route by following the parent pointers from the _starting_ vert
+    printing the values as you go.
 
 ## Sample Run
 
