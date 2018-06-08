@@ -12,3 +12,9 @@ After learning about breadth-first-search, I decided to give depth-first-search 
 I'm still trying to learn this stuff, so please don't just fix the code for me.  Let me know where my bugs are and what you did to fix them, so I can have an easier time watching out for them next time!
 
 Thanks!
+
+## Solution
+1. Problem in DFS implementation in `graph.js`. Line 131 should be `.unshift()` because stacks are FIFO. Line 139 is unneeded.
+2. Line 62: The fill color is not set to the randomized color.
+3. Line 158: The function to randomize is named `onButton`, but the button onClick fires `Button`.
+4. Line 6-8: The size of the graph as defined in `App.js` ->  `xCount` and `yCount` is too small.
