@@ -40,14 +40,22 @@ class GraphView extends Component {
 
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'pink'; // 'white'; // 1. debug - set to visible color
+      ctx.fillStyle = 'white';
+      // 1. debug - set to visible color (e.g. pink) to see where canvas is cutting off
+      // Observation - canvas didn't seem to draw the right dimensions
+      // Search - cmd f 'width' to see if canvasWidth is implemented incorrectly in file
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
-    // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
+    console.log('color: ', color);
+    // 3. debug - see what manually set color does (e.g. green)
+    // Observation - all edges are same color, some are drawn before their vertexes and show up on top
+    // It's odd that everything is working without errors, but only some edges are drawn incorrectly
+    // Search - Problem may be in graph.js where vertex/edge relationship is built (dfs)
 
+    // Draw the edges
     for (let v of vertexes) {
       // From this vert
       for (let e of v.edges) {
@@ -61,12 +69,17 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f';
+    ctx.fillStyle = color; // '#77f';
+    // 6. debug - should be same color as edges
+    // edge color is determined first, so set vertex fill to edge strokeStyle
 
     for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
+      ctx.strokeStyle = color; // '#77f';
+      // 7. debug - must set strokeStyle again like above
+      //
       ctx.fill();
     }
 
@@ -86,7 +99,7 @@ class GraphView extends Component {
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
-    //g.dump();
+    // g.dump();
   }
 
   /**
