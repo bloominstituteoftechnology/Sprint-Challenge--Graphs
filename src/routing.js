@@ -55,6 +55,7 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let currentVertex = start;
   }
 
   /**
