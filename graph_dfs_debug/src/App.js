@@ -46,7 +46,7 @@ class GraphView extends Component {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
     //TODO: Need to remove console.log
-    console.log(this.drawVerts);
+
 
     // Clear it
     if (clear) {
