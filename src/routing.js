@@ -16,6 +16,7 @@ class Edge {
 class Vertex {
   constructor(value='vertex') {
     this.value = value;
+    this.origin = null;
     this.edges = [];
   }
 }
@@ -91,6 +92,12 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const toPrint = [];
+    while(start) {
+      toPrint.push(start.value);
+      start = start.origin;
+    }
+    console.log(toPrint.join(' --> '));
   }
 
   /**
