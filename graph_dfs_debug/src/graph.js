@@ -30,6 +30,9 @@ export class Graph {
    * Create a random graph
    */
   randomize(width, height, pxBox, probability=0.6) {
+
+    this.vertexes = [];
+
     // Helper function to set up two-way edges
     function connectVerts(v0, v1) {
       v0.edges.push(new Edge(v1));
@@ -136,7 +139,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack
       u.color = 'black';
 
       component.push(u);
