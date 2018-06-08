@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.parent = null;
+    this.color = "white";
   }
 }
 
@@ -45,6 +47,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for(let e of this.vertexes){
+      if(e.value === value){
+        return e;
+       }
+    }
+    return null;
   }
 
   /**
@@ -55,6 +63,25 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let que = [];
+    this.vertexes.forEach(e=>{
+      e.color="white";
+      e.parent = null;
+    });
+    start.color = "gray";
+    que.push(start);
+    while(que.length > 0){
+      let u = que[0];
+      u.edges.forEach(e=>{
+        if(e.destination.color==="white"){
+          e.destination.color="gray";
+          e.destination.parent = u;
+          que.push(e.destination);
+        }
+      });
+      que.shift();
+      u.color="black";
+    }
   }
 
   /**
@@ -66,6 +93,14 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let head = start;
+    while(head.parent !== null){
+      console.log(head.value);
+      head = head.parent;
+    }
+    console.log(head.value);
+
+    
   }
 
   /**
@@ -142,6 +177,7 @@ if (hostAVert === null) {
 }
 
 const hostBVert = graph.findVertex(args[1]);
+
 
 if (hostBVert === null) {
   console.error('routing: could not find host: ' + args[1]);
