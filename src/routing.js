@@ -28,7 +28,7 @@ class Graph {
   /**
    * Constructor
    */
-  constructor() {
+  constructor(args) {
     this.vertexes = [];
   }
 
@@ -45,6 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    const foundVertex = this.vertexes.find(function(vertex) {
+      return vertex.value === value;
+    });
+
+    if(foundVertex) return foundVertex;
+    return null;
   }
 
   /**
@@ -55,6 +61,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (const vertex of this.vertexes) {
+      vertex.color = 'white';
+      vertex.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue[0] != null) {
+      const node = queue[0];
+
+      for (const edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          vertex.parent = node;
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +97,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let vertex = start;
+    let output = '';
+
+    while (vertex != null) {
+      output += vertex.value;
+      if (vertex.parent) {
+        output += ' --> ';
+      }
+      vertex = vertex.parent;
+    }
+    console.log(output);
   }
 
   /**
@@ -149,5 +191,4 @@ if (hostBVert === null) {
 }
 
 // Show the route from one host to another
-
 graph.route(hostAVert, hostBVert);

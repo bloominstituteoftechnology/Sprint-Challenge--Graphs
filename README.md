@@ -11,7 +11,7 @@ the exact same procedure could be used to:
 
 * find how you're connected to a friend of a friend
 * route an AI through a level
-* etc.
+* etc
 
 ## Map of the Internet
 
@@ -50,7 +50,7 @@ BFS(graph, startVert):
 1. Perform a BFS from the _ending vert_ (host). This will set up all the
    `parent` pointers across the graph.
 
-2. Output the route by following the parent pointers from the _starting_ vert
+2. Output the route by following the parent pointers from the _starting vert_
    printing the values as you go.
 
 
