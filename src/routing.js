@@ -45,6 +45,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        return v;
+      } else {
+        return null;
+      }
+    }
   }
 
   /**
@@ -55,6 +62,28 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue;
+
+    for (let v of vertexes) {
+      v.color = "white";
+      v.parent = null;
+
+      queue.push(start);
+    }
+
+    while(queue.length !== 0) {
+      let currentV = queue.shift();
+    }
+
+    for (let edge of currentV.edges) {
+      if (edge.destination.color ==="white") {
+        edge.destination.color = "lightgray";
+        edge.destination,parent = currentV;
+
+        queue.push(edge.destination);
+      }
+    }
+    current.color = "black";
   }
 
   /**
