@@ -34,7 +34,7 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color = 'blue', clear = true) {
+  drawVerts(vertexes, color, clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
 
@@ -61,11 +61,11 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f';
 
     for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
+      ctx.fillStyle = color; // added this from line 63 to add color to vertexes
       ctx.stroke();
       ctx.fill();
     }
@@ -122,7 +122,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />; // changed from width=canvasheight
   }
 }
 
@@ -156,8 +156,9 @@ class App extends Component {
 
   render() {
     return (
+      // fixed type from this.Button
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph} />
       </div>
     );
