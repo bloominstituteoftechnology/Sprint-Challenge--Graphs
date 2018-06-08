@@ -47,10 +47,9 @@ class Graph {
   findVertex(value) {
     // !!! IMPLEMENT ME
 
-    for (let i = 0; i < this.vertexes.length; i++) {
-      // console.log(this.vertexes[i]);
-      if (this.vertexes[i].value === value) {
-        return this.vertexes[i];
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
       }
     }
     return null;
