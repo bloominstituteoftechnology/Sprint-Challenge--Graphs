@@ -128,7 +128,7 @@ export class Graph {
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack.pop();
+      const u = stack.shift();
       if(u.color === 'white') {
         u.color = 'gray';
         for (let e of u.edges) {
@@ -136,7 +136,6 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
       u.color = 'black';
 
       component.push(u);
