@@ -3,8 +3,8 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
-const yCount = 3;
+const xCount = 5; // 4
+const yCount = 4; // 3
 const boxSize = 150;
 const probability = 0.6;
 
@@ -59,7 +59,10 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+
+    // color was hardcoded, replaced with the color variable
+    // ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color;
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -93,7 +96,7 @@ class GraphView extends Component {
   updateCanvasConnectedComponents() {
     function randomHexColor() {
       let color = ((Math.random() * 240)|0).toString(16);
-
+      // console.log(color);
       if (color.length === 1) {
         color = '0' + color; // leading zero for values less than 0x10
       }
@@ -119,7 +122,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>; // typo width prop was passed in the wrong prop
   }
 }
 
@@ -143,20 +146,22 @@ class App extends Component {
    * Handle the button press
    */
   onButton() {
+    console.log('hitting onButton');
     const state = {
       graph: new Graph()
     };
-
-    state.graph.randomize(xCount, yCount, boxSize, probability);
+    this.state.graph.randomize(xCount, yCount, boxSize, probability);
 
     this.setState(state);
+
   }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
+        {/* Fixed this typo -> this.Button */}
+        <button onClick={this.onButton}>Random</button>
       </div>
     );
   }
