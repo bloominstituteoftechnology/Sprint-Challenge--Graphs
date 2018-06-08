@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +43,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    return this.vertexes.find((vertex) => vertex.value === value);
   }
 
   /**
@@ -53,8 +52,36 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
-    // !!! IMPLEMENT ME
+  bfs(start, end) {
+    let queue = [];
+    const pathToParent = [];
+
+    queue.push(start);
+
+    while (queue.length > 0) {
+      // console.log(queue);
+      let u = queue[0];
+      if (u.visited != true) {
+        pathToParent.push(u);
+        u.visited = true;
+      }
+      if (u.value !== end.value) {
+        for (let edge of u.edges) {
+          if (edge.visited != true) {
+            const v = edge.destination;
+            queue.push(v);
+            edge.visited = true;
+          }
+        }
+      } else {
+        break;
+      }
+
+      queue.shift();
+    }
+    // console.log('path', pathToParent);
+    return pathToParent;
+    // // !!! IMPLEMENT ME
   }
 
   /**
@@ -66,6 +93,18 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // console.log('outputR', start);
+    let path = '';
+    start.forEach((each, i) => {
+      if (i === start.length - 1) {
+        path += each.value;
+      } else if (i > 0 && i < start.length - 2) {
+        path += each.value + ' || ';
+      } else {
+        path += each.value + '-->';
+      }
+    });
+    console.log(path);
   }
 
   /**
@@ -73,10 +112,10 @@ class Graph {
    */
   route(start, end) {
     // Do BFS and build parent pointer tree
-    this.bfs(end);
-
+    const path = this.bfs(start, end);
+    // console.log(path)
     // Show the route from the start
-    this.outputRoute(start);
+    this.outputRoute(path);
   }
 }
 
@@ -133,7 +172,6 @@ graph.vertexes.push(vertH);
 
 // Look up the hosts passed on the command line by name to see if we can
 // find them.
-
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
@@ -149,5 +187,5 @@ if (hostBVert === null) {
 }
 
 // Show the route from one host to another
-
+// console.log(hostAVert, hostBVert)
 graph.route(hostAVert, hostBVert);
