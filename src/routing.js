@@ -5,7 +5,10 @@
  */
 class Edge {
   constructor(destination, weight=1) {
+    /** @type {Vertex} */
     this.destination = destination;
+
+    /** @type {number} */
     this.weight = weight;
   }
 }
@@ -14,9 +17,22 @@ class Edge {
  * Vertex class
  */
 class Vertex {
+
+  /**
+   * Creates an instance of Vertex.
+   * @param {any} value
+   */
   constructor(value='vertex') {
     this.value = value;
+
+    /** @type {Array<Edge>} */
     this.edges = [];
+
+    /** @type {string} */
+    this.color = undefined;
+
+    /** @type {Vertex} */
+    this.parent = undefined;
   }
 }
 
@@ -25,10 +41,8 @@ class Vertex {
  */
 class Graph {
 
-  /**
-   * Constructor
-   */
   constructor() {
+    /** @type {Array<Vertex>} */
     this.vertexes = [];
   }
 
@@ -44,7 +58,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    return this.vertexes.find(vertex => vertex.value === value);
   }
 
   /**
@@ -54,9 +68,30 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+    const queue = [start];
+    
+    // Reset
+    for (const vertex of this.vertexes) {
+      vertex.color = 'white';
+      vertex.parent = null;
+    }
+    
+    start.color = 'grey';
 
+    while (queue.length) {
+      const current = queue.shift();
+
+      for (const { destination } of current.edges) {
+        if (destination.color === 'white') {
+          destination.color = 'grey';
+          destination.parent = current;
+          queue.push(destination);
+        }
+      }
+
+      current.color = 'black';
+    }
+  }
   /**
    * Print out the route from the start vert back along the parent
    * pointers (set in the previous BFS)
@@ -65,7 +100,15 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let consoleOutput = start.value;
+    let current = start;
+
+    while (current.parent) {
+      current = current.parent;
+      consoleOutput += ` --> ${current.value}`;
+    }
+    
+    console.log(consoleOutput);
   }
 
   /**
