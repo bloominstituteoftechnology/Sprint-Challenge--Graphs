@@ -17,6 +17,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.parent = null;
   }
 }
 
@@ -44,7 +45,11 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i++){
+      if (this.vertexes[i].value === value)
+        return this.vertexes[i];
+    }
+    return null;
   }
 
   /**
@@ -54,7 +59,26 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const checkedVerts = {};
+    for (let i = 0; i < this.vertexes.length; i++){
+      checkedVerts[this.vertexes[i].value] = false;
+    }
+    
+    const toBeChecked = [];
+    toBeChecked.push(start);
+    checkedVerts[start.value] = true;
+    start.parent = 1;
+    while (toBeChecked.length > 0) {
+      let currentVert = toBeChecked[0];
+      for (let i = 0; i < currentVert.edges.length; i++){
+        if (currentVert.edges[i].destination.parent === null){
+          toBeChecked.push(currentVert.edges[i].destination);
+          currentVert.edges[i].destination.parent = currentVert;
+          // console.log(currentVert.edges[i].destination.value + ' ' + currentVert.edges[i].destination.parent.value);
+        }
+      }
+      toBeChecked.shift();
+    }
   }
 
   /**
@@ -65,7 +89,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    process.stdout.write(start.value);
+    start = start.parent;
+    while(start !== 1) {
+      process.stdout.write(' --> ');
+      process.stdout.write(start.value)
+      start = start.parent;
+    }
   }
 
   /**
