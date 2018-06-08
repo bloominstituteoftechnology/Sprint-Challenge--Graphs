@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.color = 'teal';
+    this.parent = null;
   }
 }
 
@@ -45,6 +47,7 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    return this.vertexes.find(vertex => vertex.value === value);
   }
 
   /**
@@ -55,6 +58,24 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    const connectedComponents = [];
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const current = queue[0];
+      for(let edge of current.edges) {
+        if(edge.destination.color === '#7BAFD4') {
+          edge.destination.color = "gray";
+          edge.destination.parent = current;
+          queue.push(edge.destination);
+        }
+      }
+      current.color = 'white';
+      connectedComponents.push(current);
+      queue.shift();
+    }
   }
 
   /**
@@ -66,6 +87,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    const routes = [];
+    let current = start;
+    while (current) {
+      routes.push(current.value);
+      current = current.parent;
+    }
+    console.log(routes.join('-->'));
   }
 
   /**
