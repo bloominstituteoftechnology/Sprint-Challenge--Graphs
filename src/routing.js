@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', pos = {x: 1, y: -1}) {
     this.value = value;
     this.edges = [];
+    this.pos = pos;
+    // this.color = 'white';
   }
 }
 
