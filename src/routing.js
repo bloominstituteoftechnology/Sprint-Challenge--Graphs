@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -45,6 +44,17 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    let rv = null;
+    let bfsArray = bfs(vertA);
+
+    for (let vertex of bfsArray) {
+      if (vertex === value) {
+        rv = value;
+        break;
+      }
+    }
+
+    return rv;
   }
 
   /**
@@ -55,6 +65,22 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    let found = [];
+    let queue = [];
+    found.push(start);
+    queue.push(start);
+
+    while (queue.length > 0) {
+      for (let edge of queue[0].edges) {
+        if (!found.includes(edge.destination)) {
+          found.push(edge.destination);
+          queue.push(edge.destination);
+        }
+      }
+      queue.shift();
+    }
+
+    return found; // if I start at vertG.. [vertG, vertF, VertC, vertE, vertH, ...], this return the full array with the start vertext at found[0]
   }
 
   /**
@@ -66,6 +92,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let bfsArray = bfs(start);
+
+    console.log('outputRoute: ');
+    for (let i = 0; i < bfsArray.length; i++) {
+      console.log(`${vertex.value}`);
+      if (i !== bfsArray.length - 1) {
+        console.log('->');
+      }
+    }
   }
 
   /**
