@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,10 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    // TODO: init parent
   }
 }
 
@@ -29,6 +30,7 @@ class Graph {
    * Constructor
    */
   constructor() {
+    console.log('constructor()', this);
     this.vertexes = [];
   }
 
@@ -44,6 +46,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
+    console.log('findVertex()');
     // !!! IMPLEMENT ME
   }
 
@@ -54,7 +57,29 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    console.log('bfs()', this.vertexes);
+    // BFS(graph, startVert):
+    // for v of graph.vertexes:
+    //   v.color = white
+    // v.parent = null   // <-- Add parent initialization
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+    // startVert.color = gray
+    // queue.enqueue(startVert)
+
+    // while !queue.isEmpty():
+    //   u = queue[0]
+
+    // for v of u.neighbors:
+    //   if v.color == white:
+    //     v.color = gray
+    // v.parent = u     // <-- Keep a parent link
+    // queue.enqueue(v)
+
+    // queue.dequeue()
+    // u.color = black
   }
 
   /**
@@ -65,6 +90,7 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
+    console.log('outputRoute()');
     // !!! IMPLEMENT ME
   }
 
@@ -72,6 +98,7 @@ class Graph {
    * Show the route from a starting vert to an ending vert.
    */
   route(start, end) {
+    // console.log('route()');
     // Do BFS and build parent pointer tree
     this.bfs(end);
 
@@ -84,6 +111,7 @@ class Graph {
  * Helper function to add bidirectional edges
  */
 function addEdge(v0, v1) {
+  // console.log('addEdge()');
   v0.edges.push(new Edge(v1));
   v1.edges.push(new Edge(v0));
 }
