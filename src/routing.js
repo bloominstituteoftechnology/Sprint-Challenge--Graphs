@@ -1,71 +1,63 @@
-// Search for "!!! IMPLEMENT ME" comments
-
-/**
- * Edge class
- */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
 }
 
-/**
- * Vertex class
- */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = "vertex") {
     this.value = value;
     this.edges = [];
   }
 }
 
-/**
- * Graph class
- */
 class Graph {
-
-  /**
-   * Constructor
-   */
   constructor() {
     this.vertexes = [];
   }
-
-  /**
-   * This function looks through all the vertexes in the graph and returns the
-   * first one it finds that matches the value parameter.
-   *
-   * Used from the main code to look up the verts passed in on the command
-   * line.
-   *
-   * @param {*} value The value of the Vertex to find
-   *
-   * @return null if not found.
-   */
+  // finds if a vertex exists and returns the value, else returns null
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    let found = this.vertexes.find(val => { 
+      return val.value === value; // returns value that matches query value
+    });
+    if (!found) {
+      found = null; // if not found, assigns from undefined to null
+    }
+    return found; // return result
   }
-
-  /**
-   * Breadth-First search from a starting vertex. This should keep parent
-   * pointers back from neighbors to their parent.
-   *
-   * @param {Vertex} start The starting vertex for the BFS
-   */
+  // bfs implementation
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = []; // initialize the queue array
+    for (let v of this.vertexes) { // iterate over each vertex in graph
+      v.color = 'white'; // assigns color to white to indicate it has not been visited
+      v.parent = null; // initializes parent key on object
+    }
+    start.color = 'gray'; // assigns active vertex to be gray per pseudocode instruction...could be omitted 
+    queue.push(start); // pushes start value into the queue to begin operation
+    while (queue.length > 0) { // checks if queue is empty and loops otherwise
+      const currentVert = queue[0]; // assigns current as index zero following FIFO
+      for (let edge of currentVert.edges) { // iterates over edges of vertex
+        let next = edge.destination // assigns next to be the destination of the vertex
+        if (next.color === 'white') { // checks if vertex has been visited
+          next.color = 'gray'; // change to working color if not visited
+          next.parent = currentVert; // assigns parent key of next as the current vertex
+          queue.push(next); // pushes the next vertex to the queue
+        }
+      }
+      currentVert.color = 'black'; // sets visited color to black
+      queue.shift(); // shifts current off of the queue
+    }
   }
-
-  /**
-   * Print out the route from the start vert back along the parent
-   * pointers (set in the previous BFS)
-   *
-   * @param {Vertex} start The starting vertex to follow parent
-   *                       pointers from
-   */
+  // outputs results to console
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let route = []; // initialize an array to hold the route
+    while (start) { // runs while additional backwards travel path exists
+      route = [...route].concat(start.value); // assigns route to old route concatenated with new vertex, moving backwards
+      start = start.parent; // reassigns start, will be checked in next potential loop cycle
+    }
+    const finalOutput = route.join(' --> '); // join array to string with connecting arrows as specified in pseudocode
+    console.log(finalOutput); // console log the output
   }
 
   /**
@@ -96,21 +88,21 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error('usage: routing hostA hostB');
+  console.error("usage: routing hostA hostB");
   process.exit(1);
 }
 
 // Build the entire Internet
 // (it's only a model)
 const graph = new Graph();
-const vertA = new Vertex('HostA');
-const vertB = new Vertex('HostB');
-const vertC = new Vertex('HostC');
-const vertD = new Vertex('HostD');
-const vertE = new Vertex('HostE');
-const vertF = new Vertex('HostF');
-const vertG = new Vertex('HostG');
-const vertH = new Vertex('HostH');
+const vertA = new Vertex("HostA");
+const vertB = new Vertex("HostB");
+const vertC = new Vertex("HostC");
+const vertD = new Vertex("HostD");
+const vertE = new Vertex("HostE");
+const vertF = new Vertex("HostF");
+const vertG = new Vertex("HostG");
+const vertH = new Vertex("HostH");
 
 addEdge(vertA, vertB);
 addEdge(vertB, vertD);
@@ -137,14 +129,14 @@ graph.vertexes.push(vertH);
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
-  console.error('routing: could not find host: ' + args[0]);
+  console.error("routing: could not find host: " + args[0]);
   process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
+  console.error("routing: could not find host: " + args[1]);
   process.exit(2);
 }
 
