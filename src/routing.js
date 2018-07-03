@@ -104,10 +104,10 @@ class Graph {
    */
   route(start, end) {
     // Do BFS and build parent pointer tree
-    this.bfs(start);
+    this.bfs(end);
 
     // Show the route from the start
-    this.outputRoute(end);
+    this.outputRoute(start);
   }
 }
 
@@ -172,10 +172,10 @@ if (hostAVert === null) {
   process.exit(2);
 }
 
-const hostBVert = graph.findVertex(args[2]);
+const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
+  console.error('routing: could not find host: ' + args[2]);
   process.exit(2);
 }
 
