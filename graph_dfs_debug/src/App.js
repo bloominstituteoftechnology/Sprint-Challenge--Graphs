@@ -136,7 +136,7 @@ class App extends Component {
   }
 
   
-  onButton() {
+  ranButton() {
     const state = {
       graph: new Graph(),
     };
@@ -149,7 +149,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.onButton}>Random</button>
+        <button onClick={this.ranButton}>Generate Random Graph</button>
         <GraphView graph={this.state.graph} />
       </div>
     );
