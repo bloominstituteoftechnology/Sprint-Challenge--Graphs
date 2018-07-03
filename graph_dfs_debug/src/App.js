@@ -126,7 +126,7 @@ class GraphView extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.onButton = this.onButton.bind(this);
+    this.ranButton = this.ranButton.bind(this);
 
     this.state = {
       graph: new Graph(),
