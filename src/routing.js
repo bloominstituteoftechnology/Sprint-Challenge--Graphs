@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +43,13 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        console.log(`vertex with matching value(${value}) found!`);
+        return v;
+      }
+    }
+    console.log(`No matches found!`);
   }
 
   /**
@@ -54,7 +59,36 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    // QUESTION: Still not entirely clear on what this doing??
+    console.log(`bfs started: start = ${start.value}`);
+    const queue = [];
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      // console.log(`inside bfs: ${v.value} color now ${v.color}`);
+    }
+    start.color = 'gray';
+    // console.log(`${start.value} color now ${start.color}`);
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let e of u.edges) {
+        // console.log(`1: ${e.destination.value} color now ${e.destination.color}`);
+        // For each edge, if destination is not found (e.g. color = 'white'), then do the following:
+        if (e.destination.color === 'white') {
+          e.destination.color = 'gray';
+          // console.log(
+          //   `2: ${e.destination.value} color now ${e.destination.color}`
+          // );
+          // console.log(`\nHi my name is ${e.destination.value}\nMy parent is ${u.value}\n`);
+          e.destination.parent = u; // reference back to parent
+          queue.push(e.destination); // #QUESTION: What is this doing???
+        }
+      }
+      queue.shift();
+      u.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +100,18 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let cV = start; // Current Vertex
+    let output = ''; // string output compiled throughout this
+
+    while (cV.parent) {
+      output += `${cV.value} --> `;
+      cV = cV.parent;
+    }
+    // The last cV will not have a parent, but needs to be appended:
+    // console.log(`Last cV = ${cV.value}`);
+    output += `${cV.value}`; // ???
+    console.log(`Output Route: ${output}`);
+    // return output; -- #QUESTION: Is this necessary???
   }
 
   /**
