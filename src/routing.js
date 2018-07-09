@@ -18,6 +18,8 @@ class Vertex {
     this.value = value;
     this.edges = [];
     // TODO: init parent
+    this.parent = null;
+    this.found = false;
   }
 }
 
@@ -48,6 +50,13 @@ class Graph {
   findVertex(value) {
     console.log('findVertex()');
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -58,28 +67,25 @@ class Graph {
    */
   bfs(start) {
     console.log('bfs()', this.vertexes);
-    // BFS(graph, startVert):
-    // for v of graph.vertexes:
-    //   v.color = white
-    // v.parent = null   // <-- Add parent initialization
-    for (let v of this.vertexes) {
-      v.color = 'white';
-      v.parent = null;
+
+    let queue = [];
+
+    queue.push(start);
+
+    start.found = true;
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+      for (let edge of vertex.edges) {
+        if (!edge.destination.found) {
+          queue.push(edge.destination);
+          edge.destination.found = true;
+          edge.destination.parent = vertex;
+        }
+      }
+
+      queue.shift();
     }
-    // startVert.color = gray
-    // queue.enqueue(startVert)
-
-    // while !queue.isEmpty():
-    //   u = queue[0]
-
-    // for v of u.neighbors:
-    //   if v.color == white:
-    //     v.color = gray
-    // v.parent = u     // <-- Keep a parent link
-    // queue.enqueue(v)
-
-    // queue.dequeue()
-    // u.color = black
   }
 
   /**
@@ -90,17 +96,27 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    console.log('outputRoute()');
-    // !!! IMPLEMENT ME
+    console.log('outputRoute() called');
+
+    let route = start.value;
+    let vertex = start;
+
+    while (vertex.parent) {
+      route += '-->' + vertex.parent.value;
+      vertex = vertex.parent;
+    }
+
+    console.log(route);
   }
 
   /**
    * Show the route from a starting vert to an ending vert.
    */
   route(start, end) {
-    // console.log('route()');
+    console.log('route()');
     // Do BFS and build parent pointer tree
     this.bfs(end);
+    console.log('bfs() called', this.vertexes[0]);
 
     // Show the route from the start
     this.outputRoute(start);
