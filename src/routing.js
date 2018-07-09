@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,12 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    // TODO: init parent
+    this.parent = null;
+    this.found = false;
   }
 }
 
@@ -29,6 +32,7 @@ class Graph {
    * Constructor
    */
   constructor() {
+    console.log('constructor()', this);
     this.vertexes = [];
   }
 
@@ -44,7 +48,15 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
+    console.log('findVertex()');
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -54,7 +66,26 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    console.log('bfs()', this.vertexes);
+
+    let queue = [];
+
+    queue.push(start);
+
+    start.found = true;
+
+    while (queue.length > 0) {
+      const vertex = queue[0];
+      for (let edge of vertex.edges) {
+        if (!edge.destination.found) {
+          queue.push(edge.destination);
+          edge.destination.found = true;
+          edge.destination.parent = vertex;
+        }
+      }
+
+      queue.shift();
+    }
   }
 
   /**
@@ -65,15 +96,27 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    console.log('outputRoute() called');
+
+    let route = start.value;
+    let vertex = start;
+
+    while (vertex.parent) {
+      route += '-->' + vertex.parent.value;
+      vertex = vertex.parent;
+    }
+
+    console.log(route);
   }
 
   /**
    * Show the route from a starting vert to an ending vert.
    */
   route(start, end) {
+    console.log('route()');
     // Do BFS and build parent pointer tree
     this.bfs(end);
+    console.log('bfs() called', this.vertexes[0]);
 
     // Show the route from the start
     this.outputRoute(start);
@@ -84,6 +127,7 @@ class Graph {
  * Helper function to add bidirectional edges
  */
 function addEdge(v0, v1) {
+  // console.log('addEdge()');
   v0.edges.push(new Edge(v1));
   v1.edges.push(new Edge(v0));
 }
