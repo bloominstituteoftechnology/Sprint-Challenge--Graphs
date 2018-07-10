@@ -43,8 +43,15 @@ class Graph {
    *
    * @return null if not found.
    */
+  // Looks through all vertices and returns the first match to value param
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    let vertex = null;
+    for (let i = 0; i < this.vertexes.length; i++) {
+      if (this.vertexes[i].value === value) {
+        vertex = this.vertexes[i];
+      }
+    }
+    return vertex;
   }
 
   /**
@@ -54,7 +61,34 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    for (let i = 0; i < this.vertexes.length; i++) {
+      this.vertexes[i].color = 'white';
+      this.vertexes[i].parent = null;
+    }
+    // Create a queue array to store vertices while searching graph
+    let queue = [];
+
+    // Default start color is gray
+    start.color = 'gray';
+
+    // Push first node into queue array
+    queue.push(start);
+
+    // Will execute as long as there are vertices in queue
+    while (queue.length > 0) {
+      let u = queue[0]; // Set var u to = first place in queue
+        // function runs until all points in queue have been visited, returns result
+      for (let v = 0; v < u.edges.length; v++) {
+        if (u.edges[v].destination.color === 'white') {
+          u.edges[v].destination.color = 'gray'
+          u.edges[v].destination.parent = u
+          queue.push(u.edges[v].destination);
+        }
+      }
+      queue.shift();
+      u.color = 'black'
+    }
+    return;
   }
 
   /**
@@ -65,8 +99,31 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let current = start;
+    let colorCount = 0;
+    let color = this.color(colorCount);
+
+    while (current.parent != null) {
+      process.stdout.write(`${color}${current.value}${color}-->`)
+      current = current.parent
+      colorCount++
+      color = this.color(colorCount);
+    }
+    process.stdout.write(`${color}${current.value}${color}\n`)
   }
+// Just an extra function to add color coding to the paths!
+  color(i) {
+    const colors = [
+      "\x1b[32m",
+      "\x1b[36m",
+      "\x1b[34m",
+      "\x1b[35m",
+      "\x1b[33m"
+    ]
+    return colors[i];
+  }
+
+
 
   /**
    * Show the route from a starting vert to an ending vert.
