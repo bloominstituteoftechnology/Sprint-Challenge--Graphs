@@ -17,7 +17,8 @@ class Vertex {
   constructor(value = "vertex") {
     this.value = value;
     this.edges = [];
-    this.touched - false;
+    this.touched = false;
+    this.parent = null;
   }
 }
 
@@ -65,6 +66,7 @@ class Graph {
 
       for (let e of vertex.edges) {
         if (!e.destination.touched) {
+          e.destination.parent = vertex;
           queue.push(e.destination);
           e.destination.touched = true;
         }
@@ -83,6 +85,16 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let v = start;
+    let output = "";
+
+    while (v.parent) {
+      output += `${v.value}-->`;
+
+      v = v.parent;
+    }
+
+    console.log(`${output}`);
   }
 
   /**
