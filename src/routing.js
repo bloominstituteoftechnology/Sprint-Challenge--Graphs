@@ -46,6 +46,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) return v;
+    }
+    return null;
   }
 
   /**
@@ -94,7 +98,7 @@ class Graph {
       v = v.parent;
     }
 
-    console.log(`${output}`);
+    console.log(`${output}${v.value}`);
   }
 
   /**
