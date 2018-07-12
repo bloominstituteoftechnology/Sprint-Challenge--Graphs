@@ -12,9 +12,10 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', color='white') {
     this.value = value;
     this.edges = [];
+    this.color = color;
   }
 }
 
@@ -115,22 +116,17 @@ export class Graph {
   /**
    * Depth-first Search
    */
-  dfs(start, reset=true) {
-    const component = [];
+  dfs(start) {
+    const component = new Set();
     const stack = [];
-
-    if (reset) {
-      for (let v of this.vertexes) {
-        v.color = 'white';
-      }
-    }
 
     stack.push(start);
 
     while (stack.length > 0) {
       const u = stack.pop();
-      if(u.color === 'white') {
+      if (u.color === 'white') {
         u.color = 'gray';
+
         for (let e of u.edges) {
           stack.push(e.destination);
         }
@@ -139,7 +135,7 @@ export class Graph {
       stack.shift(); // de-stack
       u.color = 'black';
 
-      component.push(u);
+      component.add(u);
     }
 
     return component;
@@ -151,13 +147,9 @@ export class Graph {
   getConnectedComponents() {
     const componentsList = [];
 
-    let needReset = true;
-
     for (let v of this.vertexes) {
-      if (needReset || v.color === 'white') {
-        const component = this.dfs(v, needReset);
-        needReset = false;
-
+      if (v.color === 'white') {
+        const component = this.dfs(v);
         componentsList.push(component);
       }
     }
