@@ -11,7 +11,8 @@ const probability = 0.6;
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
 const canvasHeight = boxSize * yCount;
-const radius = boxSize / 8;
+// Adjust the size
+const radius = boxSize / 10;
 
 /**
  * GraphView
@@ -121,8 +122,9 @@ class GraphView extends Component {
   /**
    * Render
    */
+  // Typo in render, should be canvasWidth
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />;
   }
 }
 
