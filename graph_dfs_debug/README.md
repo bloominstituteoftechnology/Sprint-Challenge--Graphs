@@ -9,6 +9,6 @@ After learning about breadth-first-search, I decided to give depth-first-search 
 3.  My randomize button is broken.
 4.  It looks like part of the graph is getting cut off.
 
-I'm still trying to learn this stuff, so please don't just fix the code for me.  Let me know where my bugs are and what you did to fix them, so I can have an easier time watching out for them next time!
+I'm still trying to learn this stuff, so please don't just fix the code for me. Let me know in the `Answers.md` file where my bugs are and what you did to fix them, so I can have an easier time watching out for them next time. Oh and don't forget to `npm` or `yarn` install!
 
 Thanks!
