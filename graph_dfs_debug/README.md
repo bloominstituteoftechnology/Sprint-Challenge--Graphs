@@ -4,7 +4,6 @@ Hi Friend,
 
 After learning about breadth-first-search, I decided to give depth-first-search a try.  I'm pretty sure I've almost got it working, but I can't figure out the last few bugs.  Can you help?  I've got the following issues.  I'm not sure if the order here matters, you might have to fix them in a different order than they are listed.
 
-1. Is my DFS implementation correct?
 1. The graph draws crazily.
 2. All the vertexes are the same color.  They're supposed to match the color of the edges for each connected component.
 3. My randomize button is broken.
