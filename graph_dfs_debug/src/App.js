@@ -141,6 +141,7 @@ class App extends Component {
     };
 
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
+    this.state.graph.getConnectedComponents();
   }
 
   /**

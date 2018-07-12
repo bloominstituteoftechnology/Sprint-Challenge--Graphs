@@ -135,8 +135,8 @@ export class Graph {
           stack.push(e.destination);
         }
       }
-
-      stack.shift(); // de-stack
+      // We are already popping from the stack
+      // stack.shift(); // de-stack
       u.color = "black";
 
       component.push(u);
