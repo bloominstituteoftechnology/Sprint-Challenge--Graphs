@@ -1,5 +1,8 @@
 Describe the fixes you made to the Graph implementation here.
 
-graph.js - comment out line 135, as DFS uses stack which are LIFO and thus
-use push and pop.
+graph.js - line 135
+Comment out stack.shift() in dfs(), as DFS uses stack which are LIFO and thus use push and pop.
+
+app.js - line 66
+Change ctx.fillStyle = '#77f' to ctx.fillStyle = color, so that color will match vertex color from updateCanvasConnectedComponents()
 
