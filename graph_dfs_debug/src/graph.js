@@ -2,9 +2,8 @@
  * Edge
  */
 export class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination) {
     this.destination = destination;
-    this.weight = weight;
   }
 }
 
@@ -12,10 +11,10 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value='default', pos = {x: -1, y: -1}) {
     this.value = value;
     this.edges = [];
-    this.color = color;
+    this.pos = pos;
   }
 }
 
@@ -33,8 +32,8 @@ export class Graph {
   randomize(width, height, pxBox, probability=0.6) {
     // Helper function to set up two-way edges
     function connectVerts(v0, v1) {
-      v0.edges.push(new Edge(v1));
-      v1.edges.push(new Edge(v0));
+      v0.edges.push(new Edge(v1)); // array, need to add above
+      v1.edges.push(new Edge(v0)); // v0 is destination
     }
 
     let count = 0;
@@ -114,28 +113,29 @@ export class Graph {
   }
 
   /**
-   * Depth-first Search
+   * Bredth-first Search
    */
-  dfs(start) {
-    const component = new Set();
-    const stack = [];
+  bfs(start) {
+    const component = [];
+    const queue = [];
 
-    stack.push(start);
+    start.color = 'gray';
+    queue.push(start);
 
-    while (stack.length > 0) {
-      const u = stack.pop();
-      if (u.color === 'white') {
-        u.color = 'gray';
+    while (queue.length > 0) {
+      const u = queue[0]; // get first item here
 
-        for (let e of u.edges) {
-          stack.push(e.destination);
+      for (let e of u.edges) {
+        const v = e.destination;
+        if (v.color === 'white') {
+          v.color = 'gray';
+          queue.push(v);
         }
       }
 
-      stack.shift(); // de-stack
+      queue.shift();
       u.color = 'black';
-
-      component.add(u);
+      component.push(u);
     }
 
     return component;
@@ -148,12 +148,16 @@ export class Graph {
     const componentsList = [];
 
     for (let v of this.vertexes) {
+      v.color = 'white';
+    }
+    console.log(this.vertexes);
+
+    for (let v of this.vertexes) {
       if (v.color === 'white') {
-        const component = this.dfs(v);
+        const component = this.bfs(v);
         componentsList.push(component);
       }
     }
-
     return componentsList;
   }
 }
