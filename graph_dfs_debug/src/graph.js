@@ -132,7 +132,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      //stack.shift(); // de-stack   //There is already a pop function
       u.color = 'black';
 
       component.add(u);
