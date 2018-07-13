@@ -1,5 +1,8 @@
+
 .App {
   text-align: center;
+  margin: 5%;
+  padding: 5%;
 }
 
 .App-logo {
@@ -20,6 +23,19 @@
 
 .App-intro {
   font-size: large;
+}
+
+button {
+  margin: 2%;
+  padding: 1%;
+  border: 2px green;
+  background: blue;
+  color: white;
+  font: 2em bold;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 @keyframes App-logo-spin {
