@@ -124,20 +124,19 @@ export class Graph {
     // console.log("stack", stack);
 
     while (stack.length > 0) {
-      // stack.pop();
       const u = stack[0];
-      for (let e of u.edges) {
-        if (e.destination === "white") {
-          e.destination = "gray";
+      // stack.pop();
+      if (u.color === "white") {
+        u.color = "gray";
+        u.searched = true;
 
+        for (let e of u.edges) {
           stack.push(e.destination);
         }
-        console.log("queue", stack[0]);
-        // console.log("color of queue", stack[0].color);
       }
 
-      stack.shift(); // de-stack
       u.color = "black";
+      stack.shift(); // de-stack
 
       component.add(u);
     }

@@ -11,5 +11,3 @@ Line 158: onClick was linked to non-exisiting function. Fixed path to proper fun
 # graph.js
 
 Line 128: reassigned u to stack[0], rather than return value of stack.pop
-
-
