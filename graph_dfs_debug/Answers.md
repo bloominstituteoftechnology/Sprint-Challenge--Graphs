@@ -1,7 +1,7 @@
 Describe the fixes you made to the Graph implementation here.
 
 1. The graph draws crazily.
-    In graph.js  stack.shift() was changed to unshift();
+    In graph.js  stack.shift() was changed to unshift(); This one took me forever to find.
 
 2. All the vertexes are the same color.  They're supposed to match the color of the edges for each connected component.
     They were the same color because fillStyle was not being randomized. It was set to a specific color.
