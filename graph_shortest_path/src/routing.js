@@ -61,7 +61,28 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    
+    let queue = [];
+    let found = [];
+
+    queue.push(start);
+    found.push(start);
+
+    while (queue.length) {
+    const current = queue.shift();
+  
+      for (let edge of current.edges) {
+        let isNew = true;
+        found.forEach(x => {
+          if (x.value === edge.destination.value)
+              isNew = false;
+        })
+        if (isNew) {
+          edge.destination.origin = current;
+          queue.push(edge.destination);
+          found.push(edge.destination);
+        }
+      }
+    }
   }
 
   /**
