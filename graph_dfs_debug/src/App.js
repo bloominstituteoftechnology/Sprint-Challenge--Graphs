@@ -8,9 +8,9 @@ const yCount = 3;
 const boxSize = 150;
 const probability = 0.6;
 
-// Figure out the canvas size //Added parens with `+1` to make the canvas big enough to fit the graph better
-const canvasWidth = boxSize * (xCount + 1);
-const canvasHeight = boxSize * (yCount + 1);
+// Figure out the canvas size 
+const canvasWidth = boxSize * (xCount + 1); //<-- Added parens with `+1` to make the canvas big enough to fit the graph better
+const canvasHeight = boxSize * (yCount + 1); //<-- Added parens with `+1` to make the canvas big enough to fit the graph better
 const radius = boxSize / 8;
 
 /**
@@ -40,7 +40,7 @@ class GraphView extends Component {
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'grey'; // changed to grey to see canvas
+      ctx.fillStyle = 'grey'; // <-- changed to grey to see canvas
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; // <-- changed from #77f to `color` 
 
     for (let v of vertexes) {
       ctx.beginPath();

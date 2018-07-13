@@ -5,3 +5,5 @@ Describe the fixes you made to the Graph implementation here.
 
 2. Updated canvasWidth and canvasHeight by adding +1 to x and y count in order to fit the graph better
 
+3. Under 'Draw the Verts on top' I changed the fillStyle from #77f to 'color' so verts would have different colors versus staying all the same.
+
