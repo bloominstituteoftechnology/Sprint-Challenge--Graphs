@@ -91,7 +91,15 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
+    let vertex = start;
+    let tempStr = "";
 
+    while (vertex.parent !== null) {
+      tempStr += vertex.value + " -> ";
+      vertex = vertex.parent;
+    }
+    tempStr += vertex.value;
+    console.log(tempStr);
   }
 
   /**
