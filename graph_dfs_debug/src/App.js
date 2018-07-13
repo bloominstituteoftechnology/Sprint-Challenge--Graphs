@@ -5,13 +5,13 @@ import './App.css';
 // Define the size of the random graph
 const xCount = 4;
 const yCount = 4;
-const boxSize = 162;
+const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
 const canvasHeight = boxSize * yCount;
-const radius = boxSize / 8;
+const radius = boxSize / 10;
 
 /**
  * GraphView
