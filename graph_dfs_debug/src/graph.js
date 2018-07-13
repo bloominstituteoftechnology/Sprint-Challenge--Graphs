@@ -12,10 +12,11 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value='Default', pos = { x: -1, y: -1}, color='white') {
     this.value = value;
     this.edges = [];
     this.color = color;
+    this.pos = pos;
   }
 }
 
@@ -113,33 +114,64 @@ export class Graph {
     }
   }
 
-  /**
-   * Depth-first Search
+    /**
+   * BFS
    */
-  dfs(start) {
+  bfs(start) {
+    // !!! IMPLEMENT ME
     const component = new Set();
-    const stack = [];
+    const queue = [];
 
-    stack.push(start);
+    start.color = 'gray';
+    queue.push(start);
 
-    while (stack.length > 0) {
-      const u = stack.pop();
-      if (u.color === 'white') {
-        u.color = 'gray';
+    while (queue.length > 0) {
+      const node = queue[0];
 
-        for (let e of u.edges) {
-          stack.push(e.destination);
+      for (let edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          queue.push(vertex);
         }
       }
 
-      stack.shift(); // de-stack
-      u.color = 'black';
+      queue.shift();
+      node.color = 'black';
 
-      component.add(u);
+      component.add(node);
     }
-
+    
     return component;
   }
+
+  // /**
+  //  * Depth-first Search
+  //  */
+  // dfs(start) {
+  //   const component = new Set();
+  //   const stack = [];
+
+  //   stack.push(start);
+
+  //   while (stack.length > 0) {
+  //     const u = stack.pop();
+  //     if (u.color === 'white') {
+  //       u.color = 'gray';
+
+  //       for (let e of u.edges) {
+  //         stack.push(e.destination);
+  //       }
+  //     }
+
+  //     stack.shift(); // de-stack
+  //     u.color = 'black';
+
+  //     component.add(u);
+  //   }
+
+  //   return component;
+  // }
 
   /**
    * Get the connected components
@@ -149,7 +181,7 @@ export class Graph {
 
     for (let v of this.vertexes) {
       if (v.color === 'white') {
-        const component = this.dfs(v);
+        const component = this.bfs(v);
         componentsList.push(component);
       }
     }

@@ -3,8 +3,8 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
-const yCount = 3;
+const xCount = 5;
+const yCount = 4;
 const boxSize = 150;
 const probability = 0.6;
 
@@ -91,7 +91,7 @@ class GraphView extends Component {
    * Draw the connected components
    */
   updateCanvasConnectedComponents() {
-    function randomHexColor() {
+   function randomHexColor() {
       let color = ((Math.random() * 240)|0).toString(16);
 
       if (color.length === 1) {
@@ -119,7 +119,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
@@ -155,8 +155,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
+        <button onClick={this.onButton}>Random</button>
       </div>
     );
   }
