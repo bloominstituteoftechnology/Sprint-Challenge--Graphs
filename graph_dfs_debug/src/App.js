@@ -60,7 +60,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = color; 
+    ctx.fillStyle = 'purple'; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -70,7 +70,7 @@ class GraphView extends Component {
     }
 
     // Draw the vert names
-    ctx.font = '10px sans-serif';
+    ctx.font = '14px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
 
