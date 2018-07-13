@@ -16,6 +16,11 @@ class Vertex {
     this.color = color;
     this.parent = null;
   }
+
+  restoreDefaults() {
+    this.color = "white";
+    this.parent = null;
+  }
 }
 
 /* Graph class */
@@ -49,10 +54,7 @@ class Graph {
     const queue = [start];
     const connections = [];
 
-    this.vertexes.forEach(v => {
-      v.color = "white";
-      v.parent = null;
-    });
+    this.vertexes.forEach(v => v.restoreDefaults());
 
     start.color = "gray";
     
