@@ -70,18 +70,14 @@ class GraphView extends Component {
     }
   }
   
-  /**
-   * Draw the entire graph
-   */
+  /* Draw the entire graph */
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
     // g.dump();
   }
 
-  /**
-   * Draw the connected components
-   */
+  /* Draw the connected components */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
       let color = ((Math.random() * 240)|0).toString(16);
@@ -107,18 +103,14 @@ class GraphView extends Component {
     }
   }
 
-  /**
-   * Render
-   */
+  /* Render */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
 
-/**
- * App
- */
+/* App */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -131,9 +123,7 @@ class App extends Component {
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
   }
 
-  /**
-   * Handle the button press
-   */
+  /* Handle the button press */
   onButton() {
     const state = { graph: new Graph() };
     state.graph.randomize(xCount, yCount, boxSize, probability);
