@@ -18,7 +18,7 @@ class Vertex {
     this.value = value;
     this.edges = [];
     this.parent = null;
-    this.color = red;
+    this.color = 'red';
   }
 }
 
@@ -62,7 +62,7 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    start.color = blue;
+    start.color = 'blue';
     let queue = [];
     queue.push(start)
 
@@ -90,6 +90,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let output = start.value;
+    let vertex = start;
+    while (vertex.parent) {
+      output += ' goes to ' + vertex.parent.value;
+      vertex = vertex.parent;
+    }
+    console.log(output);
   }
 
   /**
