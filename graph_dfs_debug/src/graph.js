@@ -120,21 +120,18 @@ export class Graph {
     const component = new Set();
     const stack = [];
 
-    start.color = "gray";
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack[stack.length - 1];
+      const u = stack.pop();
 
-      for (let edge of u.edges) {
-        if (edge.destination.color === "white") {
-          edge.destination.color = "gray";
+      if (u.color === "white") {
+        u.color = "gray";
+        for (let edge of u.edges) {
           stack.push(edge.destination);
         }
       }
       u.color = "black";
-      stack.shift(); // de-stack
-
       component.add(u);
     }
 

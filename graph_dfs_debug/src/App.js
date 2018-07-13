@@ -5,7 +5,7 @@ import "./App.css";
 // Define the size of the random graph
 const xCount = 4;
 const yCount = 3;
-const boxSize = 350;
+const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
@@ -85,12 +85,12 @@ class GraphView extends Component {
   /**
    * Draw the entire graph
    */
-  // updateCanvasEntireGraph() {
-  //   const g = this.props.graph;
-  //   this.updateCanvasConnectedComponents();
-  //   // this.drawVerts(g.vertexes);
-  //   //g.dump();
-  // }
+  updateCanvasEntireGraph() {
+    const g = this.props.graph;
+    this.updateCanvasConnectedComponents();
+    this.drawVerts(g.vertexes);
+    //g.dump();
+  }
 
   /**
    * Draw the connected components
