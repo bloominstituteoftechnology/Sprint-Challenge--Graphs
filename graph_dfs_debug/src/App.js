@@ -104,6 +104,7 @@ class GraphView extends Component {
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
+    g.dump();
 
     let clear = true;
 

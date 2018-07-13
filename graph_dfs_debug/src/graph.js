@@ -11,14 +11,16 @@ export class Edge {
 /**
  * Vertex
  */
+
 export class Vertex {
-  constructor(value='vertex', color='white') {
-    this.value = value;
+  // !!! IMPLEMENT ME
+  constructor(value='default', pos={x: -1, y: -1}, color='white') {
     this.edges = [];
+    this.value = value;
+    this.pos = pos;
     this.color = color;
   }
 }
-
 /**
  * Graph
  */
@@ -124,19 +126,19 @@ export class Graph {
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack.pop();
-      if (u.color === 'white') {
-        u.color = 'gray';
+      const node = stack[0];
 
-        for (let e of u.edges) {
+      for (let e of node.edges) {
+        if (e.destination.color === 'white') {
+          e.destination.color = 'gray';
           stack.push(e.destination);
         }
       }
 
-      stack.shift(); // de-stack
-      u.color = 'black';
+      stack.pop(); // de-stack
+      node.color = 'black';
 
-      component.add(u);
+      component.add(node);
     }
 
     return component;
@@ -181,7 +183,7 @@ export class Graph {
 
     for (let v of this.vertexes) {
       if (v.color === 'white') {
-        const component = this.bfs(v);
+        const component = this.dfs(v);
         componentsList.push(component);
       }
     }
