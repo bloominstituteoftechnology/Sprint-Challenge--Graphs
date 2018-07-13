@@ -47,13 +47,13 @@ class Graph {
     // !!! IMPLEMENT ME
 
     for(let v of this.vertexes) {
-      if(v.value = value) {
+      if(v.value == value) {
         return v;
       }
 
-      else {
-        return null;
-      }
+      // else {
+      //   return null;
+      // } //Caused bug, kept returning "routing: could not find host: HostD"
     }
   }
 
@@ -82,7 +82,7 @@ class Graph {
         if(e.destination.color === "white") {
           e.destination.color = "gray";
           e.destination.parent = s;
-          queue.push(edge.destination);
+          queue.push(e.destination);
         }
       }
 
@@ -101,6 +101,23 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currVert = start;
+    let end = "";
+
+    while(currVert.parent) {
+      if(currVert === start) {
+        end += start.value + " --> " + start.parent.value;
+      } else {
+        end += " --> " +  currVert.parent.value;
+      }
+
+      currVert = currVert.parent;
+    }
+
+    console.log(end);
+
+    
+
   }
 
   /**
