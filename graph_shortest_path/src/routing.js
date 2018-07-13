@@ -63,6 +63,11 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
   }
 
   /**
