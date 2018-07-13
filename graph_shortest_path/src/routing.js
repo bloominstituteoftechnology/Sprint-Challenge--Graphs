@@ -10,16 +10,16 @@ class Edge {
 
 /* Vertex class */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', color='white') {
     this.value = value;
     this.edges = [];
+    this.color = color;
+    this.parent = null;
   }
 }
 
 /* Graph class */
 class Graph {
-
-  /* Constructor */
   constructor() {
     this.vertexes = [];
   }
@@ -47,7 +47,32 @@ class Graph {
    */
   bfs(start) {
     const queue = [start];
-    const 
+    const connections = [];
+
+    this.vertexes.forEach(v => {
+      v.color = "white";
+      v.parent = null;
+    });
+
+    start.color = "gray";
+    
+    while (queue.length) {
+      const vertex = queue.shift();
+
+      vertex.color = "black";
+      connections.push(vertex);
+
+      vertex.edges.forEach(e => {
+        const target = e.destination;
+        if (target.color === "white") {
+          target.color = "gray";
+          target.parent = vertex;
+          queue.push(target);
+        }
+      });
+    }
+
+    return connections;
   }
 
   /**
