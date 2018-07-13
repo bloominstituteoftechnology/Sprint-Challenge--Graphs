@@ -11,4 +11,4 @@ Fix:
 Fix: this.Button needed this.onButton
 
 4. It looks like part of the graph is getting cut off.
-Fix:
+Fix: Canvas was rendering it's width with the value of cavasheight, changed to canvaswidth
