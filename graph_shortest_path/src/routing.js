@@ -60,6 +60,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const component = [];
+    const queue = [];
+    
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;   // <-- Add parent initialization
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const u = queue.shift();
+
+      for (let edge of u.edges) {
+        if (edge.destination.color === 'white') {
+          edge.destination.color = 'gray';
+          edge.destination.parent = u;     // <-- Keep a parent link
+          queue.push(edge.destination);
+        }
+      }
+      u.color = 'black';
+      component.push(u);
+    }
+    return component;
   }
 
   /**
