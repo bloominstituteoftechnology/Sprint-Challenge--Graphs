@@ -12,7 +12,7 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value='vertex',  color='white') {
     this.value = value;
     this.edges = [];
     this.color = color;
@@ -120,7 +120,6 @@ export class Graph {
     const component = new Set();
     const stack = [];
 
-    // start.color ='gray';
     stack.push(start);
 
     while (stack.length > 0) {
