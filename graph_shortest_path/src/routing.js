@@ -90,8 +90,15 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-  }
-
+    let vert = start;
+    console.log(vert.value);
+    while (vert.parent !=  null) {
+      process.stdout.write(`${vert.value} --> `);
+      vert = vert.parent;
+    }
+    console.log(vert.value);
+    }
+    
   /**
    * Show the route from a starting vert to an ending vert.
    */
