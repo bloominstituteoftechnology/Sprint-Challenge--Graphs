@@ -123,7 +123,7 @@ export class Graph {
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack.pop();
+      const u = stack.pop(); // de-stack
       if (u.color === 'white') {
         u.color = 'gray';
 
@@ -132,7 +132,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack
       u.color = 'black';
 
       component.add(u);
