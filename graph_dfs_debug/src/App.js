@@ -3,9 +3,9 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
-const yCount = 3;
-const boxSize = 150;
+const xCount = 5;
+const yCount = 5;
+const boxSize = 120;
 const probability = 0.6;
 
 // Figure out the canvas size
@@ -65,6 +65,7 @@ class GraphView extends Component {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
+      ctx.fillStyle = color;
       ctx.fill();
     }
 
@@ -105,13 +106,36 @@ class GraphView extends Component {
     const connectedComponents = g.getConnectedComponents();
 
     let clear = true;
-
     for (let component of connectedComponents) {
       // Color just like in CSS
-      const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
+      const curColor= '#' + randomHexColor() + randomHexColor() + randomHexColor();
+      console.log("Component, color", component, curColor)
 
       this.drawVerts(component, curColor, clear);
       clear = false;
+      // <<<  >>>>  <<< >>>
+      // let canvas = this.refs.canvas;
+      // let ctx = canvas.getContext('2d');
+      // // const curColor = randomHexColor();
+      // component.forEach((v, i) => {
+      //   ctx.beginPath();
+      //   ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI);
+      //   ctx.fillStyle = curColor;
+      //   ctx.fill();
+      //   let length = v.edges.length;
+      //   for (let i = 0; length > i; i++) {
+      //     ctx.beginPath();
+      //     ctx.moveTo(v.pos.x, v.pos.y);
+      //     ctx.lineTo(v.edges[i].destination.pos.x, v.edges[i].destination.pos.y);
+      //     ctx.strokeStyle = curColor;
+      //     ctx.stroke();
+      //   }
+      //   ctx.font = '15px Arial';
+      //   ctx.textAlign = 'center';
+      //   ctx.textBaseline = 'middle'
+      //   ctx.fillStyle = 'white';
+      //   ctx.fillText(v.value, v.pos.x, v.pos.y)
+      // });
     }
   }
 
@@ -130,7 +154,7 @@ class GraphView extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.onButton = this.onButton.bind(this);
+    // this.onButton = this.onButton.bind(this);
 
     this.state = {
       graph: new Graph()
@@ -142,20 +166,19 @@ class App extends Component {
   /**
    * Handle the button press
    */
-  onButton() {
+  onButton = () => {
+    console.log("Fired button")
     const state = {
       graph: new Graph()
     };
-
     state.graph.randomize(xCount, yCount, boxSize, probability);
-
     this.setState(state);
   }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
