@@ -46,11 +46,11 @@ class Graph {
     // !!! IMPLEMENT ME
     for (let i = 0; i < this.vertexes.length; i++) {
       if (value === this.vertexes[i].value) {
-        console.log(`Vertex '${value}' Found`);
+        // console.log(`Vertex '${value}' Found`);
         return this.vertexes[i];
       }
     }
-    console.log("null");
+    // console.log("null");
     return null;
   }
 
@@ -67,23 +67,23 @@ class Graph {
       // console.log(each);
       each.color = "white";
       each.parent = null;
-      console.log(start);
     }
-    start.color = grey;
+    start.color = "grey";
     queue.push(start);
 
-    while (queue > 0) {
-      u = queue[0];
+    while (queue.length != 0) {
+      let u = queue[0];
 
-      for (vert of u.destination) {
-        if (vert.color == white) {
-          vert.color = grey;
-          vert.parent = u;
-          queue.push(vert);
+      for (let vert of u.edges) {
+        if (vert.destination.color == "white") {
+          vert.destination.color = "grey";
+          vert.destination.parent = u;
+          queue.push(vert.destination);
         }
       }
+
       queue.shift();
-      u.color = black;
+      u.color = "black";
     }
   }
 
@@ -96,6 +96,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+
+    let route = start.value;
+    let next = start;
+
+    while (next.parent != null) {
+      route += " --> " + next.parent.value;
+      // console.log("route:", route);
+
+      next = next.parent;
+    }
+    console.log("\n route: ", route);
   }
 
   /**
