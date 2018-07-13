@@ -44,7 +44,7 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-    return this.vertexes.find(vert => vert.value === value)
+    return this.vertexes.find(vert => vert.value === value) || null
   }
 
   /**
@@ -55,6 +55,20 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [start]
+    const component = []
+    while (queue.length > 0) {
+      const vertex = queue.shift()
+      vertex.state = 1
+      component.push(vertex)
+      vertex.edges.map(edge => edge.destination).forEach(vert => {
+        if (vert.state === 0) {
+          vert.state = 1
+          queue.push(vert)
+        }
+      })
+    }
+    return component
   }
 
   /**
@@ -66,6 +80,20 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let s
+
+    for (let v of this.bfs(start)) {
+      if (v.pos) {
+        s = v.value + ' (' + v.pos.x + ',' + v.pos.y + '):'
+      } else {
+        s = v.value + ':'
+      }
+
+      for (let e of v.edges) {
+        s += ` ${e.destination.value}`
+      }
+      console.log(s)
+    }
   }
 
   /**
