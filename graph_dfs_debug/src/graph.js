@@ -120,6 +120,7 @@ export class Graph {
     const component = new Set();
     const stack = [];
 
+    // start.color ='gray';
     stack.push(start);
 
     while (stack.length > 0) {

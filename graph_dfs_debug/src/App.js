@@ -40,7 +40,8 @@ class GraphView extends Component {
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+
+      ctx.fillStyle = 'teal';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -155,8 +156,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.onButton}>Random</button>
+        
         <GraphView graph={this.state.graph}></GraphView>
+        <div>
+        <button onClick={this.onButton}>Random</button>
+        </div>
       </div>
     );
   }
