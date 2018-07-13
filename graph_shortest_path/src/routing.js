@@ -137,7 +137,7 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error("\x1b[41musage format:\x1b[0m routing hostA hostB");
+  console.error("\x1b[41musage format:\x1b[0m routing HostA HostB");
   process.exit(1);
 }
 
