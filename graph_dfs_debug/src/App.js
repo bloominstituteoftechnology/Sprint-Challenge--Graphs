@@ -9,8 +9,8 @@ const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasWidth = boxSize * (xCount + 1);
+const canvasHeight = boxSize * (yCount + 1);
 const radius = boxSize / 8;
 
 /**
