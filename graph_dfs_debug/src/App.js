@@ -124,7 +124,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />;
   }
 }
 

@@ -8,3 +8,6 @@ Change ctx.fillStyle = '#77f' to ctx.fillStyle = color, so that color will match
 
 app.js - line 162
 Change onClick={this.Button} to onClick={this.onButton} to utilize provided onButton() function.
+
+app.js - line 127
+Change width={canvasHeight} to width={canvasWidth}.  Width was set to given height rather than width.
