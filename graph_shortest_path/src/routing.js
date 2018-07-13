@@ -17,6 +17,7 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.isVisited = false;
   }
 }
 
@@ -44,7 +45,13 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+  
+    for(let vert of this.vertexes){
+      if(vert.value === value){
+        return value;
+      }
+    }
+    return null;
   }
 
   /**
@@ -54,8 +61,34 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+  // set up queue
+  const queue =[];
+  // enqueue the param
+  queue.push(start);
+  // set that param to true
+  start.isVisited = true;
+// when the queue is empty run this
+  while(queue.length >0)
+  {
+    // set vert to the firt index in the queue array
+    const vertex = queue[0]
   }
+// this is like a forEach and it will run through
+// each edge of the edges and run the code in the block
+  for(let edge of vertex.edges){
+    // if the destination is not visited run the block
+    if(!edge.destination.isVisited){
+      // set value of the parent
+      edge.destination.parent = vertex;
+      // push in the destination
+      queue.push(edge.destination);
+      // set the visited flag to true
+      edge.destination.isVisited = true
+    }
+  }
+  queue.shift();
+}
+  
 
   /**
    * Print out the route from the start vert back along the parent
@@ -65,7 +98,17 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+  let vert = start; 
+
+  let str = '';
+  
+  while(vert.parent){
+  
+    vert = vert.parent;
+  
+    str+=`${vert.value} -->`
+  }
+  console.log(str)
   }
 
   /**
