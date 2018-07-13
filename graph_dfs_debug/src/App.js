@@ -6,7 +6,7 @@ import './App.css';
 const xCount = 4;
 const yCount = 3;
 const boxSize = 150;
-const probability = 0.6;
+const probability = 0.5;
 
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
@@ -41,7 +41,6 @@ class GraphView extends Component {
     ctx.fillStyle = color;
 
     for (let v of vertexes) { // From this vert
-      console.log(v);
       for (let e of v.edges) { // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
@@ -66,9 +65,7 @@ class GraphView extends Component {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
 
-    for (let v of vertexes) {
-      ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
-    }
+    for (let v of vertexes) ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
   }
   
   /* Draw the entire graph */
@@ -80,25 +77,18 @@ class GraphView extends Component {
 
   /* Draw the connected components */
   updateCanvasConnectedComponents() {
-    function randomHexColor() {
+    const randomHexColor = () => {
       let color = ((Math.random() * 240)|0).toString(16);
-
-      if (color.length === 1) {
-        color = '0' + color; // leading zero for values less than 0x10
-      }
-
+      if (color.length === 1)  color = '0' + color; // leading zero for values less than 0x10 
       return color;
     }
 
+    let clear = true;
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
 
-    let clear = true;
-
     for (let component of connectedComponents) {
-      // Color just like in CSS
       const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
-
       this.drawVerts(component, curColor, clear);
       clear = false;
     }
@@ -116,11 +106,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.onButton = this.onButton.bind(this);
-
-    this.state = {
-      graph: new Graph()
-    };
-
+    this.state = { graph: new Graph() };
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
   }
 

@@ -51,10 +51,9 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    const queue = [start];
-
     this.vertexes.forEach(v => v.restoreDefaults());
 
+    const queue = [start];
     start.color = "gray";
     
     while (queue.length) {
@@ -82,7 +81,7 @@ class Graph {
    */
   outputRoute(start) {
     let vertex = start;
-    let result = `${start.value}`;
+    let result = `\n${start.value}`;
 
     while (vertex.parent) {
       result += ` --> ${vertex.parent.value}`;

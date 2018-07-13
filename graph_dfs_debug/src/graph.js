@@ -1,6 +1,4 @@
-/**
- * Edge
- */
+/* Edge */
 export class Edge {
   constructor(destination, weight=1) {
     this.destination = destination;
@@ -8,9 +6,7 @@ export class Edge {
   }
 }
 
-/**
- * Vertex
- */
+/* Vertex */
 export class Vertex {
   constructor(value='vertex', color='white') {
     this.value = value;
@@ -19,17 +15,13 @@ export class Vertex {
   }
 }
 
-/**
- * Graph
- */
+/* Graph */
 export class Graph {
   constructor() {
     this.vertexes = [];
   }
 
-  /**
-   * Create a random graph
-   */
+  /* Create a random graph */
   randomize(width, height, pxBox, probability=0.6) {
     // Helper function to set up two-way edges
     function connectVerts(v0, v1) {
@@ -93,9 +85,7 @@ export class Graph {
     }
   }
 
-  /**
-   * Dump graph data to the console
-   */
+  /* Dump graph data to the console */
   dump() {
     let s;
 
@@ -113,9 +103,7 @@ export class Graph {
     }
   }
 
-  /**
-   * Depth-first Search
-   */
+  /* Depth-first Search */
   dfs(start) {
     const component = new Set();
     const stack = [];
@@ -140,9 +128,7 @@ export class Graph {
     return component;
   }
 
-  /**
-   * Get the connected components
-   */
+  /* Get the connected components */
   getConnectedComponents() {
     const componentsList = [];
 
