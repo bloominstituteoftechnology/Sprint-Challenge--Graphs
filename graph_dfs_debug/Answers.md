@@ -6,6 +6,8 @@ changed 'width={canvasHeight}' to 'width={canvasWidth}'
 
 changed xCount from '4' to '5' and yCount from '3' to '4'
 
+POST LECTURE
+
 removed stack.shift()
 
 changed hardcoded fillstyle to 'color'
