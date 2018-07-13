@@ -9,8 +9,8 @@ const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasWidth = (boxSize * xCount);
+const canvasHeight = (boxSize * yCount);
 const radius = boxSize / 8;
 
 /**
@@ -34,7 +34,10 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
+
+// don't pass in color = ""
+// dont pass in clear=true
+  drawVerts(vertexes, color ='blue', clear) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
     
@@ -45,36 +48,36 @@ class GraphView extends Component {
     }
 
     // Draw the edges
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
-
+    
     for (let v of vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = color;
         ctx.stroke();
       }
     }
-
+// fillstyle needs to be randomized.
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
 
     for (let v of vertexes) {
       ctx.beginPath();
-      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
-      ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false); //false not needed
       ctx.fill();
+      ctx.stroke();
     }
 
     // Draw the vert names
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
-
+    
     for (let v of vertexes) {
-      ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
+      ctx.fillText(v.value, v.pos.x, v.pos.y + 4); // why +4?
     }
   }
   
@@ -92,13 +95,11 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
-
-      if (color.length === 1) {
-        color = '0' + color; // leading zero for values less than 0x10
-      }
-
-      return color;
+        let color = ((Math.random() * 240)|0).toString(16);
+        if (color.length === 1) {
+          color = '0' + color; // leading zero for values less than 0x10
+        }
+        return color;
     }
 
     const g = this.props.graph;
@@ -119,7 +120,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
@@ -148,14 +149,13 @@ class App extends Component {
     };
 
     state.graph.randomize(xCount, yCount, boxSize, probability);
-
     this.setState(state);
   }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
