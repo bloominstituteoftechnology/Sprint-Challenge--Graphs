@@ -3,8 +3,8 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
-const yCount = 3;
+const xCount = 6;
+const yCount = 4;
 const boxSize = 150;
 const probability = 0.6;
 
@@ -34,13 +34,13 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
+  drawVerts(vertexes, color = 'blue', clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -92,7 +92,7 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
         color = '0' + color; // leading zero for values less than 0x10
@@ -133,7 +133,7 @@ class App extends Component {
     this.onButton = this.onButton.bind(this);
 
     this.state = {
-      graph: new Graph()
+      graph: new Graph(),
     };
 
     this.state.graph.randomize(xCount, yCount, boxSize, probability);
@@ -144,7 +144,7 @@ class App extends Component {
    */
   onButton() {
     const state = {
-      graph: new Graph()
+      graph: new Graph(),
     };
 
     state.graph.randomize(xCount, yCount, boxSize, probability);
