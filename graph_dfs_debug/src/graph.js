@@ -2,7 +2,7 @@
  * Edge
  */
 export class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -12,7 +12,7 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value='vertex', color ='white') {
     this.value = value;
     this.edges = [];
     this.color = color;
@@ -123,7 +123,7 @@ export class Graph {
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack.pop();
+      const u = stack.shift();
       if (u.color === 'white') {
         u.color = 'gray';
 
