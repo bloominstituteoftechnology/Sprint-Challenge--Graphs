@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,10 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.parent = null;
   }
 }
 
@@ -45,6 +46,13 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
+      }
+      return null;
+    }
   }
 
   /**
@@ -54,7 +62,31 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    //     white = not-visited , gray = inspected , black = visited
+    const component = []; // set new array 
+    const queue = []; //// the queue 
+
+    start.color = 'gray'; // coloring the first vertex to be inspected by bfs() for their edges 
+    queue.push(start); // we start by  pushing  the first vertex to the queue to be inspected for children  
+
+    while (queue.length > 0) { /// we loop queue since the queue is not empty 
+      const node = queue[0]; /// we take the first element in the queue to be inspected  (node), FIFO
+
+      for (let edge of node.edges) { //since a vertex is an object we check the edges array for edges one by one 
+        const vertex = edge.destination;//  we access to the vertex edge = {destination:Vertex} 1edge=1destination 
+        if (vertex.color === 'white') { /// if the color is white means not inspected 
+          vertex.color = 'gray'; // we visited it , so  we color it to grey 
+          vertex.parent = node;
+          queue.push(vertex); // we push it to queue to follow the gray mother already 
+        }
+      }
+
+      queue.shift(); // we dequeue one by one 
+      node.color = 'black'; // we color every node in the queue to black 
+      component.add(node); /// we add every mother (vertex)and children  (edges) to one array 
+    }
+
+    return component
   }
 
   /**
@@ -66,6 +98,12 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    if (start.parent !== null) {
+
+
+      console.log(`${start.parent.value}` `===>` `${start.value}`);
+    }
+    break;
   }
 
   /**
