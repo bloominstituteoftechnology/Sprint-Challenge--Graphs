@@ -1,4 +1,5 @@
 Describe the fixes you made to the Graph implementation here.
+
 App.js
 - Changed canvasHeight to canvasWidth, line 122.
 - Changed to color variable in line 62.
