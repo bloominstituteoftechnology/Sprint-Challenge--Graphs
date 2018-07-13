@@ -44,7 +44,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    this.vertexes.forEach(vertex => {
+      if (vertex.value === value) return vertex;
+      return null;
+    })
   }
 
   /**
