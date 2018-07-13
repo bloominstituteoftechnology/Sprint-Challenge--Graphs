@@ -43,31 +43,41 @@ class GraphView extends Component {
       ctx.fillStyle = '#f3f3f3';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
+
     const checked = {};
-    for (let v of vertexes) {
-      checked[v] = false;
-    }
+    vertexes.forEach(v => {
+      checked[v.value] = false;
+      // console.log(checked)
+    })
+    // console.log('checked made');
+    // for (let v of vertexes) {
+    //   checked[v.value] = false;
+    // }
 
     // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
-    console.log(`Stroke style color is ${color}`)
-    let i = 0;
+
     for (let v of vertexes) { // From this vert
-      console.log(i);
-      let lineColor = v.color;
+      console.log(vertexes, v)
       v.color = color
       ctx.strokeStyle = color;
+      checked[v.value] = true;
+
       for (let e of v.edges) { // To all these verts
         const v2 = e.destination;
         v2.color = v.color;
-        console.log(`${v2.value} is ${v2.color}, ${v.value} color is ${v.color}`)
-        ctx.beginPath();
-        ctx.moveTo(v.pos.x, v.pos.y);
-        ctx.lineTo(v2.pos.x, v2.pos.y);
-        ctx.stroke();
+
+        if (!checked[v2.value]) {
+          checked[v2.value] = true;
+          // console.log(`edge drawn from ${v.value} to ${v2.value}`)
+          ctx.beginPath();
+          ctx.moveTo(v.pos.x, v.pos.y);
+          ctx.lineTo(v2.pos.x, v2.pos.y);
+          ctx.stroke();
+          // console.log(v2.value, v2.color, "stroke color", color)
+        }
       }
-      i++;
     }
     // ctx.strokeStyle = color;
 
