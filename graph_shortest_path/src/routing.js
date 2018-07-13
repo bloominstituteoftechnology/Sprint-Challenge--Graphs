@@ -44,7 +44,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) return vertex;
+    }
+    return null;
   }
 
   /**
@@ -54,7 +57,36 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    const component = new Set();
+    const queue = [];
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const node = queue[0];
+
+      for (let edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          vertex.parent = node;
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+
+      component.add(node);
+    }
+    
+    return component;
   }
 
   /**
@@ -65,7 +97,16 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let currentVertex = start;
+    let retVal = '';
+    
+    retVal += start.value;
+    while ( currentVertex.parent ) {
+      retVal += ` --> ${currentVertex.parent.value}`;
+      currentVertex = currentVertex.parent;
+    }
+
+    console.log(retVal);
   }
 
   /**
