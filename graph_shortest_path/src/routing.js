@@ -46,10 +46,10 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    this.vertexes.forEach(vertex => {
+    for (let vertex of this.vertexes) {
       if (vertex.value === value) return vertex;
-      return null;
-    })
+    }
+    return null;
   }
 
   /**
@@ -68,7 +68,7 @@ class Graph {
     while (queue.length > 0) {
       let vertex = queue.shift();
 
-      for (edge of vertex.edges) {
+      for (let edge of vertex.edges) {
         const edgeVertex = edge.destination; 
         if (edgeVertex.color === "white") {
           edgeVertex.color = "gray";
