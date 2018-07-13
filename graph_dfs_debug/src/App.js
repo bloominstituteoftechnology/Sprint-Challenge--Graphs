@@ -4,14 +4,14 @@ import './App.css';
 
 // Define the size of the random graph
 const xCount = 4;
-const yCount = 3;
+const yCount = 4;
 const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
 const canvasHeight = boxSize * yCount;
-const radius = boxSize / 8;
+const radius = boxSize / 10;
 
 /**
  * GraphView
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = '#77f';
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -84,7 +84,7 @@ class GraphView extends Component {
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
-    //g.dump();
+    g.dump();
   }
 
   /**
@@ -92,7 +92,7 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
         color = '0' + color; // leading zero for values less than 0x10
@@ -119,7 +119,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
@@ -155,7 +155,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
