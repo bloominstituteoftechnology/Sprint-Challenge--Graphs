@@ -94,7 +94,13 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    
+    const route = [];
+
+    while (start) {
+      route.push(start.value);
+      start = start.origin;
+    }
+    console.log(route.join(' --> '));
   }
 
   /**
