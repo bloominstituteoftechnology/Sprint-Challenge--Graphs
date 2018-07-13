@@ -47,7 +47,6 @@ class GraphView extends Component {
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
-        // ctx.fill();
         ctx.stroke();
       }
     }

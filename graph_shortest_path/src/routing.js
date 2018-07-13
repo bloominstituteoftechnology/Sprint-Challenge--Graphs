@@ -1,8 +1,6 @@
 // Search for "!!! IMPLEMENT ME" comments
 
-/**
- * Edge class
- */
+/* Edge class */
 class Edge {
   constructor(destination, weight=1) {
     this.destination = destination;
@@ -10,9 +8,7 @@ class Edge {
   }
 }
 
-/**
- * Vertex class
- */
+/* Vertex class */
 class Vertex {
   constructor(value='vertex') {
     this.value = value;
@@ -20,14 +16,10 @@ class Vertex {
   }
 }
 
-/**
- * Graph class
- */
+/* Graph class */
 class Graph {
 
-  /**
-   * Constructor
-   */
+  /* Constructor */
   constructor() {
     this.vertexes = [];
   }
@@ -44,7 +36,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    return this.vertexes.find(el => el.value === value) || null;
   }
 
   /**
@@ -54,7 +46,8 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [start];
+    const 
   }
 
   /**
@@ -68,9 +61,7 @@ class Graph {
     // !!! IMPLEMENT ME
   }
 
-  /**
-   * Show the route from a starting vert to an ending vert.
-   */
+  /* Show the route from a starting vert to an ending vert. */
   route(start, end) {
     // Do BFS and build parent pointer tree
     this.bfs(end);
@@ -80,17 +71,13 @@ class Graph {
   }
 }
 
-/**
- * Helper function to add bidirectional edges
- */
+/* Helper function to add bidirectional edges */
 function addEdge(v0, v1) {
   v0.edges.push(new Edge(v1));
   v1.edges.push(new Edge(v0));
 }
 
-/**
- * Main
- */
+/* Main */
 
 // Test for valid command line
 const args = process.argv.slice(2);
