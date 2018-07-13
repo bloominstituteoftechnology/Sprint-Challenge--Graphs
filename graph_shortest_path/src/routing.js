@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = "vertex") {
     this.value = value;
     this.edges = [];
   }
@@ -24,7 +24,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -44,7 +43,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        return v;
+      }
+    }
+    return null; // value could not be found
   }
 
   /**
@@ -54,7 +58,29 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [];
+    for (let v of this.vertexes) {
+      v.color = "white"; // mark all vertexes as unvisited
+      v.parent = null; // initialize parent property
+    }
+
+    start.color = "gray"; // start is being visited
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let current = queue[0];
+
+      for (let edge of current.edges) {
+        let vertex = edge.destination;
+        if (vertex.color === "white") {
+          vertex.color = "gray";
+          vertex.parent = current; // generate a parent link for edges
+          queue.push(vertex); // add neighboring nodes to queue
+        }
+      }
+      current.color = "black"; // current has been visited
+      queue.shift(); // remove current;
+    }
   }
 
   /**
@@ -65,7 +91,20 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let str = "";
+    let current = start;
+
+    // end of path is not null - stop when v.parent = null
+    while (current !== null) {
+      str += current.value;
+
+      if (current.parent !== null) {
+        str += " --> ";
+      }
+      // go backwards to the parent of the current node
+      current = current.parent;
+    }
+    console.log(str);
   }
 
   /**
@@ -96,21 +135,21 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error('usage: routing hostA hostB');
+  console.error("usage: routing hostA hostB");
   process.exit(1);
 }
 
 // Build the entire Internet
 // (it's only a model)
 const graph = new Graph();
-const vertA = new Vertex('HostA');
-const vertB = new Vertex('HostB');
-const vertC = new Vertex('HostC');
-const vertD = new Vertex('HostD');
-const vertE = new Vertex('HostE');
-const vertF = new Vertex('HostF');
-const vertG = new Vertex('HostG');
-const vertH = new Vertex('HostH');
+const vertA = new Vertex("HostA");
+const vertB = new Vertex("HostB");
+const vertC = new Vertex("HostC");
+const vertD = new Vertex("HostD");
+const vertE = new Vertex("HostE");
+const vertF = new Vertex("HostF");
+const vertG = new Vertex("HostG");
+const vertH = new Vertex("HostH");
 
 addEdge(vertA, vertB);
 addEdge(vertB, vertD);
@@ -137,14 +176,14 @@ graph.vertexes.push(vertH);
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
-  console.error('routing: could not find host: ' + args[0]);
+  console.error("routing: could not find host: " + args[0]);
   process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
+  console.error("routing: could not find host: " + args[1]);
   process.exit(2);
 }
 
