@@ -62,13 +62,16 @@ class Graph {
    */
   bfs(start) {
     const queue = [];
-
+    let startVertex;
     for (let v of this.vertexes) {
       v.parent = null; // initialize parent property
+      if (v.value === start) {
+        startVertex = v;
+      }
     }
 
-    start.color = "gray"; // start is being visited
-    queue.push(start);
+    startVertex.color = "gray"; // start is being visited
+    queue.push(startVertex);
 
     while (queue.length > 0) {
       let current = queue[0];
@@ -95,8 +98,16 @@ class Graph {
   outputRoute(start) {
     const stack = [];
     const result = [];
+
+    let startVertex;
+    for (let v of this.vertexes) {
+      if (v.value == start) {
+        startVertex = v;
+      }
+    }
+
     let path = "";
-    stack.push(start.value);
+    stack.push(startVertex.value);
 
     while (stack.length > 0) {
       let current = stack[stack.length - 1];
@@ -109,7 +120,7 @@ class Graph {
     for (let route of result) {
       path += `${route} `;
     }
-    path = path.slice(0, path.length - 1);
+    // path = path.slice(0, path.length - 1);
     console.log(path);
   }
 
