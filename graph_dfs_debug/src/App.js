@@ -45,8 +45,8 @@ class GraphView extends Component {
     }
 
     // Draw the edges
-    // ctx.lineWidth = 2;
-    // ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color;
 
     for (let v of this.props.graph.vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
@@ -54,32 +54,26 @@ class GraphView extends Component {
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = color;
         ctx.stroke();
       }
     }
 
     // Draw the verts on top
-    // ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = '#77f';
 
     for (let v of this.props.graph.vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
-      ctx.fillStyle = '#77f';
       ctx.fill();
     }
 
     // Draw the vert names
-    // ctx.font = '10px sans-serif';
-    // ctx.textAlign = 'center';
-    // ctx.fillStyle = 'white';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
 
     for (let v of this.props.graph.vertexes) {
-      ctx.font = '10px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillStyle = 'white';
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
     }
   }
