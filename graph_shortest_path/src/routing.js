@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,10 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = "vertex", color = "white") {
     this.value = value;
     this.edges = [];
+    this.color = color;
   }
 }
 
@@ -24,7 +25,6 @@ class Vertex {
  * Graph class
  */
 class Graph {
-
   /**
    * Constructor
    */
@@ -43,9 +43,7 @@ class Graph {
    *
    * @return null if not found.
    */
-  findVertex(value) {
-    // !!! IMPLEMENT ME
-  }
+  findVertex(value) {}
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
@@ -54,7 +52,28 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let v of this.vertexes) {
+      v.parent = null; // initialize parent property
+    }
+
+    start.color = "gray"; // start is being visited
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let current = queue[0];
+
+      for (let edge of current.edges) {
+        if (edge.destination.color === "white") {
+          edge.destination.color = "gray";
+          edge.destination.parent = current; // generate a parent link for edges
+          queue.push(edge.destination); // add neighboring nodes to queue
+        }
+      }
+      current.color = "black"; // currents neighbors have all been visited
+      queue.shift(); // remove current;
+    }
   }
 
   /**
@@ -96,21 +115,21 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error('usage: routing hostA hostB');
+  console.error("usage: routing hostA hostB");
   process.exit(1);
 }
 
 // Build the entire Internet
 // (it's only a model)
 const graph = new Graph();
-const vertA = new Vertex('HostA');
-const vertB = new Vertex('HostB');
-const vertC = new Vertex('HostC');
-const vertD = new Vertex('HostD');
-const vertE = new Vertex('HostE');
-const vertF = new Vertex('HostF');
-const vertG = new Vertex('HostG');
-const vertH = new Vertex('HostH');
+const vertA = new Vertex("HostA");
+const vertB = new Vertex("HostB");
+const vertC = new Vertex("HostC");
+const vertD = new Vertex("HostD");
+const vertE = new Vertex("HostE");
+const vertF = new Vertex("HostF");
+const vertG = new Vertex("HostG");
+const vertH = new Vertex("HostH");
 
 addEdge(vertA, vertB);
 addEdge(vertB, vertD);
@@ -137,14 +156,14 @@ graph.vertexes.push(vertH);
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
-  console.error('routing: could not find host: ' + args[0]);
+  console.error("routing: could not find host: " + args[0]);
   process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error('routing: could not find host: ' + args[1]);
+  console.error("routing: could not find host: " + args[1]);
   process.exit(2);
 }
 
