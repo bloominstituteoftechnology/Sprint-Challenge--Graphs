@@ -1,6 +1,6 @@
 Describe the fixes you made to the Graph implementation here.
 
-1. instead of .pop u needs to start at 0 index
-2. Changed v color to color of node
+1. removed your stack shift()
+2. Changed v color to color; removed hardcoded color
 3. incorrect function name
-4. your yCount didnt match your x
+4. yCount didnt match x. changed canvas width to canvasWidth from canvasHeight
