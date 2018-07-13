@@ -85,7 +85,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let s;
+
+    this.bfs(start).forEach(v => {
+      s = `${v.value} :`;
+      s += v.edges.reduce((acc, cur) => acc += ` ${cur.destination.value}`, "");
+      console.log(s);
+    });
   }
 
   /* Show the route from a starting vert to an ending vert. */
