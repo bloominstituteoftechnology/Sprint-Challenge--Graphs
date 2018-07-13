@@ -46,7 +46,7 @@ class Graph {
     findVertex(value) {
 
         for (let vertex of this.vertexes) {
-            if(vertex === value) return vertex;
+            if(vertex.value === value) return vertex;
             return null;
         }
 
@@ -78,7 +78,7 @@ class Graph {
             for (let edge of currentNode.edges) {
                 neighbor = edge.destination;
 
-                if (neighbor.color === 'white') {
+                if (neighbor.color == 'white') {
                     neighbor.color = 'gray';
                     neighbor.parent = currentNode;
                     queue.push(neighbor);
@@ -97,7 +97,18 @@ class Graph {
      *                       pointers from
      */
     outputRoute(start) {
-        // !!! IMPLEMENT ME
+        let route = '';
+        let currentNode = start;
+
+        while (currentNode.parent !== null) {
+            route += currentNode.value;
+            route += ' -->';
+            currentNode = currentNode.parent;
+        }
+
+        route += currentNode.value;
+
+        console.log(route);
     }
 
     /**
