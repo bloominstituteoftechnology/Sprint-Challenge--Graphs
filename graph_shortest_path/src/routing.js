@@ -45,7 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-
+    for (let vert of this.vertexes) {
+      if (vert.value === value) {
+        return vert;
+      }
+    }
+    return null;
   }
 
   /**
@@ -56,16 +61,15 @@ class Graph {
    */
   bfs(vert) {
     // !!! IMPLEMENT ME
-    for (v of this.vertexes) {
+    for (let v of this.vertexes) {
       v.color = 'white';
       v.parent = null;
     }
 
-    
     let result = [];
     let queue = [];
 
-    vert.color = 'gray';
+    vert.color = "gray";
     queue.push(vert);
 
     while (queue.length > 0) {
@@ -84,8 +88,6 @@ class Graph {
     }
     
     return result;
-    
-  
   }
 
   /**
@@ -97,6 +99,20 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currVert = start;
+    let result = '';
+
+    while (currVert.parent) {
+      if (currVert === start) {
+        result = start.value + ' --> ';
+      } else {
+        result += `--> ${currVert.parent.value}`; 
+      }
+
+      // seting new current vertex
+      currVert = currVert.parent;
+    }
+    console.log(result);
   }
 
   /**
