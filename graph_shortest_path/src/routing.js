@@ -73,7 +73,7 @@ class Graph {
   {
     // set vert to the firt index in the queue array
     const vertex = queue[0]
-  }
+  
 // this is like a forEach and it will run through
 // each edge of the edges and run the code in the block
   for(let edge of vertex.edges){
@@ -89,6 +89,7 @@ class Graph {
   }
   queue.shift();
 }
+  }
   
 
   /**
