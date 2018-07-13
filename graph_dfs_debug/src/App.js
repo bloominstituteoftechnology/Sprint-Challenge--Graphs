@@ -22,6 +22,7 @@ class GraphView extends Component {
    */
   componentDidMount() {
     this.updateCanvasConnectedComponents();
+    this.props.graph.dump();
   }
 
   /**
@@ -29,6 +30,7 @@ class GraphView extends Component {
    */
   componentDidUpdate() {
     this.updateCanvasConnectedComponents();
+    // this.props.graph.dump();
   }
 
   /**
