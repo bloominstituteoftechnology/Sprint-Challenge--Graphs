@@ -47,6 +47,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (value === vertex.value) {
+        return vertex;
+      }
+    }
+    return false;
   }
 
   /**
