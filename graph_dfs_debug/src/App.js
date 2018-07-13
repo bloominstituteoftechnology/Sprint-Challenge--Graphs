@@ -155,6 +155,7 @@ class App extends Component {
   render() {
     return (
       <div className="App"> 
+      {/* Fixed onClick to be this.onButton */}
         <button onClick={this.onButton}>Random</button> 
         <GraphView graph={this.state.graph}></GraphView>
       </div>

@@ -2,7 +2,7 @@
  * Edge
  */
 export class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -12,7 +12,7 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value = 'vertex', color = 'white') {
     this.value = value;
     this.edges = [];
     this.color = color;
@@ -30,7 +30,7 @@ export class Graph {
   /**
    * Create a random graph
    */
-  randomize(width, height, pxBox, probability=0.6) {
+  randomize(width, height, pxBox, probability = 0.6) {
     // Helper function to set up two-way edges
     function connectVerts(v0, v1) {
       v0.edges.push(new Edge(v1));
@@ -58,14 +58,14 @@ export class Graph {
         // Connect down
         if (y < height - 1) {
           if (Math.random() < probability) {
-            connectVerts(grid[y][x], grid[y+1][x]);
+            connectVerts(grid[y][x], grid[y + 1][x]);
           }
         }
 
         // Connect right
         if (x < width - 1) {
           if (Math.random() < probability) {
-            connectVerts(grid[y][x], grid[y][x+1]);
+            connectVerts(grid[y][x], grid[y][x + 1]);
           }
         }
       }
@@ -132,7 +132,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack // <-- this is not needed
       u.color = 'black';
 
       component.add(u);
