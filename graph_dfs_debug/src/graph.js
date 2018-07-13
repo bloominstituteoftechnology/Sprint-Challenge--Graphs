@@ -118,32 +118,31 @@ export class Graph {
   /**
    * Depth-first Search
    */
-  dfs(start) {
+
+    dfs(start) {
     const component = new Set();
     const stack = [];
 
-    start.color = 'gray';
     stack.push(start);
 
     while (stack.length > 0) {
-      const node = stack[0];
+      const u = stack.pop();
+      if (u.color === 'white') {
+        u.color = 'gray';
 
-      for (let e of node.edges) {
-        if (e.destination.color === 'white') {
-          e.destination.color = 'gray';
+        for (let e of u.edges) {
           stack.push(e.destination);
         }
       }
 
-      stack.pop(); // de-stack
-      node.color = 'black';
+      // stack.shift(); // de-stack
+      u.color = 'black';
 
-      component.add(node);
+      component.add(u);
     }
 
     return component;
   }
-
     /**
    * BFS
    */
