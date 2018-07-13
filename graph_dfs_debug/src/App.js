@@ -69,7 +69,7 @@ class GraphView extends Component {
     }
 
     // Draw the vert names
-    ctx.font = '10px sans-serif';
+    ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
 
