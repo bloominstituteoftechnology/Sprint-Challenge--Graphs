@@ -118,7 +118,7 @@ export class Graph {
    */
   dfs(start) {
     const component = new Set();
-    const stack = [];
+    const stack = []; // queue
 
     stack.push(start);
 
