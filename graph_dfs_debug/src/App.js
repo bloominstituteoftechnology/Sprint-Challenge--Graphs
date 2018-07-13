@@ -3,14 +3,14 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
-const yCount = 3;
+const xCount = 5;
+const yCount = 4;
 const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasWidth = boxSize * (xCount * 2);
+const canvasHeight = boxSize * (yCount * 2);
 const radius = boxSize / 8;
 
 /**
@@ -34,85 +34,102 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
+  drawVerts(vertexes, color, clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
-    
+
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'blue';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
     // Draw the edges
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
+    //console.log('vertexes', vertexes);
 
     for (let v of vertexes) { // From this vert
-      for (let e of v.edges) { // To all these verts
-        const v2 = e.destination;
+      //console.log('v', v);
+      for (let e of v.edges) { // To all these vertexes
+
         ctx.beginPath();
+        const v2 = e.destination;
+        // console.log("v2", v2);
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = color;
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
+        // ctx.closePath();
         ctx.stroke();
+
       }
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
 
     for (let v of vertexes) {
       ctx.beginPath();
-      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
+      ctx.fillStyle = color;
+      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI);
+      //ctx.fill();
       ctx.stroke();
+      //ctx.closePath();
       ctx.fill();
-    }
 
-    // Draw the vert names
-    ctx.font = '10px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'white';
-
-    for (let v of vertexes) {
+      // Draw the vert names
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'white';
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
     }
+
+
+
+
+
   }
-  
+
   /**
    * Draw the entire graph
    */
-  updateCanvasEntireGraph() {
-    const g = this.props.graph;
-    this.drawVerts(g.vertexes);
-    //g.dump();
-  }
+
+  // updateCanvasEntireGraph() {
+  //   const g = this.props.graph.connectedComponents();
+  //   //   console.log("g", g);
+  //   this.drawVerts(g.vertexes);
+  //   //   //g.dump();
+  // }
 
   /**
    * Draw the connected components
    */
   updateCanvasConnectedComponents() {
-    function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+
+    function randomHexColor() {   // produce color 
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
         color = '0' + color; // leading zero for values less than 0x10
       }
-
+      //console.log('color', color);
       return color;
     }
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
+    console.log('connected', connectedComponents);
+
 
     let clear = true;
 
-    for (let component of connectedComponents) {
+
+    connectedComponents.forEach((component) => {
+      //console.log('component', component);
       // Color just like in CSS
       const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
 
       this.drawVerts(component, curColor, clear);
-      clear = false;
-    }
+      clear = false
+    });
   }
 
   /**
@@ -155,7 +172,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );

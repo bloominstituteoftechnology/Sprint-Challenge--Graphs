@@ -2,7 +2,7 @@
  * Edge
  */
 export class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -12,10 +12,11 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value = 'vertex', color = 'white', pos = { x: -1, y: -1 }) {
     this.value = value;
     this.edges = [];
     this.color = color;
+    this.pos = pos;
   }
 }
 
@@ -30,7 +31,7 @@ export class Graph {
   /**
    * Create a random graph
    */
-  randomize(width, height, pxBox, probability=0.6) {
+  randomize(width, height, pxBox, probability = 0.6) {
     // Helper function to set up two-way edges
     function connectVerts(v0, v1) {
       v0.edges.push(new Edge(v1));
@@ -58,14 +59,14 @@ export class Graph {
         // Connect down
         if (y < height - 1) {
           if (Math.random() < probability) {
-            connectVerts(grid[y][x], grid[y+1][x]);
+            connectVerts(grid[y][x], grid[y + 1][x]);
           }
         }
 
         // Connect right
         if (x < width - 1) {
           if (Math.random() < probability) {
-            connectVerts(grid[y][x], grid[y][x+1]);
+            connectVerts(grid[y][x], grid[y][x + 1]);
           }
         }
       }
@@ -121,6 +122,7 @@ export class Graph {
     const stack = [];
 
     stack.push(start);
+    //start.color = "gray";
 
     while (stack.length > 0) {
       const u = stack.pop();
@@ -132,13 +134,41 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.pop(); // de-stack
       u.color = 'black';
 
       component.add(u);
     }
 
     return component;
+
+    ///////////////////////////////
+    // !!! IMPLEMENT ME     white = not-visited , gray = inspected , black = visited
+    // const component = new Set(); // set new array 
+    // const queue = []; //// the queue 
+
+    // start.color = 'gray'; // coloring the first vertex to be inspected by bfs() for their edges 
+    // queue.push(start); // we start by  pushing  the first vertex to the queue to be inspected for children  
+
+    // while (queue.length > 0) { /// we loop queue since the queue is not empty 
+    //   const node = queue[0]; /// we take the first element in the queue to be inspected  (node), FIFO
+
+    //   for (let edge of node.edges) { //since a vertex is an object we check the edges array for edges one by one 
+    //     const vertex = edge.destination;//  we access to the vertex edge = {destination:Vertex} 1edge=1destination 
+    //     if (vertex.color === 'white') { /// if the color is white means not inspected 
+    //       vertex.color = 'gray'; // we visited it , so  we color it to grey 
+    //       queue.push(vertex); // we push it to queue to follow the gray mother already 
+    //     }
+    //   }
+
+    //   queue.shift(); // we dequeue one by one 
+    //   node.color = 'black'; // we color every node in the queue to black 
+    //   component.add(node); /// we add every mother (vertex)and children  (edges) to one array 
+    // }
+
+    // return component
+
+
   }
 
   /**
