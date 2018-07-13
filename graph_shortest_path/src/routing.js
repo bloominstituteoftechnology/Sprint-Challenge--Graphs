@@ -18,6 +18,7 @@ class Vertex {
     this.value = value;
     this.edges = [];
     this.isVisited = false;
+    this.parent = null
   }
 }
 
