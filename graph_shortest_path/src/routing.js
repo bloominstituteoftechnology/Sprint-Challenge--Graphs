@@ -41,7 +41,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    return this.vertexes.find(el => el.value === value) || null;
+    return this.vertexes.find(v => v.value === value) || null;
   }
 
   /**
@@ -52,7 +52,6 @@ class Graph {
    */
   bfs(start) {
     const queue = [start];
-    const connections = [];
 
     this.vertexes.forEach(v => v.restoreDefaults());
 
@@ -60,9 +59,6 @@ class Graph {
     
     while (queue.length) {
       const vertex = queue.shift();
-
-      vertex.color = "black";
-      connections.push(vertex);
 
       vertex.edges.forEach(e => {
         const target = e.destination;
@@ -72,9 +68,9 @@ class Graph {
           queue.push(target);
         }
       });
-    }
 
-    return connections;
+      vertex.color = "black";
+    }
   }
 
   /**
@@ -85,22 +81,21 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    let s;
+    let vertex = start;
+    let result = `${start.value}`;
 
-    this.bfs(start).forEach(v => {
-      s = `${v.value} :`;
-      s += v.edges.reduce((acc, cur) => acc += ` ${cur.destination.value}`, "");
-      console.log(s);
-    });
+    while (vertex.parent) {
+      result += ` --> ${vertex.parent.value}`;
+      vertex = vertex.parent;
+    }
+
+    console.log(result);
   }
 
   /* Show the route from a starting vert to an ending vert. */
   route(start, end) {
-    // Do BFS and build parent pointer tree
-    this.bfs(end);
-
-    // Show the route from the start
-    this.outputRoute(start);
+    this.bfs(end); // Do BFS and build parent pointer tree
+    this.outputRoute(start); // Show the route from the start
   }
 }
 
