@@ -106,13 +106,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    
-    console.log(start.value);
+    let outputString = '';
+    outputString += start.value;
+    // console.log(start.value);
     let search = start.parent;
     while (search !== null) {
-      console.log(search.value);
+      outputString += ' --> ' ;
+      outputString += search.value;
+      // console.log(search.value);
       search = search.parent;
     }
+    console.log(outputString)
   }
 
   /**
