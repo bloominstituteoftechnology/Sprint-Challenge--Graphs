@@ -93,6 +93,19 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentVert = start;
+    let resultStr = '';
+
+    while(currentVert.parent) {
+      if (currentVert === start) {
+        resultStr += `${start.value} --> ${start.parent.value}`;
+      } else {
+        resultStr += ` --> ${currentVert.parent.value}`;
+      }
+      currentVert = currentVert.parent;
+    }
+
+    console.log(resultStr ? resultStr : start.value);
   }
 
   /**
