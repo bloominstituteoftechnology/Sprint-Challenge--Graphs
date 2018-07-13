@@ -45,11 +45,13 @@ class Graph {
    */
   findVertex(value) {
     for (let v of this.vertexes) {
+      console.log(`value of v is ${v.value}`);
+      console.log(`value to find is ${value}`);
       if (v.value === value) {
         return v.value;
       }
-      return null; // value could not be found
     }
+    return null; // value could not be found
   }
 
   /**
@@ -91,7 +93,24 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    const stack = [];
+    const result = [];
+    let path = "";
+    stack.push(start.value);
+
+    while (stack.length > 0) {
+      let current = stack[stack.length - 1];
+      if (current.parent) {
+        stack.push(current.parent.value);
+      }
+      result.unshift(stack.shift());
+    }
+
+    for (let route of result) {
+      path += `${route} `;
+    }
+    path = path.slice(0, path.length - 1);
+    console.log(path);
   }
 
   /**
