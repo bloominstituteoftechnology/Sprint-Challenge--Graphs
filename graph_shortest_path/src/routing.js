@@ -14,10 +14,9 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value = "vertex", color = "white") {
+  constructor(value = "vertex") {
     this.value = value;
     this.edges = [];
-    this.color = color;
   }
 }
 
@@ -62,28 +61,26 @@ class Graph {
    */
   bfs(start) {
     const queue = [];
-    let startVertex;
     for (let v of this.vertexes) {
+      v.color = "white"; // mark all vertexes as unvisited
       v.parent = null; // initialize parent property
-      if (v.value === start) {
-        startVertex = v;
-      }
     }
 
-    startVertex.color = "gray"; // start is being visited
-    queue.push(startVertex);
+    start.color = "gray"; // start is being visited
+    queue.push(start);
 
     while (queue.length > 0) {
       let current = queue[0];
 
       for (let edge of current.edges) {
-        if (edge.destination.color === "white") {
-          edge.destination.color = "gray";
-          edge.destination.parent = current; // generate a parent link for edges
-          queue.push(edge.destination); // add neighboring nodes to queue
+        let vertex = edge.destination;
+        if (vertex.color === "white") {
+          vertex.color = "gray";
+          vertex.parent = current; // generate a parent link for edges
+          queue.push(vertex); // add neighboring nodes to queue
         }
       }
-      current.color = "black"; // currents neighbors have all been visited
+      current.color = "black"; // current has been visited
       queue.shift(); // remove current;
     }
   }
