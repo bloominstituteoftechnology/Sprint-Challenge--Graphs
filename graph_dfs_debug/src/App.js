@@ -5,7 +5,7 @@ import "./App.css";
 // Define the size of the random graph
 const xCount = 5;
 const yCount = 5;
-const boxSize = 150;
+const boxSize = 200;
 const probability = 0.6;
 
 // Figure out the canvas size
