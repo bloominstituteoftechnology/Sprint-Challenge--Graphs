@@ -65,6 +65,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+
+    const queue = [start];
+
+    for(let v of this.vertexes) {
+      v.color = "white";
+      v.parent = null;
+    }
+
+    start.color = "gray";
+
+    while(queue.length > 0) {
+      let s = queue[0];
+
+      for(let e of s.edges) {
+        if(e.destination.color === "white") {
+          e.destination.color = "gray";
+          e.destination.parent = s;
+          queue.push(edge.destination);
+        }
+      }
+
+      queue.shift();
+      s.color = "black";
+    }
+    
   }
 
   /**
