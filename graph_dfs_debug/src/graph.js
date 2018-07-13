@@ -120,6 +120,7 @@ export class Graph {
     const component = new Set();
     const stack = [];
 
+    start.color = 'gray';
     stack.push(start);
 
     while (stack.length > 0) {
@@ -141,6 +142,37 @@ export class Graph {
     return component;
   }
 
+    /**
+   * BFS
+   */
+  bfs(start) {
+    // !!! IMPLEMENT ME
+    const component = new Set();
+    const queue = [];
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const node = queue[0];
+
+      for (let edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+
+      component.add(node);
+    }
+
+    return component;
+  }
+
   /**
    * Get the connected components
    */
@@ -149,7 +181,7 @@ export class Graph {
 
     for (let v of this.vertexes) {
       if (v.color === 'white') {
-        const component = this.dfs(v);
+        const component = this.bfs(v);
         componentsList.push(component);
       }
     }
