@@ -45,6 +45,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (v of this.vertexes) {
+      if (v === value) return v;
+    }
+    return null;
   }
 
   /**
