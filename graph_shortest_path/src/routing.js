@@ -45,8 +45,8 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-    for (v of this.vertexes) {
-      if (v === value) return v;
+    for (let v of this.vertexes) {
+      if (v.value === value) return v;
     }
     return null;
   }
@@ -59,8 +59,8 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    for (v of this.vertexes){
-      v.color = white;
+    for (let v of this.vertexes){
+      v.color = 'white';
       v.parent = null;   // <-- Add parent initialization
     }
 
@@ -68,20 +68,20 @@ class Graph {
 
     const queue = [start];
 
-    while (!queue.isEmpty()) {
+    while (queue.length !== 0) {
       const u = queue[0];
 
-      for (v of u.neighbors) {
-        if (v.color === 'white') {
-          v.color = 'gray';
-          v.parent = u;     // <-- Keep a parent link
-          queue.push(v);
+      for (let edge of u.edges) {
+        if (edge.destination.color === 'white') {
+          edge.destination.color = 'gray';
+          edge.destination.parent = u;     // <-- Keep a parent link
+          queue.push(edge.destination);
         }
       }
-    } 
 
-    queue.shift();
-    u.color = 'black';
+      queue.shift();
+      u.color = 'black';
+    }
   }
 
   /**
