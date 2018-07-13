@@ -105,13 +105,15 @@ class Graph {
     while (currVert.parent) {
       if (currVert === start) {
         result = start.value + ' --> ';
-      } else {
-        result += `--> ${currVert.parent.value}`; 
+      } else if (currVert.parent.value) {
+        result += currVert.value + ' ---> '
       }
 
       // seting new current vertex
       currVert = currVert.parent;
     }
+    result += currVert.value;
+
     console.log(result);
   }
 
