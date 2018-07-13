@@ -7,4 +7,4 @@ Describe the fixes you made to the Graph implementation here.
 
 3. Issues with graph not showing as the same color to connected nodes, changed the way vertexes was being called in drawVerts for app.js
 
-4. In graph.js arrays were using unknown methods, the component was being called as a new class.
+4. In graph.js for dfs arrays were using unknown methods, the component was being called as a new class.

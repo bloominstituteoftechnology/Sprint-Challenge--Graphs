@@ -35,6 +35,9 @@ class GraphView extends Component {
    * Draw the given verts
    */
   drawVerts(vertexes, color, clear=true) {
+
+    console.log(vertexes);
+    
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
     
@@ -154,6 +157,7 @@ class App extends Component {
     state.graph.randomize(xCount, yCount, boxSize, probability);
 
     this.setState(state);
+    // window.location.reload()
   }
 
   render() {
