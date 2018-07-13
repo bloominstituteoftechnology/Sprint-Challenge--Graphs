@@ -48,7 +48,7 @@ class Graph {
       console.log(`value of v is ${v.value}`);
       console.log(`value to find is ${value}`);
       if (v.value === value) {
-        return v.value;
+        return v;
       }
     }
     return null; // value could not be found
