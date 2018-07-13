@@ -17,6 +17,8 @@ class Vertex {
   constructor(value='vertex') {
     this.value = value;
     this.edges = [];
+    this.parent = null;
+    this.color = 'white';
   }
 }
 
@@ -45,7 +47,16 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-  }
+   
+      // return v.value === value ? v : null;
+      //I cant use a ternary sadly
+      for(let v of this.vertexes) {
+        if(v.value === value) {
+          return v;
+        }
+      }
+      return null;
+    }
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
@@ -55,7 +66,37 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+    const searched = [];
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'pink';
+    queue.push(start);
+
+    while(queue.length > 0) {
+      const foo = queue.shift();
+      // const foo = queue[0];
+
+      for(let e of foo.edges) {
+
+      const boo = e.destination;
+
+        if(boo.color === 'white') {
+          boo.color = 'pink';
+          boo.parent = foo;
+          queue.push(boo);
+        }
+            // queue.shift();
+            foo.color === 'purple';
+            searched.push(foo);
+
+    }
   }
+  return searched;
+}
 
   /**
    * Print out the route from the start vert back along the parent
@@ -66,6 +107,16 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let beg = start;
+    let temp = '';
+
+    while(beg.parent !== null) {
+      temp += beg.value + ' --> ';
+      beg = beg.parent;
+    }
+    temp += beg.value;
+    //the above allows the last item to be passed in
+    console.log(temp);
   }
 
   /**
