@@ -40,7 +40,7 @@ class GraphView extends Component {
 
     // Clear it
     if (clear) {
-      ctx.fillStyle = "grey";
+      ctx.fillStyle = "lightgrey";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 

@@ -119,9 +119,7 @@ export class Graph {
   dfs(start) {
     const component = new Set();
     const stack = []; // queue
-    console.log("start", start);
     stack.push(start);
-    // console.log("stack", stack);
 
     while (stack.length > 0) {
       const u = stack[0];
@@ -140,7 +138,6 @@ export class Graph {
 
       component.add(u);
     }
-    // console.log(component);
     return component;
   }
 
