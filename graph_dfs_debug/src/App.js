@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Graph } from './graph';
-import './App.css';
+import React, { Component } from "react";
+import { Graph } from "./graph";
+import "./App.css";
 
 // Define the size of the random graph
 const xCount = 4;
@@ -9,8 +9,8 @@ const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasWidth = boxSize * (xCount + 1);
+const canvasHeight = boxSize * (yCount + 1);
 const radius = boxSize / 8;
 
 /**
@@ -34,13 +34,13 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
+  drawVerts(vertexes, color = "blue", clear = true) {
     let canvas = this.refs.canvas;
-    let ctx = canvas.getContext('2d');
-    
+    let ctx = canvas.getContext("2d");
+
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -48,8 +48,10 @@ class GraphView extends Component {
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
-    for (let v of vertexes) { // From this vert
-      for (let e of v.edges) { // To all these verts
+    for (let v of vertexes) {
+      // From this vert
+      for (let e of v.edges) {
+        // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
@@ -59,25 +61,26 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = "#77f";
 
     for (let v of vertexes) {
       ctx.beginPath();
+      ctx.fillStyle = color;
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
-      ctx.stroke();
       ctx.fill();
+      ctx.stroke();
     }
 
     // Draw the vert names
-    ctx.font = '10px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'white';
+    ctx.font = "10px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "white";
 
     for (let v of vertexes) {
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
     }
   }
-  
+
   /**
    * Draw the entire graph
    */
@@ -92,10 +95,10 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
-        color = '0' + color; // leading zero for values less than 0x10
+        color = "0" + color; // leading zero for values less than 0x10
       }
 
       return color;
@@ -108,8 +111,8 @@ class GraphView extends Component {
 
     for (let component of connectedComponents) {
       // Color just like in CSS
-      const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
-
+      const curColor =
+        "#" + randomHexColor() + randomHexColor() + randomHexColor();
       this.drawVerts(component, curColor, clear);
       clear = false;
     }
@@ -119,10 +122,9 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
   }
 }
-
 
 /**
  * App
@@ -155,8 +157,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
-        <GraphView graph={this.state.graph}></GraphView>
+        <button onClick={this.onButton}>Random</button>
+        <GraphView graph={this.state.graph} />
       </div>
     );
   }
