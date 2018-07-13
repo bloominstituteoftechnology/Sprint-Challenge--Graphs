@@ -43,10 +43,8 @@ class Graph {
    *
    * @return null if not found.
    */
-  findVertex(value) {
+  findVertex(vertH) {
     // !!! IMPLEMENT ME
-    if (this.vertex(value));
-
   }
 
   /**
