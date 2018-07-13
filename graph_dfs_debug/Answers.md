@@ -2,7 +2,7 @@ Describe the fixes you made to the Graph implementation here.
 
 Known Issues:
 1. The graph draws crazily.
-Fix:
+Fix: Commented out line 135 of graph.js, call isn't needed and causes the lines to enter the circle when it's not needed
 
 2. All the vertexes are the same color.  They're supposed to match the color of the edges for each connected component.
 Fix:
