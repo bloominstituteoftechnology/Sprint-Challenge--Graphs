@@ -1,8 +1,6 @@
 // Search for "!!! IMPLEMENT ME" comments
 
-/**
- * Edge class
- */
+/* Edge class */
 class Edge {
   constructor(destination, weight=1) {
     this.destination = destination;
@@ -10,24 +8,23 @@ class Edge {
   }
 }
 
-/**
- * Vertex class
- */
+/* Vertex class */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', color='white') {
     this.value = value;
     this.edges = [];
+    this.color = color;
+    this.parent = null;
+  }
+
+  restoreDefaults() {
+    this.color = "white";
+    this.parent = null;
   }
 }
 
-/**
- * Graph class
- */
+/* Graph class */
 class Graph {
-
-  /**
-   * Constructor
-   */
   constructor() {
     this.vertexes = [];
   }
@@ -44,7 +41,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    return this.vertexes.find(v => v.value === value) || null;
   }
 
   /**
@@ -54,7 +51,25 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    this.vertexes.forEach(v => v.restoreDefaults());
+
+    const queue = [start];
+    start.color = "gray";
+    
+    while (queue.length) {
+      const vertex = queue.shift();
+
+      vertex.edges.forEach(e => {
+        const target = e.destination;
+        if (target.color === "white") {
+          target.color = "gray";
+          target.parent = vertex;
+          queue.push(target);
+        }
+      });
+
+      vertex.color = "black";
+    }
   }
 
   /**
@@ -65,32 +80,31 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let vertex = start;
+    let result = `\n${start.value}`;
+
+    while (vertex.parent) {
+      result += ` --> ${vertex.parent.value}`;
+      vertex = vertex.parent;
+    }
+
+    console.log(result);
   }
 
-  /**
-   * Show the route from a starting vert to an ending vert.
-   */
+  /* Show the route from a starting vert to an ending vert. */
   route(start, end) {
-    // Do BFS and build parent pointer tree
-    this.bfs(end);
-
-    // Show the route from the start
-    this.outputRoute(start);
+    this.bfs(end); // Do BFS and build parent pointer tree
+    this.outputRoute(start); // Show the route from the start
   }
 }
 
-/**
- * Helper function to add bidirectional edges
- */
+/* Helper function to add bidirectional edges */
 function addEdge(v0, v1) {
   v0.edges.push(new Edge(v1));
   v1.edges.push(new Edge(v0));
 }
 
-/**
- * Main
- */
+/* Main */
 
 // Test for valid command line
 const args = process.argv.slice(2);
