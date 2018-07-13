@@ -43,7 +43,14 @@ class Graph {
    *
    * @return null if not found.
    */
-  findVertex(value) {}
+  findVertex(value) {
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        return v.value;
+      }
+      return null; // value could not be found
+    }
+  }
 
   /**
    * Breadth-First search from a starting vertex. This should keep parent
