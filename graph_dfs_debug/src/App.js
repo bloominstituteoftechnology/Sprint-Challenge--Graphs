@@ -5,12 +5,12 @@ import './App.css';
 // Define the size of the random graph
 const xCount = 4;
 const yCount = 3;
-const boxSize = 150;
+const boxSize = 155;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasWidth = boxSize * (xCount + 0.5); // Added to stop cutting off
+const canvasHeight = boxSize * (yCount + 0.5); // Added to stop cutting off
 const radius = boxSize / 8;
 
 /**
@@ -40,7 +40,7 @@ class GraphView extends Component {
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'darkred';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; // Changed '#77f' to color
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -119,7 +119,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>; // corrected to canvasWidth
   }
 }
 
@@ -155,7 +155,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button> {/* Correct function is onButton */}
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
