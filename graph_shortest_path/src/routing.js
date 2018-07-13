@@ -17,7 +17,8 @@ class Vertex {
   constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
-    this.parent = null;
+    this.parent;
+    this.color = "white";
   }
 }
 
@@ -63,7 +64,7 @@ class Graph {
    */
   bfs(start) {
     //     white = not-visited , gray = inspected , black = visited
-    const component = []; // set new array 
+    // const component = []; // set new array 
     const queue = []; //// the queue 
 
     start.color = 'gray'; // coloring the first vertex to be inspected by bfs() for their edges 
@@ -83,10 +84,10 @@ class Graph {
 
       queue.shift(); // we dequeue one by one 
       node.color = 'black'; // we color every node in the queue to black 
-      component.add(node); /// we add every mother (vertex)and children  (edges) to one array 
+      //component.add(node); /// we add every mother (vertex)and children  (edges) to one array 
     }
 
-    return component
+    // return component
   }
 
   /**
@@ -98,12 +99,18 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-    if (start.parent !== null) {
+    let current = start;
+    let string = ""
 
+    while (current !== null) {
+      string += current.value;
+      if (current.parent !== null) {
+        string += " ---->"
+      }
+      current = current.parent
 
-      console.log(`${start.parent.value}` `===>` `${start.value}`);
     }
-    break;
+    console.log(string);
   }
 
   /**
