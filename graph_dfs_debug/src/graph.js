@@ -58,7 +58,7 @@ export class Graph {
         // Connect down
         if (y < height - 1) {
           if (Math.random() < probability) {
-            connectVerts(grid[y][x], grid[y+1][x]);
+            connectVerts(grid[y][x], grid[y+ 1][x]);
           }
         }
 
@@ -80,7 +80,7 @@ export class Graph {
       for (let x = 0; x < width; x++) {
         grid[y][x].pos = {
           'x': (x * pxBox + boxInnerOffset + Math.random() * boxInner) | 0,
-          'y': (y * pxBox + boxInnerOffset + Math.random() * boxInner) | 0
+          'y': (y * pxBox + boxInnerOffset + Math.random() * boxInner) | 0,
         };
       }
     }
