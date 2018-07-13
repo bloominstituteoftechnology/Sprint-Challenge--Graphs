@@ -45,6 +45,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vert of this.vertexes) {
+      if (vert.value === value) {
+        return vert;
+      }
+    }
+    return null;
   }
 
   /**
@@ -53,8 +59,35 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
+  bfs(vert) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    let result = [];
+    let queue = [];
+
+    vert.color = "gray";
+    queue.push(vert);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let v of u.edges) {
+          if (v.destination.color === 'white') {
+            v.destination.color = 'gray';
+            v.destination.parent = u; 
+            queue.push(v.destination);
+          }
+      }
+      queue.shift();
+      u.color = 'black';
+      result.push(u);
+    }
+    
+    return result;
   }
 
   /**
@@ -66,6 +99,22 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currVert = start;
+    let result = '';
+
+    while (currVert.parent) {
+      if (currVert === start) {
+        result = start.value + ' --> ';
+      } else if (currVert.parent.value) {
+        result += currVert.value + ' ---> '
+      }
+
+      // seting new current vertex
+      currVert = currVert.parent;
+    }
+    result += currVert.value;
+
+    console.log(result);
   }
 
   /**

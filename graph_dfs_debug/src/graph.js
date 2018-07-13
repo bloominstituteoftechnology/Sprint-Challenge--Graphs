@@ -123,7 +123,7 @@ export class Graph {
     stack.push(start);
 
     while (stack.length > 0) {
-      const u = stack.pop();
+      const u = stack[0]; // fixed here
       if (u.color === 'white') {
         u.color = 'gray';
 
