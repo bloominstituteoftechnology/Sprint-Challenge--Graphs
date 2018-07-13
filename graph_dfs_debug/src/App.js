@@ -3,6 +3,7 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
+          //CHANGED
 const xCount = 5;
 const yCount = 4;
 const boxSize = 150;
@@ -59,7 +60,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color;  //CHANGED
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -119,6 +120,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
+                                 //CHANGED
     return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
@@ -153,7 +155,7 @@ class App extends Component {
     this.setState(state);
   }
 
-  render() {
+  render() {                  //CHANGED
     return (
       <div className="App">
         <button onClick={this.onButton}>Random</button>
