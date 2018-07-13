@@ -31,36 +31,14 @@ class GraphView extends Component {
     this.updateCanvasConnectedComponents();
   }
 
-  // Missing from Assignment
-
-  //   ctx.font = "13px Arial";
-  //   ctx.textAlign = "center";
-  //   ctx.textBaseline = "middle";
-
-  //   // set of all connected components
-  //   const components = this.props.graph.getConnectedComponents();
-  //   // loop pass each to drawV
-  //   components.forEach((component) => {
-  //     this.drawVertexes(ctx, component, this.generateRandomColor());
-  //   });
-  // }
-  updateCanvas() {
-    let canvas = this.refs.canvas;
-    const ctx = canvas.getContext("2d");
-  
-    ctx.fillStyle = "grey";
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    ctx.font = "10px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillStyle = "white";
-  }
-
   /**
    * Draw the given verts
    */
   // defualt
-  drawVerts(ctx, vertexes, color) {
+  drawVerts(vertexes, color=color, clear=true) {
+    let canvas = this.refs.canvas;
+    let ctx = canvas.getContext("2d");
+    
     // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
@@ -77,6 +55,7 @@ class GraphView extends Component {
       }
     }
 
+    ctx.fillStyle = color;
     // Draw the verts on top
     for (let v of vertexes) {
       ctx.beginPath();
@@ -84,20 +63,9 @@ class GraphView extends Component {
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
-
-      ctx.fillStyle = 'black';
-      ctx.fillText(v.value, v.pos.x, v.pos.y);
     }
   }
 
-  color() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
   /**
    * Draw the entire graph
    */
@@ -140,7 +108,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas> ;
   }
 }
 
@@ -175,7 +143,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph} />
       </div>
     );

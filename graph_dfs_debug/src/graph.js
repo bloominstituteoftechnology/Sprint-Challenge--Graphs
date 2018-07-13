@@ -12,10 +12,11 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value='default', pos={x: -4, y: -4}, color='white') {
     this.value = value;
     this.edges = [];
     this.color = color;
+    this.pos = pos;
   }
 }
 
@@ -132,7 +133,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      //stack.shift(); // de-stack
       u.color = 'black';
 
       component.add(u);
