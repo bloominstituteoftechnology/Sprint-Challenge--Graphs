@@ -10,7 +10,7 @@ const probability = 0.6;
 
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasHeight = window.innerWidth;
 const radius = boxSize / 8;
 
 /**
@@ -150,12 +150,13 @@ class App extends Component {
     state.graph.randomize(xCount, yCount, boxSize, probability);
 
     this.setState(state);
+    // window.location.reload();
   }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
