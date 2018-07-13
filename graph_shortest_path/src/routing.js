@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,7 +14,7 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
   }
@@ -44,7 +44,12 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    const verts = this.vertexes;
+    for (let el of verts) {
+      if (el.value === value) return el;
+
+    }
+     return null;
   }
 
   /**
@@ -52,11 +57,59 @@ class Graph {
    * pointers back from neighbors to their parent.
    *
    * @param {Vertex} start The starting vertex for the BFS
-   */
-  bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+   BFS(graph, startVert):
+  for v of graph.vertexes:
+    v.color = white
+    v.parent = null   // <-- Add parent initialization
 
+  startVert.color = gray
+  queue.enqueue(startVert)
+
+  while !queue.isEmpty():
+    u = queue[0]
+
+    for v of u.neighbors:
+      if v.color == white:
+        v.color = gray
+        v.parent = u     // <-- Keep a parent link
+        queue.enqueue(v)
+    
+    queue.dequeue()
+    u.color = black
+   
+   */
+
+
+  bfs(start) {
+    let queue = [];
+   
+    const verts = this.vertexes;
+
+    //color every verts --> white
+    verts.forEach(el => {
+      el.color = 'white';
+      el.parent = null;
+    })
+
+    start.color = 'gray'; // make the start vert --> gray;
+    queue.push(start); // push it --> queue
+
+
+    while (queue.length) { // as long as length is truthy
+      const u = queue.pop(); // pop out the vert
+
+      for (let e of u.edges) { // loop over it edges 
+        const v = e.destination; // grab its  destination
+        if (v.color === 'white') { //  if the destination is not visited yet
+          v.color = 'gray'; // make it gray
+          v.parent = u; // set the destination's parent -->  vert 
+          queue.push(v); // push the destination in queue 
+        }
+      }
+      u.color = 'black' // make the vert black(visited)
+    }
+
+  }
   /**
    * Print out the route from the start vert back along the parent
    * pointers (set in the previous BFS)
@@ -65,7 +118,14 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let print = '';
+    // let currentNode = start;
+    while (start.parent) {
+      print += start.value + "-->";
+      start = start.parent;
+    }
+    print += start.value;
+    console.log(print);
   }
 
   /**

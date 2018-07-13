@@ -12,10 +12,13 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='vertex', color='white') {
+  constructor(value='default', pos = {
+    x: -1,
+    y: -1
+  }) {// here
     this.value = value;
     this.edges = [];
-    this.color = color;
+    this.pos = pos;// here
   }
 }
 
@@ -116,6 +119,7 @@ export class Graph {
   /**
    * Depth-first Search
    */
+
   dfs(start) {
     const component = new Set();
     const stack = [];
@@ -132,7 +136,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack // <-- this is not needed
       u.color = 'black';
 
       component.add(u);
@@ -140,6 +144,35 @@ export class Graph {
 
     return component;
   }
+ /**
+   * Breath-first Search
+   */
+
+  // bfs(start) {
+  //   const component = [];
+  //   const queue = [];
+
+  //   start.color = 'gray';
+  //   queue.push(start);
+
+  //   while (queue.length > 0) {
+  //     const u = queue[0];
+
+  //     for (let e of u.edges) {
+  //       const v = e.destination;
+  //       if (v.color === 'white') {
+  //         v.color = 'gray';
+  //         queue.push(v);
+  //       }
+  //     }
+
+  //     queue.shift(); // de-queue
+  //     u.color = 'black';
+  //     component.push(u);
+  //   }
+
+  //   return component;
+  // }
 
   /**
    * Get the connected components
@@ -148,8 +181,12 @@ export class Graph {
     const componentsList = [];
 
     for (let v of this.vertexes) {
+      v.color = 'white'; 
+    }
+
+    for (let v of this.vertexes) {
       if (v.color === 'white') {
-        const component = this.dfs(v);
+        const component = this.dfs(v);// here
         componentsList.push(component);
       }
     }
