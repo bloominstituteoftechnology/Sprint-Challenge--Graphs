@@ -47,6 +47,7 @@ class GraphView extends Component {
     // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
+    console.log('da color', color);
 
     for (let v of vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
@@ -55,6 +56,7 @@ class GraphView extends Component {
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
         ctx.stroke();
+        ctx.closePath();
       }
     }
 
@@ -155,7 +157,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
