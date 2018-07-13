@@ -45,6 +45,7 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+
   }
 
   /**
@@ -53,8 +54,38 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
+  bfs(vert) {
     // !!! IMPLEMENT ME
+    for (v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    
+    let result = [];
+    let queue = [];
+
+    vert.color = 'gray';
+    queue.push(vert);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let v of u.edges) {
+          if (v.destination.color === 'white') {
+            v.destination.color = 'gray';
+            v.destination.parent = u; 
+            queue.push(v.destination);
+          }
+      }
+      queue.shift();
+      u.color = 'black';
+      result.push(u);
+    }
+    
+    return result;
+    
+  
   }
 
   /**
