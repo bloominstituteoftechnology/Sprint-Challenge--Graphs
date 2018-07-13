@@ -3,14 +3,14 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
+const xCount = 6;
 const yCount = 3;
 const boxSize = 150;
 const probability = 0.6;
 
 // Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+const canvasWidth = 1000; 
+const canvasHeight = 900; 
 const radius = boxSize / 8;
 
 /**
@@ -46,7 +46,7 @@ class GraphView extends Component {
 
     // Draw the edges
     ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = 'black';
 
     for (let v of vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
@@ -55,15 +55,16 @@ class GraphView extends Component {
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
         ctx.stroke();
+        ctx.closePath();
       }
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
-      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
+      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI);
       ctx.stroke();
       ctx.fill();
     }
@@ -74,7 +75,7 @@ class GraphView extends Component {
     ctx.fillStyle = 'white';
 
     for (let v of vertexes) {
-      ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
+      ctx.fillText(v.value, v.pos.x, v.pos.y);
     }
   }
   
@@ -84,7 +85,7 @@ class GraphView extends Component {
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
-    //g.dump();
+    // g.dump();
   }
 
   /**
@@ -103,6 +104,7 @@ class GraphView extends Component {
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
+    g.dump();
 
     let clear = true;
 
@@ -155,7 +157,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );

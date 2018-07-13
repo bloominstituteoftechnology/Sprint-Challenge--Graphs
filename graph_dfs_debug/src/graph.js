@@ -11,14 +11,16 @@ export class Edge {
 /**
  * Vertex
  */
+
 export class Vertex {
-  constructor(value='vertex', color='white') {
-    this.value = value;
+  // !!! IMPLEMENT ME
+  constructor(value='default', pos={x: -1, y: -1}, color='white') {
     this.edges = [];
+    this.value = value;
+    this.pos = pos;
     this.color = color;
   }
 }
-
 /**
  * Graph
  */
@@ -116,7 +118,8 @@ export class Graph {
   /**
    * Depth-first Search
    */
-  dfs(start) {
+
+    dfs(start) {
     const component = new Set();
     const stack = [];
 
@@ -132,10 +135,40 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack
       u.color = 'black';
 
       component.add(u);
+    }
+
+    return component;
+  }
+    /**
+   * BFS
+   */
+  bfs(start) {
+    // !!! IMPLEMENT ME
+    const component = new Set();
+    const queue = [];
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const node = queue[0];
+
+      for (let edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+
+      component.add(node);
     }
 
     return component;
