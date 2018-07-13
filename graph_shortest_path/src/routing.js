@@ -44,7 +44,7 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    // !!! IMPLEMENT ME
+    return this.vertexes.find(v => v.value === value)
   }
 
   /**
@@ -55,6 +55,25 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    this.vertexes.forEach(v => {
+      v.color = "white"
+      v.parent = null
+    })
+
+    start.color = "grey"
+    const queue = [start]
+    while (queue.length > 0) {
+      const v1 = queue.shift();
+
+      v1.edges.map(e => e.destination)
+        .forEach(v2 => {
+          if (v2.color === "white") {
+            v2.color = "grey"
+            v2.parent = v1
+            queue.push(v2)
+          }
+        })
+    }
   }
 
   /**
@@ -65,7 +84,13 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+    let route = ""
+    while (start.parent) {
+      route = route.concat(start.value, " --> ")
+      start = start.parent
+    }
+    route = route.concat(start.value);
+    console.log(route);
   }
 
   /**
