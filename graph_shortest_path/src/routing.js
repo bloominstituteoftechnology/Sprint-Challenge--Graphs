@@ -59,6 +59,29 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    for (v of this.vertexes){
+      v.color = white;
+      v.parent = null;   // <-- Add parent initialization
+    }
+
+    start.color = 'gray';
+
+    const queue = [start];
+
+    while (!queue.isEmpty()) {
+      const u = queue[0];
+
+      for (v of u.neighbors) {
+        if (v.color === 'white') {
+          v.color = 'gray';
+          v.parent = u;     // <-- Keep a parent link
+          queue.push(v);
+        }
+      }
+    } 
+
+    queue.shift();
+    u.color = 'black';
   }
 
   /**
