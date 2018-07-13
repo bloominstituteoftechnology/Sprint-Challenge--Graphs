@@ -4,7 +4,7 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
+  constructor(destination, weight = 1) {
     this.destination = destination;
     this.weight = weight;
   }
@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
+    this.searched = false; 
+    this.parent = null; 
   }
 }
 
@@ -45,6 +47,12 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex; 
+      }
+    }
+    return null; 
   }
 
   /**
@@ -55,17 +63,45 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = []; 
+
+    queue.push(start); 
+    start.searched = true; 
+
+    while (queue.length > 0) {
+      const vertex = queue[0]; 
+
+      for(let edge of vertex.edges) {
+        if (!edge.destination.searched) {
+          edge.destination.parent = vertex; 
+          queue.push(edge.destination); 
+          edge.destination.searched = true; 
+        }
+      }
+      queue.shift(); 
+    }
   }
 
   /**
    * Print out the route from the start vert back along the parent
    * pointers (set in the previous BFS)
    *
+   
    * @param {Vertex} start The starting vertex to follow parent
    *                       pointers from
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let v = start; 
+    let output = ''; 
+
+    while (v.parent) {
+      output += `${v.value} -->`; 
+
+      v = v.parent; 
+    }
+
+    console.log(`${output}${v.value}`); 
   }
 
   /**
