@@ -1,0 +1,54 @@
+Arguments: 
+  C:\JS\nodejs\node.exe C:\Users\Juarin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js start
+
+PATH: 
+  C:\JS\Git\mingw64\bin;C:\JS\Git\usr\bin;C:\Users\Juarin\bin;C:\JS\nodejs;C:\JS\git;G:\JS\VSCode;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\system32\wbem;C:\windows\system32\windowspowershell\v1.0;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Skype\Phone;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;G:\JS\Git\mingw64\ssl\certs;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;G:\SteamLibrary\steamapps\common\Path of Exile;B:\Link\Steam;G:\Git\cmd;G:\JS\win-builds\bin;C:\MinGW\bin;G:\MinGW\bin;C:\cygwin64\bin;G:\cygwin64\bin;C:\MinGW\msys\1.0\bin;G:\MinGW\msys\1.0\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\MongoDB\Server\3.6\bin;C:\Users\Juarin\AppData\Local\Microsoft\WindowsApps;G:\JS\VSCode\bin;G:\JS\nodejs;C:\Users\Juarin\AppData\Roaming\npm;G:\VSCode\bin;C:\Program Files\Heroku\bin;C:\tools\mingw64\bin;C:\tools\msys64
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  8.9.4
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "name": "graph",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "react": "^16.2.0",
+      "react-dom": "^16.2.0",
+      "react-scripts": "1.0.17"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test --env=jsdom",
+      "eject": "react-scripts eject"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Command failed.
+  Exit code: 1
+  Command: C:\WINDOWS\system32\cmd.exe
+  Arguments: /d /s /c react-scripts start
+  Directory: G:\JS\week19\Sprint-Challenge--Graphs\graph_dfs_debug
+  Output:
+  
+      at ProcessTermError.MessageError (C:\Users\Juarin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:186:110)
+      at new ProcessTermError (C:\Users\Juarin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:226:113)
+      at ChildProcess.<anonymous> (C:\Users\Juarin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
