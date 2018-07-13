@@ -4,8 +4,8 @@ import './App.css';
 
 // Define the size of the random graph
 const xCount = 4;
-const yCount = 3;
-const boxSize = 150;
+const yCount = 4;
+const boxSize = 200;
 const probability = 0.6;
 
 // Figure out the canvas size
@@ -40,7 +40,8 @@ class GraphView extends Component {
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+
+      ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -59,13 +60,13 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
-      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
-      ctx.stroke();
+      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2*Math.PI, false);
       ctx.fill();
+      ctx.stroke();
     }
 
     // Draw the vert names
@@ -155,8 +156,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        
         <GraphView graph={this.state.graph}></GraphView>
+        <div>
+        <button onClick={this.onButton}>Random</button>
+        </div>
       </div>
     );
   }
