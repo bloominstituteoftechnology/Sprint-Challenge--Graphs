@@ -17,6 +17,8 @@ class Vertex {
   constructor(value = "vertex") {
     this.value = value;
     this.edges = [];
+    this.color = "white";
+    this.parent = null;
   }
 }
 
@@ -48,8 +50,8 @@ class Graph {
       if (vertex.value === value) {
         return vertex;
       }
-      return null;
     }
+    return null;
   }
 
   /**
@@ -96,6 +98,19 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let str = "";
+    let currentnode = start;
+
+    while (currentnode !== null) {
+      str += currentnode.value;
+
+      if (currentnode.parent !== null) {
+        str += "-->";
+      }
+
+      currentnode = currentnode.parent;
+    }
+    console.log(str);
   }
 
   /**
