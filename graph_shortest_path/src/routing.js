@@ -106,7 +106,7 @@ class Graph {
 
       next = next.parent;
     }
-    console.log("\n route: ", route);
+    console.log("\n\x1b[31mroute:\x1b[0m", route);
   }
 
   /**
@@ -137,7 +137,7 @@ function addEdge(v0, v1) {
 const args = process.argv.slice(2);
 
 if (args.length != 2) {
-  console.error("usage: routing hostA hostB");
+  console.error("\x1b[41musage format:\x1b[0m routing hostA hostB");
   process.exit(1);
 }
 
@@ -178,14 +178,14 @@ graph.vertexes.push(vertH);
 const hostAVert = graph.findVertex(args[0]);
 
 if (hostAVert === null) {
-  console.error("routing: could not find host: " + args[0]);
+  console.error("\x1b[41mrouting:\x1b[0m could not find host: " + args[0]);
   process.exit(2);
 }
 
 const hostBVert = graph.findVertex(args[1]);
 
 if (hostBVert === null) {
-  console.error("routing: could not find host: " + args[1]);
+  console.error("\x1b[41mrouting:\x1b[0m could not find host: " + args[1]);
   process.exit(2);
 }
 
