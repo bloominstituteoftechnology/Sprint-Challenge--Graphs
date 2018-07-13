@@ -46,12 +46,12 @@ class Graph {
     // !!! IMPLEMENT ME
     for (let i = 0; i < this.vertexes.length; i++) {
       if (value === this.vertexes[i].value) {
-        console.log(value);
-        return value;
+        console.log(`Vertex '${value}' Found`);
+        return this.vertexes[i];
       }
     }
     console.log("null");
-    null;
+    return null;
   }
 
   /**
@@ -61,9 +61,30 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // console.log(start);
-    // for (v of start.vertexes) {}
     // !!! IMPLEMENT ME
+    const queue = [];
+    for (let each of this.vertexes) {
+      // console.log(each);
+      each.color = "white";
+      each.parent = null;
+      console.log(start);
+    }
+    start.color = grey;
+    queue.push(start);
+
+    while (queue > 0) {
+      u = queue[0];
+
+      for (vert of u.destination) {
+        if (vert.color == white) {
+          vert.color = grey;
+          vert.parent = u;
+          queue.push(vert);
+        }
+      }
+      queue.shift();
+      u.color = black;
+    }
   }
 
   /**
