@@ -40,7 +40,7 @@ class GraphView extends Component {
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'wheat';
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -119,7 +119,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
@@ -155,7 +155,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
