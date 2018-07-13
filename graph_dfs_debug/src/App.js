@@ -13,27 +13,19 @@ const canvasWidth = boxSize * xCount;
 const canvasHeight = boxSize * yCount;
 const radius = boxSize / 8;
 
-/**
- * GraphView
- */
+/* GraphView */
 class GraphView extends Component {
-  /**
-   * On mount
-   */
+  /* On mount */
   componentDidMount() {
     this.updateCanvasConnectedComponents();
   }
 
-  /**
-   * On state update
-   */
+  /* On state update */
   componentDidUpdate() {
     this.updateCanvasConnectedComponents();
   }
 
-  /**
-   * Draw the given verts
-   */
+  /* Draw the given verts */
   drawVerts(vertexes, color='blue', clear=true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext('2d');
@@ -84,7 +76,7 @@ class GraphView extends Component {
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
-    //g.dump();
+    // g.dump();
   }
 
   /**
@@ -143,19 +135,15 @@ class App extends Component {
    * Handle the button press
    */
   onButton() {
-    const state = {
-      graph: new Graph()
-    };
-
+    const state = { graph: new Graph() };
     state.graph.randomize(xCount, yCount, boxSize, probability);
-
     this.setState(state);
   }
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
