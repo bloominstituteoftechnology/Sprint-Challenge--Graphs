@@ -26,7 +26,7 @@ Take your BFS code and modify it so that each neighbor gets a link back to its p
 BFS(graph, startVert):
   for v of graph.vertexes:
     v.color = white
-    v.parent = null   // <-- Add parent initialization
+  D  // <-- Add parent initialization
 
   startVert.color = gray
   queue.enqueue(startVert)
