@@ -152,10 +152,11 @@ class App extends Component {
     this.setState(state);
   }
 
+
   render() {
     return (
       <div className="App">
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
