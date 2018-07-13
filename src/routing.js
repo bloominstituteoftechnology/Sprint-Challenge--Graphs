@@ -45,6 +45,7 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+
   }
 
   /**
@@ -55,6 +56,28 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const component = new Set();
+    const queue = [];
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const node = queue[0];
+
+      for (let edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          queue.push(vertex);
+        }
+      }
+      queue.shift();
+      node.color = 'black';
+
+      component.add(node);
+    }
+    return component;
   }
 
   /**
@@ -66,6 +89,7 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+
   }
 
   /**
