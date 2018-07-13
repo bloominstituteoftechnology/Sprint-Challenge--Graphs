@@ -5,7 +5,7 @@ Known Issues:
 Fix: Commented out line 135 of graph.js, call isn't needed and causes the lines to enter the circle when it's not needed
 
 2. All the vertexes are the same color.  They're supposed to match the color of the edges for each connected component.
-Fix:
+Fix: This seemed to be fixed with removing unneeded call function. 
 
 3. My randomize button is broken.
 Fix: this.Button needed this.onButton
