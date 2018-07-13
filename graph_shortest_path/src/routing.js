@@ -62,7 +62,7 @@ class Graph {
     // !!! IMPLEMENT ME
     const component = [];
     const queue = [];
-    
+
     for (let v of this.vertexes) {
       v.color = 'white';
       v.parent = null;   // <-- Add parent initialization
@@ -96,6 +96,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let route = '';
+    let currentNode = start;
+    
+    while (currentNode.parent !== null) {
+      route += currentNode.value;
+      route += ' -->';
+      currentNode = currentNode.parent;
+    }
+    route += currentNode.value;
+    
+    console.log(route);
   }
 
   /**
