@@ -17,7 +17,7 @@ class Vertex {
   constructor(value = 'vertex') {
     this.value = value;
     this.edges = [];
-    this.parent;
+    this.parent = null;
     this.color = "white";
   }
 }
@@ -52,8 +52,8 @@ class Graph {
       if (vertex.value === value) {
         return vertex;
       }
-      return null;
     }
+    return null;
   }
 
   /**
