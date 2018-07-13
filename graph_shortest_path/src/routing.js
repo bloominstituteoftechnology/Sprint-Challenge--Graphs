@@ -60,7 +60,6 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-    const component = [];
     const queue = [];
 
     for (let v of this.vertexes) {
@@ -72,7 +71,7 @@ class Graph {
     queue.push(start);
 
     while (queue.length > 0) {
-      const u = queue.shift();
+      const u = queue[0];
 
       for (let edge of u.edges) {
         if (edge.destination.color === 'white') {
@@ -81,10 +80,9 @@ class Graph {
           queue.push(edge.destination);
         }
       }
+      queue.shift();
       u.color = 'black';
-      component.push(u);
     }
-    return component;
   }
 
   /**
