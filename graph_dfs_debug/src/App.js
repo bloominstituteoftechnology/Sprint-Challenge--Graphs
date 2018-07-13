@@ -48,7 +48,7 @@ class GraphView extends Component {
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
-    for (let v of this.props.graph.vertexes) { // From this vert
+    for (let v of vertexes) { // From this vert
       for (let e of v.edges) { // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
@@ -61,7 +61,7 @@ class GraphView extends Component {
     // Draw the verts on top
     ctx.fillStyle = '#77f';
 
-    for (let v of this.props.graph.vertexes) {
+    for (let v of vertexes) {
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
@@ -73,7 +73,7 @@ class GraphView extends Component {
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
 
-    for (let v of this.props.graph.vertexes) {
+    for (let v of vertexes) {
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
     }
   }
@@ -84,7 +84,7 @@ class GraphView extends Component {
   updateCanvasEntireGraph() {
     const g = this.props.graph;
     this.drawVerts(g.vertexes);
-    //g.dump();
+    g.dump();
   }
 
   /**
