@@ -68,6 +68,23 @@ class Graph {
       v.color = 'white';
       v.parent = null;
     }
+
+    start.color = 'grey';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      let u = queue[0];
+
+      for (let edge of u.edges) {
+        if (edge.destination.color === 'white') {
+          edge.destination.color = 'grey';
+          edge.destination.parent = u;
+          queue.push(edge.destination);
+        }
+      }
+      queue.shift();
+      u.color = 'black';
+    }
   }
 
   /**
@@ -79,6 +96,16 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let currentVert = start;
+    let output = '';
+
+    while (currentVert.parent != null) {
+      output += `${currentVert.value} --> `;
+      currentVert = currentVert.parent;
+    }
+    output += `${currentVert.value}`;
+    console.log(output);
+    return output;
   }
 
   /**
