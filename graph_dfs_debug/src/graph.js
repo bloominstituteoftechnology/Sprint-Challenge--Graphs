@@ -12,11 +12,10 @@ export class Edge {
  * Vertex
  */
 export class Vertex {
-  constructor(value='default', pos={x: -1, y: -1}, color='white') {
+  constructor(value='default', color='white') {
     this.value = value;
     this.edges = [];
     this.color = color;
-    this.pos = pos;
   }
 }
 
