@@ -7,3 +7,4 @@ Describe the fixes you made to the Graph implementation here.
 
 3. Under 'Draw the Verts on top' I changed the fillStyle from #77f to 'color' so verts would have different colors versus staying all the same.
 
+4. Under 'Handle Button Press' I fixed the onClick command in order to make the Random button function properly. 'this.Button' needed to be 'this.onButton' so randomize button now works.

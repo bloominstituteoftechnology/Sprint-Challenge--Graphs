@@ -142,7 +142,7 @@ class App extends Component {
   /**
    * Handle the button press
    */
-  onButton() {
+  onButton() { // <-- onButton is what needs to be called below in the onClick function in order to make the radomize button function to work
     const state = {
       graph: new Graph()
     };
@@ -154,8 +154,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <button onClick={this.Button}>Random</button>
+      <div className="App"> 
+        <button onClick={this.onButton}>Random</button> 
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
