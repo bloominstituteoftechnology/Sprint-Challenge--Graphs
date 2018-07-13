@@ -38,20 +38,22 @@ class GraphView extends Component {
 
     // Draw the edges
     ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
 
     for (let v of vertexes) { // From this vert
+      console.log(v);
       for (let e of v.edges) { // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
+        // ctx.fill();
         ctx.stroke();
       }
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color;
 
     for (let v of vertexes) {
       ctx.beginPath();
