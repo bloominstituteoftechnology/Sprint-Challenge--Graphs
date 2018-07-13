@@ -3,10 +3,10 @@ import { Graph } from './graph';
 import './App.css';
 
 // Define the size of the random graph
-const xCount = 4;
-const yCount = 3;
-const boxSize = 150;
-const probability = 0.6;
+const xCount = 5;
+const yCount = 5;
+const boxSize = 120;
+const probability = 0.7;
 
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -119,7 +119,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>;
   }
 }
 
