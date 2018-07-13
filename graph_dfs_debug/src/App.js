@@ -34,7 +34,7 @@ class GraphView extends Component {
   /**
    * Draw the given verts
    */
-  drawVerts(color = "blue", clear = true) {
+  drawVerts(component, color = "blue", clear = true) {
     let canvas = this.refs.canvas;
     let ctx = canvas.getContext("2d");
     const vertexes = this.props.graph.vertexes;
@@ -46,9 +46,8 @@ class GraphView extends Component {
 
     // Draw the edges
     ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
 
-    for (let v of vertexes) {
+    for (let v of component) {
       // From this vert
       v.color = color;
       for (let e of v.edges) {
@@ -57,25 +56,26 @@ class GraphView extends Component {
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
         ctx.lineTo(v2.pos.x, v2.pos.y);
+        ctx.strokeStyle = v.color;
         ctx.stroke();
         ctx.closePath();
       }
     }
 
     // Draw the verts on top
-    ctx.fillStyle = "#77f";
-
+    ctx.strokeStyle = "black";
     for (let v of vertexes) {
       ctx.beginPath();
+      ctx.fillStyle = v.color;
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
       ctx.fill();
     }
 
     // Draw the vert names
-    ctx.font = "10px sans-serif";
+    ctx.font = "14px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
 
     for (let v of vertexes) {
       ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
@@ -85,11 +85,12 @@ class GraphView extends Component {
   /**
    * Draw the entire graph
    */
-  updateCanvasEntireGraph() {
-    const g = this.props.graph;
-    // this.drawVerts(g.vertexes);
-    //g.dump();
-  }
+  // updateCanvasEntireGraph() {
+  //   const g = this.props.graph;
+  //   this.updateCanvasConnectedComponents();
+  //   // this.drawVerts(g.vertexes);
+  //   //g.dump();
+  // }
 
   /**
    * Draw the connected components
@@ -115,7 +116,7 @@ class GraphView extends Component {
       const curColor =
         "#" + randomHexColor() + randomHexColor() + randomHexColor();
 
-      this.drawVerts(curColor, clear);
+      this.drawVerts(component, curColor, clear);
       clear = false;
     }
   }
