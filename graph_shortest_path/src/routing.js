@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', pos = { x: -1, y: -1 }, color = 'white', parent = null) {
     this.value = value;
     this.edges = [];
+    this.color = color;
+    this.parent = parent
   }
 }
 
@@ -45,6 +47,20 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    let retValue = '';
+   this.vertexes.forEach((valueIn,i) => {
+      // console.log("This is the vertex:", valueIn.value);
+      if (valueIn.value === value) {
+        // console.log("value of ValueIn",valueIn);
+        retValue = valueIn;
+        return retValue;
+      }
+    });
+    if (retValue === '') {
+      return null
+    } else {
+      return retValue;
+    }
   }
 
   /**
@@ -55,6 +71,30 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const component = [];
+    const queue = [];
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const u = queue[0];
+
+      for (let e of u.edges) {
+        const v = e.destination;
+        if (v.color === 'white') {
+          v.color = 'gray';
+          v.parent = u;
+          queue.push(v);
+        }
+      }
+
+      queue.shift(); // de-queue
+      u.color = 'black';
+      component.push(u);
+    }
+
+    return component;
   }
 
   /**
@@ -66,6 +106,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let outputString = '';
+    outputString += start.value;
+    // console.log(start.value);
+    let search = start.parent;
+    while (search !== null) {
+      outputString += ' --> ' ;
+      outputString += search.value;
+      // console.log(search.value);
+      search = search.parent;
+    }
+    console.log(outputString)
   }
 
   /**
@@ -77,6 +128,8 @@ class Graph {
 
     // Show the route from the start
     this.outputRoute(start);
+
+    // console.log("Inside route", end);
   }
 }
 
@@ -139,6 +192,8 @@ const hostAVert = graph.findVertex(args[0]);
 if (hostAVert === null) {
   console.error('routing: could not find host: ' + args[0]);
   process.exit(2);
+} else {
+  // console.log("Success hosAVert", hostAVert)
 }
 
 const hostBVert = graph.findVertex(args[1]);
@@ -146,6 +201,8 @@ const hostBVert = graph.findVertex(args[1]);
 if (hostBVert === null) {
   console.error('routing: could not find host: ' + args[1]);
   process.exit(2);
+} else {
+  // console.log("Success hosBVert", hostBVert)
 }
 
 // Show the route from one host to another

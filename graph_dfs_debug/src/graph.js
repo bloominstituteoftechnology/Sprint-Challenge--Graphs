@@ -132,7 +132,7 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack
       u.color = 'black';
 
       component.add(u);
@@ -141,9 +141,10 @@ export class Graph {
     return component;
   }
 
-  /**
-   * Get the connected components
-   */
+  // /**
+  //  * Get the connected components
+  //  */
+
   getConnectedComponents() {
     const componentsList = [];
 
@@ -153,7 +154,56 @@ export class Graph {
         componentsList.push(component);
       }
     }
-
+    console.log("Thse are the components", componentsList);
     return componentsList;
   }
+
+
+
+  // bfs(start) {
+  //   const component = [];
+  //   const queue = [];
+  //   start.color = 'gray';
+  //   queue.push(start);
+  //   while (queue.length > 0) {
+  //     const u = queue[0];
+  //     for (let e of u.edges) {
+  //       const v = e.destination;
+  //       if (v.color === 'white') {
+  //         v.color = 'gray';
+  //         queue.push(v);
+  //       }
+  //     }
+  //     queue.shift(); // de-queue
+  //     u.color = 'black';
+  //     component.push(u);
+  //   }
+
+  //   return component;
+   
+
+  // }
+
+
+  // /**
+  //  * Get the connected components
+  //  */
+  // getConnectedComponents() {
+  //   // const component = this.bfs(this.vertex);
+  //   // !!! IMPLEMENT ME
+  //   const componentsList = [];
+  //   for (let v of this.vertexes) {
+  //     v.color = 'white'; 
+  //   }
+  //   for (let v of this.vertexes) {
+  //     // console.log("This is the vertex", v);
+  //     if (v.color === 'white') {
+  //       const component = this.bfs(v);
+  //       // const component = this.dfs(v);
+
+  //       componentsList.push(component);
+  //     }
+  //   }
+  //   return componentsList;
+  // }
 }
