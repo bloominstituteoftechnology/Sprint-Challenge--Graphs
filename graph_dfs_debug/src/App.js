@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Graph } from './graph';
-import './App.css';
+import React, { Component } from "react";
+import { Graph } from "./graph";
+import "./App.css";
 
 // Define the size of the random graph
 const xCount = 4;
@@ -31,25 +31,44 @@ class GraphView extends Component {
     this.updateCanvasConnectedComponents();
   }
 
+  // Missing from Assignment
+
+  //   ctx.font = "13px Arial";
+  //   ctx.textAlign = "center";
+  //   ctx.textBaseline = "middle";
+
+  //   // set of all connected components
+  //   const components = this.props.graph.getConnectedComponents();
+  //   // loop pass each to drawV
+  //   components.forEach((component) => {
+  //     this.drawVertexes(ctx, component, this.generateRandomColor());
+  //   });
+  // }
+  updateCanvas() {
+    let canvas = this.refs.canvas;
+    const ctx = canvas.getContext("2d");
+  
+    ctx.fillStyle = "grey";
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    ctx.font = "10px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "white";
+  }
+
   /**
    * Draw the given verts
    */
-  drawVerts(vertexes, color='blue', clear=true) {
-    let canvas = this.refs.canvas;
-    let ctx = canvas.getContext('2d');
-    
-    // Clear it
-    if (clear) {
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-    }
-
+  // defualt
+  drawVerts(ctx, vertexes, color) {
     // Draw the edges
     ctx.lineWidth = 2;
     ctx.strokeStyle = color;
 
-    for (let v of vertexes) { // From this vert
-      for (let e of v.edges) { // To all these verts
+    for (let v of vertexes) {
+      // From this vert
+      for (let e of v.edges) {
+        // To all these verts
         const v2 = e.destination;
         ctx.beginPath();
         ctx.moveTo(v.pos.x, v.pos.y);
@@ -59,25 +78,26 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
-
     for (let v of vertexes) {
       ctx.beginPath();
-      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
-      ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI);
       ctx.fill();
-    }
+      ctx.stroke();
 
-    // Draw the vert names
-    ctx.font = '10px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'white';
-
-    for (let v of vertexes) {
-      ctx.fillText(v.value, v.pos.x, v.pos.y + 4);
+      ctx.fillStyle = 'black';
+      ctx.fillText(v.value, v.pos.x, v.pos.y);
     }
   }
-  
+
+  color() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
   /**
    * Draw the entire graph
    */
@@ -92,10 +112,10 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
     function randomHexColor() {
-      let color = ((Math.random() * 240)|0).toString(16);
+      let color = ((Math.random() * 240) | 0).toString(16);
 
       if (color.length === 1) {
-        color = '0' + color; // leading zero for values less than 0x10
+        color = "0" + color; // leading zero for values less than 0x10
       }
 
       return color;
@@ -108,7 +128,8 @@ class GraphView extends Component {
 
     for (let component of connectedComponents) {
       // Color just like in CSS
-      const curColor = '#' + randomHexColor() + randomHexColor() + randomHexColor();
+      const curColor =
+        "#" + randomHexColor() + randomHexColor() + randomHexColor();
 
       this.drawVerts(component, curColor, clear);
       clear = false;
@@ -119,10 +140,9 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
   }
 }
-
 
 /**
  * App
@@ -156,7 +176,7 @@ class App extends Component {
     return (
       <div className="App">
         <button onClick={this.Button}>Random</button>
-        <GraphView graph={this.state.graph}></GraphView>
+        <GraphView graph={this.state.graph} />
       </div>
     );
   }
