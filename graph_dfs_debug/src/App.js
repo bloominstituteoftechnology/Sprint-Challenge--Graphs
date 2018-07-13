@@ -161,7 +161,7 @@ class App extends Component {
     return (
       <div className="App">
         <GraphView graph={this.state.graph} />
-        <button onClick={this.Button}>Random</button>
+        <button onClick={this.onButton}>Random</button>
       </div>
     );
   }
