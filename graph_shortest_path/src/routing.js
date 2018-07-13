@@ -60,23 +60,25 @@ class Graph {
    */
   bfs(start) {
     const queue = [];
+    const searched = [];
 
     start.color = "gray";
-    queue.unshift(start);
+    queue.push(start);
 
-    while (queue > 0) {
-      let u = queue[0];
+    while (queue.length > 0) {
+      let vertex = queue.shift();
 
-      for (vertex of u.edges) {
-        if (vertex.color === "white") {
-          vertex.color = "gray";
-          vertex.parent = u;
-          queue.enqueue(vertex);
+      for (edge of vertex.edges) {
+        const edgeVertex = edge.destination; 
+        if (edgeVertex.color === "white") {
+          edgeVertex.color = "gray";
+          edgeVertex.parent = vertex;
+          queue.push(edgeVertex);
         }
       }
       
-      queue.dequeue();
-      u.color = "black";
+      vertex.color = "black";
+      searched.push(vertex);
     }
 
   }
@@ -89,7 +91,7 @@ class Graph {
    *                       pointers from
    */
   outputRoute(start) {
-    // !!! IMPLEMENT ME
+
   }
 
   /**
