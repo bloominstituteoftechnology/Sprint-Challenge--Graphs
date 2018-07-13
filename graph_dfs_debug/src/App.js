@@ -8,9 +8,9 @@ const yCount = 3;
 const boxSize = 150;
 const probability = 0.6;
 
-// Figure out the canvas size
-const canvasWidth = boxSize * xCount;
-const canvasHeight = boxSize * yCount;
+// Figure out the canvas size 
+const canvasWidth = boxSize * (xCount + 1); //<-- Added parens with `+1` to make the canvas big enough to fit the graph better
+const canvasHeight = boxSize * (yCount + 1); //<-- Added parens with `+1` to make the canvas big enough to fit the graph better
 const radius = boxSize / 8;
 
 /**
@@ -40,7 +40,7 @@ class GraphView extends Component {
     
     // Clear it
     if (clear) {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'grey'; // <-- changed to grey to see canvas
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     }
 
@@ -59,7 +59,7 @@ class GraphView extends Component {
     }
 
     // Draw the verts on top
-    ctx.fillStyle = '#77f'; 
+    ctx.fillStyle = color; // <-- changed from #77f to `color` 
 
     for (let v of vertexes) {
       ctx.beginPath();
@@ -69,7 +69,7 @@ class GraphView extends Component {
     }
 
     // Draw the vert names
-    ctx.font = '10px sans-serif';
+    ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
 
@@ -119,7 +119,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight}></canvas>;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight}></canvas>; // <-- width was marked as 'CanvasHeight in brackets so fixed to canvasWidth
   }
 }
 
@@ -142,7 +142,7 @@ class App extends Component {
   /**
    * Handle the button press
    */
-  onButton() {
+  onButton() { // <-- onButton is what needs to be called below in the onClick function in order to make the radomize button function to work
     const state = {
       graph: new Graph()
     };
@@ -154,8 +154,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <button onClick={this.Button}>Random</button>
+      <div className="App"> 
+      {/* Fixed onClick to be this.onButton */}
+        <button onClick={this.onButton}>Random</button> 
         <GraphView graph={this.state.graph}></GraphView>
       </div>
     );
