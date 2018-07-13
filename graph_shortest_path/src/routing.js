@@ -45,9 +45,9 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
-    for(let v of this.vertexes) {
-      if(v.value === value) {
-        return value;
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value) {
+        return vertex;
       }
     }
     return null;
@@ -61,7 +61,7 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
-
+    
   }
 
   /**
@@ -73,7 +73,7 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
-
+    
   }
 
   /**
