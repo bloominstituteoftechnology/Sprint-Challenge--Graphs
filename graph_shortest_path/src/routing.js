@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', color="white", parent = null) {
     this.value = value;
     this.edges = [];
+    this.color = color;
+    this.parent = parent;
   }
 }
 
@@ -57,7 +59,26 @@ class Graph {
    * @param {Vertex} start The starting vertex for the BFS
    */
   bfs(start) {
-    // !!! IMPLEMENT ME
+    const queue = [];
+
+    start.color = "gray";
+    queue.unshift(start);
+
+    while (queue > 0) {
+      let u = queue[0];
+
+      for (vertex of u.edges) {
+        if (vertex.color === "white") {
+          vertex.color = "gray";
+          vertex.parent = u;
+          queue.enqueue(vertex);
+        }
+      }
+      
+      queue.dequeue();
+      u.color = "black";
+    }
+
   }
 
   /**
