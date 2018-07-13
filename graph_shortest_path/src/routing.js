@@ -45,10 +45,11 @@ class Graph {
    * @return null if not found.
    */
   findVertex(value) {
-    for (let i = 0; i < this.vertexes.length; i++) {
-      if (this.vertexes[i] === value)
-        return this.vertexes[i];
+    for (let vertex of this.vertexes) {
+      if (vertex.value === value)
+        return vertex;
     }
+    return null;
   }
 
   /**
