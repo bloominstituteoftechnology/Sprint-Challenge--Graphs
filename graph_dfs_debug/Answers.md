@@ -1,10 +1,11 @@
 Describe the fixes you made to the Graph implementation here.
 
 1. The graph draws crazily.
-
+The DFS method required the stack to unshift() instead of shift().
 
 2. All the vertexes are the same color.  They're supposed to match the color of the edges for each connected component.
 
+The fillStyle needed to be changed to the color of the strokeStyle.
 
 
 3. My randomize button is broken.
