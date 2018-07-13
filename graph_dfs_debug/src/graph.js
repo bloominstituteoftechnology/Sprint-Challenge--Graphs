@@ -116,11 +116,17 @@ export class Graph {
   /**
    * Depth-first Search
    */
-  dfs(start) {
-    const component = new Set();
+  dfs(start, reset = true) {
+    const component = [];
     const stack = [];
 
-    stack.push(start);
+
+    if (reset) {
+      for (let v of this.vertexes) {
+        v.color = "white";
+      }
+    }
+
 
     while (stack.length > 0) {
       const u = stack.pop();
@@ -132,10 +138,10 @@ export class Graph {
         }
       }
 
-      stack.shift(); // de-stack
+      // stack.shift(); // de-stack
       u.color = 'black';
 
-      component.add(u);
+      component.push(u);
     }
 
     return component;
