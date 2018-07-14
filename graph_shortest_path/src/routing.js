@@ -4,8 +4,8 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
-    this.destination = destination;
+  constructor(dest, weight=1) {
+    this.dest = dest;
     this.weight = weight;
   }
 }
@@ -18,6 +18,7 @@ class Vertex {
     this.value = value;
     this.edges = [];
     this.parent = parent;
+    this.visited = false;
   }
 }
 
@@ -61,17 +62,17 @@ class Graph {
    bfs(start) {
      const queue = [];
      queue.push(start);
+     start.visited = true;
 
      while (queue.length > 0) {
-       const x = queue[0];
-       for (let i of x.edges){
-         console.log(i.destination);
-         if (i.destination.parent == null){
-           i.destination.parent = x;
-           queue.push(i.destination);
+       let x = queue.pop();
+       for (let i of x.edges) {
+         if (i.dest.visited === false){
+           i.dest.parent = x;
+           i.dest.visited = true;
+           queue.push(i.dest);
          }
        }
-       queue.shift();
      }
    }
 
@@ -84,6 +85,7 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // console.log(start);
     let route = '';
 
     while (start.parent !== null) {
