@@ -45,6 +45,15 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+
+    for(let i = 0; i < this.vertexes.length; i++) {
+      if(this.vertexis[i] === value) {
+        return value;
+      }
+    }
+
+    return value;
+    
   }
 
   /**
@@ -55,6 +64,29 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+
+    if(start === null) {
+      return;
+    }
+      //const component = new Set();
+      const queue = [];
+  
+      //start.color = 'gray';
+      queue.push(start);
+  
+      while (queue.length > 0) {
+        const node = queue[0];
+  
+        if(node.left !== null) {
+          queue.push(node.left);
+        }
+
+        if(node.right !== null) {
+          queue.push(node.right);
+        }
+
+        queue.shift();
+      }
   }
 
   /**
@@ -66,6 +98,8 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // outputing a string 
+    // will be ran inside the terminal 
   }
 
   /**

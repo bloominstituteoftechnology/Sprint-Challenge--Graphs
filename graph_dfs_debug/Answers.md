@@ -12,3 +12,4 @@ Changed the color function but later changed it back because it did not seem to 
 
 
 Some problems im still having is sometimes the graphs don't color differently for some reason and sometimes the nodes appear really close to each other despite having distance required between them. 
+

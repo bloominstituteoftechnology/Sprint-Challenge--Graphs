@@ -92,6 +92,7 @@ class GraphView extends Component {
    */
   updateCanvasConnectedComponents() {
    function randomHexColor() {
+
       let color = ((Math.random() * 240)|0).toString(16);
 
       if (color.length === 1) {
