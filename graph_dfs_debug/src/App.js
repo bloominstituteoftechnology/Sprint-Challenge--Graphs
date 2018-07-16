@@ -45,10 +45,10 @@ class GraphView extends Component {
     }
 
     // Draw the edges
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = color;
 
     for (let v of vertexes) {
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = color;
       // From this vert
       for (let e of v.edges) {
         // To all these verts
@@ -58,17 +58,22 @@ class GraphView extends Component {
         ctx.lineTo(v2.pos.x, v2.pos.y);
         ctx.stroke();
       }
-    }
-
-    // Draw the verts on top
-    ctx.fillStyle = "#77f";
-
-    for (let v of vertexes) {
+      ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
       ctx.stroke();
       ctx.fill();
     }
+
+    // Draw the verts on top
+    ctx.fillStyle = "#77f";
+
+    // for (let v of vertexes) {
+    //   ctx.beginPath();
+    //   ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
+    //   ctx.stroke();
+    //   ctx.fill();
+    // }
 
     // Draw the vert names
     ctx.font = "10px sans-serif";
@@ -105,6 +110,7 @@ class GraphView extends Component {
 
     const g = this.props.graph;
     const connectedComponents = g.getConnectedComponents();
+    console.log(connectedComponents);
 
     let clear = true;
 
@@ -122,7 +128,7 @@ class GraphView extends Component {
    * Render
    */
   render() {
-    return <canvas ref="canvas" width={canvasHeight} height={canvasHeight} />;
+    return <canvas ref="canvas" width={canvasWidth} height={canvasHeight} />;
   }
 }
 
