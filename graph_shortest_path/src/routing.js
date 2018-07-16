@@ -4,8 +4,8 @@
  * Edge class
  */
 class Edge {
-  constructor(destination, weight=1) {
-    this.destination = destination;
+  constructor(dest, weight=1) {
+    this.dest = dest;
     this.weight = weight;
   }
 }
@@ -14,9 +14,11 @@ class Edge {
  * Vertex class
  */
 class Vertex {
-  constructor(value='vertex') {
+  constructor(value='vertex', parent=null) {
     this.value = value;
     this.edges = [];
+    this.parent = parent;
+    this.visited = false;
   }
 }
 
@@ -45,6 +47,10 @@ class Graph {
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if(v.value === value) return v;
+    }
+    return null;
   }
 
   /**
@@ -53,9 +59,22 @@ class Graph {
    *
    * @param {Vertex} start The starting vertex for the BFS
    */
-  bfs(start) {
-    // !!! IMPLEMENT ME
-  }
+   bfs(start) {
+     const queue = [];
+     queue.push(start);
+     start.visited = true;
+
+     while (queue.length > 0) {
+       let x = queue.pop();
+       for (let i of x.edges) {
+         if (i.dest.visited === false){
+           i.dest.parent = x;
+           i.dest.visited = true;
+           queue.push(i.dest);
+         }
+       }
+     }
+   }
 
   /**
    * Print out the route from the start vert back along the parent
@@ -66,6 +85,17 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    // console.log(start);
+    let route = '';
+
+    while (start.parent !== null) {
+      route += start.value;
+      route += ' -->';
+      start = start.parent;
+    }
+
+    route += start.value;
+    console.log(route);
   }
 
   /**
