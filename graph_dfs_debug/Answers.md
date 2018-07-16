@@ -6,4 +6,6 @@ Made the weights be randomized by making a randomized number from 1-10 be passed
 
 Made the canvas the correct width by making the canvas width equal to canvasWidth instead of canvasHeight in the render for GraphView
 
-<!-- (actually this didn't fix it) Made the getConnectedComponents function work by making every vertex color white using a forloop -->
+I imported my bfs from the week project to make the colors work right, because I couldn't figure out how to fix dfs to make sure that connected vertexes had the same color
+
+I made the radius boxSize divided by 12 instead of 8 so that circles wouldn't sometimes get cut off on the edge of the canvas.

@@ -11,7 +11,7 @@ const probability = 0.6;
 // Figure out the canvas size
 const canvasWidth = boxSize * xCount;
 const canvasHeight = boxSize * yCount;
-const radius = boxSize / 8;
+const radius = boxSize / 12;
 
 /**
  * GraphView
@@ -64,16 +64,6 @@ class GraphView extends Component {
       ctx.stroke();
       ctx.fill();
     }
-
-    // Draw the verts on top
-    ctx.fillStyle = "#77f";
-
-    // for (let v of vertexes) {
-    //   ctx.beginPath();
-    //   ctx.arc(v.pos.x, v.pos.y, radius, 0, 2 * Math.PI, false);
-    //   ctx.stroke();
-    //   ctx.fill();
-    // }
 
     // Draw the vert names
     ctx.font = "10px sans-serif";

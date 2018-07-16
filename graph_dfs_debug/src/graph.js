@@ -141,6 +141,28 @@ export class Graph {
     return component;
   }
 
+  bfs(start) {
+    let queue = [];
+    let component = [];
+
+    start.color = "gray";
+    queue.push(start);
+    while (queue.length > 0) {
+      const u = queue[0];
+
+      for (let v of u.edges) {
+        if (v.destination.color === "white") {
+          v.destination.color = "gray";
+          queue.push(v.destination);
+        }
+      }
+      queue.shift();
+      u.color = "black";
+      component.push(u);
+    }
+    return component;
+  }
+
   /**
    * Get the connected components
    */
@@ -148,7 +170,7 @@ export class Graph {
     const componentsList = [];
     for (let v of this.vertexes) {
       if (v.color === "white") {
-        const component = this.dfs(v);
+        const component = this.bfs(v);
         componentsList.push(component);
       }
     }
