@@ -106,7 +106,7 @@ class Graph {
       cancat += `${valu.value} --> `;
       valu = valu.parent;
     }
-     cancat += valu.value;
+     cancat += `${valu.value}`;
      console.log(cancat);
      return cancat;
   }
