@@ -41,10 +41,17 @@ class Graph {
    *
    * @param {*} value The value of the Vertex to find
    *
+   * @return {Vertex} the vertex with the value that matches the target value
    * @return null if not found.
    */
   findVertex(value) {
     // !!! IMPLEMENT ME
+    for (let v of this.vertexes) {
+      if (v.value === value) {
+        return v;
+      }
+    }
+    return null;
   }
 
   /**
@@ -55,6 +62,31 @@ class Graph {
    */
   bfs(start) {
     // !!! IMPLEMENT ME
+    const queue = [];
+
+    for (let v of this.vertexes) {
+      v.color = 'white';
+      v.parent = null;
+    }
+
+    start.color = 'gray';
+    queue.push(start);
+
+    while (queue.length > 0) {
+      const node = queue[0];
+
+      for (let edge of node.edges) {
+        const vertex = edge.destination;
+        if (vertex.color === 'white') {
+          vertex.color = 'gray';
+          vertex.parent = node;
+          queue.push(vertex);
+        }
+      }
+
+      queue.shift();
+      node.color = 'black';
+    }
   }
 
   /**
@@ -66,6 +98,20 @@ class Graph {
    */
   outputRoute(start) {
     // !!! IMPLEMENT ME
+    let str = '';
+    let currentNode = start;
+
+    while (currentNode !== null) {
+      str += currentNode.value;
+
+      if (currentNode.parent !== null) {
+        str += ' --> ';
+      }
+
+      currentNode = currentNode.parent;
+    }
+
+    console.log(str);
   }
 
   /**
