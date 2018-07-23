@@ -16,7 +16,7 @@ Even though we're using this to see how packets are routed on a network, the exa
 
 This is what is in the boilerplate:
 
-![Network Map](graph_shortest_path/img/internet.png)
+![Network Map](img/internet.png)
 
 ## Modified BFS
 
