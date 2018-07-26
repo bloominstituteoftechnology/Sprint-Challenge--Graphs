@@ -26,6 +26,9 @@ class Vertex:
 # Graph class
 class Graph:
     def __init__(self):
+        self.vertices = []
+
+    def find_vertex(self, value):
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
@@ -38,31 +41,26 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        self.vertices = []
-
-    def find_vertex(self, value):
         # !!!! IMPLEMENT ME
         pass
-
-    """
-  Breadth-First search from an input starting Vertex
-  Should maintain parent references back from neighbors to their parent.
-
-  @param {Vertex} start: The starting vertex
-  """
 
     def bfs(self, start):
+        """
+        Breadth-First search from an input starting Vertex
+        Should maintain parent references back from neighbors to their parent.
+
+        @param {Vertex} start: The starting vertex
+        """
         # !!!! IMPLEMENT ME
         pass
 
-    """
-  Print out the route from the start vertex back along its parent
-  references (these were set in the `bfs` method)
-
-  @param {Vertex} start: The starting Vertex to follow and print
-  """
-
     def output_route(self, start):
+        """
+        Print out the route from the start vertex back along its parent
+        references (these were set in the `bfs` method)
+
+        @param {Vertex} start: The starting Vertex to follow and print
+        """
         # !!!! IMPLEMENT ME
         pass
 
