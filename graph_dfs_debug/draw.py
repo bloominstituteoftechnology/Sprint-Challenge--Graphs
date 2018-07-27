@@ -2,7 +2,7 @@
 General drawing methods for graphs using Bokeh.
 """
 
-from random import choice, random
+from random import choice, random, sample
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (
@@ -16,18 +16,19 @@ from bokeh.models import (
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
-    def __init__(self, graph, title='Graph', width=100, height=100,
-                 show_axis=False, show_grid=False, circle_size=35,
+    def __init__(self, graph, title='Graph', width=1000, height=800,
+                 show_axis=False, show_grid=False, circle_size=20,
                  draw_components=False):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
         self.graph = graph
         self.width = width
         self.height = height
+        self.vertex_size = circle_size
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0,
-                           height))
+        self.plot = figure(title=title, plot_width=width, plot_height=height,
+                           x_range=(0, width), y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
@@ -99,10 +100,13 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
-        for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+        start = self.vertex_size
+        x_range = list(range(start, int(self.width - start), start))
+        y_range = list(range(start, int(self.height - start), start))
+        x = sample(x_range, len(self.graph.vertices))
+        y = sample(y_range, len(self.graph.vertices))
+        self.pos = dict(zip([vertex.label for vertex in self.graph.vertices],
+                        zip(x, y)))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
