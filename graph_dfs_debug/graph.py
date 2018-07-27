@@ -33,7 +33,7 @@ class Graph:
                 break
             to_visit.extend(self.vertices[z])
 
-        return to_visit
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
