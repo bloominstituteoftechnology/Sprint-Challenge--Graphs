@@ -16,9 +16,16 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex in self.vertices:
+            raise Exception('Error: adding vertex that already exists')
+        if not set(edges).issubset(self.vertices):
+            raise Exception('Error: cannot have edge to nonexistent vertices')
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception('Vertices to connect not in graph!')
+        self.vertices[start].add(end)
         self.vertices[start].add(start)
         if bidirectional:
             self.vertices[end].add(end)
