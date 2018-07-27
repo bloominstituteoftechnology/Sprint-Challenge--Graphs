@@ -44,11 +44,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         for vertex in self.vertices: #tested this works
-            if vertex == value:
-                print(vertex)
+            if vertex.value == value:
+                print("value", vertex.value)
                 return vertex
-            else:
-                return None
+        return None
 
     def bfs(self, start):
         """
@@ -68,14 +67,16 @@ class Graph:
 
         while queue:
             u = queue[0]
-            queue.pop(0)
+            
 
-            for v in self.vertices[u]:
-                if v.color == "white":
-                    v.color = "gray"
-                    v.parent = u     # <-- Keep a parent link
-                    queue.append(v)
+            for edge in v.edges:
+                if edge.destination.color == "white":
+                    edge.destination.color = "gray"
+                    edge.destination.parent = u     # <-- Keep a parent link
+                    queue.append(edge.destination)
+                print(queue)
             u.color = "black"
+            queue.pop(0)
 
         
             
@@ -150,16 +151,16 @@ if __name__ == '__main__':
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
-
+    print("hostA", hostAVert)
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
         sys.exit()
 
     hostBVert = graph.find_vertex(sys.argv[2])
-
+    print("hostB", hostBVert)
     if hostBVert is None:
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
-
+    
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
