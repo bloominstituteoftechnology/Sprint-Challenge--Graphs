@@ -36,6 +36,12 @@ if __name__ == '__main__':
         NUM_VERTICES = int(argv[1])
         NUM_EDGES = int(argv[2])
         DRAW_COMPONENTS = bool(int(argv[3]))
-        main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
-    else:
+        if NUM_EDGES > (NUM_VERTICES * (NUM_VERTICES - 1))/2:
+            # bidirectional limit: n*(n-1)/2, else n^2
+            print('Too many edges. Choose a lower number')
+        else:
+            main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
+    elif len(argv) == 1:
         main()
+    else:
+        print('Expected arguments: Vertices(int) Edges(int) Draw_Components(0/1)')
