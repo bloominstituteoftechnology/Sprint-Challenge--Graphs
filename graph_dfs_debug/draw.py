@@ -2,12 +2,12 @@
 General drawing methods for graphs using Bokeh.
 """
 
-from math import ceil, floor, sqrt
 from random import choice, random
-from bokeh.io import show, output_file
+
+from bokeh.io import output_file, show
+from bokeh.models import (Circle, ColumnDataSource, GraphRenderer, LabelSet,
+                          StaticLayoutProvider)
 from bokeh.plotting import figure
-from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
-                          ColumnDataSource)
 
 
 class BokehGraph:
@@ -22,12 +22,13 @@ class BokehGraph:
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title,
+                           x_range=(0, width),
+                           y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -57,7 +58,7 @@ class BokehGraph:
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            color = '#' + ''.join([choice('0123456789ABCDEF') for j in range(6)])
             colors.append(color)
         return colors
 
