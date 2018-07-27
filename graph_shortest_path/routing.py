@@ -56,7 +56,24 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        # add start in queue
+        # current node turns gray
+        # visited one becomes black
+        queue = [start]
+        start.color = 'gray' 
+
+        while queue:
+            current = queue.pop(0)
+
+            for edge in current.edges:
+                vertex = edge.destination
+                if vertex.color == 'white':
+                    vertex.color = 'gray'
+                    vertex.parent = current
+                    queue.append(vertex)
+
+            current.color = 'black'
+        
 
     def output_route(self, start):
         """
