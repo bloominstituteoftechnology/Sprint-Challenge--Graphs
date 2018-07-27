@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        vert = [v for v in self.vertices if v.value == value]
+
+        return vert[0]
 
     def bfs(self, start):
         """
@@ -52,7 +55,32 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        """Search the graph using BFS or DFS."""
+        start.color = 'gray'
+        queue = [start]
+
+        #init func already doing this
+        """
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+        """
+        # refactor
+        """
+        start.color = 'gray'
+        queue.append(start)
+        """
+        while queue:
+            current = queue.pop(0)
+
+            for edge in current.edges:
+                vertex = edge.destination
+                if vertex.color == 'white':
+                    vertex.color = 'gray'
+                    vertex.parent = current
+                    queue.append(vertex)
+
+            current.color = 'black'
 
     def output_route(self, start):
         """
@@ -62,7 +90,18 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+            vertex = start
+        output = ''
+
+        while (vertex):
+            output += vertex.value
+            if (vertex.parent):
+                output += ' --> '
+            
+            vertex = vertex.parent
+        
+        print(output)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree

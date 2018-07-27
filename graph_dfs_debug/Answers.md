@@ -1,6 +1,21 @@
 Describe the fixes/improvements you made to the Graph implementation here.
 
-Max Washington
+
+-***************************************************************************************************************-
+
+    Hola Friend,
+
+    I think so far your doing a great job with learning BFS. I go into futher details on the changes I made in the  ansers.md file and you can now see a graph when it runs! How cool is that?
+
+    The one thing I want to mention is about variable naming. I try to label variable as close to what there doing.So instead of just using "x" think about what "x" is. Is "x" a stack or quece? Then you should name "x", stack  just so its more clear what "x" is. This also helps when your working with a bunch of people and a new devloper  clearity and simplisty are key.
+
+    Otherwise everything looks good my friend and the graph_demo runs like a well oiled machine! Good work!
+
+    Always here if you need me,
+
+    Max Washington
+
+-***************************************************************************************************************-
 
 # Graph.py
 
@@ -15,5 +30,4 @@ Max Washington
 * Line 34 changed block statement into a print statement just so I have a better idea whats going on.  
 
 * line 40 - 44 changed all the x vars into visited for better description. If we are to call recursion, we need to use 'self' on the func name otherwise the linter will read it as a var
-
 
