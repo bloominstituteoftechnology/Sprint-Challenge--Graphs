@@ -45,8 +45,9 @@ class Graph:
         for vertex in self.vertices:
              if vertex.value == value:
                  return vertex
-             else:
-                 return None
+        return None
+#Note to self: you don't need an else here
+
 
     def bfs(self, start):
         """
@@ -77,14 +78,13 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
+        route = []
         current = start
 
-        while current:
-            print(current.value)
+        while current is not None:
+            route.append(current.value)
             current = current.parent
-
-        print(stack) 
-
+        print(route)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
