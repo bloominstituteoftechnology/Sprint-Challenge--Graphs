@@ -62,10 +62,12 @@ class Graph:
         while stack:
             current = stack.pop(0)
             if current.value not in visited:
+                # print('CURRENT BFS: ', current.value)
+                # print('VISITED: ', visited, '\n')
                 visited.add(current.value)
                 for edge in current.edges:
-                    edge.destination.parent = current
                     if edge.destination.value not in visited:
+                        edge.destination.parent = current
                         stack.append(edge.destination)
 
         return visited
@@ -78,13 +80,30 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        route = []
+        counter = 1
+        current = start
+
+        while current.parent:
+            # print(counter, current.parent.value)
+            route.append(current.value)
+            counter += 1
+            current = current.parent
+        route.append(current.value)
+        return route
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        route = self.output_route(start)
+        print(f'''
+        **************SHORTER ROUTE*****************
+        
+        Route form {start.value} to {end.value}: {route}
+
+        **************END SHORTER ROUTE*****************
+        ''')
 
 
 # Helper function to add bidirectional edges
@@ -131,7 +150,7 @@ if __name__ == '__main__':
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
     # print(hostAVert)
-    print('graph.bfs', graph.bfs(vertB))
+    # print('graph.bfs', graph.bfs(vertB))
 
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
