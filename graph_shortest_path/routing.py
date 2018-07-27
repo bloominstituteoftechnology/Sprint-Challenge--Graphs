@@ -26,8 +26,10 @@ class Vertex:
 # Graph class
 class Graph:
     def __init__(self):
-        self.vertices = []
+        #self.vertices = []
+        self.vertices = {}
 
+    
     def find_vertex(self, value):
         """
         Looks through all the vertices in the graph instance and returns
@@ -41,18 +43,43 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
 
-    def bfs(self, start):
+        quack = [start]  # Queue or stack, depending on method
+        visited = set()
+        found=False
+        while quack:
+            current = quack.pop(0)
+            current.color=gray
+            if current == target:
+                found=True
+                return current
+            visited.add(current)
+            # Add possible (unvisited) vertices to queue
+            quack.extend(self.vertices[current] - visited)
+
+        if not found:
+            return None
+
+    def bfs(self, start, target=None):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        quack = [start]  # Queue or stack, depending on method
+        visited = set()
+
+        while quack:
+            current = quack.pop(0)
+            current.color=gray
+            if current == target:
+                break
+            visited.add(current)
+            # Add possible (unvisited) vertices to queue
+            quack.extend(self.vertices[current] - visited)
+
+        return visited
 
     def output_route(self, start):
         """
