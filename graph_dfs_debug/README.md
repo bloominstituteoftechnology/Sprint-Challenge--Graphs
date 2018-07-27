@@ -9,8 +9,8 @@ the order here matters, you might have to fix them in a different order than
 they are listed. I think these are all problems with `graph.py`.
 
 <!-- 1. Nothing seems to connect, my edges aren't showing up. -->
-2. All the vertexes are the same color.  They're supposed to be different colors
-if they're not connected, and right now none of them are.
+<!-- 2. All the vertexes are the same color.  They're supposed to be different colors
+if they're not connected, and right now none of them are. -->
 <!-- 3. Sometimes I do something and when I run `python graph_demo.py` it just takes
 forever, even though my `draw.py` and `graph_demo.py` are totally just the same
 as from class. -->
