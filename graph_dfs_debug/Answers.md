@@ -19,7 +19,7 @@ general:
 
 1.  Messing types, str with int. Fixing all that in a defesing programming manner.
 
-graph_rec() -> get_components()
+find_components() -> get_components()
 
 1.  Make name more rediable: changed to get_components()
 2.  Re-define the logic to track components. Added a new attribute to Graph so it holds and track the Sets of posible components.
