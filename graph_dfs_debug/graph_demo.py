@@ -3,7 +3,6 @@
 """
 Demonstration of Graph and BokehGraph functionality.
 """
-import numpy as np
 from random import sample
 from sys import argv
 from draw import BokehGraph

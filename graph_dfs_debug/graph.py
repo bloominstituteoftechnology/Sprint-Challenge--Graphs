@@ -32,6 +32,8 @@ class Graph:
             current = stack.pop()
             if current == target:
                 print("Target {}".format(target))
+                return target
+                visited.add(current)
             stack.extend(self.vertices[current]) - visited
 
         return visited
