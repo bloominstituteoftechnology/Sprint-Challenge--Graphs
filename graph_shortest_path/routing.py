@@ -100,7 +100,8 @@ class Graph:
         print(f'''
         **************SHORTER ROUTE*****************
         
-        Route form {start.value} to {end.value}: {route}
+        Route form {start.value} to {end.value}:
+            {' --> '.join(route)}
 
         **************END SHORTER ROUTE*****************
         ''')
