@@ -2,8 +2,8 @@
 General drawing methods for graphs using Bokeh.
 """
 
-from math import ceil, floor, sqrt
-from random import choice, random
+# from math import ceil - for Cass's solution
+from random import random, choice  # uniform - for Cass's solution
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (
@@ -34,6 +34,7 @@ class BokehGraph:
         self.graph = graph
         self.width = width
         self.height = height
+        self.circle_size = circle_size
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
         self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
@@ -124,6 +125,43 @@ class BokehGraph:
                 1 + random() * (self.width - 2),
                 1 + random() * (self.height - 2),
             )
+        # Solution posted by Cassandra Lamendola
+        # This is to give me future hopefully better at maths me
+        # a base of reference to improve on
+        # num_cells = ceil(len(self.vertex_list) ** (1 / 2))
+        # padding = (self.circle_size / 5, self.circle_size / 5)
+        # cube_size = (self.width - sum(padding)) / num_cells
+        # x_pos, y_pos = padding
+
+        # for vertex in self.vertex_list:
+        #     self.pos[vertex.label] = (
+        #         uniform(x_pos, x_pos + cube_size),
+        #         uniform(y_pos, y_pos + cube_size),
+        #     )
+        #     if x_pos + cube_size > (self.width - cube_size):
+        #         x_pos = padding[0]
+        #         y_pos += cube_size
+        #     else:
+        #         x_pos += cube_size
+        #         self.pos[vertex.label] = (x_pos, y_pos)
+
+        # Aaron's code from solution lecture, which needs debugging:
+
+    # def gridify(self):
+    #     """Give grid vertex positions, trying to minimize collisions."""
+    #     # Split space into a grid of ~sqrt(num_of_vertices)^2
+    #     rows = floor(sqrt(len(self.vertex_list)))
+    #     cols = ceil(sqrt(len(self.vertex_list)))
+    #     grid_height = self.height / rows
+    #     grid_width = self.width / cols
+    #     for i, vertex in enumerate(self.vertex_list):
+    #         # Randomly place each vertex in a different grid cell
+    #         # TODO: improve, this spreads things out some but still collides
+    #         col = (i % cols) + 1
+    #         row = (i + 1) // cols
+    #         x_pos = 10 + (col) * grid_width - 15
+    #         y_pos = 10 + (row) * grid_height - 15
+    #         self.pos[vertex.label] = (x_pos, y_pos)
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""

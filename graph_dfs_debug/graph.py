@@ -53,7 +53,20 @@ class Graph:
 
         return visited
 
+    # This is here because I was testing set() vs None
+    # This is here also to remind me not to initalize a parameter with set()
+    #
+    # def graph_rec(self, start, visited=set(), target=None):
+    #     print("visited:", visited)
+    #     visited.add(start)
+    #     if start == target:
+    #         return target
+    #     for edge in self.vertices[start] - visited:
+    #         self.graph_rec(edge, visited)
+    #     return visited
+
     def graph_rec(self, start, visited=None, target=None):
+        print("visited:", visited)
         if visited is None:
             visited = set()
         visited.add(start)
@@ -62,6 +75,20 @@ class Graph:
         for edge in self.vertices[start] - visited:
             self.graph_rec(edge, visited)
         return visited
+
+    # # Alternative using inner functions:
+    # If you want to add recursion to a function and you need to keep track of state
+    # but don't want to change the signature, you can have an inner function
+    # in most languages.  Meta languages (like F#) use it quite a bit.
+    #
+    # def dfs_recursive(self, start, target=None):
+    #     def dfs_helper(vertex, visited):
+    #         visited.add(vertex)
+    #         for neighbor in self.vertices[vertex]:
+    #             if neighbor not in visited:
+    #                 dfs_helper(neighbor, visited)
+    #         return visited
+    #     return dfs_helper(start, set())
 
     def find_components(self):
         visited = set()
