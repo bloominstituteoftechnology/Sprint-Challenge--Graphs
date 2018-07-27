@@ -22,9 +22,6 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
-    # def __repr__(self):
-    #     return self.value
-
 
 # Graph class
 class Graph:
@@ -115,8 +112,6 @@ if __name__ == '__main__':
     add_edge(vertE, vertF)
     add_edge(vertH, vertF)
     add_edge(vertH, vertE)
-
-    # print(vertA.edges[0].destination.value)
 
     graph.vertices.append(vertA)
     graph.vertices.append(vertB)
