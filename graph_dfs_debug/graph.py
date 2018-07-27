@@ -21,7 +21,7 @@ class Graph:
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[start].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         stack = []
@@ -30,11 +30,11 @@ class Graph:
 
         while stack:
             vertex = stack.pop()
-            if vertex not in visited
+            if vertex not in visited:
                 visited.add(vertex)
-                if vertex == target:
-                    break
-                stack.extend(self.vertices[vertex])
+            if vertex == target:
+                break
+            stack.extend(self.vertices[vertex]-visited)
 
         return visited
 

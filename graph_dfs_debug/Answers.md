@@ -8,7 +8,7 @@ DFS
 
 -Variables were poorly named. After naming them properly, I also notices that they were all mixed up. It wasnt returning the collections which was supposed to be called 'stack' so I return the 'visited' set which was originally called some letter.
 
-Also while loop didnt check if the curretn vertex had been visited or not so I added an if statement to check that (if vertex not in visited).
+Also,while loop didnt check if the current vertex had been visited or not so I added an if statement to check that (if vertex not in visited). When we extend stack, we need to remove the items we already visited on line 37.
 
 find_components
 
