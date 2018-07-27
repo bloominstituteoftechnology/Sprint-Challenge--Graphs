@@ -1,3 +1,4 @@
+# Start
 """
 Simple graph implementation compatible with BokehGraph class.
 """
