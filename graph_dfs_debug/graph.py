@@ -18,11 +18,13 @@ class Graph:
     def add_vertex(self, vertex, edges=()):
         self.vertices[vertex] = set(edges)
 
+    # Fixed this
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
 
+    # Fixed this
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
@@ -31,6 +33,7 @@ class Graph:
         while stack:
             current = stack.pop() # Pops the last one
 
+            # Fixed this
             # Check of target is found
             if current == target:
                 return target
@@ -43,6 +46,7 @@ class Graph:
 
         return visited
 
+    # Added this method
     def dfs_recursive(self, start, target=None):
         def dfs_helper(vertex, visited):
             # TODO recursion
