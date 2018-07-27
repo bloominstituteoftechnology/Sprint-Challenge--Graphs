@@ -29,10 +29,13 @@ class Graph:
         visited = set(stack)
 
         while stack:
-            current = stack.pop()
+            current = stack.pop() # Pops the last one
+
+            # Check of target is found
             if current == target:
                 return target
 
+            # Add the current to the stack
             visited.add(current)
 
             # Added this code: subtract what's visited from the vertices and what's remaining, add it to the stack
@@ -40,19 +43,23 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_recursive(self, start, target=None):
+        def dfs_helper(vertex, visited):
+            # TODO recursion
+            visited.add(vertex)
+            for neighbor in self.vertices[vertex]:
+                if neighbor not in visited:
+                    dfs_helper(neighbor, visited)
+            return visited
+
+        return dfs_helper(start, set())
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component

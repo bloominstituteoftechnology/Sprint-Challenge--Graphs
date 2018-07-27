@@ -20,7 +20,6 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
-
 # Graph class
 class Graph:
     def __init__(self):
@@ -85,12 +84,10 @@ class Graph:
         # print the route from the start Vertex
         self.output_route(start)
 
-
 # Helper function to add bidirectional edges
 def add_edge(start, end):
     start.edges.append(Edge(end))
     end.edges.append(Edge(start))
-
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
