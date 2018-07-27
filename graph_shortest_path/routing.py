@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+          if vertex.value == value:
+            return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +55,26 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        print('bfs')
+        for vertex in self.vertices:
+          vertex.color = 'white'
+          vertex.parent = None   #// <-- Add parent initialization
+
+        start.color = 'gray'
+        queue =[start]
+
+        while queue:
+          current_vertex = queue.pop()
+
+          for edge in current_vertex.edges:
+            print(edge)
+            if edge.color == 'white':
+              edge.color = 'gray'
+              edge.parent = current_vertex   #  // <-- Keep a parent link
+              queue.extend(vertex)
+          
+          queue.pop()
+          current_vertex.color = 'black'
 
     def output_route(self, start):
         """
