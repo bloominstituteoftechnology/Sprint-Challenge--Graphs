@@ -19,29 +19,57 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+#         self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+#             self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
-
-        while x:
-            z = x.pop()
-            if x == target:
+        queue = [start]
+        visited = set()
+        
+        while queue:
+            node = queue.pop()
+            visited.add(node)
+            if node == target:
                 break
-            x.extend(self.vertices[z])
+            for n in self.vertices(node):
+                if (n not in queue) and (n not in visited):
+                    queue.extend(self.vertices(node))
+            
+        return visited
+    
+#     def dfs(self, start, target=None):
+#         x = []
+#         x.append(start)
+#         y = set(x)
 
-        return x
+#         while x:
+#             z = x.pop()
+#             if x == target:
+#                 break
+#             x.extend(self.vertices[z])
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+#         return x
+
+    visited = set([])
+    
+    def graph_rec(self, start, visited = visited, target=None):
+        visited.add(start)
+        for n in self.vertices[start]:
+            if n not in visited:
+                visited.add(n)
+                self.graph_rec(n, visited = visited)
+        return visited
+    
+    
+#     def graph_rec(self, start, target=None):     
+#         x = set()
+#         x.append(start)
+#         for v in self.vertices[start]:
+#             graph_rec(v)
+#         return x
 
     def find_components(self):
         visited = set()
