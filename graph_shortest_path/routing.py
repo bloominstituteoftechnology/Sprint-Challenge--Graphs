@@ -73,7 +73,9 @@ class Graph:
             current = queue.pop(0)
             visited.add(current)
             for edge in current.edges:
-                try:
+                if edge.destination is not in visited:
+                    queue.append(edge.destination)
+                    edge.destination = current
 
 
     def output_route(self, start):
