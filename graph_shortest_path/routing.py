@@ -75,7 +75,6 @@ class Graph:
 
             current.color = 'black'
 
-
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -84,7 +83,10 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        print (start.value, end='')
+        if start.parent:
+            print (' --> ', end='')
+            self.output_route(start.parent)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
