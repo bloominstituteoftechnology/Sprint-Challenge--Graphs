@@ -8,7 +8,9 @@ As soon as I did that, it became obvious that all three of those variables were 
 
 Next, I noticed that there was no check in place to make sure a vertex had not already been explored. I added line 33 `if vertex not in explored:` and indented the lines after it so that a vertex would be skipped over if it had already been explored.
 
-After that condition, I also added the vertex to the explored set, so that it would not be explored again in the future (line 34). 
+After that condition, I also added the vertex to the explored set, so that it would not be explored again in the future (line 34).
+
+I later noticed that explored was always only containing the start vertex. This was because explored was initialized with the start vertex. (line 29 `explored = set(stack)`). That made the condition on line 33 to be false, so the loop started a new iteration, but with an empty stack (because the only vertex was `pop`ed off in the first iteration and no new vertices were added). When the stack is empty, the loop terminates, and the explored set is returned. I changed line 29 to be an empty set instead. `explored = set()`
 
 ## Recursive Implementation
 Again, I started by changing variable names so that it would be easier to keep track of the logic. I used the same names as I used in `dfs`.
@@ -19,4 +21,8 @@ Then I noticed that the linter was "complaining" about the recursive call on lin
 
 Next, I added a condition on line 44 to again check the explored set before doing anything with a vertex. Without this condition, the function will run forever if given a component that has a cycle.
 
-The last step was to update the explored set with the result of the recursive call (line 45). I added some tests to the main function to make sure `bfs` and `graph_rec` were working correctly.
+The last step was to update the explored set with the result of the recursive call (line 45). I added some tests to the main function to make sure `bfs` and `graph_rec` were working correctly. That's when I noticed that the edges are not being added correctly in the graph.
+
+## Add Edges
+I noticed that the vertices each had edges to themselves. I looked over the `add_edge` method and noticed that the start vertex is added to itself `self.vertices[start].add(start)` (Same with end vertex). I changed this to `self.vertices[start].add(end)` and that fixed the problem.
+
