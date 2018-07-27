@@ -9,6 +9,8 @@ from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
 
+from graph import Graph, Vertex
+
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
@@ -107,3 +109,19 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
+
+graph = Graph()
+
+vertex = Vertex('a')
+graph.add_vertex(vertex)
+
+vertex = Vertex('b')
+graph.add_vertex(vertex)
+
+vertex = Vertex('c')
+graph.add_vertex(vertex)
+
+
+bokeh = BokehGraph(graph)
+bokeh.show()
+print(bokeh.graph)
