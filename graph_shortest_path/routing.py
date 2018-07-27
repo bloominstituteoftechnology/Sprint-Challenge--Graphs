@@ -78,13 +78,13 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        route = []
         current = start
+        route = []
 
         while current is not None:
-            route.append(current.value)
+            route.append(current.value)    
             current = current.parent
-        print(route)
+        print(' --> '.join(map(str, route)))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
