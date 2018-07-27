@@ -16,12 +16,18 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex in self.vertices:
+            raise Exception('Error: adding vertex that exist')
+        if not set(edges).issubset(self.vertices):
+            raise Exception('Error: cannot have edge to vertex that does not exit')
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception('Vertices to connect not in graph')
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(starts)
 
     def dfs(self, start, target=None):
         x = []
