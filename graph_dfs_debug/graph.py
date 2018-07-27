@@ -25,30 +25,31 @@ class Graph:
 
     def dfs(self, start, target=None):
         x = []
-        x.append(start)
         y = set(x)
+        x.append(start)
+        x.append(start)
 
         while x:
             z = x.pop()
             if x == target:
                 break
-            x.extend(self.vertices[z])
+            x.extend(self.vertices[z]-y)
 
-        return x
+        return y
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    # def graph_rec(self, start, target=None):
+    #     x = set()
+    #     x.append(start)
+    #     for v in self.vertices[start]:
+    #         graph_rec(v)
+    #     return x
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited: # not in
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
