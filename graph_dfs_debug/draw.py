@@ -70,9 +70,10 @@ class BokehGraph:
         # Attach the prepared renderer to the plot so it can be shown
         self.plot.renderers.append(graph_renderer)
 
-    def _get_random_colors(self):
+    def _get_random_colors(self, num_colors=None):
         colors = []
-        for _ in range(len(self.graph.vertices)):
+        num_colors = num_colors or len(self.graph.vertices)
+        for _ in range(num_colors):
             color = "#" + "".join([choice("0123456789ABCDEF") for j in range(6)])
             colors.append(color)
         return colors
