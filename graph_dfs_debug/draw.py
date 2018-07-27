@@ -73,7 +73,7 @@ class BokehGraph:
                 for destination in edges:
                     start_indices.append(vertex.label)
                     end_indices.append(destination.label)
-                checked.add(vertex)
+                checked.add(vertex.label)
 
         return dict(start=start_indices, end=end_indices)
 
