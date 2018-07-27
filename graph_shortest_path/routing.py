@@ -43,6 +43,7 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for vertex in self.vertices:
+            print(type(value))
             if vertex.value == value:
                 return vertex
             else:
@@ -56,13 +57,11 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        queue = []
+        queue = [start]
         start.color = 'gray' #visited
-        queue.append(start)
 
         while queue:
-            current = queue[0]
-
+            current = queue.pop(0)
             for edge in current.edges:
                 vertex = edge.destination
                 if vertex.color == 'white':
@@ -70,8 +69,6 @@ class Graph:
                     vertex.parent = current 
                     queue.append(vertex)
             
-            current.color = 'black'
-            queue.pop(0)
 
     def output_route(self, start):
         """
@@ -87,7 +84,7 @@ class Graph:
         while current:
             route += current.value
             if current.parent:
-                route += '--->>'
+                route += ' --->> '
             current = current.parent 
         
         print(route)
@@ -154,4 +151,4 @@ if __name__ == '__main__':
         sys.exit()
 
     # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+    # graph.route(hostAVert, hostBVert)
