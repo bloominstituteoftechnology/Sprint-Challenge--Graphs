@@ -18,6 +18,9 @@ It was hard to keep track of certain variables in `graph.py` as they had generic
     - Renamed `x` to `stack` since that is the data structure a depth first search utilizes
     - Renames `z` to `current` since this represents the current vertex that you are visiting
     - As you are searching you'll want to keep track of which vertexes you've already visited. I'm assuming that is where you were going with `y`. I renamed that `visited` 
+- In the `graph_rec` method:
+    - Renamed `x` to `visited`. I'm assuming this was the variable you intended to use to keep track of the vertices.
+    - Renamed `v` to vertex since that was what we are looping through
 
 ### Fixed Edges
 The edges were not showing up because they were not being setup correctly in the `add_edge` method. An edge connects one vertex to the other so it has a start vertex and an end vertex. While `add_edge` was accepting a start and end, it was assigning the start and end to the same vertex. Instead of doing `self.vertices[start].add(start)` which is like saying _start the edge at my start vertex and end it at my start vertex_ it should be `self.vertices[start].add(end)` which says _start the edge at my start vertex and end it at my end vertex_. The bidirectional condition had the same issue. It was starting and ending at the same point.
@@ -31,3 +34,6 @@ That change triggered the `dfs` method which also sent the script into an infini
 
 ### Fixed Finding A Target Vertex
 The `dfs` method was looking for the target by comparing the stack to the target. It instead needed to compare the current vertex to the target.
+
+### Fixed Recursive DFS
+Like the `dfs` method, `graph_rec` needed to keep track of which vertexes it had already visited. I fixed this by making sure the vertexes were getting added properly to the visited set (by using add instead of append) and then I checked that the current vertex in the for loop was not in the visited list before calling the method again recursively. Since `graph_rec` will get fired off several times, it needs to be aware of the visited list so I added that as an argument and passed the updated list each time it is called. To get the entire list returned at the end, `graph_rec` should be returned instead of simply being called. There was also an error in the way `graph_rec` was being referenced. Since it is a method of the class it should be called as `self.graph_rec`.
