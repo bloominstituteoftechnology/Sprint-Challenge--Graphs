@@ -19,39 +19,69 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+#         self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+#             self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = [start]
+        visited = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            node = stack.pop()
+            visited.add(node)
+            if node == target:
                 break
-            x.extend(self.vertices[z])
+            for n in self.vertices[node]:
+                if (n not in stack) and (n not in visited):
+                    stack.extend(self.vertices[node])
+            
+        return visited
+    
+#     def dfs(self, start, target=None):
+#         x = []
+#         x.append(start)
+#         y = set(x)
 
-        return x
+#         while x:
+#             z = x.pop()
+#             if x == target:
+#                 break
+#             x.extend(self.vertices[z])
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+#         return x
+
+    visited = set([])
+    
+    def graph_rec(self, start, visited = visited, target=None):
+        visited.add(start)
+        for n in self.vertices[start]:
+            if n not in visited:
+                visited.add(n)
+                self.graph_rec(n, visited = visited)
+        return visited
+    
+    
+#     def graph_rec(self, start, target=None):     
+#         x = set()
+#         x.append(start)
+#         for v in self.vertices[start]:
+#             graph_rec(v)
+#         return x
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
+                visited.union(reachable)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
+                    print('here ', other_vertex.component)
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
