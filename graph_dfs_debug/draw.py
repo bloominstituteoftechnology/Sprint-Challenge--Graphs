@@ -6,6 +6,9 @@ from math import ceil, floor, sqrt
 from random import choice, random, randrange
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
+from bokeh.palettes import Category20
+from bokeh.models.graphs import NodesAndLinkedEdges, EdgesAndLinkedNodes
+from bokeh.models import Plot, Range1d, MultiLine, HoverTool, TapTool, BoxSelectTool, PointDrawTool
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
 
@@ -28,6 +31,7 @@ class BokehGraph:
         self.circle_size = circle_size
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
+        self.plot.add_tools(HoverTool(tooltips=None), TapTool(), BoxSelectTool())
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -44,20 +48,28 @@ class BokehGraph:
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
                                                     fill_color='color')
+        
+        graph_renderer.node_renderer.hover_glyph = Circle(size=circle_size, fill_color=Category20[20][9])
+        graph_renderer.node_renderer.selection_glyph  = Circle(size=circle_size, fill_color=Category20[20][6])
 
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()  # Randomize vertex coordinates, and set as layout
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
-        # Attach the prepared renderer to the plot so it can be shown
-        self.plot.renderers.append(graph_renderer)
 
+        # Attach the prepared renderer to the plot so it can be shown
+        graph_renderer.selection_policy = NodesAndLinkedEdges()
+        graph_renderer.inspection_policy = EdgesAndLinkedNodes()
+        self.plot.renderers.append(graph_renderer)
+        print(graph_renderer.node_renderer)
+        tool = PointDrawTool(renderers=[graph_renderer.node_renderer])
+        self.plot.add_tools(tool)
     def _get_random_colors(self, num_colors=None):
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('56789ABCDEF') for j in range(6)])
+            color = '#'+''.join([choice('89ABCDEF') for j in range(6)])
             colors.append(color)
         return colors
 
@@ -104,9 +116,8 @@ class BokehGraph:
           factor = i % 2
           x = (i * box_width) - (box_width/2)
           y = randrange(half_height*factor, half_height + half_height*factor)
-          y = self.circle_size/2/5 if y < self.circle_size/2/5 else y
+          y = self.circle_size/10 if y < self.circle_size/10 else y
           y = self.height - self.circle_size/2/5 if y > self.height - self.circle_size/2/5 else y
-          # y = randrange(self.circle_size//4 + half_height*factor, half_height + half_height*factor - self.circle_size//4)
           self.pos[vertex.label] = (x,y)
 
     def _get_connected_component_colors(self):
