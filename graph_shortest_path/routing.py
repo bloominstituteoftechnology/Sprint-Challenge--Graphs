@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -24,6 +24,7 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+
     def __repr__(self):
         return f"{self.value}"
 
@@ -37,7 +38,7 @@ class Graph:
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
-        
+
         Used in the `main` function to look up the vertices passed in
         from the command line.
 
