@@ -64,14 +64,11 @@ class Graph:
         parent = start
         while queue:
             current = queue.pop(0)
-            #print("current", current)
             visited.add(current)
             for edge in current.edges:
-                #print(edge)
                 if edge.destination not in visited:
                     edge.destination.parent = current
                     queue.append(edge.destination)
-            #print("current", current, "parent", current.parent)
 
     def output_route(self, start):
         """
@@ -81,11 +78,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         current = start
-        seen = set()
+        seen = [start]
         while current.parent:
-            seen.add(current)
-            print(current.parent)
+            seen.append(current.parent)
             current = current.parent
+        for element in seen:
+            print(element)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
