@@ -56,11 +56,17 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         queue = []
-        for v in self.vertices:
-            v.color = 'white'
-            v.parent = {}
-        start.color = 'gray'
-        queue.push(start)
+        visited = set()
+        start.parent = None
+
+        while len(queue) > 0:
+            current = queue.pop(0)
+            visited.add(current)
+            for edge in curent.edges:
+                target = edge.destination
+                if target not in visited:
+                    queue.append(target)
+                    target.parent = current
 
 
     def output_route(self, start):
@@ -71,7 +77,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        route = []
+        while current is not None:
+            route.append(current.value)
+            current = current.parent
+            print(current.parent)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
