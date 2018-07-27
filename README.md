@@ -1,68 +1,9 @@
-# Shortest Path across the Internet
+# Sprint Challenge: Graphs
 
-For a computer network, it's useful to know how to get a packet from one
-host to another across the Internet.
+There are two parts to this sprint challenge:
 
-For this challenge, you will print out the shortest route from one host
-to another on the console.
+ * `graph_dfs_debug`: Inside this directory, you'll find an implementation of the Graphs project we worked on this last week, but it's not functioning as it should. Your job is to fix the listed issues so that the code works properly. You'll also need to document your changes in the provided `Answers.md` file. 
 
-Even though we're using this to see how packets are routed on a network,
-the exact same procedure could be used to:
+ * `graph_shortest_path`: For this part, you'll be extending the functionality of the breadth-first-search traversal algorithm we worked on so that it's able to find the shortest path between two input graph nodes. You'll find further instructions in the README in the directory.
 
-* find how you're connected to a friend of a friend
-* route an AI through a level
-* etc.
-
-## Map of the Internet
-
-This is what is in the boilerplate:
-
-![Network Map](img/internet.png)
-
-## Modified BFS
-
-Take your BFS code and modify it so that each neighbor gets a link back to its parent:
-
-```pseudocode
-BFS(graph, startVert):
-  for v of graph.vertexes:
-    v.color = white
-    v.parent = null   // <-- Add parent initialization
-
-  startVert.color = gray
-  queue.enqueue(startVert)
-
-  while !queue.isEmpty():
-    u = queue[0]
-
-    for v of u.neighbors:
-      if v.color == white:
-        v.color = gray
-        v.parent = u     // <-- Keep a parent link
-        queue.enqueue(v)
-    
-    queue.dequeue()
-    u.color = black
-```
-
-## Procedure
-
-1. Perform a BFS from the _ending vert_ (host). This will set up all the
-   `parent` pointers across the graph.
-
-2. Output the route by following the parent pointers from the _starting_ vert
-   printing the values as you go.
-
-
-## Sample Run
-
-```
-$ node routing.js HostA HostD
-HostA --> HostB --> HostD
-$ node routing.js HostA HostH
-HostA --> HostC --> HostF --> HostH
-$ node routing.js HostA HostA
-HostA
-$ node routing.js HostE HostB
-HostE --> HostF --> HostC --> HostA --> HostB
-```
+Good luck and have fun! :smile:
