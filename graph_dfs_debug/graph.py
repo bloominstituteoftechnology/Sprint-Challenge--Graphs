@@ -1,15 +1,27 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+from draw import BokehGraph
+from sys import argv
+
+
 class Vertex:
-    def __init__(self, label, component=-1):
+    def __init__(self, label, component=-1, **pos):
         self.label = str(label)
         self.component = component
+        self.pos = pos
+        self.edges = set()
 
     def __repr__(self):
-        return 'Vertex: ' + self.label
+        return "Vertex: " + self.label + self.edges
+
+    def __str__(self):
+        if not self.pos:
+            pos = dict(x=None, y=None)
 
     """Trying to make this Graph class work..."""
+
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -19,9 +31,9 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []

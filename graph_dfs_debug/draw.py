@@ -133,3 +133,4 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
+
