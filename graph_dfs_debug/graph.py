@@ -26,17 +26,17 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        queue = [start]
+        stack = [start]
         visited = set()
-        
-        while queue:
-            node = queue.pop()
+
+        while stack:
+            node = stack.pop()
             visited.add(node)
             if node == target:
                 break
-            for n in self.vertices(node):
-                if (n not in queue) and (n not in visited):
-                    queue.extend(self.vertices(node))
+            for n in self.vertices[node]:
+                if (n not in stack) and (n not in visited):
+                    stack.extend(self.vertices[node])
             
         return visited
     
