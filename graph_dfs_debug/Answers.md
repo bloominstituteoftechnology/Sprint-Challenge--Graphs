@@ -1,8 +1,5 @@
 Describe the fixes/improvements you made to the Graph implementation here.
 
-
--***************************************************************************************************************-
-
 Hola Friend,
 
 I think so far your doing a great job with learning BFS. I go into futher details on the changes I made in the ansers.md file and you can now see a graph when it runs! How cool is that?
@@ -14,8 +11,6 @@ Otherwise everything looks good my friend and the graph_demo runs like a well oi
 Always here if you need me,
 
 Max Washington
-
--***************************************************************************************************************-
 
 # Graph.py
 
@@ -31,19 +26,6 @@ Max Washington
 
 * line 40 - 44 changed all the x vars into visited for better description. If we are to call recursion, we need to use 'self' on the func name otherwise the linter will read it as a var
 
+#Draw.py
 
-|
-||
-||
-||
-||
-||
-||
-||
-||
-||
-||
-||
-||
-||
-|
+* Line 39 Added labels to display the index of each node.

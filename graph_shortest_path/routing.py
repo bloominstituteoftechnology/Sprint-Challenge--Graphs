@@ -90,7 +90,7 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-            vertex = start
+        vertex = start
         output = ''
 
         while (vertex):

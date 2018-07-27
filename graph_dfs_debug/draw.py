@@ -36,6 +36,7 @@ class BokehGraph:
         self.vertex_list = list(self.graph.vertices.keys())
 
         # Add the vertex data as instructions for drawing nodes
+        graph_renderer.node_renderer.data_source.add(self.vertex_list, 'index')
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
         colors = (self._get_connected_component_colors() if draw_components
@@ -71,7 +72,7 @@ class BokehGraph:
                 for destination in edges:
                     start_indices.append(vertex.label)
                     end_indices.append(destination.label)
-                checked.add(vertex)
+                checked.add(vertex.label)
 
         return dict(start=start_indices, end=end_indices)
 
