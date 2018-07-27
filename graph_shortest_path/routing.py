@@ -26,15 +26,16 @@ class Graph:
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
         """
-        # !!!! IMPLEMENT ME
-        # for item in self.vertices:
-        #     if item.value == value:
-        #         return item
+        for item in self.vertices:
+            # print(item.value)
+            if item.value == value:
+                return item
+        return None
+
+        # vert = [v for v in self.vertices if v.value == value]
+        # if len(vert) == 0:
         #     return None
-        vert = [v for v in self.vertices if v.value == value]
-        if len(vert) == 0:
-            return None
-        return vert[0]
+        # return vert[0]
 
     def bfs(self, start):
         """
