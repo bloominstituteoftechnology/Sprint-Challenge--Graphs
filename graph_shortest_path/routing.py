@@ -22,6 +22,9 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    # def __repr__(self):
+    #     return self.value
+
 
 # Graph class
 class Graph:
@@ -41,7 +44,6 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
         pass
 
     def bfs(self, start):
@@ -51,9 +53,21 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = []
 
+        queue.append(start)
+
+        while queue:
+            current = queue.pop(0)
+
+            if current.color == 'white':
+                current.color = 'black'
+            
+            for edge in current.edges:
+                if edge.destination.color == 'white':
+                    queue.append(edge.destination)
+                    edge.destination.color = 'black'
+        
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -102,6 +116,8 @@ if __name__ == '__main__':
     add_edge(vertH, vertF)
     add_edge(vertH, vertE)
 
+    # print(vertA.edges[0].destination.value)
+
     graph.vertices.append(vertA)
     graph.vertices.append(vertB)
     graph.vertices.append(vertC)
@@ -110,6 +126,8 @@ if __name__ == '__main__':
     graph.vertices.append(vertF)
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
+
+    graph.bfs(vertA)
 
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
