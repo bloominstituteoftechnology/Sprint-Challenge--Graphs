@@ -9,8 +9,9 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
+    
 class Graph:
+    """Trying to make this Graph class work..."""
     def __init__(self):
         self.vertices = {}
         self.components = 0
@@ -19,36 +20,58 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        """Add an edge between two vertices"""
+        # start need to add end and vice versa for didirectional
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        """Using dfs to search"""
+        stack = []
+        stack.append(start)
+        visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend(self.vertices[z])
+            # need to add the current one to the stack
+            visited.add(current)
+            # need to subtract the visted one from the vertices and extend the remaining to the stack
+            stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, target=None): # it's dfs_recursive
+        """
+        # solution
+        def dfs_helper(vertex, visited):
+            visited.add(vertex)
+            for neighbor in self.vertices[vertex]:
+                if neighbor not in visited:
+                    visited.update(dfs_helper(neighbor, visited))
+            return visited
+
+        return dfs_helper(start, set())
+        """
+        # my way (line 59-65), seems give me infinate loop :/
+        visited = set()
+        # change from append to add
+        visited.add(start)
+        for vertex in self.vertices[start]:
+            # add self in front of the method as it's invoked inside the class.
+            self.graph_rec(vertex)
+        return visited
 
     def find_components(self):
+        """Identify components and update vertex component ids"""
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            # add `not`
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
