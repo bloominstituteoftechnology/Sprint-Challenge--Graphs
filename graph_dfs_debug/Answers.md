@@ -9,3 +9,7 @@ I have debugged `dfs` by ensuring we don't revisit vertices by adding the curren
 I have debugged `find_components` by changing line `if vertex in visited` to `if vertex not in visited`. Also changed `self.component` to `self.components` as specified in `__init__`.
 
 Finally, I added doc strings to describe each method in `graph`.
+
+
+
+!!!Forgot to write recursive version before first submission. It has been done now. Included base case by adding argument to keep track of visited vertices!!!
