@@ -29,7 +29,8 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
-        if n in self.vertices:
+        # number of vertices in graph
+        if n in self.vertices: 
             return self.vertices[n]
         else:
             return None
