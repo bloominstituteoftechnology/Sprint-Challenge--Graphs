@@ -89,6 +89,18 @@ class Graph:
             print('-->', end='')
             self.output_route(start.parent)
 
+        """
+        # from the solution
+        current = start
+        output = ''
+
+        while current is not None:
+            if current.parent:
+                output += ' -->'
+            current = current.parent
+        print(output)
+        """
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree

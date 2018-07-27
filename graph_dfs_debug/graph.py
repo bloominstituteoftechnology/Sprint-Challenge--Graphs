@@ -9,8 +9,9 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
+    
 class Graph:
+    """Trying to make this Graph class work..."""
     def __init__(self):
         self.vertices = {}
         self.components = 0
@@ -42,7 +43,19 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
+    def graph_rec(self, start, target=None): # it's dfs_recursive
+        """
+        # solution
+        def dfs_helper(vertex, visited):
+            visited.add(vertex)
+            for neighbor in self.vertices[vertex]:
+                if neighbor not in visited:
+                    visited.update(dfs_helper(neighbor, visited))
+            return visited
+
+        return dfs_helper(start, set())
+        """
+        # my way (line 59-65), seems give me infinate loop :/
         visited = set()
         # change from append to add
         visited.add(start)
