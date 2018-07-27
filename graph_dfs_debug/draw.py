@@ -112,16 +112,16 @@ class BokehGraph:
 
 graph = Graph()
 
-vertex = Vertex('a')
-graph.add_vertex(vertex)
+vertexA = Vertex('a')
+graph.add_vertex(vertexA)
 
-vertex = Vertex('b')
-graph.add_vertex(vertex)
+vertexB = Vertex('b')
+graph.add_vertex(vertexB)
 
-vertex = Vertex('c')
-graph.add_vertex(vertex)
+vertexC = Vertex('c')
+graph.add_vertex(vertexC)
 
+graph.add_edge(vertexA, vertexC)
 
 bokeh = BokehGraph(graph)
 bokeh.show()
-print(bokeh.graph)
