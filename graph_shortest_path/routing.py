@@ -53,8 +53,9 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+        while queue:
+            print("not empty")
 
     def output_route(self, start):
         """
