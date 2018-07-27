@@ -26,7 +26,7 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        visited = set(stack)
+        visited = set()
 
         while stack:
             vertex = stack.pop()
@@ -39,11 +39,14 @@ class Graph:
         return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        visited = set()
+        visited.add(start)
+        if start == target:
+            return visited
+        for vertex in self.vertices[start]:
+            if vertex not in visited:
+                self.graph_rec(vertex)
+        return visited
 
     def find_components(self):
         visited = set()
