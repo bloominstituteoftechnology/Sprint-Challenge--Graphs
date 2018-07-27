@@ -6,9 +6,9 @@ Describe the fixes/improvements you made to the Graph implementation here.
 
 > Nothing seems to connect, my edges aren't showing up.
 
-Because all your vertices have cycles with themselves. `self.vertices[start]` is a key in the `Graph`'s dictionary, and its *value* is a set that contains all the *other* vertices it has edges with.
+It is because all your vertices have cycles with themselves. `self.vertices[start]` is a key in the `Graph`'s dictionary, and its *value* is a set that contains all the *other* vertices it has edges with.
 
-`self.vertices[start].add(start)`??? That's saying for a given a vertex `self.vertices[start]`, add an edge that connects to vertex `start`. Remember, the key of `self.vertices[start]` is the same as `start`. So, you having a vertex have an edge with itself. _Bruh_.
+Look at your line, `self.vertices[start].add(start)`. ??? That's saying for a given a vertex `self.vertices[start]`, add an edge that connects to vertex `start`. Remember, the key of `self.vertices[start]` is the same as `start`. So, you having a vertex have an edge with itself. _Bruh_.
 
 **Adjustments**
 
@@ -20,19 +20,21 @@ In `add_edge`
 
 > All the vertexes are the same color.  They're supposed to be different colors if they're not connected, and right now none of them are.
 
-The below adjustments do not directly address the issue, but it seems that the underlying cause of this problem is a non-functioning methods in `graph.py`. Therefore, addressing those ultimately addresses this.
+The below adjustments do not directly address the issue, but it seems that the underlying cause of this problem is non-functioning methods in `graph.py`. Specifically, the non-functioning methods prevent classification of vertices into different components, so all the vertices end up being drawn the same color because they're all `self.components == 0`.
+
+Therefore, addressing those methods ultimately addresses this issue.
 
 **Adjustments**
 
 In `dfs`
 
-* Added `- visited` to the argument passed to `stack.extend()`. This ensures we don't visit visited vertices again. 
-* We also need to add visited vertices to the `visited` stack. Otherwise, we still visit the visited vertices again and again and again and again and again and again and again and again...
 * The variable name confusion resulted in the totally wrong thing being returned. We are now returning `visited`, which returns all the vertices traversed starting from the `start` vertex.
+* Added `- visited` to the argument passed to `stack.extend()`. This ensures we don't add vertices already visited into the stack.
+* We also need to add visited vertices to the `visited` stack. Otherwise, we filter nothing when we go `self.vertices[current] - visited`, so we still visit the visited vertices again and again and again and again and again and again and again and again...
 
 In `find_components`
 
-* changed `if vertex in visited:` to `if vertex not in visited:`. The point of this line is to ensure we don't consider vertices we've already visited. But if we had the line as it was formerly, *we'd never visit any vertex, even for the first time, because we have not visited any vertex*. 
+* Changed `if vertex in visited:` to `if vertex not in visited:`. The point of this line is to ensure we don't consider vertices we've already visited. But if we had the line as it was formerly, *we'd never visit any vertex, even for the first time, because we have not visited any vertex*. 
 
 <hr>
 
@@ -77,6 +79,6 @@ In `draw.py`
 **Adjustments**
 
 * In `dfs`, changed variable names to be more semantic. Specifically, changed names to be clear that:
-  * we are using a stack to do our business
-  * we are keeping track of the current vertex being considered
-  * we are keeping track of visited vertices
+  * We are using a stack to do our business
+  * We are keeping track of the current vertex being considered
+  * We are keeping track of visited vertices
