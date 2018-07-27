@@ -6,8 +6,8 @@ class Vertex:
         self.label = str(label)
         self.component = component
 
-    def __repr__(self):
-        return 'Vertex: ' + self.label
+    # def __repr__(self):
+    #     return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
 class Graph:
@@ -19,9 +19,12 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
+        start.component += 1
+        
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
+            end.component += 1
 
     def dfs(self, start, target=None):
         x = []
