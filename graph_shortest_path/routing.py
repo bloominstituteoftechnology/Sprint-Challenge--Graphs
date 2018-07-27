@@ -45,7 +45,8 @@ class Graph:
         for vertex in self.vertices:
             if vertex.value == value:
                 return vertex
-            return None
+
+        return None
 
     def bfs(self, start):
         """
@@ -55,8 +56,12 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        queue = [start]
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+
         start.color = 'gray' 
+        queue = [start]        
 
         while queue:
             current = queue.pop(0)
@@ -79,21 +84,18 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        vertex = start
-        output = ''
-        while vertex:
-            output += vertex.value
-            if vertex.parent:
-                output += '-->'
-            vertex = vertex.parent
-        print(output)
+        print(start.value, end='')
+        if start.parent:
+            print('-->', end='')
+            self.output_route(start.parent)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
         self.output_route(start)
-
+        
 
 # Helper function to add bidirectional edges
 def add_edge(start, end):
