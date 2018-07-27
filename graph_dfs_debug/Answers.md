@@ -17,4 +17,3 @@ in graph_rec():
 
 in find_components():
     1. make sure the vertex is **not** in visited
-
