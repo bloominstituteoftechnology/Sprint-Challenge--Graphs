@@ -24,4 +24,8 @@ Let me know in the `Answers.md` file where my bugs are and what you did to fix
 them, so I can have an easier time watching out for them next time. Oh and don't
 forget to `pipenv install` and `pipenv shell`!
 
+If you get all this figured out, it'd be great if you could also help try to
+improve the `randomize()` in `BokehGraph` so I can draw vertices that don't
+overlap (*i.e. stretch goal*).
+
 Thanks!
