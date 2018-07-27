@@ -45,12 +45,24 @@ class Graph:
         visted.add(start)
         for v in self.vertices[start]:
             if v not in visted:
-                visted.add(v)
-                if v == target:
-                    break
-                self.graph_rec(v, target)
-        print(visted)
+                visted.update(self.graph_rec(v, target=target))
         return visted
+
+    # def graph_rec(self, start, target=None):
+    #     visted = set()
+    #     visted.add(start)
+    #     vertices = self.vertices
+    #     def search(start, target=None):
+    #         for v in vertices[start]:
+    #             if v not in visted:
+    #                 visted.add(v)
+    #                 if v == target:
+    #                     break
+    #                 search(v, target)
+    #         print(visted)
+    #     search(start, target)
+    #     return visted
+
 
     def find_components(self):
         visited = set()
