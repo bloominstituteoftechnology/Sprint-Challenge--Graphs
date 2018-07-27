@@ -2,8 +2,8 @@
 General drawing methods for graphs using Bokeh.
 """
 
-from math import ceil, floor, sqrt
-from random import choice, random
+import math
+from random import choice, uniform
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
@@ -21,8 +21,13 @@ class BokehGraph:
         self.width = width
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
+
+        # shrink the circle size to avoid overlapping in case of large number of vertices
+        # (same could be done for the font size also)
+        circle_size = min(circle_size, math.pi*max(width, height)/len(self.graph.vertices.keys()))
+
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title, x_range=(-width, width), y_range=(-height, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
@@ -93,11 +98,15 @@ class BokehGraph:
         show(self.plot)
 
     def randomize(self):
-        """Randomize vertex positions."""
-        for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+        """
+        Randomize vertex positions.
+        Uses a circular placement with a random radius to avoid overlapping.
+        """
+        node_indices = [v.label for v in self.vertex_list]
+        circ = [i*2*math.pi/len(node_indices) for i in list(map(int, node_indices))]
+        x = [0.9*uniform(0, 1)*self.width*math.cos(i) for i in circ]
+        y = [0.9*uniform(0, 1)*self.height*math.sin(i) for i in circ]
+        self.pos = dict(zip(node_indices, zip(x, y)))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
