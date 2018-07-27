@@ -32,7 +32,7 @@ class Graph:
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
-
+        
         Used in the `main` function to look up the vertices passed in
         from the command line.
 
@@ -41,8 +41,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+
+        return None
 
     def bfs(self, start):
         """
