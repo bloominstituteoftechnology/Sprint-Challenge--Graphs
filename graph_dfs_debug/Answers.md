@@ -9,3 +9,7 @@ Line 43 - directed recursion function to self
 #Changes to graph_demo.py 
 
 Needed to change draw_componets to false for the graph to show and connect the vertices
+
+#Changes to routing.py
+
+In the find_vertex(line 31), bfs(Line 49), and the output_route(Line 57) functions I implemented them to fit the sprint challenge
