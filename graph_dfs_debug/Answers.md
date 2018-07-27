@@ -10,3 +10,4 @@ Describe the fixes/improvements you made to the Graph implementation here.
 
 5. Changed x, y, and z variables into more descriptive and proper names, namely "stack", "visited", and "current" respectively. Refactored existing code and added new code.
 
+6. Created a dfs_recursive method.
