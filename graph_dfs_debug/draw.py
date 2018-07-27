@@ -8,6 +8,7 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
+from graph import Graph
 
 
 class BokehGraph:
@@ -29,7 +30,7 @@ class BokehGraph:
         self._setup_labels()
 
 
-    def _setup_graph_renderer(self, circle_size, draw_components):
+    def _setup_graph_renderer(self, circle_size, draw_components=False):
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
         # Saving vertices in an arbitrary but persistent order
