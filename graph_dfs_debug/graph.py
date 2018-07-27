@@ -71,27 +71,11 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex in visited:
-                print("found")
                 if vertex not in visited:
                     reachable = self.dfs(vertex)
-                    print('reachable', reachable)
                     for other_vertex in reachable:
                         other_vertex.component = current_component
                     current_component += 1
                     visited.update(reachable)
         self.components = current_component
 
-graph = Graph()
-graph.add_vertex(0)
-graph.add_vertex(1)
-graph.add_vertex(2)
-graph.add_vertex(3)
-graph.add_edge(0, 1)
-graph.add_edge(0, 2)
-graph.add_edge(1, 2)
-graph.add_edge(2, 0)
-graph.add_edge(2, 3)
-print("\n")
-print("The Graph: ", graph.vertices)
-#graph.dfs(3)
-graph.find_components()
