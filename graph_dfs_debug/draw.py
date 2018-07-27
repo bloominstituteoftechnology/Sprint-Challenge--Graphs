@@ -3,7 +3,7 @@ General drawing methods for graphs using Bokeh.
 """
 
 from math import ceil, floor, sqrt
-from random import choice, random
+from random import choice, random, randint
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (
@@ -118,7 +118,13 @@ class BokehGraph:
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
-        self.graph.get_components()
+        if randint(0, 1) == 0:
+            print('\n\n********** BUILD WITH RECURSIVE DFS **********\n\n')
+            self.graph.get_components('recursive')
+        else:
+            print('\n\n********** BUILD WITH NO-RECURSIVE DFS **********\n\n')
+            self.graph.get_components('dfs')
+
         connected_components = self.graph.components
         component_colors = self._get_random_colors(len(self.graph.components))
 

@@ -55,19 +55,29 @@ class Graph:
 
         return component
 
-    def get_components(self):
+    def get_components(self, method='dfs'):
         connected_components = []
         visited_nodes = set()
 
         for vertex in self.vertices.keys():
             if vertex not in visited_nodes:  # if fvertex no visited.
-                response = self.dfs(vertex, None, visited_nodes)
+                response = self.dfs(vertex, None, visited_nodes) if method is 'dfs' else self.dfs_recursive(
+                    vertex, None, visited_nodes)
                 connected_components.append(response)
         self.components = connected_components
 
-    # def graph_rec(self, start, target=None):
-    #     x = set()
-    #     x.append(start)
-    #     for v in self.vertices[start]:
-    #         graph_rec(v)
-    #     return x
+    def dfs_recursive(
+        self, start=None, target=None, visited=None, component=None
+    ):
+        start = start if start is not None else '0'
+        visited = visited if visited is not None else set()
+        visited.add(str(start))
+        component = component if component is not None else set()
+        component.add(start)
+        # print(start)
+
+        for vertex in self.vertices[str(start)]:
+            if vertex not in visited:
+                self.dfs_recursive(vertex, None, visited, component)
+
+        return component
