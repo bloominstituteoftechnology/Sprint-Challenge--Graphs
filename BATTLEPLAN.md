@@ -2,8 +2,25 @@
 
 ---
 
-1.  attack the graph dfs bug first
-1.  go after the graphshortestpath
-1.  attempt to answer questions
+## Total Actions:
 
-will update as needed
+- attack the graph dfs bug first
+  - attempt to answer questions
+- go after the graphshortestpath
+
+---
+
+## Complete
+
+- attack the graph dfs bug first
+  - attempt to answer questions
+
+---
+
+## TODO
+
+- go after the graphshortestpath
+
+---
+
+### will update as needed
