@@ -9,8 +9,8 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
 class Graph:
+    """Trying to make this Graph class work..."""
     def __init__(self):
         self.vertices = {}
         self.components = 0
@@ -30,21 +30,23 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        visited = set(stack)
+        visited = set()
 
         while stack:
             current = stack.pop()
             if current == target:
                 break
+            visited.add(current)
             stack.extend(self.vertices[current] - visited)
 
         return visited
 
     def graph_rec(self, start, target=None):
-        visited = set()
+        visited = visited or set()
         visited.add(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
+        for vertex in self.vertices[start]:
+            if vertex not in visited:
+                self.graph_rec(vertex, visited=visited)
         return visited
 
     def find_components(self):
@@ -52,7 +54,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component

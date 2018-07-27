@@ -79,6 +79,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
+        current = start
+        output = ''
+
+        while current is not None:
+            output += current.value
+            if current.parent:
+                output += '-->'
+            current = current.parent
+
+        print(output)
         
 
     def route(self, start, end):
