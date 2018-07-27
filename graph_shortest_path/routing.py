@@ -22,6 +22,9 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __str__(self):
+        return str(self.value)
+
 
 # Graph class
 class Graph:
@@ -42,7 +45,11 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vert in self.vertices:
+            if vert.value == value:
+                return vert
+        
+        return "{} no such vertex in the graph".format(value)
 
     def bfs(self, start):
         """
@@ -52,7 +59,22 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = [self.find_vertex(start)]
+        visited = [self.find_vertex(start)]
+
+        while queue:
+            current = queue.pop(0)
+            # visited.add(current)
+            # queue.extend(self.vertices[current] - visited)
+            for vert in self.vertices:
+                if vert in visited:
+                    pass
+                else: 
+                    print("vertex: ", vert.value)
+                    visited.append(vert)
+                    queue.append(vert)
+        return visited
+
 
     def output_route(self, start):
         """
@@ -113,6 +135,11 @@ if __name__ == '__main__':
 
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
+    print(graph.bfs("HostA"))
+
+
+
+
     hostAVert = graph.find_vertex(sys.argv[1])
 
     if hostAVert is None:
