@@ -1,7 +1,6 @@
 """
 General drawing methods for graphs using Bokeh. Lets go!
 """
-import numpy as np
 from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
@@ -96,8 +95,8 @@ class BokehGraph:
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (np.random.standard_normal(self.height),
-                                      np.random.standard_normal(self.height))
+            self.pos[vertex.label] = ((1 + random() * (self.width - 2),
+                                      1 + random() * (self.height - 2))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
