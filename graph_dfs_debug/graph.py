@@ -33,18 +33,18 @@ class Graph:
         visited = set(stack)
 
         while stack:
-            visiting = stack.pop()
-            if visiting == target:
+            current = stack.pop()
+            if current == target:
                 break
-            stack.extend(self.vertices[visiting])
+            stack.extend(self.vertices[current] - visited)
 
         return visited
 
     def graph_rec(self, start, target=None):
         visited = set()
-        visited.append(start)
+        visited.add(start)
         for v in self.vertices[start]:
-            self.dfs_recursion(v)
+            self.graph_rec(v)
         return visited
 
     def find_components(self):
