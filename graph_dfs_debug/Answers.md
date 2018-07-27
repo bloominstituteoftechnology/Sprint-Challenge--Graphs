@@ -28,3 +28,5 @@ The last step was to pass in the explored set as an argument to the function so 
 ## Add Edges
 I noticed that the vertices each had edges to themselves. I looked over the `add_edge` method and noticed that the start vertex is added to itself `self.vertices[start].add(start)` (Same with end vertex). I changed this to `self.vertices[start].add(end)` and that fixed the problem.
 
+## Color Components
+The reason why the nodes were the same color was due to a bug in `find_components()`. The problem was with line 55. The condition said `if vertex in visited:` but it should have said `if vertex not in visited:`. As it was, the condition would evaluate to false on the first iteration because none of the vertices had been visited yet, so self.components would always just be 0.
