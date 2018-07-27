@@ -41,8 +41,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for found in self.vertices:
+            if found.value is None:
+                return None
+            elif found.value == value:
+                return found
 
     def bfs(self, start):
         """
@@ -51,8 +54,18 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        visited = [False] * (len(self.vertices))
+        q = []
+        q.append(start)
+        visited[start] = True
+
+        while q:
+            parent_ref = q[1]
+            start = q.pop(0)
+            for next_up in self.vertices[start]:
+                if visited[next_up] == False:
+                    q.append(next_up)
+                    visited[next_up]=True
 
     def output_route(self, start):
         """

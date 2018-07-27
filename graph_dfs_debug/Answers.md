@@ -9,6 +9,7 @@ Describe the fixes/improvements you made to the Graph implementation here.
  and added print statements to see what was happening internally
 
 4. while testing dfs, it illuminated a mistake in add_edges:
+   (which was causing an infinite loop)
     self.vertices[start].add(start) -> self.vertices[start].add(end)
 
 5. I tested dfs by adding to the bottom of graph.py and running it:
