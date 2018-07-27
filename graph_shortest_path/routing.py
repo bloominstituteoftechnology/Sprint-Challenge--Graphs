@@ -42,7 +42,11 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        return_vertex = None
+        for vertex in self.vertices:
+            if value == vertex:
+                return_vertex = vertex
+        return return_vertex
 
     def bfs(self, start):
         """
@@ -51,8 +55,18 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # !!!! IMPLEMENT 
+        queue = []
+        queue.extend(start.edges.destination)
+        for destination in queue:
+            destination.parent = start
+        visited = set(start)
+        while queue:
+            current = queue.pop(0)
+            visited.add(current)
+            queue.extend(current.edges.destination - visited)
+            for destination in current.edges.destination:
+                destination.parent = current
 
     def output_route(self, start):
         """
