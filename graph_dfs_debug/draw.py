@@ -1,20 +1,20 @@
 """
 General drawing methods for graphs using Bokeh. Lets go!
 """
-
+import numpy as np
 from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
-                          ColumnDataSource)
+                        ColumnDataSource)
 
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=100, height=100,
-                 show_axis=False, show_grid=False, circle_size=35,
-                 draw_components=False):
+                show_axis=False, show_grid=False, circle_size=35,
+                draw_components=False):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
         self.graph = graph
@@ -38,8 +38,9 @@ class BokehGraph:
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
+
         colors = (self._get_connected_component_colors() if draw_components
-                  else self._get_random_colors())
+                else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
@@ -48,8 +49,7 @@ class BokehGraph:
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()  # Randomize vertex coordinates, and set as layout
-        graph_renderer.layout_provider = StaticLayoutProvider(
-            graph_layout=self.pos)
+        graph_renderer.layout_provider = StaticLayoutProvider(graph_layout=self.pos)
         # Attach the prepared renderer to the plot so it can be shown
         self.plot.renderers.append(graph_renderer)
 
@@ -83,8 +83,8 @@ class BokehGraph:
             label_data['names'].append(vertex_label)
         label_source = ColumnDataSource(label_data)
         labels = LabelSet(x='x', y='y', text='names', level='glyph',
-                          text_align='center', text_baseline='middle',
-                          source=label_source, render_mode='canvas')
+                        text_align='center', text_baseline='middle',
+                        source=label_source, render_mode='canvas')
         self.plot.add_layout(labels)
 
     def show(self, output_path='./graph.html'):
@@ -96,8 +96,8 @@ class BokehGraph:
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+            self.pos[vertex.label] = (np.random.standard_normal(self.height),
+                                      np.random.standard_normal(self.height))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
