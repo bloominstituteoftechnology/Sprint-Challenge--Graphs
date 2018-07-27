@@ -72,8 +72,11 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current = start
+        while current is not None:
+            print(current.value)
+            current = current.parent
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
