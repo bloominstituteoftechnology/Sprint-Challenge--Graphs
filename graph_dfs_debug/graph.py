@@ -37,8 +37,8 @@ class Graph:
 
         return x
 
-    def graph_rec(self, start, target=None):
-        x = set()
+    def graph_rec(self, start, target=None, method='dfs'):
+        x = []
         x.append(start)
         for v in self.vertices[start]:
             graph_rec(v)
