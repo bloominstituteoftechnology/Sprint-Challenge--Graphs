@@ -38,7 +38,7 @@ class Graph:
             # need to add the current one to the stack
             visited.add(current)
             # need to subtract the visted one from the vertices and extend the remaining to the stack
-            visited.extend(self.vertices[current] - visited)
+            stack.extend(self.vertices[current] - visited)
 
         return visited
 
