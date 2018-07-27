@@ -33,7 +33,7 @@ class BokehGraph:
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
         # Saving vertices in an arbitrary but persistent order
-        self.vertex_list = list(self.graph.vertices.keys())
+        self.vertex_keys = list(self.graph.vertices.keys())
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
@@ -70,6 +70,7 @@ class BokehGraph:
             if vertex not in checked:
                 for destination in edges:
                     start_indices.append(vertex.label)
+                    # take a look here top and bottom args
                     end_indices.append(destination.label)
                 checked.add(vertex)
 
@@ -80,6 +81,7 @@ class BokehGraph:
         for vertex_label, (x_pos, y_pos) in self.pos.items():
             label_data['x'].append(x_pos)
             label_data['y'].append(y_pos)
+            # look below    
             label_data['names'].append(vertex_label)
         label_source = ColumnDataSource(label_data)
         labels = LabelSet(x='x', y='y', text='names', level='glyph',
@@ -94,6 +96,7 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
+        # look below
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
             self.pos[vertex.label] = (1 + random() * (self.width - 2),
@@ -104,6 +107,7 @@ class BokehGraph:
         self.graph.find_components()
         component_colors = self._get_random_colors(self.graph.components)
         vertex_colors = []
+        # look below
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors

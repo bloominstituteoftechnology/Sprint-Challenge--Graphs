@@ -29,6 +29,10 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
+        if n in self.vertices:
+            return self.vertices[n]
+        else:
+            return None
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
@@ -45,6 +49,16 @@ class Graph:
         pass
 
     def bfs(self, start):
+        visited = []
+        vertQueue = Queue()
+        vertQueue.enqueue(start)
+        while vertQueue:
+            currentVert = vertQueue.dequeue()
+        # print(currentVert, end="")
+        for nbr in (self.vertList[currentVert].getConnections()):
+            if nbr not in visited:
+                vertQueue.enqueue(nbr)
+                visited.append(currentVert)
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -52,9 +66,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
 
     def output_route(self, start):
+        def addEdges(self, f, t, cost=0):
+            if f in self.vertices:
+                if t in self.vertices:
+                    self.vertices[f].addNeighbor(t, cost)
+            else:
+                return "Not present in Graph"
+        else:
+            return "Not present in Graph"
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)

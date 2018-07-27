@@ -8,6 +8,7 @@ from random import sample
 from sys import argv
 from draw import BokehGraph
 from graph import Graph, Vertex
+from bokeh.io import show, output_file
 
 
 def main(num_vertices=8, num_edges=8, draw_components=True):
