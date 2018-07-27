@@ -1,5 +1,3 @@
-Describe the fixes/improvements you made to the Graph implementation here.
-
 ### Linting Issues
 I've got Flake8 installed in my editor which checks that all Python files follow the PEP8 style guide. To get the code to comply I changed the following:
 
@@ -19,6 +17,7 @@ It was hard to keep track of certain variables in `graph.py` as they had generic
     - Renames `z` to `current` since this represents the current vertex that you are visiting
     - As you are searching you'll want to keep track of which vertexes you've already visited. I'm assuming that is where you were going with `y`. I renamed that `visited` 
 - In the `graph_rec` method:
+    - Renamed method to `dfs_recursive`
     - Renamed `x` to `visited`. I'm assuming this was the variable you intended to use to keep track of the vertices.
     - Renamed `v` to vertex since that was what we are looping through
 
@@ -36,4 +35,4 @@ That change triggered the `dfs` method which also sent the script into an infini
 The `dfs` method was looking for the target by comparing the stack to the target. It instead needed to compare the current vertex to the target.
 
 ### Fixed Recursive DFS
-Like the `dfs` method, `graph_rec` needed to keep track of which vertexes it had already visited. I fixed this by making sure the vertexes were getting added properly to the visited set (by using add instead of append) and then I checked that the current vertex in the for loop was not in the visited list before calling the method again recursively. Since `graph_rec` will get fired off several times, it needs to be aware of the visited list so I added that as an argument and passed the updated list each time it is called. To get the entire list returned at the end, `graph_rec` should be returned instead of simply being called. There was also an error in the way `graph_rec` was being referenced. Since it is a method of the class it should be called as `self.graph_rec`.
+Like the `dfs` method, `dfs_recursive` needed to keep track of which vertexes it had already visited. I fixed this by making sure the vertexes were getting added properly to the visited set (by using add instead of append) and then I checked that the current vertex in the for loop was not in the visited list before calling the method again recursively. Since `dfs_recursive` will get fired off several times, it needs to be aware of the visited list so I added that as an argument and passed the updated list each time it is called. To get the entire list returned at the end, `dfs_recursive` should be returned instead of simply being called. There was also an error in the way `dfs_recursive` was being referenced. Since it is a method of the class it should be called as `self.dfs_recursive`.
