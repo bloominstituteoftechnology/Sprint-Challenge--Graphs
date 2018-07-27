@@ -42,16 +42,18 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        quack = self.vertices  # Queue or stack, depending on method
+        
+        quack = self.vertices.copy()  # Queue or stack, depending on method
         visited = set()
 
         while quack:
             current = quack.pop(0)
             if current.value == value:
-                print(value)
                 return current
             visited.add(current)
             # Add possible (unvisited) vertices to queue
+        for v in self.vertices:
+            print('fv',v.value)
         return None
 
     def bfs(self, start):
@@ -71,14 +73,17 @@ class Graph:
 
         while quack:
             current = quack.pop(pop_index)
-            
-            if hasattr(current, 'edges'):
-                for v in current.edges:
-                    if v.destination.color == 'white':
-                        v.destination.color = "gray"
-                        v.destination.parent = current.parent
-                        quack.append(v)
-            current.color = 'black'
+            if current not in visited:
+                print("nv",current.value)
+                visited.add(current)
+                if hasattr(current, 'edges'):
+                    for v in current.edges:
+                        if v.destination.color == 'white':
+                            v.destination.color = "gray"
+                            v.destination.parent = current
+                            print("weee",current.value)
+                            quack.append(v)
+                current.color = 'black'
 
     def output_route(self, start):
         """
@@ -89,7 +94,9 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for v in self.vertices:
-            print(v.parent)
+            if v.parent:
+                print("out",v.parent.value)
+            
 
     def route(self, start, end):
         # BFS to build the parent reference tree
