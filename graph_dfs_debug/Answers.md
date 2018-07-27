@@ -17,3 +17,6 @@ line 37: stack.extend(self.vertices[current] - visited) -> i want to subtract wh
 line 39: return visited -> that's the info we want returned
 
 line 47-60: added bfs method to be able to perform bfs method
+
+def find_components:
+line 74: changed code because if I've already been there, I don't wnt to repeat it.
