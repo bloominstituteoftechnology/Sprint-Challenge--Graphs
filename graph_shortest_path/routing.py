@@ -73,17 +73,17 @@ class Graph:
 
         while quack:
             current = quack.pop(pop_index)
-            if current not in visited:
-                print("nv",current.value)
-                visited.add(current)
-                if hasattr(current, 'edges'):
-                    for v in current.edges:
-                        if v.destination.color == 'white':
+            print("nv",current)
+            visited.add(current)
+            if hasattr(current, 'edges'):
+                for v in current.edges:
+                    if v.destination.color == 'white':
+                        if v.destination not in visited:
                             v.destination.color = "gray"
                             v.destination.parent = current
                             print("weee",current.value)
-                            quack.append(v)
-                current.color = 'black'
+                            quack.append(v.destination)
+            current.color = 'black'
 
     def output_route(self, start):
         """
@@ -93,9 +93,10 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        for v in self.vertices:
-            if v.parent:
-                print("out",v.parent.value)
+        current = start
+        while current != None:
+            print(current.value)
+            current = current.parent
             
 
     def route(self, start, end):
