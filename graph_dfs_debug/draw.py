@@ -27,7 +27,7 @@ class BokehGraph:
         show_axis=False,
         show_grid=False,
         circle_size=35,
-        # draw_components=False,
+        draw_components=False,
     ):
         if not graph.vertices:
             raise Exception("Graph should contain vertices!")
@@ -111,7 +111,7 @@ class BokehGraph:
         )
         self.plot.add_layout(labels)
 
-    def show(self, output_path="./graph.html"):
+    def show(self, output_path="../GRAPHS/graph.html"):
         """Render the graph to a file on disk and open with default browser."""
         output_file(output_path)
         show(self.plot)
