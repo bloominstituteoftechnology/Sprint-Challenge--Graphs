@@ -23,10 +23,20 @@ class Graph:
     def add_vertex(self, vertex, edges=()):
         self.vertices[vertex] = set(edges)
 
-    def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+    def add_edge(self, start_vertex, end_vertex, bidirectional=True):
+        keys = self.vertices.keys()
+        if (start_vertex not in keys) and (end_vertex not in keys):
+            raise Exception('The vertex are not in the Graph')
+        elif start_vertex not in keys:
+            raise Exception(
+                f'''The vertex {start_vertex} is not in the Graph.''')
+        elif end_vertex not in keys:
+            raise Exception(
+                f'''The vertex {end_vertex} is not in the Graph.''')
+        else:
+            self.vertices[start_vertex].add(end_vertex)
+            if bidirectional:
+                self.vertices[end_vertex].add(start_vertex)
 
     def dfs(self, start, target=None):
         stack = []
