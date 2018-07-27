@@ -56,7 +56,8 @@ class Graph:
     def dfs_recursive(self, start, target=None, visited=[]):
         """dfs of graph using recursion"""
         visited.append(start)
-
+        if start.label == target:
+            return visited
         for neighbor in self.vertices[start]:
             if neighbor not in visited:
                 visited = self.dfs_recursive(neighbor, target=target, visited=visited)
