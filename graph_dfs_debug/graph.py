@@ -1,6 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -9,7 +11,7 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -40,7 +42,7 @@ class Graph:
         x = set()
         x.append(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
