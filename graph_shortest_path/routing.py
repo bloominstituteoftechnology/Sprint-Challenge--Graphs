@@ -9,6 +9,9 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
+    def __repr__(self):
+        return f"{self.destination}"
+
 
 # Vertex class
 class Vertex:
@@ -65,9 +68,10 @@ class Graph:
             visited.add(current)
             for edge in current.edges:
                 #print(edge)
-                edge.destination.parent = current
                 if edge.destination not in visited:
+                    edge.destination.parent = current
                     queue.append(edge.destination)
+            #print("current", current, "parent", current.parent)
 
     def output_route(self, start):
         """
@@ -78,9 +82,9 @@ class Graph:
         """
         current = start
         seen = set()
-        while current.parent not in seen:
-            print(f"{current.parent}")
+        while current.parent:
             seen.add(current)
+            print(current.parent)
             current = current.parent
 
     def route(self, start, end):
