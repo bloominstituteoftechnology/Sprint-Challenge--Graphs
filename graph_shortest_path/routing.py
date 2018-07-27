@@ -67,15 +67,26 @@ class Graph:
                     q.append(next_up)
                     visited[next_up]=True
 
-    def output_route(self, start):
+    def output_route(self, start, end, path=[]):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        path = path + [start]
+        if start == end:
+            return path:
+        if not self.vertices[start]:
+            return None
+        shortest_path = None
+        for vertex in self.vertices[start]:
+            if vertex not in path:
+                new_path = output_route(vertex, end, path)
+                if new_path:
+                    if not shortest_path or len(new_path) < len(shortest_path):
+                        shortest_path = new_path
+        return shortest_path
 
     def route(self, start, end):
         # BFS to build the parent reference tree
