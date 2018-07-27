@@ -24,17 +24,19 @@ class Graph:
             self.vertices[end].add(end)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        x = [start] #Start inside the stack
+        y = set() #The whole stack shouldnt be inside the visited set list.
 
         while x:
-            z = x.pop()
-            if x == target:
+            z = x.pop() 
+            if z == target: # This was comparing the queue to
                 break
-            x.extend(self.vertices[z])
+            y.add(z) #Adding visited nodes to the set
+            x.extend(self.vertices[z] - y) 
 
         return x
+
+    
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -55,3 +57,4 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
