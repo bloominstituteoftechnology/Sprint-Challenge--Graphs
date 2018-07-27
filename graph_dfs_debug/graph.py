@@ -7,7 +7,8 @@ class Vertex:
     def __init__(self, label, component=-1):
         self.label = label
         self.component = component
-'''
+        self.edges = set()
+'''     
     def __repr__(self):
         return "Vertex: " + self.label
 '''
