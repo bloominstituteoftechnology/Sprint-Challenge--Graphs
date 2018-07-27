@@ -3,7 +3,7 @@ General drawing methods for graphs using Bokeh.
 """
 
 from math import ceil, floor, sqrt
-from random import choice, random
+from random import choice, random, randrange
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
@@ -13,7 +13,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=100, height=100,
-                 show_axis=False, show_grid=False, circle_size=35,
+                 show_axis=False, show_grid=False, circle_size=25,
                  draw_components=False):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
@@ -25,9 +25,9 @@ class BokehGraph:
         self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
+        self.circle_size = circle_size
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -57,7 +57,7 @@ class BokehGraph:
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            color = '#'+''.join([choice('56789ABCDEF') for j in range(6)])
             colors.append(color)
         return colors
 
@@ -84,7 +84,7 @@ class BokehGraph:
         label_source = ColumnDataSource(label_data)
         labels = LabelSet(x='x', y='y', text='names', level='glyph',
                           text_align='center', text_baseline='middle',
-                          source=label_source, render_mode='canvas')
+                          source=label_source, render_mode='canvas', text_font_size="10pt")
         self.plot.add_layout(labels)
 
     def show(self, output_path='./graph.html'):
@@ -94,10 +94,20 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
-        for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+        box_width = self.width / len(self.graph.vertices)
+        half_height = self.height//2
+
+        i = 0
+        factor = 0
+        for vertex in self.graph.vertices:
+          i += 1
+          factor = i % 2
+          x = (i * box_width) - (box_width/2)
+          y = randrange(half_height*factor, half_height + half_height*factor)
+          y = self.circle_size/2/5 if y < self.circle_size/2/5 else y
+          y = self.height - self.circle_size/2/5 if y > self.height - self.circle_size/2/5 else y
+          # y = randrange(self.circle_size//4 + half_height*factor, half_height + half_height*factor - self.circle_size//4)
+          self.pos[vertex.label] = (x,y)
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
