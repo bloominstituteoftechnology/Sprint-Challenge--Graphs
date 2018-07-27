@@ -20,6 +20,7 @@ class BokehGraph:
         self.graph = graph
         self.width = width
         self.height = height
+        self.circle_size = circle_size
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
         self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
@@ -105,8 +106,9 @@ class BokehGraph:
                 for vert in self.pos:
                     x1 = self.pos[vert][0]
                     y1 = self.pos[vert][1]
-                    if ( ( (randx - x1)**2 ) + ( (randy - y1)**2 ) ) ** (1/2.0) < 10:
-                        print('touchy')
+                    distance_to_vert = ( ( (randx - x1)**2 ) + ( (randy - y1)**2 ) ) ** (1/2.0)
+                    reasonable = ( ( (self.width)**2 + (self.height)**2 ) ** (1/2.0) ) / len(self.graph.vertices)
+                    if distance_to_vert < reasonable : # or ( randx < self.circle_size or randx > self.width-self.circle_size ) or ( randy < self.circle_size or randy > self.height+self.circle_size )
                         touchy = True
                         break
 
