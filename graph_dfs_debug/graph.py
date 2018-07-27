@@ -31,7 +31,7 @@ class Graph:
             z = to_visit.pop()
             if to_visit == target:
                 break
-            to_visit.extend(self.vertices[z])
+            to_visit.extend(self.vertices[z] - visited)
 
         return visited
 
