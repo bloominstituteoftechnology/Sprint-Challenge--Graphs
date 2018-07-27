@@ -28,11 +28,12 @@ class Graph:
         visited = set(to_visit)
 
         while to_visit:
-            z = to_visit.pop()
-            if to_visit == target:
+            current_vertex = to_visit.pop()
+            if current_vertex == target:
                 break
-            to_visit.extend(self.vertices[z] - visited)
-
+            to_visit.extend(self.vertices[current_vertex] - visited)
+            visited.update(self.vertices[current_vertex])
+        
         return visited
 
     def graph_rec(self, start, target=None):
@@ -47,7 +48,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
