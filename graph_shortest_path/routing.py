@@ -44,7 +44,7 @@ class Graph:
         # !!!! IMPLEMENT ME
         return_vertex = None
         for vertex in self.vertices:
-            if value == vertex:
+            if value == vertex.value:
                 return_vertex = vertex
         return return_vertex
 
