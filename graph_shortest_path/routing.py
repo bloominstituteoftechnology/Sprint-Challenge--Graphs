@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if value == vertex.value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -114,6 +117,7 @@ if __name__ == '__main__':
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
+    print(hostAVert)
 
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
