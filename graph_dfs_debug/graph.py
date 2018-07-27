@@ -76,11 +76,12 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            visited.add(vertex)
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
+                visited.union(reachable)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
+                    print('here ', other_vertex.component)
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
