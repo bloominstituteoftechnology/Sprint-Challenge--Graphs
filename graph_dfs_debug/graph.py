@@ -7,10 +7,10 @@ class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
         self.component = component
-
+'''
     def __repr__(self):
         return "Vertex: " + self.label
-
+'''
     """Trying to make this Graph class work..."""
 
 
