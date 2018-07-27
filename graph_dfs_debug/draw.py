@@ -83,7 +83,7 @@ class BokehGraph:
             label_data['y'].append(y_pos)
             label_data['names'].append(vertex_label)
         label_source = ColumnDataSource(label_data)
-        labels = LabelSet(x='x', y='y', text='names', level='glyph',
+        labels = LabelSet(x='x', y='y', text='names', level='glyph', text_color='white',
                           text_align='center', text_baseline='middle',
                           source=label_source, render_mode='canvas')
         self.plot.add_layout(labels)
@@ -107,8 +107,9 @@ class BokehGraph:
                     x1 = self.pos[vert][0]
                     y1 = self.pos[vert][1]
                     distance_to_vert = ( ( (randx - x1)**2 ) + ( (randy - y1)**2 ) ) ** (1/2.0)
-                    reasonable = ( ( (self.width)**2 + (self.height)**2 ) ** (1/2.0) ) / len(self.graph.vertices)
+                    reasonable = ( ( (self.width)**2 + (self.height)**2 ) ** (1/2.0) ) / ((len(self.graph.vertices)+1) * 2) ** (1/1.7)
                     if distance_to_vert < reasonable : # or ( randx < self.circle_size or randx > self.width-self.circle_size ) or ( randy < self.circle_size or randy > self.height+self.circle_size )
+                        print ('touchy')
                         touchy = True
                         break
 

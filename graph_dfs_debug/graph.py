@@ -9,8 +9,8 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
 class Graph:
+    """Trying to make this Graph class work..."""
     def __init__(self):
         self.vertices = {}
         self.components = 0
@@ -37,11 +37,11 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        visited = set()
+    def graph_rec(self, start, visited=None, target=None):
+        visited = visited or set()
         visited.add(start)
         for vertex in self.vertices[start]:
-            self.graph_rec(vertex)
+            self.graph_rec(vertex, visited=visited)
         return visited
 
     def find_components(self):
