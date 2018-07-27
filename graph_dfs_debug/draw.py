@@ -36,20 +36,16 @@ class BokehGraph:
         self.vertex_list = list(self.graph.vertices.keys())
 
         # Add the vertex data as instructions for drawing nodes
-        graph_renderer.node_renderer.data_source.add(
-            [vertex.label for vertex in self.vertex_list], 'index')
-        colors = (self._get_connected_component_colors() if draw_components
-                  else self._get_random_colors())
+        graph_renderer.node_renderer.data_source.add([vertex.label for vertex in self.vertex_list], 'index')
+        colors = (self._get_connected_component_colors() if draw_components else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
-        graph_renderer.node_renderer.glyph = Circle(size=circle_size,
-                                                    fill_color='color')
+        graph_renderer.node_renderer.glyph = Circle(size=circle_size, fill_color='color')
 
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()  # Randomize vertex coordinates, and set as layout
-        graph_renderer.layout_provider = StaticLayoutProvider(
-            graph_layout=self.pos)
+        graph_renderer.layout_provider = StaticLayoutProvider(graph_layout=self.pos)
         # Attach the prepared renderer to the plot so it can be shown
         self.plot.renderers.append(graph_renderer)
 
@@ -77,10 +73,10 @@ class BokehGraph:
 
     def _setup_labels(self):
         label_data = {'x': [], 'y': [], 'names': []}
-        for vertex_label, (x_pos, y_pos) in self.pos.items():
+        for vertex, (x_pos, y_pos) in self.pos.items():# for vertex
             label_data['x'].append(x_pos)
             label_data['y'].append(y_pos)
-            label_data['names'].append(vertex_label)
+            label_data['names'].append(str(vertex)) # vertex not vertex label
         label_source = ColumnDataSource(label_data)
         labels = LabelSet(x='x', y='y', text='names', level='glyph',
                           text_align='center', text_baseline='middle',
@@ -94,7 +90,7 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
-        for vertex in self.vertex_list:
+        for vertex in self.graph.vertices: # graph.vertices not Vertex_list
             # TODO make bounds and random draws less hacky
             self.pos[vertex.label] = (1 + random() * (self.width - 2),
                                       1 + random() * (self.height - 2))

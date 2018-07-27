@@ -16,33 +16,31 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+      self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+      self.vertices[start].add(end) #start to end
+      if bidirectional:
+         self.vertices[end].add(start) #end to start
 
     def dfs(self, start, target=None):
         x = []
         y = set(x)
         x.append(start)
-        x.append(start)
-
         while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z]-y)
-
+          z = x.pop()
+          if z == target:
+            break
+          y.add(z) # add x to 
+          x.extend(self.vertices[z]-y)
         return y
 
-    # def graph_rec(self, start, target=None):
-    #     x = set()
-    #     x.append(start)
-    #     for v in self.vertices[start]:
-    #         graph_rec(v)
-    #     return x
+    def graph_rec(self, start, target=None):
+        x = set()
+        x.append(start)
+        for v in self.vertices[start]:
+            graph_rec(v)
+        return x
 
     def find_components(self):
         visited = set()
