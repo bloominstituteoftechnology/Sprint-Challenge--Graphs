@@ -61,14 +61,6 @@ class BokehGraph:
             colors.append(color)
         return colors
 
-    def _get_edge_indexes(self):
-        '''Grabs edge indexes from pre-established set'''
-        start = []
-        end = []
-        checked = set()
-
-        return dict(start=start, end=end, )
-
     def _get_edge_indices(self):
         start_indices = []
         end_indices = []
