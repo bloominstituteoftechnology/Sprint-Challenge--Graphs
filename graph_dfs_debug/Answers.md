@@ -1,4 +1,25 @@
 Describe the fixes/improvements you made to the Graph implementation here.
+
+
+### Hi Friend!!!
+
+You've done a great job thus far on getting this far! Good work! I've implemented some changes so that you're able to see a graph on the screen when you execute the file in your python virtual environment. 
+
+I've added some comments below to detail what changes I made, but the biggest thing I wanted to point out -- are variable names. Yes - it might not make a difference what variable names are called as long as you are consistent...BUT! future you or another developer like you who reads your code in the future will think it's more readable if you use variable names that are associated with what that variable is actually doing. 
+
+You've done a really great job otherwise - your other files look great and I was able to run the demo file no problem after I corrected the graph.py file. 
+
+Great job!
+
+Sincerely,
+
+Christina K. 
+------------
+
+
+
+
+
 # Draw.py
 * adjusted name of _get_edge_indexes because my Latin is too strong to just let that one slide. :P 
 
