@@ -44,7 +44,7 @@ class Graph:
 
         for v in self.vertices[start]:
             if v not in visited:
-                self.graph_rec(v, visited)
+                self.graph_rec(v, visited, target)
 
         return visited
 
