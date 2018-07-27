@@ -11,10 +11,10 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
-
 
 class Graph:
+    """Trying to make this Graph class work..."""
+
     def __init__(self):
         self.vertices = {}
         self.components = 0
@@ -45,12 +45,12 @@ class Graph:
         visited = set()
 
         while queue_stack:
-            current_vertice = queue_stack.pop(pop_index)
-            if current_vertice == target:
+            current_vertex = queue_stack.pop(pop_index)
+            if current_vertex == target:
                 break
-            visited.add(current_vertice)
+            visited.add(current_vertex)
             # Add possible (unvisited) vertices to queue
-            queue_stack.extend(self.vertices[current_vertice] - visited)
+            queue_stack.extend(self.vertices[current_vertex] - visited)
 
         return visited
 
@@ -66,8 +66,8 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
-                reachable = self.dfs(vertex)
+            if vertex not in visited:
+                reachable = self.search(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
