@@ -30,7 +30,7 @@ class Graph:
     def dfs(self, start, target=None):
         x = []
         x.append(start)
-        y = set(x)
+        # y = set(x)
 
         while x:
             z = x.pop()
