@@ -29,15 +29,16 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        visited = set(stack)
+        visited = set()
 
         while stack:
             current = stack.pop()
             if stack == target:
                 break
-            stack.extend(self.vertices[current])
+            visited.add(current)
+            stack.extend(self.vertices[current] - visited)
 
-        return stack
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -51,7 +52,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
