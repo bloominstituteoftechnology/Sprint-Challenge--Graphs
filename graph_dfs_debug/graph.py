@@ -19,37 +19,39 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        # end and start positions were swapped
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    def dfs(self, start, target=0):
+        stack = []
+        stack.append(start)
+        visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        while stack:
+            current = stack.pop(-1)
+            if current.label == str(target): # target should be looking at the current node
+                print("\nTarget Found: {}".format(target))
+            visited.add(current) # need to add visited nodes to overall set
+            stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, visited = set(), target=None):
+        visited.add(start) # set has no append method changing to add
+        for v in (self.vertices[start]):
+            if v not in visited:
+               self.graph_rec(v, visited) # needed to call self
+        return visited
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
-                reachable = self.dfs(vertex)
+            if vertex not in visited:
+                reachable = self.graph_rec(vertex, visited = set())
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
