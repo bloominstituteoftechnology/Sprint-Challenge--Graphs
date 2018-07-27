@@ -28,7 +28,7 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
 
 
 if __name__ == '__main__':
-    if len(argv) == 4:
+    if len(argv) == 3:
         NUM_VERTICES = int(argv[1])
         NUM_EDGES = int(argv[2])
         DRAW_COMPONENTS = bool(int(argv[3]))
