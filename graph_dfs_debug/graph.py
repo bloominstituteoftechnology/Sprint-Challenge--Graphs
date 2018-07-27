@@ -26,7 +26,7 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        marked = set(stack)
+        marked = set([start])
 
         while stack:
             current = stack.pop()
