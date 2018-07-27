@@ -1,1 +1,7 @@
 Describe the fixes/improvements you made to the Graph implementation here.
+
+* Your edges weren't showing up because on line 22 and 24 of graph.py, you were adding an edge from start to start and end to end instead of start to end and end to start. i.e. you were doing this: `self.vertices[start].add(start)` instead of this: `self.vertices[start].add(end)`
+
+* Your dfs was why your run time was so long. There were several errors in this code. First I renamed your variables, so x = stack, y = visited and z = current. Next, removed line 28 and placed start inside of the list stack on line 27. Then I removed x (or stack) from the set on line 28. ON line 32, you should be checking to see if z (or current) is equal to target, not the stack. I made a new line 34 to add "current" to visited.  On line 35, you should subtract visited from self.vertices[current]. Finally, on line 37, you should return visited and not the stack. Your graphs should load quickly now, and your colors should be working properly by now too!
+
+* For graph_rec, you can't append something to a set, you "add" it. ON line 42 I changed append to add and renamed x to "visited" to be more descriptive. Also, you have to call `self.graph_rec` not just `graph.rec`.  You should continue to build off of this. For instance, you should check if the vertex has been visited already. You're also going to want to wrap line 44 with `visite.update()`. That should just about do it.
