@@ -14,3 +14,6 @@ I changed `x` to `visited` and I noticed that it was initialized as a set, so ch
 I noticed `graph_rec` was being called recursively as a non-class method, so I changed it to include `self` to it in order to use it apppropriately.
 
 Lastly, I updated `visited` which contains result of the recursive call. I added some tests to the main function to make sure `bfs` and `graph_rec` were working correctly.
+
+## Add Edges
+I noticed `add_edges` was essentially adding edge to itself which was not doing the work of connecting vertices. I changed that and it works.
