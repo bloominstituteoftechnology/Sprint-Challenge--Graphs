@@ -7,7 +7,7 @@ Describe the fixes/improvements you made to the Graph implementation here.
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
-            ```
+```
 
 
 2. <code>find_components()</code> should be vertex not in visited instead of vertex in visited.
@@ -21,7 +21,7 @@ Describe the fixes/improvements you made to the Graph implementation here.
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
-       ```
+```
 
 3. Implemented changes to routing.py
 
