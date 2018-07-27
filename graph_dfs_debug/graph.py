@@ -38,9 +38,9 @@ class Graph:
             if bidirectional:
                 self.vertices[str(end_vertex)].add(str(start_vertex))
 
-    def dfs(self, start, target=None):
+    def dfs(self, start=None, target=None):
         stack = []
-        stack.append(start)
+        stack.append(start if start is not None else '0')
         visited = set()
 
         while stack:
@@ -88,7 +88,7 @@ _graph.add_edge('0', '1')
 _graph.add_edge('0', '3')
 # _graph.add_edge('0', 9)
 print('\nGraph vertices: ', _graph.vertices)
-# _graph.dfs()
+print('DFS', _graph.dfs())
 # print('\nConnected components', _graph.connected_components)
 # print('\nVertex 3 in graph:', _graph.dfs(3))
 # print('\nVertex 100 in graph:', _graph.dfs(100))

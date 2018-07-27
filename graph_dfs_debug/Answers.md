@@ -6,6 +6,7 @@ dfs()
 
 1.  Bad vairable names in dfs. Changed to something more rediable.
 2.  Potential infinity loop in dfs, it worth to check if a vertex was already visited. Changed.
+3.  Allow run DFS with out passin gany argument. By default the 'start_vertex' will be '0'
 
 add_edges()
 
