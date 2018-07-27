@@ -16,8 +16,8 @@ forever, even though my `draw.py` and `graph_demo.py` are totally just the same
 as from class. -->
 <!-- 4. I wanted to let it find a target vertex, but even back when it did kinda run
 this part didn't really work. -->
-5. My editor sure is complaining a lot about something called "lint."
-6. I keep losing track of my variables, I guess I should name them better?
+<!-- 5. My editor sure is complaining a lot about something called "lint." -->
+<!-- 6. I keep losing track of my variables, I guess I should name them better? -->
 
 I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
 got even more stuck. It was running forever so I tried adding a thing to keep

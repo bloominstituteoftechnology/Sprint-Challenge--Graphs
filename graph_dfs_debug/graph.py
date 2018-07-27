@@ -40,8 +40,8 @@ class Graph:
     def graph_rec(self, start, target=None):
         x = set()
         x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
+        for vertex in self.vertices[start]:
+            graph_rec(vertex)
         return x
 
     def find_components(self):
