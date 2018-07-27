@@ -12,3 +12,7 @@ it needs a begining and end
 34.added return target
 35.added visited and current
 36.added stack,current, visited
+42.change bfs
+43. change queue
+44.added queue to appended
+45. added info for bfs

@@ -39,12 +39,25 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def bfs(self, start, target=None):
+        queue = []
+        queue.append(start)
+        visited = set(queue)
+        
+        while queue:
+            current = queue.pop(0)  # pops the first one
+
+            # check if found target
+            if current == target:
+                return target
+
+            # add the current to the stack
+            visited.add(current)
+
+            # subtract whats visited from the vertices and whats remaining, add it to the stack
+            queue.extend(self.vertices[current] - visited)
+
+        return visited
 
     def find_components(self):
         visited = set()
