@@ -19,6 +19,12 @@ Describe the fixes/improvements you made to the Graph implementation here.
 8. When extending stack with (self.vertices[current]), you need to subtract the visted set so that you don't revisit the vertexes that you already went to and go on a infinite loop
 9. you should return visted and not the stack so that you know which vertex's were touched and the target was really not there.
 
+### def graph_rec
+
+1. x => visted
+2. visted = set(start) => this part not necessary
+3. added exit condition if v == target
+4. *self*.graph_rec(v, *target*)
 
 
 ### find_components
