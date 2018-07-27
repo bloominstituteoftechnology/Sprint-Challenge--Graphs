@@ -63,13 +63,6 @@ class Graph:
         visited = set()
         start.parent = None
 
-        # for vertex in self.vertices:
-        #     vertex.color = 'gray'
-        #     vertex.parent = None
-
-        # start.color = 'yellow'
-        # queue.append(start)
-
         while queue:
             current = queue.pop(0)
             visited.add(current)
@@ -92,9 +85,9 @@ class Graph:
         # !!!! IMPLEMENT ME
         vertex = start
 
-        while current != None:
-            print(current.value)
-            current = current.parent
+        while vertex != None:
+            print(vertex.value)
+            vertex = vertex.parent
 
 
     def route(self, start, end):
