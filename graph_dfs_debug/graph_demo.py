@@ -27,7 +27,7 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
     bokeh_graph.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(argv) == 4:
         NUM_VERTICES = int(argv[1])
         NUM_EDGES = int(argv[2])
