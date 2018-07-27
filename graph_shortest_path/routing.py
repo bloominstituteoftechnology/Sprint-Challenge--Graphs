@@ -55,18 +55,20 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        queue = []
-        visited = set()
-        start.parent = None
+        start.color = 'gray'
+        queue = [start]
 
-        while len(queue) > 0:
+        while queue:
             current = queue.pop(0)
-            visited.add(current)
-            for edge in curent.edges:
+
+            for edge in current.edges:
                 target = edge.destination
-                if target not in visited:
-                    queue.append(target)
+                if target.color == 'white':
+                    target.color = 'gray'
                     target.parent = current
+                    queue.append(target)
+
+            current.color = 'black'
 
 
     def output_route(self, start):
@@ -78,11 +80,13 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         current = start
-        route = []
-        while current is not None:
-            route.append(current.value)
+        route = ''
+        while current:
+            route += current.value
+            if current.parent:
+                route += ' --> '
             current = current.parent
-            print(current.parent)
+        print(route)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
