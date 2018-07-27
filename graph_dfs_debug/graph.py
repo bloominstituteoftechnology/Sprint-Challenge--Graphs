@@ -16,15 +16,21 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex in self.vertices:
+            raise Exception('Error: adding vertex that already exists')
+        if not set(edges).issubset(self.vertices):
+            raise Exception('Error: cannot have edge to nonexistent vertices')
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception('Connecting Vertices not in graph!')
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
+        x = [start]
         x.append(start)
         y = set(x)
 
@@ -32,23 +38,25 @@ class Graph:
             z = x.pop()
             if x == target:
                 break
-            x.extend(self.vertices[z])
+            x.extend(self.vertices[z] - y)
 
         return x
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        visited = set()
+        visited.add(start)
+        for vertex in self.vertices[start]:
+            if vertex not in visited:
+                visited.update(self.graph_rec(vertex, target = target))
+
+        return visited
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
