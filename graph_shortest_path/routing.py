@@ -2,13 +2,11 @@
 
 import sys
 
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-
 
 # Vertex class
 class Vertex:
@@ -21,7 +19,6 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
 
 # Graph class
 class Graph:
@@ -41,8 +38,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +51,19 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+
+        explored = set()
+        start.parent = None
+
+        while queue:
+            current_vertex = queue.pop(0)
+            explored.add(current_vertex)
+            for edge in current_vertex.edges:
+                vertex = edge.destination
+                if vertex not in explored:
+                    queue.append(vertex)
+                    vertex.parent = current_vertex
 
     def output_route(self, start):
         """
@@ -61,8 +72,11 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current_vertex = start
+
+        while current_vertex != None:
+            print(current_vertex.value)
+            current_vertex = current_vertex.parent
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -70,12 +84,10 @@ class Graph:
         # print the route from the start Vertex
         self.output_route(start)
 
-
 # Helper function to add bidirectional edges
 def add_edge(start, end):
     start.edges.append(Edge(end))
     end.edges.append(Edge(start))
-
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
