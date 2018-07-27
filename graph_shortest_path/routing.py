@@ -56,10 +56,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         queue = [start]
-        start.color = 'red'
+        start.color = 'blue'
 
         while len(queue) > 0:
-            vertex = queue.pop(0)
+            vert = queue.pop(0)
+            vert.color = 'grey'
+            for edge in vert.edges:
+                if edge.destination == 'white':
+                    edge.destination.parent = vert
+                    edge.destination.color = 'blue'
+                    queue.append(edge.destination)
+
             
     
         
@@ -78,6 +85,8 @@ class Graph:
         while current is not None:
             stack.append(current.value)
             current = current.parent
+
+        return stack
 
     def route(self, start, end):
         # BFS to build the parent reference tree
