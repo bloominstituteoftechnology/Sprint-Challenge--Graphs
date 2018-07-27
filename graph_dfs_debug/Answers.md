@@ -10,4 +10,4 @@ Describe the fixes/improvements you made to the Graph implementation here.
 1. Remove `__repr__` "Vertex" addition for readability
 2. Correct start/start, end/end to start/end, end/start in `add_edges`
 3. Rename variables in `dfs`
-4. Remove `graph_rec` fn
+4. Remove `graph_rec`
