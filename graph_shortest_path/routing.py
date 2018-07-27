@@ -61,6 +61,7 @@ class Graph:
             v.parent = None   # <-- Add parent initialization
 
         queue = []
+        parents = set()
         start.color = "gray"
         start.parent = None
         queue.append(start)
@@ -74,9 +75,12 @@ class Graph:
                     edge.destination.color = "gray"
                     edge.destination.parent = u     # <-- Keep a parent link
                     queue.append(edge.destination)
-                print(queue)
+                    parents.add(edge.destination)
             u.color = "black"
+
             queue.pop(0)
+            print(queue)
+
 
         
             
