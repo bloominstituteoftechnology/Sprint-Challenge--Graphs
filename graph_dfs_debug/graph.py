@@ -2,9 +2,10 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
+    def __init__(self, label, color="pink", component=-1):
         self.label = str(label)
         self.component = component
+        self.color = color
 
     def __repr__(self):
         return 'Vertex: ' + self.label
@@ -32,23 +33,27 @@ class Graph:
             if current == target:
                 break
             visited.add(current)
-            visited.extend(self.vertices[current] - visited)
+            stack.extend(self.vertices[current] - visited)
 
         return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        visited = set()
+
+        for vertex in self.vertices[start]:
+            if vertex == target:
+                break
+            if vertex not in visited:
+                visited.add(vertex)
+                self.graph_rec(vertex)
+            return visited
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
