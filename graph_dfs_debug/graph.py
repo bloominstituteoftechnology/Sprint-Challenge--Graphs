@@ -63,7 +63,6 @@ class Graph:
     #     search(start, target)
     #     return visted
 
-
     def find_components(self):
         visited = set()
         current_component = 0

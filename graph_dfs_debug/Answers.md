@@ -22,8 +22,10 @@ Describe the fixes/improvements you made to the Graph implementation here.
 ### def graph_rec
 
 1. x => visted
-2. added exit condition if v == target
+2. if v not in visted = so no infinite loop
 3. *self*.graph_rec(v, *target*)
+4. visted.update(self.grapy_rec(v, target=target))
+    1. added recursive implementation
 
 
 ### find_components
