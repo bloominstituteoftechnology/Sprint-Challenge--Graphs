@@ -25,10 +25,10 @@ class Graph:
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
-    
+
     def find_vert(self, value):
         vert = [v for v in self.vertices if v.label == str(value)]
-        
+
         return vert[0]
 
     def dfs(self, start, target=None):
