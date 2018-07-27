@@ -38,11 +38,12 @@ class Graph:
         return explored
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        explored = set()
+        explored.add(start)
+        for vertex in self.vertices[start]:
+            if vertex not in explored:
+                explored.update(self.graph_rec(vertex, target=target))
+        return explored
 
     def find_components(self):
         visited = set()

@@ -10,3 +10,13 @@ Next, I noticed that there was no check in place to make sure a vertex had not a
 
 After that condition, I also added the vertex to the explored set, so that it would not be explored again in the future (line 34). 
 
+## Recursive Implementation
+Again, I started by changing variable names so that it would be easier to keep track of the logic. I used the same names as I used in `dfs`.
+
+I changed `x` to `explored` and I noticed that it was initialized as a set, but then `.append()` is called on it (line 42). The `.append` method is for lists; the equivalent for a set is `.add()`.
+
+Then I noticed that the linter was "complaining" about the recursive call on line 44. It said "undefined variable 'graph_rec'." This is because `graph_rec` is a method of the Graph object. When it is called inside of the Graph, it needs to be called on `self`; i.e: `self.graph_rec()`
+
+Next, I added a condition on line 44 to again check the explored set before doing anything with a vertex. Without this condition, the function will run forever if given a component that has a cycle.
+
+The last step was to update the explored set with the result of the recursive call (line 45). I added some tests to the main function to make sure `bfs` and `graph_rec` were working correctly.
