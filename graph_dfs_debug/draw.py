@@ -5,7 +5,7 @@ General drawing methods for graphs using Bokeh.
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
-from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, 
+from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle,
                           ColumnDataSource, LabelSet)
 
 
