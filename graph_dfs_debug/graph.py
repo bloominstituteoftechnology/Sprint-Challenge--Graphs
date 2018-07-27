@@ -55,3 +55,5 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+# Some pesudo code ...
