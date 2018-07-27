@@ -15,13 +15,17 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
     graph = Graph()
     # Add appropriate number of vertices
     for num in range(num_vertices):
-        graph.add_vertex(Vertex(label=str(num)))
+        graph.add_vertex(Vertex(label=str(num), component=num))
 
     # Add random edges between vertices
+    edges = set()
     for _ in range(num_edges):
         vertices = sample(graph.vertices.keys(), 2)
-        # TODO check if edge already exists
-        graph.add_edge(vertices[0], vertices[1])
+        # set vertices_id to a concatenated string of ints from vertices
+        vertices_id = str(vertices[0])[-1] + str(vertices[1])[-1]
+        if vertices_id not in edges:
+            graph.add_edge(vertices[0], vertices[1])
+            edges.add(vertices_id)
 
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
