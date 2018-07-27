@@ -45,13 +45,36 @@ class Graph:
             stack.extend(self.vertices[current] - visited)
 
         return visited
+    ###########################
+    #########lecture Code#######
+    ###########################
 
-    def graph_rec(self, start, target=None):
+    """def dfs_recursive(self, start, visited=None, target=None):
+        visited = visited or set()
+        visited.append(start)
+        for vertex in self.vertices[start]:
+            if vertex not in visited:
+                self.dfs_recursive(vertex, visited=visited)
+        return visited"""
+    #### Inner method recursion ####
+
+    def dfs_recursive(self, start, target=None):
+        def dfs_helper(vertex, visited):
+            visited.add(vertex)
+            for neighbor in self.vertices[vertex]:
+                if neighbor not in visited:
+                    dfs_helper(neighbor, visited)
+            return visited
+        return dfs_helper(start, set())
+    ###########################
+    #########Sprint Code#######
+    ###########################
+    """def graph_rec(self, start, target=None):
         x = set()
         x.append(start)
         for v in self.vertices[start]:
             graph_rec(v)
-        return x
+        return x"""
 
     def find_components(self):
         visited = set()

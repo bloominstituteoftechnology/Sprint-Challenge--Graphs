@@ -39,6 +39,17 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
+        ##########################
+        ##### solution lecture ###
+        ##########################
+       """ for vertex in self.vertices:
+            if vertex == value:
+                return vertex
+        return None"""
+
+        ########################
+        ###### Sprint Code ######
+        #########################
         vert = [v for v in self.vertices if v.value == value]
 
         return vert[0]
@@ -49,6 +60,24 @@ class Graph:
         Should maintain parent references back from neighbors to their parent.
         @param {Vertex} start: The starting vertex
         """
+        ########################
+        ### Solution Lecture ###
+        ########################
+        """queue = [start]
+        start.color = "gray"
+
+        while queue:
+            current = queue.pop(0)
+            for edge in current.edges:
+                neighbor = edge.destination
+                if neighbor.color == 'white'
+                    neightbor.color = 'gray'
+                    neighbor.parent = current
+                    queue.append(neighbor)
+            current.color = 'black'"""
+        #####################
+        ### Sprint Code #####
+        #####################
         queue = [start]
         start.color = "grey"
 
@@ -68,6 +97,21 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
+        ########################
+        ### Solution Lecture ###
+        ########################
+        """current = start
+        output = ''
+
+        while current is not None:
+            output += current.value
+            if current.parent:
+                output += ' --> ' 
+                current = current.parent
+        print(output)"""
+        #####################
+        ### Sprint Code #####
+        #####################
         vertex = start
         output = ''
 
