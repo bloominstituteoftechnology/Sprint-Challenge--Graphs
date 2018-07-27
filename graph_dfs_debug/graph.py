@@ -36,24 +36,24 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
+        stack = []
+        stack.append(start)
         y = set(x)
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            z = stack.pop()
+            if stack == target:
                 break
-            x.extend(self.vertices[z])
+            stack.extend(self.vertices[z])
 
-        return x
+        return stack
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+        checked = set()
+        checked.append(start)
         for v in self.vertices[start]:
             graph_rec(v)
-        return x
+        return checked
 
     def find_components(self):
         visited = set()

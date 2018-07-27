@@ -4,4 +4,4 @@ Describe the fixes/improvements you made to the Graph implementation here.
 
 2.your add_edges function was connecting its starts to itself and the ends to themselves so there were no connections showing up. I fixed this by changing `self.vertices[start].add(end)` and `self.vertices[end].add(start)` 
 
-3.
+3.You had two variables described by the same letter x which was confusing I changed them to better represent what they were for, stack and checked.
