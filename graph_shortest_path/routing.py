@@ -53,7 +53,17 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        pass
+        queue = [start]
+        visited = set()
+
+        while queue:
+            current = queue.pop(0)
+            visited.add(current)
+            for edge in current.edges:
+                vertex = edge.destination
+                if vertex not in visited:
+                    queue.append(vertex)
+                    vertex.parent = current
 
     def output_route(self, start):
         """
@@ -80,7 +90,7 @@ def add_edge(start, end):
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print('Usage: routing.py hostA hostB')
+        print('Usage: routing.py HostA HostB')
         sys.exit()
 
     graph = Graph()
