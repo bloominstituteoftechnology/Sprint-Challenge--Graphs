@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+from collections import deque
 
 
 # Edge class
@@ -22,6 +23,9 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __repr__(self):
+        return self.value
+
 
 # Graph class
 class Graph:
@@ -41,8 +45,10 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        try:
+            return next(x for x in self.vertices if x.value == value)
+        except StopIteration:
+            return None
 
     def bfs(self, start):
         """
@@ -51,8 +57,26 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = deque()
+
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+
+        start.color = 'gray'
+        queue.append(start)
+
+        while queue:
+            current = queue[0]
+
+            for edge in current.edges:
+                if edge.destination.color == 'white':
+                    edge.destination.color = 'gray'
+                    edge.destination.parent = current
+                    queue.append(edge.destination)
+
+            current.color = 'black'
+            queue.popleft()
 
     def output_route(self, start):
         """
@@ -61,14 +85,21 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        route_list = []
+        current_vertex = start
+
+        while current_vertex:
+            route_list.append(current_vertex)
+            current_vertex = current_vertex.parent
+
+        ans_strs = [f'{x}' for x in route_list]
+        return '\n' + ' --> '.join(ans_strs) + '\n'
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        print(self.output_route(start))
 
 
 # Helper function to add bidirectional edges

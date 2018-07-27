@@ -61,7 +61,7 @@ Is it because it's just taking a `break`?
 
 ### **Adjustments**
 
-* In `dfs`, changed variable names to be more semantic. Specifically, changed names to be clear that 
+* In `dfs`, changed variable names to be more semantic. Specifically, changed names to be clear that:
   * we are using a stack to do our business
   * we are keeping track of the current vertex being considered
   * we are keeping track of visited vertices
