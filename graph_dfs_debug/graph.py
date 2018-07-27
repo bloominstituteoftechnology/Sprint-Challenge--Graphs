@@ -46,9 +46,11 @@ class Graph:
             y.add(z)
             #error - we add to the x queue all the vertices connected with this current vertex z excludind the ones already visited
             # x.extend(self.vertices[z])            
-            x.extend(self.vertices[z]- y)
+            x.extend(self.vertices[z] - y)
 
-        return x
+        # should return the visited vertices
+        # return x
+        return y
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -62,7 +64,9 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            #error - vertex is reachable if is not visited yet, this will help to track if is a different component and select a color for this component
+            # if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component

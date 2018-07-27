@@ -42,6 +42,14 @@ def add_edge(self, start, end, bidirectional=True):
   if bidirectional:
       self.vertices[end].add(start)
 
+# should return the visited vertices
+# return x
 
+  return y
+
+#error - vertex is reachable if is not visited yet, this will help to track if is a different component and select a color for this component
+# if vertex in visited:
+            
+  if vertex not in visited:
 
 
