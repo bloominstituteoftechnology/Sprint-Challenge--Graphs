@@ -4,7 +4,7 @@
 Demonstration of Graph and BokehGraph functionality.
 """
 
-from random import sample, random
+from random import sample
 from sys import argv
 from draw import BokehGraph
 from graph import Graph, Vertex

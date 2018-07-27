@@ -21,7 +21,8 @@ class BokehGraph:
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title, x_range=(0, width),
+                           y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)

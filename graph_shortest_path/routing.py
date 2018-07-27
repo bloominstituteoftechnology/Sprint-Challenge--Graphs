@@ -93,7 +93,7 @@ class Graph:
             current_vertex = current_vertex.parent
 
         ans_strs = [f'{x}' for x in route_list]
-        return '\n' + ' --> '.join(ans_strs) + '\n'
+        return ' --> '.join(ans_strs)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
