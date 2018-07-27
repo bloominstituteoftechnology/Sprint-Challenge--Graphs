@@ -35,15 +35,21 @@ class Graph:
                 break
             to_visit.extend(self.vertices[current_vertex] - visited)
             visited.update(self.vertices[current_vertex])
-        
+
         return visited
 
-    def graph_rec(self, start, target=None):
-        to_visit = set()
-        to_visit.append(start)
+    def graph_rec(self, start, visited=None, target=None):
+        if visited is None:
+            visited = set([start])
+
+        if start == target:
+            return visited
+
         for vertex in self.vertices[start]:
-            self.graph_rec(vertex)
-        return to_visit
+            if vertex not in visited:
+                visited.add(vertex)
+                self.graph_rec(vertex, visited=visited, target=target)
+        return visited
 
     def find_components(self):
         visited = set()
@@ -51,7 +57,7 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex not in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.graph_rec(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
