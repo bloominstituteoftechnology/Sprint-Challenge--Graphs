@@ -33,7 +33,7 @@ class Graph:
 
         while stack:
             current = stack.pop()
-            if stack == target:
+            if current == target:
                 break
             visited.add(current)
             stack.extend(self.vertices[current] - visited)
