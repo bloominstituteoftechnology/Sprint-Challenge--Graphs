@@ -19,29 +19,39 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = [start]
+        visited = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend(self.vertices[z])
-
-        return x
-
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+            visited.add(current)
+            stack.extend(self.vertices[current] - visited)
+        return visited
+#
+#        x = []
+#        x.append(start)
+#        y = set(x)
+#
+#        while x:
+#            z = x.pop()
+#            if x == target:
+#                break
+#            x.extend(self.vertices[z])
+#
+#        return x
+#
+    def search_recursion(self, start, target=None):
+        visited = set(start)
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+            self.search_recursion(v)
+        return visited 
 
     def find_components(self):
         visited = set()
