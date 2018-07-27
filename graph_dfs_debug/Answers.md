@@ -6,3 +6,9 @@ it needs a begining and end
 27.added stack
 28.add stack to append and stack 
 29.added visited stack inside set
+31. added stack
+32.added current.pops the last one
+33. added current .add the current to the stack
+34.added return target
+35.added visited and current
+36.added stack,current, visited

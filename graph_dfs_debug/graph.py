@@ -28,13 +28,16 @@ class Graph:
         stack.append(start)
         visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        while stack:
+            current = stack.pop()
+            if current == target:
+                return target
 
-        return x
+            visited.add(current)
+
+            stack.extend(self.vertices[current] - visited)
+
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
