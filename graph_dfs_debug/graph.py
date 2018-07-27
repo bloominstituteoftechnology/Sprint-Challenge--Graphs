@@ -39,9 +39,13 @@ class Graph:
 
     def graph_rec(self, start, visited, target=None):
         visited.add(start)
+        if start == target:
+          return visited
+
         for v in self.vertices[start]:
             if v not in visited:
                 self.graph_rec(v, visited)
+
         return visited
 
     def find_components(self):
