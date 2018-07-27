@@ -19,31 +19,29 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = [start] #Start inside the stack
-        y = set() #The whole stack shouldnt be inside the visited set list.
+        stack = []
+        stack.append(start)
+        visited = set(stack)
 
-        while x:
-            z = x.pop() 
-            if z == target: # This was comparing the queue to
-                break
-            y.add(z) #Adding visited nodes to the set
-            x.extend(self.vertices[z] - y) 
+        while stack:
+            visiting = stack.pop()
+            if visiting == target:
+                print("Target {}.".format(target))
+            stack.extend(self.vertices[visiting])-visited
 
-        return x
-
-    
+        return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+        visited = set()
+        visited.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+            self.dfs_recursion(v)
+        return visited
 
     def find_components(self):
         visited = set()
@@ -57,4 +55,3 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
-
