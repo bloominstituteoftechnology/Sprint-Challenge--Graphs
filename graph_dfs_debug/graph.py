@@ -24,17 +24,18 @@ class Graph:
             self.vertices[end].add(end)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = []
+        stack.append(start)
+        explored = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+        while stack:
+            vertex = stack.pop()
+            if vertex not in explored:
+                explored.add(vertex)
+                if vertex == target:
+                    break
+                stack.extend(self.vertices[vertex])
+        return explored
 
     def graph_rec(self, start, target=None):
         x = set()
