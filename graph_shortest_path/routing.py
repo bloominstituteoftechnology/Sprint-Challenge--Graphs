@@ -41,18 +41,31 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if value == vertex.value:
+                return vertex
+            else:
+                return None
 
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
-
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+        visited = set()
+
+        while queue:
+            u = queue[0]
+            for edge in u.edges:
+                print("q: ", queue)
+                if edge.destination.color == 'white':
+                    edge.destination.color = 'grey'
+                    edge.destination.parent = u
+                    queue.append[edge.destination]
+                    visited.add[edge.destination]
+            queue.pop(0)
 
     def output_route(self, start):
         """
@@ -61,8 +74,13 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output = ''
+
+        while current.parent is not None:
+            output += current
+            current = current.parent
+            print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
