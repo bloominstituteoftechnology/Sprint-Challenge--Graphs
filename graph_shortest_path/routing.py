@@ -55,7 +55,20 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        stack = []
+        stack.append(start)
+        visited = set()
+
+        while stack:
+            current = stack.pop(0)
+            if current.value not in visited:
+                visited.add(current.value)
+                for edge in current.edges:
+                    edge.destination.parent = current
+                    if edge.destination.value not in visited:
+                        stack.append(edge.destination)
+
+        return visited
 
     def output_route(self, start):
         """
@@ -117,7 +130,8 @@ if __name__ == '__main__':
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
-    print(hostAVert)
+    # print(hostAVert)
+    print('graph.bfs', graph.bfs(vertB))
 
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
