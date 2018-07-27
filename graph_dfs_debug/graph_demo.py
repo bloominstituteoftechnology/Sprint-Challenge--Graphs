@@ -34,4 +34,5 @@ if __name__ == '__main__':
         DRAW_COMPONENTS = bool(int(argv[3]))
         main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
     else:
-        main()
+        print('Wrong number of arguments')
+        print('Both nums should be ints')

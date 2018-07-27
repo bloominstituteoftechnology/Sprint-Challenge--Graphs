@@ -1,6 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -9,32 +11,40 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
+
 class Graph:
+    """Trying to make this Graph class work..."""
     def __init__(self):
         self.vertices = {}
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex in self.vertices:
+            raise Exception('Error! That vertex already exists')
+        if not set(edges).issubset(self.vertices):
+            raise Exception('Error, cannot have edge to vertex that does not exist')
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception('Verticies to connect not in graph')
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = [start]
+        visited = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            print("stack", stack)
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend(self.vertices[z])
+            visited.add(current)
+            stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -48,7 +58,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
