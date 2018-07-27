@@ -40,12 +40,12 @@ class Graph:
 
         return visited
 
-    def dfs_recursive(self, start, visited=(), target=None):
-        visited = set(visited)
+    def dfs_recursive(self, start, visited=None, target=None):
+        visited = visited or set()
         visited.add(start)
         for vertex in self.vertices[start]:
             if vertex not in visited:
-                return self.dfs_recursive(vertex, visited)
+                self.dfs_recursive(vertex, visited)
         return visited
 
     def find_components(self):
