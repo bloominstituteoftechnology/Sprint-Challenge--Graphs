@@ -39,18 +39,20 @@ class Graph:
         if bidirectional:
             self.vertices[end].add(end)
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    def search(self, start, target=None, method='dfs'):
+        queue_stack = [start]
+        pop_index = 0 if method='bfs' else -1 
+        visited = set() 
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while queue_stack: 
+            current_vertice = queue_stack.pop(pop_index)
+            if current_vertice == target:
                 break
-            x.extend(self.vertices[z])
+            visited.add(current_vertice)
+            # Add possible (unvisited) vertices to queue 
+            queue_stack.extend(self.vertices[current_vertice] - visited)
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
