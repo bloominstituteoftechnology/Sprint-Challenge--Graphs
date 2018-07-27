@@ -23,6 +23,11 @@ Describe the fixes/improvements you made to the Graph implementation here.
         self.components = current_component
 ```
 
-3. Implemented changes to routing.py
+3. Recursion not implemented properly.
 
+4. <code>dfs()</code> was using stack instead of the vertexes.
+
+5. Linter highlights syntactical and stylistic errors in the code.
+
+6. Renamed variables due to context.
 
