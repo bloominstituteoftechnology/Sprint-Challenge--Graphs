@@ -26,7 +26,7 @@ parent:
 
 ```pseudocode
 BFS(graph, startVert):
-  for v of graph.vertexes:
+  for v of graph.vertices:
     v.color = white
     v.parent = null   // <-- Add parent initialization
 
