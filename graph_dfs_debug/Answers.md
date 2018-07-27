@@ -6,7 +6,7 @@ dfs()
 
 1.  Bad vairable names in dfs. Changed to something more rediable.
 2.  Potential infinity loop in dfs, it worth to check if a vertex was already visited. Changed.
-3.  Allow run DFS with out passin gany argument. By default the 'start_vertex' will be '0'
+3.  Allow run DFS with out passin gany argument. By default the 'start_vertex' will be '0'.
 
 add_edges()
 
@@ -15,8 +15,11 @@ add_edges()
     the vertex is not part of the Graph.
 2.  Refactored variable names, now are a bit more rediable.
 
-add_vertex():
-
 general:
 
 1.  Messing types, str with int. Fixing all that in a defesing programming manner.
+
+graph_rec() -> get_components()
+
+1.  Make name more rediable: changed to get_components()
+2.  Re-define the logic to track components. Added a new attribute to Graph so it holds and track the Sets of posible components.

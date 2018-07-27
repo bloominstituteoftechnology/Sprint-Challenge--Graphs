@@ -18,7 +18,7 @@ class Vertex:
 class Graph:
     def __init__(self):
         self.vertices = {}
-        self.components = 0
+        self.components = []
 
     def add_vertex(self, vertex, edges=()):
         self.vertices[str(vertex)] = set(edges)
@@ -38,27 +38,38 @@ class Graph:
             if bidirectional:
                 self.vertices[str(end_vertex)].add(str(start_vertex))
 
-    def dfs(self, start=None, target=None):
+    def dfs(self, start=None, target=None, visited=None):
         stack = []
         stack.append(start if start is not None else '0')
-        visited = set()
+        print('stack', stack)
+        visited = visited if visited is not None else set()
+        print('visited', visited)
+        component = set()
 
         while stack:
             current = stack.pop()
             if current not in visited:
                 visited.add(current)
+                component.add(current)
                 if stack == target:
                     break
                 stack.extend(self.vertices[current] - visited)
 
-        return visited
+        return component
 
-    # def graph_rec(self, start, target=None):
-    #     x = set()
-    #     x.append(start)
-    #     for v in self.vertices[start]:
-    #         graph_rec(v)
-    #     return x
+    def get_components(self):
+        connected_components = []
+        visited_nodes = set()
+
+        # print(f'''SELF VERTICES {self.vertices.keys()}''')
+        for vertex in self.vertices.keys():
+            if vertex not in visited_nodes:  # if fvertex no visited.
+                # print('\n\nNO PASSED', vertex, '\n')
+                response = self.dfs(vertex, None, visited_nodes)
+                print(response)
+                connected_components.append(response)
+        # print('\nconnected_components', connected_components)
+        self.components = connected_components
 
     # def find_components(self):
     #     visited = set()
@@ -89,7 +100,8 @@ _graph.add_edge('0', '3')
 # _graph.add_edge('0', 9)
 print('\nGraph vertices: ', _graph.vertices)
 print('DFS', _graph.dfs())
-# print('\nConnected components', _graph.connected_components)
+_graph.get_components()
+print('\nConnected components', _graph.components)
 # print('\nVertex 3 in graph:', _graph.dfs(3))
 # print('\nVertex 100 in graph:', _graph.dfs(100))
 # _graph.add_edge('0', '4')
