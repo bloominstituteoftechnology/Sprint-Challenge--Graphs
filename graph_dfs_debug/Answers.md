@@ -35,4 +35,4 @@ got even more stuck. It was running forever so I tried adding a thing to keep
 track of vertices, and now I just get an error message. Please try to fix this
 too if you can, or at least give me some pointers on what I should be doing.
 
-* this method resets your x variable every time it calls it's self. 
+* this method resets your x variable every time it calls it's self. i added a nested method
