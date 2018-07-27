@@ -1,0 +1,2 @@
+This is where I intend to store the completed graphs. It seemed like a better idea than dirtying up my other directories with stuff.
+-FireInjun
