@@ -12,7 +12,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
-    def __init__(self, graph, title='Graph', width=100, height=100,
+    def __init__(self, graph, title='Graph', width=10, height=10,
                  show_axis=False, show_grid=False, circle_size=35,
                  draw_components=False):
         if not graph.vertices:
