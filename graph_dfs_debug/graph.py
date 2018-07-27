@@ -31,29 +31,29 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
+        queue = []
+        queue.append(start)
         #error - unused vaiable y, and set with initial value of x, should be empty
         # y = set(x)
-        y = set()
-        while x:
-            z = x.pop()
+        visited_vertices = set()
+        while queue:
+            current_vertex = queue.pop()
             #error - x is a list of vertices, should be the current vertex to compare with the target
             # if x == target:
             # instead of break should return the vertex 
             # if z == target:
             #     break
-            if z == target:
-                return z
+            if current_vertex == target:
+                return current_vertex
             #error - we have to add to y the visited Vertex(z)
-            y.add(z)
+            visited_vertices.add(current_vertex)
             #error - we add to the x queue all the vertices connected with this current vertex z excludind the ones already visited
             # x.extend(self.vertices[z])            
-            x.extend(self.vertices[z] - y)
+            queue.extend(self.vertices[current_vertex] - visited_vertices)
 
         # should return the visited vertices
         # return x
-        return y
+        return visited_vertices
 
     def graph_rec(self, start, target=None):
         x = set()
