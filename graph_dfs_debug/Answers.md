@@ -23,6 +23,11 @@ def dfs(self, start, target=None):
             
   x.extend(self.vertices[z]- y)
 
+# should return the visited vertices
+# return x
+
+  return y
+
 
 Errors in:
 
@@ -42,10 +47,9 @@ def add_edge(self, start, end, bidirectional=True):
   if bidirectional:
       self.vertices[end].add(start)
 
-# should return the visited vertices
-# return x
+Errors in:
 
-  return y
+def find_components(self):
 
 #error - vertex is reachable if is not visited yet, this will help to track if is a different component and select a color for this component
 # if vertex in visited:
@@ -53,3 +57,23 @@ def add_edge(self, start, end, bidirectional=True):
   if vertex not in visited:
 
 
+# TODO check if edge already exists
+  if vertices[1] not in graph.vertices[vertices[1]]:
+      graph.add_edge(vertices[0], vertices[1])
+
+
+Lint errors in:
+
+def graph_rec(self, start, target=None):
+
+#error - x is a set and has not have a append() method, only add() method should be used
+# x.append(start)
+        
+  x.add(start)
+
+  #error - graph_rec() is a recursive call to a method inside the same class needs to be called with self
+  # for v in self.vertices[start]:
+  #     graph_rec(v)
+
+    for v in self.vertices[start]:
+        self.graph_rec(v)

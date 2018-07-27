@@ -54,9 +54,15 @@ class Graph:
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        #error - x is a set and has not have a append() method, only add() method should be used
+        # x.append(start)
+        x.add(start)
+
+        #error - graph_rec() is a recursive call to a method inside the same class needs to be called with self
+        # for v in self.vertices[start]:
+        #     graph_rec(v)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
