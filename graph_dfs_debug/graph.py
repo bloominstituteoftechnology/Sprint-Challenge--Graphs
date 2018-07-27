@@ -11,30 +11,30 @@ class Vertex:
         return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
-class Graph:
+class Graph: 
     def __init__(self):
         self.vertices = {}
         self.components = 0
 
-    def add_vertex(self, vertex, edges=()):
+    def add_vertex(self, vertex, edges=()): """Add a new vertex, optionally with edges to other vertices."""
         self.vertices[vertex] = set(edges)
 
-    def add_edge(self, start, end, bidirectional=True):
+    def add_edge(self, start, end, bidirectional=True): """Add a edge (default bidirectional) between two vertices."""
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
 
-    def dfs(self, start, target=None):
+    def dfs(self, start, target=None): """Search the graph using BFS or DFS."""
         stack = []
         stack.append(start)
         visited = set(stack)
 
         while stack:
-            current = stack.pop()
-            if current == target:
+            current = stack.pop() # pops the last one 
+            if current == target: # check if found target
                 return target
-            visited.add(current)
-            stack.extend(self.vertices[current] - visited) 
+            visited.add(current) # add the current to the stack
+            stack.extend(self.vertices[current] - visited) # subtract whats visited from the vertices and whats remaining, add it to the stack
 
         return visited
 
