@@ -76,6 +76,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
+            visited.add(vertex)
             if vertex in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
