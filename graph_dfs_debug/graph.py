@@ -53,14 +53,16 @@ class Graph:
 
         return visited
   
-    '''def dfs_recursive(self, start, target=None):
-    """Depth frist search of the graph using recursion"""
-    visited = set()
-    visited.append(start)
-    for v in self.vertices[start]:
-    graph_rec(v)
-    return x'''
+    def dfs_recursive(self, start, target=None, visited=[]):
+        """dfs of graph using recursion"""
+        visited.append(start)
 
+        for neighbor in self.vertices[start]:
+            if neighbor not in visited:
+                visited = self.dfs_recursive(neighbor, target=target, visited=visited)
+
+        return visited
+    
     def find_components(self):
         """Identify components of graph and update the component value of each vertex"""
         visited = set()
