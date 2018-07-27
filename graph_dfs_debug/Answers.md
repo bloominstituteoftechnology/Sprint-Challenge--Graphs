@@ -13,3 +13,9 @@ add_edges()
     ussing the proper method for that (add-vertex()). I added some checks that return Exceptions is
     the vertex is not part of the Graph.
 2.  Refactored variable names, now are a bit more rediable.
+
+add_vertex():
+
+general:
+
+1.  Messing types, str with int. Fixing all that in a defesing programming manner.

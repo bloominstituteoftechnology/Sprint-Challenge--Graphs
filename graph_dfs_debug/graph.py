@@ -21,22 +21,22 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+        self.vertices[str(vertex)] = set(edges)
 
     def add_edge(self, start_vertex, end_vertex, bidirectional=True):
         keys = self.vertices.keys()
-        if (start_vertex not in keys) and (end_vertex not in keys):
+        if (str(start_vertex) not in keys) and (str(end_vertex) not in keys):
             raise Exception('The vertex are not in the Graph')
-        elif start_vertex not in keys:
+        elif str(start_vertex) not in keys:
             raise Exception(
                 f'''The vertex {start_vertex} is not in the Graph.''')
-        elif end_vertex not in keys:
+        elif str(end_vertex) not in keys:
             raise Exception(
                 f'''The vertex {end_vertex} is not in the Graph.''')
         else:
-            self.vertices[start_vertex].add(end_vertex)
+            self.vertices[str(start_vertex)].add(str(end_vertex))
             if bidirectional:
-                self.vertices[end_vertex].add(start_vertex)
+                self.vertices[str(end_vertex)].add(str(start_vertex))
 
     def dfs(self, start, target=None):
         stack = []
@@ -78,11 +78,18 @@ _graph = Graph()  # Instantiate your graph
 _graph.add_vertex('0')
 _graph.add_vertex('1')
 _graph.add_vertex('2')
-_graph.add_vertex('3')
+# _graph.add_vertex('3')
+_graph.add_vertex(3)
 _graph.add_vertex('4')
 _graph.add_vertex('5')
 _graph.add_vertex('6')
 _graph.add_vertex('7')
 _graph.add_edge('0', '1')
 _graph.add_edge('0', '3')
+# _graph.add_edge('0', 9)
 print('\nGraph vertices: ', _graph.vertices)
+# _graph.dfs()
+# print('\nConnected components', _graph.connected_components)
+# print('\nVertex 3 in graph:', _graph.dfs(3))
+# print('\nVertex 100 in graph:', _graph.dfs(100))
+# _graph.add_edge('0', '4')
