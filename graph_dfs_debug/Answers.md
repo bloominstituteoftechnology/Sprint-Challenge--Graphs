@@ -37,3 +37,5 @@ Describe the fixes/improvements you made to the Graph implementation here.
     if vertex in visited: -> if vertex not in visited
 
 8. After doing all of the above, I ran graph_demo.py, and all seems to be working correctly. I am choosing to leave the print statements in my dfs function because I find the printout of each step of a traversal very useful info.
+
+9. After realizing graph_rec was an alternative recursive search method, I cleaned up the variable names, and added a helper function to execute the recursive part.
