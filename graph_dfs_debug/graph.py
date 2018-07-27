@@ -37,12 +37,14 @@ class Graph:
                 stack.extend(self.vertices[vertex])
         return explored
 
-    def graph_rec(self, start, target=None):
-        explored = set()
+    def graph_rec(self, start, target=None, explored=None):
+        explored = explored or set()
         explored.add(start)
+        if start == target:
+            return explored
         for vertex in self.vertices[start]:
             if vertex not in explored:
-                explored.update(self.graph_rec(vertex, target=target))
+                self.graph_rec(vertex, target=target, explored=explored)
         return explored
 
     def find_components(self):

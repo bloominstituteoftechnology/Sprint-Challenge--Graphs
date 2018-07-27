@@ -17,11 +17,13 @@ Again, I started by changing variable names so that it would be easier to keep t
 
 I changed `x` to `explored` and I noticed that it was initialized as a set, but then `.append()` is called on it (line 42). The `.append` method is for lists; the equivalent for a set is `.add()`.
 
-Then I noticed that the linter was "complaining" about the recursive call on line 44. It said "undefined variable 'graph_rec'." This is because `graph_rec` is a method of the Graph object. When it is called inside of the Graph, it needs to be called on `self`; i.e: `self.graph_rec()`
+Then I noticed that the linter was "complaining" about the recursive call on line 47. It said "undefined variable 'graph_rec'." This is because `graph_rec` is a method of the Graph object. When it is called inside of the Graph, it needs to be called on `self`; i.e: `self.graph_rec()`
 
-Next, I added a condition on line 44 to again check the explored set before doing anything with a vertex. Without this condition, the function will run forever if given a component that has a cycle.
+Next, I added a condition on line 46 to again check the explored set before doing anything with a vertex. Without this condition, the function will run forever if given a component that has a cycle.
 
-The last step was to update the explored set with the result of the recursive call (line 45). I added some tests to the main function to make sure `bfs` and `graph_rec` were working correctly. That's when I noticed that the edges are not being added correctly in the graph.
+I added a condition to check if the target has been reached. If that's the case, the function will return the explored set. I made sure to pass that same target in as an argument for the recursive call as well.
+
+The last step was to pass in the explored set as an argument to the function so that it can be checked on each recursive call. I added a default for the explored argument `explored=None` so that on the first iteration, it can be initialized as an empty set. Each recursive call after that passes in the already initialized set as an argument.
 
 ## Add Edges
 I noticed that the vertices each had edges to themselves. I looked over the `add_edge` method and noticed that the start vertex is added to itself `self.vertices[start].add(start)` (Same with end vertex). I changed this to `self.vertices[start].add(end)` and that fixed the problem.
