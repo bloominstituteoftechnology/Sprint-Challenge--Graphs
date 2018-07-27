@@ -61,19 +61,18 @@ class Graph:
           vertex.parent = None   #// <-- Add parent initialization
 
         start.color = 'gray'
-        queue =[start]
+        queue = []
+        queue.append(start)
 
         while queue:
           current_vertex = queue.pop()
 
           for edge in current_vertex.edges:
-            print(edge)
-            if edge.color == 'white':
-              edge.color = 'gray'
-              edge.parent = current_vertex   #  // <-- Keep a parent link
-              queue.extend(vertex)
-          
-          queue.pop()
+            destination = edge.destination
+            if destination.color == 'white':
+              destination.color = 'gray'
+              destination.parent = current_vertex   #  // <-- Keep a parent link
+              queue.append(vertex)
           current_vertex.color = 'black'
 
     def output_route(self, start):
