@@ -19,6 +19,11 @@ this part didn't really work.
 5. My editor sure is complaining a lot about something called "lint."
 6. I keep losing track of my variables, I guess I should name them better?
 
+I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
+got even more stuck. It was running forever so I tried adding a thing to keep
+track of vertices, and now I just get an error message. Please try to fix this
+too if you can, or at least give me some pointers on what I should be doing.
+
 I'm still trying to learn this stuff, so please don't just fix the code for me.
 Let me know in the `Answers.md` file where my bugs are and what you did to fix
 them, so I can have an easier time watching out for them next time. Oh and don't
