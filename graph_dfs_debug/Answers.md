@@ -18,3 +18,6 @@ It was hard to keep track of certain variables in `graph.py` as they had generic
     - Renamed `x` to `stack` since that is the data structure a depth first search utilizes
     - Renames `z` to `current` since this represents the current vertex that you are visiting
     - As you are searching you'll want to keep track of which vertexes you've already visited. I'm assuming that is where you were going with `y`. I renamed that `visited` 
+
+### Fixed Edges
+The edges were not showing up because they were not being setup correctly in the `add_edge` method. An edge connects one vertex to the other so it has a start vertex and an end vertex. While `add_edge` was accepting a start and end, it was assigning the start and end to the same vertex. Instead of doing `self.vertices[start].add(start)` which is like saying _start the edge at my start vertex and end it at my start vertex_ it should be `self.vertices[start].add(end)` which says _start the edge at my start vertex and end it at my end vertex_. The bidirectional condition had the same issue. It was starting and ending at the same point.
