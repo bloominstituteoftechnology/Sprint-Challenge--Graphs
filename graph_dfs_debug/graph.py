@@ -45,15 +45,16 @@ class Graph:
         
         return visited
 
-    """
-    ??? What is graph_rec used for ???
-    """
-    # def graph_rec(self, start, target=None):
-    #     x = set()
-    #     x.append(start)
-    #     for v in self.vertices[start]:
-    #         graph_rec(v)
-    #     return x
+    def _recurs_helper(self, start, visited):
+        visited[start] = True
+
+        for other_verts in self.vertices[start]:
+            if visited[other_verts] = False
+                self._recurs_helper(other_verts, visited)
+
+    def graph_rec(self, start):
+        visited = [False] * (len(self.vertices))
+        self._recurs_helper(start, visted)
 
     def find_components(self):
         visited = set()
