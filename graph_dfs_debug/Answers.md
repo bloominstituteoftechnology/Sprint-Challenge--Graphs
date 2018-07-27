@@ -22,9 +22,8 @@ Describe the fixes/improvements you made to the Graph implementation here.
 ### def graph_rec
 
 1. x => visted
-2. visted = set(start) => this part not necessary
-3. added exit condition if v == target
-4. *self*.graph_rec(v, *target*)
+2. added exit condition if v == target
+3. *self*.graph_rec(v, *target*)
 
 
 ### find_components

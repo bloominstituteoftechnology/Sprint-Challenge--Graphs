@@ -41,11 +41,15 @@ class Graph:
         return visted
 
     def graph_rec(self, start, target=None):
-        visted = set(start)
+        visted = set()
+        visted.add(start)
         for v in self.vertices[start]:
-            if v == target:
-                break
-            self.graph_rec(v, target)
+            if v not in visted:
+                visted.add(v)
+                if v == target:
+                    break
+                self.graph_rec(v, target)
+        print(visted)
         return visted
 
     def find_components(self):
@@ -54,7 +58,7 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex not in visited:
-                reachable = self.depth_first_search(vertex)
+                reachable = self.graph_rec(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
