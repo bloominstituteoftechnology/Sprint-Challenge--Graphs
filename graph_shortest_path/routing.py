@@ -90,21 +90,23 @@ class Graph:
             counter += 1
             current = current.parent
         route.append(current.value)
-        return route
+
+        print(f'''
+            Took {counter} steps.
+            {' --> '.join(route)}
+
+        **************END SHORTER ROUTE*****************
+        ''')
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        route = self.output_route(start)
         print(f'''
         **************SHORTER ROUTE*****************
         
-        Route form {start.value} to {end.value}:
-            {' --> '.join(route)}
-
-        **************END SHORTER ROUTE*****************
-        ''')
+        Route form {start.value} to {end.value}:''')
+        self.output_route(start)
 
 
 # Helper function to add bidirectional edges
