@@ -41,8 +41,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        if vertex in self.vertices:
+            raise Exception('Error: adding vertex that already exists')
+        if not set(edges).issubset(self.vertices):
+            raise Exception('Error: cannot have edge to nonexistent vertices')
+        self.vertices[vertex] = set(edges)
 
     def bfs(self, start):
         """
@@ -51,8 +54,8 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in graph.vertexes：
+
 
     def output_route(self, start):
         """

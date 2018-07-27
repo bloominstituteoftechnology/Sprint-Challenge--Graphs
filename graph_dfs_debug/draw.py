@@ -5,9 +5,9 @@ General drawing methods for graphs using Bokeh.
 from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
-from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
+from bokeh.plotting import figure
 
 
 class BokehGraph:
@@ -33,11 +33,11 @@ class BokehGraph:
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
         # Saving vertices in an arbitrary but persistent order
-        self.vertex_list = list(self.graph.vertices.keys())
+        self.vertex_keys = list(self.graph.vertices.keys())
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
-            [vertex.label for vertex in self.vertex_list], 'index')
+            self.vertex_keys, 'index')
         colors = (self._get_connected_component_colors() if draw_components
                   else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
@@ -69,8 +69,8 @@ class BokehGraph:
         for vertex, edges in self.graph.vertices.items():
             if vertex not in checked:
                 for destination in edges:
-                    start_indices.append(vertex.label)
-                    end_indices.append(destination.label)
+                    start_indices.append(vertex)
+                    end_indices.append(destination)
                 checked.add(vertex)
 
         return dict(start=start_indices, end=end_indices)
@@ -80,7 +80,7 @@ class BokehGraph:
         for vertex_label, (x_pos, y_pos) in self.pos.items():
             label_data['x'].append(x_pos)
             label_data['y'].append(y_pos)
-            label_data['names'].append(vertex_label)
+            label_data['names'].append(str(vertex_label))
         label_source = ColumnDataSource(label_data)
         labels = LabelSet(x='x', y='y', text='names', level='glyph',
                           text_align='center', text_baseline='middle',
@@ -94,7 +94,7 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
-        for vertex in self.vertex_list:
+        for vertex in self.vertex_keys:
             # TODO make bounds and random draws less hacky
             self.pos[vertex.label] = (1 + random() * (self.width - 2),
                                       1 + random() * (self.height - 2))
@@ -104,6 +104,6 @@ class BokehGraph:
         self.graph.find_components()
         component_colors = self._get_random_colors(self.graph.components)
         vertex_colors = []
-        for vertex in self.vertex_list:
+        for vertex in self.vertex_keys:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
