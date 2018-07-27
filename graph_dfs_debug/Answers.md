@@ -23,3 +23,10 @@ find_components() -> get_components()
 
 1.  Make name more rediable: changed to get_components()
 2.  Re-define the logic to track components. Added a new attribute to Graph so it holds and track the Sets of posible components.
+
+BUGS isn draw.py:
+
+1.  Several Bugs fixed: due to the new implementation done, I have to fix a lot of reference to new properties,
+    aswell to change the calls to methods with new names
+2.  REFACTORED: get_connected_component_colors()
+    This method was completelly refactored.
