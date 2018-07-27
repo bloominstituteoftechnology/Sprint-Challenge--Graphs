@@ -35,23 +35,25 @@ class Graph:
             current = stack.pop()
             if current == target:
                 break
+            visted.add(current)
             stack.extend(self.vertices[current] - visted)
 
         return visted
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+        visted = set(start)
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+            if v == target:
+                break
+            self.graph_rec(v, target)
+        return visted
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.depth_first_search(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component

@@ -15,14 +15,12 @@ Describe the fixes/improvements you made to the Graph implementation here.
     1. I replaced variables with newer variable names
         1. if *current* == target
         2. *stack*.extend(self.vertices[*current*])
-7. When extending stack with (self.vertices[current]), you need to subtract the visted set so that you don't revisit the vertexes that you already went to and go on a infinite loop
-8. you should return visted and not the stack so that you know which vertex's were touched and the target was really not there.
+7. visted.add(current) => add the current vertex to visted so you don't check them again and go into loop
+8. When extending stack with (self.vertices[current]), you need to subtract the visted set so that you don't revisit the vertexes that you already went to and go on a infinite loop
+9. you should return visted and not the stack so that you know which vertex's were touched and the target was really not there.
 
-### def graph_rec
-
-1. asdf
 
 
 ### find_components
 
-1. 
+1. in => not in - you want to check vertexes you haven't checked
