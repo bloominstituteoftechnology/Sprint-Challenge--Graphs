@@ -44,7 +44,7 @@ class Graph:
         x = set()
         x.append(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
