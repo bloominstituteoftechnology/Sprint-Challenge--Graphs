@@ -34,22 +34,22 @@ class Graph:
         elif end not in self.vertices:
             raise Exception('Error: The end vertice is not in the graph.')
 
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
 
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def search(self, start, target=None, method='dfs'):
         queue_stack = [start]
-        pop_index = 0 if method='bfs' else -1 
-        visited = set() 
+        pop_index = 0 if method == 'bfs' else -1
+        visited = set()
 
-        while queue_stack: 
+        while queue_stack:
             current_vertice = queue_stack.pop(pop_index)
             if current_vertice == target:
                 break
             visited.add(current_vertice)
-            # Add possible (unvisited) vertices to queue 
+            # Add possible (unvisited) vertices to queue
             queue_stack.extend(self.vertices[current_vertice] - visited)
 
         return visited
