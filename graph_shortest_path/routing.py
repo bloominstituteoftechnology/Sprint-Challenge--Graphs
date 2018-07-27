@@ -42,10 +42,13 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        vert = [v for v in self.vertices if v.value == value]
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        
+        return None
 
-        return vert[0]
-
+        
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
@@ -57,25 +60,26 @@ class Graph:
         start.color = 'yellow'
         queue = [start]
 
-        for vertex in self.vertices:
-            vertex.color = 'gray'
-            vertex.parent = None
+        visited = set()
+        start.parent = None
 
-        start.color = 'yellow'
-        queue.append(start)
+        # for vertex in self.vertices:
+        #     vertex.color = 'gray'
+        #     vertex.parent = None
+
+        # start.color = 'yellow'
+        # queue.append(start)
 
         while queue:
             current = queue.pop(0)
+            visited.add(current)
 
             for edge in current.edges:
                 vertex = edge.destination
-                if vertex.color == 'blue':
+                if vertex not in visited:
                     vertex.color = 'gray'
-                    vertex.parent = current
                     queue.append(vertex)
-
-            current.color = 'black'
-
+                    vertex.parent = current
 
 
     def output_route(self, start):
@@ -87,16 +91,10 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         vertex = start
-        output = ''
 
-        while (vertex):
-            output += vertex.value
-            if (vertex.parent):
-                output += ' --> '          
-
-            vertex = vertex.parent
-            
-        print(output)
+        while current != None:
+            print(current.value)
+            current = current.parent
 
 
     def route(self, start, end):
