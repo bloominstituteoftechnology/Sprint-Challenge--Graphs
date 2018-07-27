@@ -39,11 +39,11 @@ class Graph:
         return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
-        return x
+        to_visit = set()
+        to_visit.append(start)
+        for vertex in self.vertices[start]:
+            self.graph_rec(vertex)
+        return to_visit
 
     def find_components(self):
         visited = set()
