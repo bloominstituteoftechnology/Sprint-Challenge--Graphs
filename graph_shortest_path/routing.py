@@ -21,6 +21,8 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+    def __repr__(self):
+        return self.value
 
 
 # Graph class
@@ -41,8 +43,12 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices: #tested this works
+            if vertex == value:
+                print(vertex)
+                return vertex
+            else:
+                return None
 
     def bfs(self, start):
         """
@@ -51,8 +57,27 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            v.color = "white"
+            v.parent = None   # <-- Add parent initialization
+
+        queue = []
+        start.color = "gray"
+        queue.append(start)
+
+        while queue:
+            u = queue[0]
+            queue.pop(0)
+            u.color = "black"
+
+            for v in self.vertices[u]:
+                if v.color == "white":
+                    v.color = "gray"
+                    v.parent = u     # <-- Keep a parent link
+                    queue.append(v)
+        
+            
+        
 
     def output_route(self, start):
         """
@@ -62,7 +87,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        stack = []
+        stack.append(start)
+        while stack:
+            current = stack.pop()
+            stack.append(current)
+            print(' --> '.join(stack))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -71,7 +101,7 @@ class Graph:
         self.output_route(start)
 
 
-# Helper function to add bidirectional edges
+    # Helper function to add bidirectional edges
 def add_edge(start, end):
     start.edges.append(Edge(end))
     end.edges.append(Edge(start))
