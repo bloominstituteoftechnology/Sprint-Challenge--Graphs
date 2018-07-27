@@ -41,34 +41,65 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current = self.vertices[0]
+        stack = [current]
 
-    def bfs(self, start):
+        while stack:
+            current = stack[0]
+            if current.value == value:
+                return current
+            for edge in current.edges:
+                stack.append(edge.destination)
+            stack.pop(0)
+        return None
+
+
+    def bfs(self, start, end):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        start.color = 'gray'
+        stack = [start]
 
-    def output_route(self, start):
+        while stack:
+            current = stack[0]
+            if current == end:
+                break
+            for edge in current.edges:
+                if edge.destination.color == 'white':
+                    edge.destination.color = 'gray'
+                    edge.destination.parent = current
+                    stack.append(edge.destination)
+            
+            stack.pop(0)
+            current.color = 'black'
+
+    def output_route(self, start, end):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        to_print = str(start.value)
+        stack = [start]
+        while stack:
+            current = stack[0]
+            if current == end:
+                break
+            stack.append(current.parent)
+            stack.pop(0)
+            to_print += (' --> ' + current.parent.value)
+        print(to_print)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        self.bfs(end, start)
         # print the route from the start Vertex
-        self.output_route(start)
+        self.output_route(start, end)
 
 
 # Helper function to add bidirectional edges
