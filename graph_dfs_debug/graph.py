@@ -16,8 +16,7 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        '''Cleaned up implementation, added comments'''
-                """ Add new vertex with optional edges """
+        """Cleaned up implementation, added comments"""
         if vertex in self.vertices:
             raise Exception('Error: adding vertext that already exists')
         if not set(edges).issubset(self.vertices):

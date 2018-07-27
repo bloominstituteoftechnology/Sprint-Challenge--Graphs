@@ -38,9 +38,13 @@ class BokehGraph:
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
-        colors = (self._get_connected_component_colors() if draw_components
-                  else self._get_random_colors())
-        graph_renderer.node_renderer.data_source.add(colors, 'color')
+        # Updated the code to include random colors. 
+        graph_renderer.node_renderer.data_source.add(
+            self._get_random_colors(), 'color')
+
+        # colors = (self._get_connected_component_colors() if draw_components
+        #           else self._get_random_colors())
+        # graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
                                                     fill_color='color')
@@ -56,6 +60,8 @@ class BokehGraph:
     def _get_random_colors(self, num_colors=None):
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
+        # num_colors = len(self.graph.vertices)
+
         for _ in range(num_colors):
             color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
             colors.append(color)
