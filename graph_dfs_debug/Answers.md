@@ -6,4 +6,5 @@ This: https://help.github.com/articles/comparing-commits-across-time/
 2. You needed to return the set of nodes you visited. Not the empty list of nodes the algorithm needed to visit.
 3. If the graph is a cyclic graph, has a loop in it, you just follow that loop forever. You need to remove vertices you already visited with set differencing.
 4. Here you are checking for equality against all the vertices you are planning to visit, not the current vertex. I changed to check against current_vertex (formerly z)
-5. Its a style thing, you're editor should tell you what to do about each one.
+5. Its a style thing, you're editor should tell you what to do about each one. Mostly about spacing, but it can help you catch unused imports and unreferenced functions.
+6. I renamed the one letter vars to things like to_visit, visited, current_vertex. Mostly consistent across functions and descriptive enought without being verbose.
