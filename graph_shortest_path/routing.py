@@ -44,9 +44,8 @@ class Graph:
         # !!!! IMPLEMENT ME
         for vertex in self.vertices:
             if vertex.value == value:
-                return vertex[0]
-            else:
-                return None
+                return vertex
+            return None
 
     def bfs(self, start):
         """
@@ -56,9 +55,6 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        # add start in queue
-        # current node turns gray
-        # visited one becomes black
         queue = [start]
         start.color = 'gray' 
 
@@ -83,7 +79,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        vertex = start
+        output = ''
+        while vertex:
+            output += vertex.value
+            if vertex.parent:
+                output += '-->'
+            vertex = vertex.parent
+        print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
