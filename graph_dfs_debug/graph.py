@@ -1,5 +1,4 @@
 """
-adding comment to make pull request
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
@@ -16,15 +15,15 @@ class Graph:
         self.vertices = {}
         self.components = 0
 
-    def add_vertex(self, vertex, edges=()): """Add a new vertex, optionally with edges to other vertices."""
+    def add_vertex(self, vertex, edges=()): 
         self.vertices[vertex] = set(edges)
 
-    def add_edge(self, start, end, bidirectional=True): """Add a edge (default bidirectional) between two vertices."""
+    def add_edge(self, start, end, bidirectional=True): #Add a edge (default bidirectional) between two vertices.
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
 
-    def dfs(self, start, target=None): """Search the graph using BFS or DFS."""
+    def dfs(self, start, target=None): #Search the graph using BFS or DFS.
         stack = []
         stack.append(start)
         visited = set(stack)
@@ -44,8 +43,8 @@ class Graph:
     #     for v in self.vertices[start]:
     #         graph_rec(v)
     #     return x
-        def bfs(self, start, target=None):
-        """Search the graph using BFS or DFS."""
+    def bfs(self, start, target=None):
+        #Search the graph using BFS or DFS.
         queue = []
         queue.append(start)
         visited = set(queue)
