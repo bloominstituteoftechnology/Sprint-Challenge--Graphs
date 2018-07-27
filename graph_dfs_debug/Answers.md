@@ -8,4 +8,7 @@ Describe the fixes/improvements you made to the Graph implementation here.
 
 -dfs search method
     -this method will search is using depth first search. I renamed the elements for naming convention to keep better track of stack
-    -implemented while loop to track current in stack is equal to target. Once we have visited target we can remove it from the stack continue with searcj 
+    -implemented while loop to track current in stack is equal to target. Once we have visited target we can remove it from the stack continue with search
+
+-modified find_components method
+    added if conditional statment for vertex is not visited, reach and assign it a set to make it unique. It then becomes a key value pair once it is assigned and then it moves to the next node
