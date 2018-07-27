@@ -19,9 +19,13 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception("Vertices not connecting in graph")
+        else:
+            #connect edges from start to end
+            self.vertices[start].add(end)
+            if bidirectional:
+                self.vertices[end].add(end)
 
     def dfs(self, start, target=None):
         x = []
