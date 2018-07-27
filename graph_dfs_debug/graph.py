@@ -16,12 +16,23 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        '''Cleaned up implementation, added comments'''
+                """ Add new vertex with optional edges """
+        if vertex in self.vertices:
+            raise Exception('Error: adding vertext that already exists')
+        if not set(edges).issubset(self.vertices):
+            raise Exception('Error: cant have edges connect that dont exist')
         self.vertices[vertex] = set(edges)
+        
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        """ Corrected start/end destination points, error checking"""
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception('These start or end points dont exist')
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
+        
 
     def dfs(self, start, target=None):
         x = []
