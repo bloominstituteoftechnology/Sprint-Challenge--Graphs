@@ -9,8 +9,8 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
 class Graph:
+    """Trying to make this Graph class work..."""
     def __init__(self):
         self.vertices = {}
         self.components = 0
@@ -26,15 +26,16 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        visited = set(stack)
+        visited = set()
 
         while stack:
             current = stack.pop()
             if current == target:
-                print("Target {}".format(target))
+                # print("Target {}".format(target))
                 return target
-                visited.add(current)
-            stack.extend(self.vertices[current]) - visited
+            visited.add(current)
+            stack.extend(self.vertices[current] - visited)
+            
 
         return visited
 
@@ -50,7 +51,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
