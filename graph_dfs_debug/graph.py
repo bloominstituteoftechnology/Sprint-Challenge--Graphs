@@ -16,6 +16,8 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex not in self.vertices:
+            self.vertices[vertex] = set(edges)
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
@@ -25,27 +27,43 @@ class Graph:
             #connect edges from start to end
             self.vertices[start].add(end)
             if bidirectional:
-                self.vertices[end].add(end)
+                self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        queue = [start]
+        found = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+        while queue:
+            current = queue.pop(0)
+            print('current', current)
+            if current == target:
+                return current
+            found.add(current)
+            # Add possible (univisited) vertices to queue
+            print('found', found)
+            queue.extend(self.vertices[current] - found)
+        return found
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        # x = set()
+        # x.append(start)
+        # for v in self.vertices[start]:
+        #     graph_rec(v)
+        # return x
+
+        stack = []
+        stack.append(start)
+        found = set(stack)
+
+        while stack:
+            vertex = stack.pop()
+            if vertex not in visited:
+                found.add(vertex)
+                if vertex == target:
+                    break
+                stack.extend(self.vertices[vertex])
+        return found
+
 
     def find_components(self):
         visited = set()
@@ -53,9 +71,27 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex in visited:
-                reachable = self.dfs(vertex)
-                for other_vertex in reachable:
-                    other_vertex.component = current_component
-                current_component += 1
-                visited.update(reachable)
+                print("found")
+                if vertex not in visited:
+                    reachable = self.dfs(vertex)
+                    print('reachable', reachable)
+                    for other_vertex in reachable:
+                        other_vertex.component = current_component
+                    current_component += 1
+                    visited.update(reachable)
         self.components = current_component
+
+graph = Graph()
+graph.add_vertex(0)
+graph.add_vertex(1)
+graph.add_vertex(2)
+graph.add_vertex(3)
+graph.add_edge(0, 1)
+graph.add_edge(0, 2)
+graph.add_edge(1, 2)
+graph.add_edge(2, 0)
+graph.add_edge(2, 3)
+print("\n")
+print("The Graph: ", graph.vertices)
+#graph.dfs(3)
+graph.find_components()
