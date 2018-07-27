@@ -23,10 +23,12 @@ def main(num_vertices=15, num_edges=8, draw_components=True, search=0):
         # TODO check if edge already exists
         graph.add_edge(vertices[0], vertices[1])
 
-    if search:
-        print('yes')
-        print(graph.find_vert(search))
-
+    # if search:
+    #     print('yes')
+    #     print(graph.find_vert(search))
+    test_vert = list(graph.vertices.keys())[search]
+    print('rec', graph.graph_rec(test_vert))
+    print('dfs', graph.dfs(test_vert))
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
 

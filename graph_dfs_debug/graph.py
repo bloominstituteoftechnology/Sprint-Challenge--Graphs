@@ -46,11 +46,16 @@ class Graph:
         return found
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
-        return x
+        visited = set()
+        visited.add(start)
+
+        def rec_helper(curr):
+            visited.add(curr)
+            for vertex in self.vertices[curr]:
+                if vertex not in visited:
+                    rec_helper(vertex)
+        rec_helper(start)
+        return visited
 
     def find_components(self):
         visited = set()
