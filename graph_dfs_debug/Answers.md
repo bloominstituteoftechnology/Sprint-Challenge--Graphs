@@ -9,4 +9,5 @@ Describe the fixes/improvements you made to the Graph implementation here.
 3.  In `graph_rec` you want your visited list outside of the function, otherwise, every time you call the it, you'll get an empty list.
     Again, don't forget to add nodes to the `visited` list and pass the list to the next function call.
     Also, `graph_rec` should be `self.graph_rec`.
-    
+
+4. `For` loop in `find_components` needs `visited.add(vertex)` to start with.
