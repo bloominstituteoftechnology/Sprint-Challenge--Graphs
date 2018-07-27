@@ -11,5 +11,18 @@ There are two parts to this sprint challenge:
 * [x] 6. I keep losing track of my variables, I guess I should name them better?
 
  * `graph_shortest_path`: For this part, you'll be extending the functionality of the breadth-first-search traversal algorithm we worked on so that it's able to find the shortest path between two input graph nodes. You'll find further instructions in the README in the directory.
+* [ ] 1. Perform a BFS from the _ending vert_ (host). This will set up all the
+      `parent` pointers across the graph.
+* [ ] 2. Output the route by following the parent pointers from the _starting_ vert
+      printing the values as you go.
 
+     ## Sample Run
+    * [ ] $ python routing.py HostA HostD
+          HostA --> HostB --> HostD
+    * [ ] $ python routing.py HostA HostH
+          HostA --> HostC --> HostF --> HostH
+    * [ ] $ python routing.py HostA HostA
+    HostA
+    * [ ] $ python routing.py HostE HostB
+          HostE --> HostF --> HostC --> HostA --> HostB
 Good luck and have fun! :smile:
