@@ -63,18 +63,20 @@ class Graph:
 
         queue = []
         start.color = "gray"
+        start.parent = None
         queue.append(start)
 
         while queue:
             u = queue[0]
             queue.pop(0)
-            u.color = "black"
 
             for v in self.vertices[u]:
                 if v.color == "white":
                     v.color = "gray"
                     v.parent = u     # <-- Keep a parent link
                     queue.append(v)
+            u.color = "black"
+
         
             
         
@@ -87,13 +89,17 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        stack = []
-        stack.append(start)
-        while stack:
-            current = stack.pop()
-            stack.append(current)
-            print(' --> '.join(stack))
+        curr_vert = start
+        output = ''
+        
+        while curr_vert is not None:
+            output += curr_vert.value
+            if curr_vert.parent:
+                output += ' --> '
+            curr_vert = curr_vert.parent
 
+        print(output)
+        
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)

@@ -43,3 +43,5 @@ Because visited is a set changed append to add in line 40 (along with var)
 * if we are to call recursion, we need to use 'self' on the func name otherwise the linter will read it as a var
 
 * line 44 changed x to visited
+
+* added docstrings to funcs in graph.py
