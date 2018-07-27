@@ -2,6 +2,7 @@
 
 """
 Demonstration of Graph and BokehGraph functionality.
+Debugging for Lambda Week 16 - Graphs
 """
 
 from random import sample
@@ -34,4 +35,9 @@ if __name__ == '__main__':
         DRAW_COMPONENTS = bool(int(argv[3]))
         main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
     else:
-        main()
+        print('**** ERROR ****')
+        print("NUM_VERTICES:", NUM_VERTICES)
+        print("NUM_EDGES:", NUM_EDGES)
+        print("DRAW_COMPONENTS:", DRAW_COMPONENTS)
+        print('Expected arguments: num_vertices num_edges draw_components')
+        print('Both numbers should be integers, draw_components should be 0/1')
