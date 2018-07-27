@@ -28,6 +28,12 @@ def dfs(self, start, target=None):
 
   return y
 
+# instead of break should return the vertex 
+#if z == target:
+#    break
+
+if z == target:
+    return z
 
 Errors in:
 

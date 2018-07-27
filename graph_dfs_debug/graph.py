@@ -40,8 +40,11 @@ class Graph:
             z = x.pop()
             #error - x is a list of vertices, should be the current vertex to compare with the target
             # if x == target:
+            # instead of break should return the vertex 
+            # if z == target:
+            #     break
             if z == target:
-                break
+                return z
             #error - we have to add to y the visited Vertex(z)
             y.add(z)
             #error - we add to the x queue all the vertices connected with this current vertex z excludind the ones already visited
