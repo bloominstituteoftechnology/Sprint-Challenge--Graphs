@@ -6,8 +6,13 @@ from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
-from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
-                          ColumnDataSource)
+from bokeh.models import (
+    GraphRenderer,
+    StaticLayoutProvider,
+    Circle,
+    LabelSet,
+    ColumnDataSource
+)
 
 
 class BokehGraph:
@@ -22,12 +27,12 @@ class BokehGraph:
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title, x_range=(0, width), y_range=(0,
+                           height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -46,7 +51,8 @@ class BokehGraph:
                                                     fill_color='color')
 
         # Add the edge [start, end] indices as instructions for drawing edges
-        graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
+        graph_renderer.edge_renderer.data_source.data = (
+            self._get_edge_indexes())
         self.randomize()  # Randomize vertex coordinates, and set as layout
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
