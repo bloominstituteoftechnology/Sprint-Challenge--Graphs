@@ -29,30 +29,33 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
+        for Vertex in self.vertices:
+            if Vertex.value == value: return Vertex 
+            else: next
 
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
+    def bfs(self, start, target = None):
+        
+        queue = [start]  # Queue or stack, depending on method
+        visited = set()
 
-        @param {*} value: The value of the Vertex to find
+        while queue:
+            current = queue.pop(0)
+            current.color = 'blue'
+            visited.add(current)
+            if current == target:
+                break
+            # Add possible (unvisited) vertices to queue
+            for Edge in current.edges:
+                if Edge.destination.color == 'blue':
+                    next
+                else:
+                    queue.append(Edge.destination)
 
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
+            for vert in current.edges:
+                vert.destination.parent = current
 
-    def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
 
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
+        return visited
 
     def output_route(self, start):
         """
@@ -61,12 +64,21 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current = start
+        path = []
+
+        while current:
+
+            path.append(current.value)
+            current = current.parent
+
+        print(path)
+
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        self.bfs(end, start)
         # print the route from the start Vertex
         self.output_route(start)
 
