@@ -128,4 +128,4 @@ if __name__ == '__main__':
         sys.exit()
 
     # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostCVert)
+    graph.route(hostAVert, hostBVert)
