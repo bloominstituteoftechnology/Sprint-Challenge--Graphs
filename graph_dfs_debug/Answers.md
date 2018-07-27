@@ -20,6 +20,7 @@
 - Added changes to graph_rec
     - added visited.add(start)
     - added self.graph_rec(v) recursion
+    - use add instead of append for set
     ```
     def graph_rec(self, start, target=None):
         visited = set()
