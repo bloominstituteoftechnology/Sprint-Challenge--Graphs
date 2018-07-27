@@ -1,5 +1,3 @@
-#/usr/bin/env python
-
 import sys
 
 
@@ -41,11 +39,9 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        for vertex in self.vertices:
-            if value == vertex.value:
-                return vertex
-            else:
-                return None
+        vert = [v for v in self.vertices if v.value == value]
+
+        return vert[0]
 
     def bfs(self, start):
         """
@@ -54,18 +50,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         queue = [start]
-        visited = set()
+        start.color = "grey"
 
         while queue:
-            u = queue[0]
-            for edge in u.edges:
-                print("q: ", queue)
+            current = queue.pop(0)
+            for edge in current.edges:
                 if edge.destination.color == 'white':
                     edge.destination.color = 'grey'
-                    edge.destination.parent = u
-                    queue.append[edge.destination]
-                    visited.add[edge.destination]
-            queue.pop(0)
+                    edge.destination.parent = current
+                    queue.append(edge.destination)
+            current.color = 'black'
 
     def output_route(self, start):
         """
@@ -74,13 +68,17 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        current = start
+        vertex = start
         output = ''
 
-        while current.parent is not None:
-            output += current
-            current = current.parent
-            print(output)
+        while vertex:
+            output += vertex.value
+            if vertex.parent:
+                output += ' --> '
+
+            vertex = vertex.parent
+
+        print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
