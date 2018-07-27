@@ -2,7 +2,6 @@
 General drawing methods for graphs using Bokeh.
 """
 
-from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
