@@ -29,47 +29,16 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
-
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
-
-        @param {*} value: The value of the Vertex to find
-
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
-        # !!!! IMPLEMENT ME
 
         vert = [v for v in self.vertices if v.value == value]
 
         return vert[0]
 
     def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
-
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        """Search the graph using BFS or DFS."""
+       
         start.color = 'gray'
         queue = [start]
 
-        #init func already doing this
-        """
-        for vertex in self.vertices:
-            vertex.color = 'white'
-            vertex.parent = None
-        """
-        # refactor
-        """
-        start.color = 'gray'
-        queue.append(start)
-        """
         while queue:
             current = queue.pop(0)
 
@@ -83,13 +52,7 @@ class Graph:
             current.color = 'black'
 
     def output_route(self, start):
-        """
-        Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
-
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
-        # !!!! IMPLEMENT ME
+        
         vertex = start
         output = ''
 
@@ -165,4 +128,4 @@ if __name__ == '__main__':
         sys.exit()
 
     # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+    graph.route(hostAVert, hostCVert)

@@ -32,7 +32,8 @@ class Graph:
             visiting = stack.pop()
             if visiting == target:
                 print("Target {}.".format(target))
-            stack.extend(self.vertices[visiting])-visited
+            visited.add(visiting)
+            stack.extend(self.vertices[visiting] - visited)
 
         return visited
 
@@ -48,7 +49,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
