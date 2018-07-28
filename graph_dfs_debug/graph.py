@@ -40,10 +40,11 @@ class Graph:
         return visited
 
     def graph_rec(self, start, target=None):
-        visited = set()
+        visited = visited or set()
         visited.add(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
+        for vertex in self.vertices[start]:
+            if vertex not in visited:
+                self.graph_rec(vertex, visited=vertex)
         return visited
 
     def find_components(self):
