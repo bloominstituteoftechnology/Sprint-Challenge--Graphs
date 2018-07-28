@@ -48,6 +48,12 @@ class Graph:
                 return found
 
     def bfs(self, start):
+        """
+        Breadth-First search from an input starting Vertex
+        Should maintain parent references back from neighbors to their parent.
+
+        @param {Vertex} start: The starting vertex
+        """
         queue = [start]
         start.color = 'gray'
         start.parent = None
@@ -62,28 +68,6 @@ class Graph:
                     queue.append(neighbor)
             current.color = 'black'
         
-        """
-        Above: working solution code
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
-
-        @param {Vertex} start: The starting vertex
-        Below: my implmentation
-        """
-        # visited = [False] * (len(self.vertices))
-        # q = []
-        # q.append(start)
-        # visited[start] = True
-        # start.color = 'gray'
-        # start.parent = None
-
-        # while q:
-        #     current = q.pop(0)
-        #     for next_up in self.vertices[start]:
-        #         if visited[next_up] == False:
-        #             q.append(next_up)
-        #             visited[next_up]=True
-
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent

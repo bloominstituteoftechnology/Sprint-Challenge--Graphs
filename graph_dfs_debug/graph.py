@@ -45,6 +45,11 @@ class Graph:
         
         return visited
 
+    def dfs_recursive(self, vertex):
+        visited = [False] * (len(self.vertices))
+        print("Initially, None Have Been Checked: ", visited)
+        self._dfs_helper(vertex, visited)
+
     def _dfs_helper(self, root, visited):
         visited[root] = True
         print("Updated When Checked: ", visited)
@@ -52,11 +57,6 @@ class Graph:
             print("Has It Checked This Node?", adjacents)
             if visited[adjacents] == False:
                 self._dfs_helper(adjacents, visited)
-
-    def dfs_recursive(self, vertex):
-        visited = [False] * (len(self.vertices))
-        print("Initially, None Have Been Checked: ", visited)
-        self._dfs_helper(vertex, visited)
 
     def find_components(self):
         visited = set()
@@ -89,6 +89,24 @@ class Graph:
         print("Shortest Path: ", shortest_path)
         return shortest_path
 
+    def bfs(self, start):
+        visited = [False] * (len(self.vertices))
+        print("Initially, all Nodes are set to False: ", visited)
+        q = []
+        q.append(start)
+        visited[start] = True
+        print("Updated when Visited: ", visited)
+
+        while q:
+            print("Queue to be Visited: ", q)
+            current = q.pop(0)
+            print("Current Position: ", current)
+            print("Updated when visited: ", visited)
+            for next_up in self.vertices[start]:
+                if visited[next_up] == False:
+                    q.append(next_up)
+                    visited[next_up]=True
+
 """
 TESTS
 """
@@ -109,7 +127,6 @@ graph.add_edge(2, 3)
 graph.add_edge(2, 4)
 graph.add_edge(3, 5)
 
-
 print("\n")
 print("Test Graph Data: ", graph.vertices)
 print("\n")
@@ -124,5 +141,9 @@ print("\n")
 print("Recursive DFS Test: ")
 print("(Starting at 3)")
 graph.dfs_recursive(3)
+print("\n")
+print("Breadth-First Search Test: ")
+print("(Starting at 0)")
+graph.bfs(0)
 print("\n")
 print("Depth-First Search on Randomly Generated Bokeh Graph: ")
