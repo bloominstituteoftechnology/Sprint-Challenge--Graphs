@@ -39,3 +39,5 @@ Describe the fixes/improvements you made to the Graph implementation here.
 8. After doing all of the above, I ran graph_demo.py, and all seems to be working correctly. I am choosing to leave the print statements in my dfs function because I find the printout of each step of a traversal very useful info.
 
 9. After realizing graph_rec was an alternative recursive search method, I cleaned up the variable names, and added a helper function to execute the recursive part.
+
+10. I gave the search methods print statements and kept in the Test data from 5. to give extremely detailed data on the various traversal functions in the Graph class. The randomly generated Bokeh graph includes a printout for the Depth-First Search. All of this can be done by executing ```python3 graph_demo.py``` in the pipenv shell.

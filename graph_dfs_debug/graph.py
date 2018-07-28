@@ -7,7 +7,7 @@ class Vertex:
         self.component = component
 
     def __repr__(self):
-        return 'Vertex: ' + self.label
+        return self.label
 
 class Graph:
     def __init__(self):
@@ -35,26 +35,28 @@ class Graph:
 
         while q:
             current = q.pop(index)
-            print("current: ", current)
+            print("Current Vertex: ", current)
             if current == target:
                 break
             visited.add(current)
-            print("visited: ", visited)
+            print("Visited Vertices: ", visited)
             q.extend(self.vertices[current] - visited)
-            print("queue: ", q)
+            print("Connected Vertices in Queue: ", q)
         
         return visited
 
-    def _recurs_helper(self, start, visited):
-        visited[start] = True
+    def _dfs_helper(self, root, visited):
+        visited[root] = True
+        print("Updated When Checked: ", visited)
+        for adjacents in self.vertices[root]:
+            print("Has It Checked This Node?", adjacents)
+            if visited[adjacents] == False:
+                self._dfs_helper(adjacents, visited)
 
-        for other_verts in self.vertices[start]:
-            if visited[other_verts] = False
-                self._recurs_helper(other_verts, visited)
-
-    def graph_rec(self, start):
+    def dfs_recursive(self, vertex):
         visited = [False] * (len(self.vertices))
-        self._recurs_helper(start, visted)
+        print("Initially, None Have Been Checked: ", visited)
+        self._dfs_helper(vertex, visited)
 
     def find_components(self):
         visited = set()
@@ -68,3 +70,59 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+    def shortest_route(self, start, end, path=[]):
+        path = path + [start]
+        print("Path: ", path)
+        if start == end:
+            return path
+        if not self.vertices[start]:
+            return None
+        shortest_path = None
+        for vertex in self.vertices[start]:
+            print("Current Position: ", vertex)
+            if vertex not in path:
+                new_path = self.shortest_route(vertex, end, path)
+                if new_path:
+                    if not shortest_path or len(new_path) < len(shortest_path):
+                        shortest_path = new_path
+        print("Shortest Path: ", shortest_path)
+        return shortest_path
+
+"""
+TESTS
+"""
+graph = Graph()
+
+graph.add_vertex(0)
+graph.add_vertex(1)
+graph.add_vertex(2)
+graph.add_vertex(3)
+graph.add_vertex(4)
+graph.add_vertex(5)
+
+graph.add_edge(0, 1)
+graph.add_edge(0, 2)
+graph.add_edge(1, 2)
+graph.add_edge(2, 0)
+graph.add_edge(2, 3)
+graph.add_edge(2, 4)
+graph.add_edge(3, 5)
+
+
+print("\n")
+print("Test Graph Data: ", graph.vertices)
+print("\n")
+print("Shortest Route Test: ")
+print("(Between 0 and 5)")
+graph.shortest_route(0, 5)
+print("\n")
+print("Depth-First Search Test: ")
+print("(Starting at 3)")
+graph.dfs(3)
+print("\n")
+print("Recursive DFS Test: ")
+print("(Starting at 3)")
+graph.dfs_recursive(3)
+print("\n")
+print("Depth-First Search on Randomly Generated Bokeh Graph: ")

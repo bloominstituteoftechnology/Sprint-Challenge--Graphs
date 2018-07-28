@@ -48,45 +48,59 @@ class Graph:
                 return found
 
     def bfs(self, start):
+        queue = [start]
+        start.color = 'gray'
+        start.parent = None
+
+        while queue:
+            current = queue.pop(0)
+            for edge in current.edges:
+                neighbor = edge.destination
+                if neighbor.color == 'white':
+                    neighbor.color = 'gray'
+                    neighbor.parent = current
+                    queue.append(neighbor)
+            current.color = 'black'
+        
         """
+        Above: working solution code
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
+        Below: my implmentation
         """
-        visited = [False] * (len(self.vertices))
-        q = []
-        q.append(start)
-        visited[start] = True
+        # visited = [False] * (len(self.vertices))
+        # q = []
+        # q.append(start)
+        # visited[start] = True
+        # start.color = 'gray'
+        # start.parent = None
 
-        while q:
-            parent_ref = q[1]
-            start = q.pop(0)
-            for next_up in self.vertices[start]:
-                if visited[next_up] == False:
-                    q.append(next_up)
-                    visited[next_up]=True
+        # while q:
+        #     current = q.pop(0)
+        #     for next_up in self.vertices[start]:
+        #         if visited[next_up] == False:
+        #             q.append(next_up)
+        #             visited[next_up]=True
 
-    def output_route(self, start, end, path=[]):
+    def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        path = path + [start]
-        if start == end:
-            return path:
-        if not self.vertices[start]:
-            return None
-        shortest_path = None
-        for vertex in self.vertices[start]:
-            if vertex not in path:
-                new_path = output_route(vertex, end, path)
-                if new_path:
-                    if not shortest_path or len(new_path) < len(shortest_path):
-                        shortest_path = new_path
-        return shortest_path
+        current = start
+        output = ''
+
+        while current is not None:
+            output += current.value
+            if current.parent:
+                output += ' --> '
+            current = current.parent
+
+        print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
