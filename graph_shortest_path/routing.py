@@ -50,7 +50,7 @@ class Graph:
             if vertex.value == value:
                 return vertex
 
-            return None
+        return None
             
             
             
@@ -65,14 +65,16 @@ class Graph:
         # !!!! IMPLEMENT ME
         queue = [start]
         visited = set()
-        parent_node = start
-        while queue:
+        start.parent = None
+
+        while len(queue) > 0:
             current = queue.pop(0)
             visited.add(current)
             for edge in current.edges:
-                if edge.destination not in visited:
-                    edge.destination.parent_node = current
-                    queue.append(edge.destination)
+                target = edge.destination
+                if target not in visited:
+                    queue.append(target)
+                    target.parent = current
                 
 
     def output_route(self, start):
@@ -83,13 +85,13 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        settled = set()
+        route = []
         current = start
-
-        while current.parent:
-            settled.add(current)
+        
+        while current is not None:
+            route.append(current.value)
             current = current.parent
-            print(current.parent)
+        print('--->'.join(map(str, route)))
 
     def route(self, start, end):
         # BFS to build the parent reference tree

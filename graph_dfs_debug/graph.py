@@ -28,14 +28,15 @@ class Graph:
         #Changed variable names to convey to another dev what you were intending to do here. X and Y were vague and easy to misconstrue
         stack = []
         stack.append(start)
-        visited = set(stack)
+        visited = set()
 
-        while stack: #
-            stacked = stacked.pop()
+        while stack: 
+            stacked = stack.pop()
             if stacked == target:
-                print("Target {} has been found".format(target)) #it didn't make sense to break here so I put a print statement
-            stack.extend(self.vertices[stacked])-visited
-
+                break
+            visited.add(stacked)
+            stack.extend(self.vertices[stacked]-visited)
+            visited.update(self.vertices[stacked])
         return visited #This ensures that the stack will actually work properly as you search
 
     def dfs_recursive(self, start, target=None): #changed to method name to better inform the next dev what is trying to be accomplished in this line
@@ -48,7 +49,7 @@ class Graph:
     def find_components(self):
         visited = set()
         current_component = 0
-
+        print(self.vertices)
         for vertex in self.vertices:
             if vertex in visited:
                 reachable = self.dfs(vertex)
