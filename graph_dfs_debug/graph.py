@@ -19,34 +19,37 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        #lines 22 & 25 changed the start vertices to point to the end and the end to point to the start
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        #Changed variable names to convey to another dev what you were intending to do here. X and Y were vague and easy to misconstrue
+        stack = []
+        stack.append(start)
+        visited = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack: 
+            stacked = stack.pop()
+            if stacked == target:
                 break
-            x.extend(self.vertices[z])
+            visited.add(stacked)
+            stack.extend(self.vertices[stacked]-visited)
+            visited.update(self.vertices[stacked])
+        return visited #This ensures that the stack will actually work properly as you search
 
-        return x
-
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+    def dfs_recursive(self, start, target=None): #changed to method name to better inform the next dev what is trying to be accomplished in this line
+        visited = set()
+        visited.add(start) #because visited is a set you want to add not append
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+            self.dfs_recursive(v) #In order to call the recursive method we have to use self otherwise lint will yell at you
+        return visited
 
     def find_components(self):
         visited = set()
         current_component = 0
-
+        print(self.vertices)
         for vertex in self.vertices:
             if vertex in visited:
                 reachable = self.dfs(vertex)
