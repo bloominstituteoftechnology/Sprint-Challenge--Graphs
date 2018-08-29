@@ -3,7 +3,7 @@ General drawing methods for graphs using Bokeh.
 """
 
 from math import ceil, floor, sqrt
-from random import choice, random
+from random import choice, random, uniform
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
@@ -20,8 +20,8 @@ class BokehGraph:
         self.graph = graph
         self.width = width
         self.height = height
-        self.pos = {}  # dict to map vertices to x, y positions
-        # Set up plot, the canvas/space to draw on
+        self.circle_size = circle_size
+        self.pos = {}  
         self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
@@ -94,10 +94,21 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
+        num_cells = ceil(len(self.vertex_list)**(1/2))
+        # create bounding box size (allow for 0.5 padding on edges of graph)
+        padding = (self.circle_size/5, self.circle_size/5)
+        cube_size = (self.width-sum(padding))/num_cells
+        x_pos, y_pos = padding
+
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+            self.pos[vertex.label] = (uniform(x_pos, x_pos+cube_size),
+                                      uniform(y_pos, y_pos+cube_size))
+            if x_pos + cube_size > (self.width - cube_size):
+                x_pos = padding[0]
+                y_pos += cube_size
+            else:
+                x_pos += cube_size
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
@@ -107,3 +118,4 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
+

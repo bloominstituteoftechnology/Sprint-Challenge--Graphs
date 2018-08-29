@@ -23,6 +23,10 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
         # TODO check if edge already exists
         graph.add_edge(vertices[0], vertices[1])
 
+    sample_vertex = list(graph.vertices.keys())[0]
+    print(graph.dfs(sample_vertex))
+    print(graph.graph_rec(sample_vertex))
+
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
 
@@ -34,4 +38,4 @@ if __name__ == '__main__':
         DRAW_COMPONENTS = bool(int(argv[3]))
         main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
     else:
-        main()
+    main()
