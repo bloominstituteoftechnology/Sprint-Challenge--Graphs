@@ -58,4 +58,4 @@ class Graph:
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)
-self.components = current_component
+        self.components = current_component
