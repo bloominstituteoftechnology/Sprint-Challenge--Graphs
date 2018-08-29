@@ -1,27 +1,15 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
-from draw import BokehGraph
-from sys import argv
-
-
 class Vertex:
-    def __init__(self, label, component=-1, **pos):
+    def __init__(self, label, component=-1):
         self.label = str(label)
         self.component = component
-        self.pos = pos
-        self.edges = set()
 
     def __repr__(self):
-        return "Vertex: " + self.label + self.edges
-
-    def __str__(self):
-        if not self.pos:
-            pos = dict(x=None, y=None)
+        return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
-
-
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -38,32 +26,36 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        y = set(x)
+        explored = set()
 
         while stack:
-            z = stack.pop()
-            if stack == target:
-                break
-            stack.extend(self.vertices[z])
+            vertex = stack.pop()
+            if vertex not in explored:
+                explored.add(vertex)
+                if vertex == target:
+                    break
+                stack.extend(self.vertices[vertex])
+        return explored
 
-        return stack
-
-    def graph_rec(self, start, target=None):
-        checked = set()
-        checked.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return checked
+    def graph_rec(self, start, target=None, explored=None):
+        explored = explored or set()
+        explored.add(start)
+        if start == target:
+            return explored
+        for vertex in self.vertices[start]:
+            if vertex not in explored:
+                self.graph_rec(vertex, target=target, explored=explored)
+        return explored
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)
-        self.components = current_component
+self.components = current_component

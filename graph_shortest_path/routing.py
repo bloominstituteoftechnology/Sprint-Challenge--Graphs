@@ -32,41 +32,45 @@ class Graph:
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
-
         Used in the `main` function to look up the vertices passed in
         from the command line.
-
         @param {*} value: The value of the Vertex to find
-
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-       for vertex in self.vertices:
-           if vertex.value == value:
-               return vertex
-            else:
-                return None
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
-
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+        explored = set()
+        start.parent = None
+        while queue:
+            current_vertex = queue.pop(0)
+            explored.add(current_vertex)
+            for edge in current_vertex.edges:
+                vertex = edge.destination
+                if vertex not in explored:
+                    queue.append(vertex)
+                    vertex.parent = current_vertex  
 
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
-
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current_vertex = start
+        while current_vertex != None:
+            print(current_vertex.value)
+            current_vertex = current_vertex.parent
 
     def route(self, start, end):
         # BFS to build the parent reference tree

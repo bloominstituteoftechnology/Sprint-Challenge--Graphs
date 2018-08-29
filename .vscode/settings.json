@@ -1,3 +1,4 @@
 {
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "python.pythonPath": "C:\\Users\\jacob\\.virtualenvs\\Sprint-Challenge--Python-1-cC5XWh7I\\Scripts\\python.exe"
 }
