@@ -87,7 +87,10 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        #print route from start to end i think...
+        print(start.value, end)  
+        # and then go back to parent references??
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
