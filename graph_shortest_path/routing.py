@@ -43,19 +43,41 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for vertex in self.vertices:
-            if vertex.value == value
+            if vertex.value == value:
                 return vertex
         return None
 
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
+        Should maintain parent references back from neighbors to their parent. 
 
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            #add parent value
+            vertex.parent = None
+     
+        start.color = 'grey'
+        #starting point
+        queue = [start]
+        while queue:
+            #need to have empty queue
+            current = queue.pop(0) 
+
+            for vertex in current.neighbor:
+                if vertex.color == 'white':
+                    vertex.color = 'grey'
+                    #keep parent link
+                    neighbor.parent = current
+                    #append the queue so neighbor can be referenced 
+                    queue.append(neighbor)
+            #dequeue
+            current.color = 'black' 
+        
+
 
     def output_route(self, start):
         """
