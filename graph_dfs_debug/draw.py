@@ -1,7 +1,7 @@
 """
 General drawing methods for graphs using Bokeh.
 """
-
+import cv2
 from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
@@ -20,6 +20,11 @@ class BokehGraph:
         self.graph = graph
         self.width = width
         self.height = height
+
+        self.reasonable = ( ( (self.width)**2 + (self.height)**2 ) ** (1/2.0) ) / ((len(self.graph.vertices)+1) * 2) ** (1/1.7)
+
+        self.circle_size = ( ( (self.width)**2 + (self.height)**2 ) ** (1/2.0) ) / ((len(self.graph.vertices)+1) * 2) ** (1/4)
+        self.font_size = str(int(self.circle_size/2.5)) + 'pt'
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
         self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
@@ -27,7 +32,6 @@ class BokehGraph:
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -38,16 +42,16 @@ class BokehGraph:
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
-        colors = (self._get_connected_component_colors() if draw_components
+        colors = (self._image_colors() if draw_components
                   else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
-        graph_renderer.node_renderer.glyph = Circle(size=circle_size,
+        graph_renderer.node_renderer.glyph = Circle(size=self.circle_size,
                                                     fill_color='color')
 
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
-        self.randomize()  # Randomize vertex coordinates, and set as layout
+        # self.randomize()  # Randomize vertex coordinates, and set as layout
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
         # Attach the prepared renderer to the plot so it can be shown
@@ -82,10 +86,10 @@ class BokehGraph:
             label_data['y'].append(y_pos)
             label_data['names'].append(vertex_label)
         label_source = ColumnDataSource(label_data)
-        labels = LabelSet(x='x', y='y', text='names', level='glyph',
-                          text_align='center', text_baseline='middle',
+        labels = LabelSet(x='x', y='y', text='names', level='glyph', text_color='white',
+                          text_font_size=self.font_size, text_align='center', text_baseline='middle',
                           source=label_source, render_mode='canvas')
-        self.plot.add_layout(labels)
+        # self.plot.add_layout(labels)
 
     def show(self, output_path='./graph.html'):
         """Render the graph to a file on disk and open with default browser."""
@@ -96,8 +100,25 @@ class BokehGraph:
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+
+            while True:
+                randx = 1 + random() * (self.width - 2)
+                randy = 1 + random() * (self.height - 2)
+                touchy = False
+
+                for vert in self.pos:
+                    x1 = self.pos[vert][0]
+                    y1 = self.pos[vert][1]
+                    distance_to_vert = ( ( (randx - x1)**2 ) + ( (randy - y1)**2 ) ) ** (1/2.0)
+                    if distance_to_vert < self.reasonable : # or ( randx < self.circle_size or randx > self.width-self.circle_size ) or ( randy < self.circle_size or randy > self.height+self.circle_size )
+                        # print ('touchy')
+                        touchy = True
+                        break
+
+                if not touchy:
+                    break
+
+            self.pos[vertex.label] = (randx , randy)
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
@@ -107,3 +128,21 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
+
+    def _image_colors(self):
+        self.randomize()
+        im = cv2.imread('monalisa.png')
+
+        def convert_pos_to_color(position):
+            bgr = im[int(position[0])][int(position[1])]
+            rgb = (bgr[2], bgr[1], bgr[0])
+            hex_color = '#%02x%02x%02x' % rgb
+            return hex_color
+
+        image_colors = self.pos.copy()
+
+        for vertex in image_colors:
+            image_colors[vertex] = convert_pos_to_color(image_colors[vertex])
+
+        colors = list(image_colors.values())
+        return colors
