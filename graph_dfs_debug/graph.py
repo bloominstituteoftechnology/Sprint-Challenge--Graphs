@@ -10,10 +10,10 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-v = Vertex("me")
-print(v.component)
-print(v.label)
-print(v)
+# v = Vertex("me")
+# print(v.component)
+# print(v.label)
+# print(v)
 
     #Trying to make this Graph class work..."""
 class Graph:
@@ -22,13 +22,28 @@ class Graph:
         self.vertices = {}
         self.components = 0
 
+    def get_vertex_label(self, vertex):
+        pass
+
     def add_vertex(self, vertex, edges=()):
         self.vertices[Vertex(vertex)] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(Vertex(end))
+        # graph is undirected by default
+        start_class = None
+        end_class = None
+        for key in self.vertices.keys():
+            if key.label == start:
+                start_class = key
         if bidirectional:
-            self.vertices[start].add(Vertex(end))
+            self.add_vertex(end)
+            for key in self.vertices.keys():
+                if key.label == end:
+                    end_class = key
+            self.vertices[start_class].add(end_class)
+            self.vertices[end_class].add(start_class)
+        else:
+            self.vertices[start_class].add(Vertex(end))
 
     def dfs(self, start, target=None):
         x = []
@@ -42,6 +57,7 @@ class Graph:
             x.extend(self.vertices[z])
 
         return x
+        
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -67,8 +83,12 @@ class Graph:
 
 my_graph = Graph()
 my_graph.add_vertex('Smurf')
-# my_graph.add_edge('Smurf', 'Gizmo')
-
+my_graph.add_edge('Smurf', 'Gizmo')
 print(my_graph.vertices)
-for key in my_graph.vertices.keys():
-    print(type(key))
+print(my_graph.dfs('Smurf'))
+# for key in my_graph.vertices.keys():
+#     print(key.label)
+
+# print(my_graph.vertices)
+# for key in my_graph.vertices.keys():
+#     print(type(key))
