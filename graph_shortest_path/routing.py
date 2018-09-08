@@ -1,9 +1,11 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
-
+from collections import deque
 
 # Edge class
+
+
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
@@ -41,18 +43,39 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            if v.value == value:
+                return v
+        return None
 
-    def bfs(self, start):
+    def bfs(self, vertex):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        nodes = []
+        colors = {}
+        my_queue = deque()
+
+        my_queue.append(vertex)
+        vertex.color = 'gray'
+
+        while len(my_queue) > 0:
+            current = my_queue[0]
+            edges = current.edges
+
+            for e in edges:
+                if e.destination.color == 'white':
+                    my_queue.append(e.destination)
+                    e.destination.color = 'gray'
+                    e.destination.parent = current
+
+            vertex.color = 'black'
+            nodes.append(my_queue.popleft())
+
+        return nodes
 
     def output_route(self, start):
         """
@@ -61,14 +84,19 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        res = []
+        res.append(start.value)
+        current = start
+        while current.parent:
+            res.append(current.parent.value)
+            current = current.parent
+        return res
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        nodes = self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        return self.output_route(start)
 
 
 # Helper function to add bidirectional edges
@@ -126,4 +154,4 @@ if __name__ == '__main__':
         sys.exit()
 
     # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+    print(graph.route(hostAVert, hostBVert))
