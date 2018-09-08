@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+from collections import deque
 
 
 # Edge class
@@ -42,7 +43,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +56,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = deque()
+        visited = set()
+        queue.append(start)
+
+        while len(queue) != 0:
+            vertex = queue.popleft()
+            visited.add(vertex)
+            for edge in vertex.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = vertex
+                    queue.append(edge.destination)
 
     def output_route(self, start):
         """
@@ -62,14 +76,19 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        route = [start]
+        while current.parent:
+            route.append(current.parent)
+            current = current.parent
+        for vertex in route:
+            print(vertex.value)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
         self.output_route(start)
-
 
 # Helper function to add bidirectional edges
 def add_edge(start, end):
