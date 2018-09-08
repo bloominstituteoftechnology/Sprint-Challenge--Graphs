@@ -46,17 +46,20 @@ class Graph:
             self.vertices[start_class].add(Vertex(end))
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        start_class = None
+        for key in self.vertices.keys():
+            if key.label == start:
+                start_class = key
+        
+        x = [start_class]
 
         while x:
             z = x.pop()
-            if x == target:
+            if z.label == target:
                 break
             x.extend(self.vertices[z])
 
-        return x
+        return z
         
 
     def graph_rec(self, start, target=None):
