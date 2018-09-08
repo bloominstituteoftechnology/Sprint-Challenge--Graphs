@@ -2,6 +2,7 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
+    # so why is component default value -1?
     def __init__(self, label, component=-1):
         self.label = str(label)
         self.component = component
@@ -9,19 +10,25 @@ class Vertex:
     def __repr__(self):
         return 'Vertex: ' + self.label
 
-    """Trying to make this Graph class work..."""
+v = Vertex("me")
+print(v.component)
+print(v.label)
+print(v)
+
+    #Trying to make this Graph class work..."""
 class Graph:
     def __init__(self):
+        # so again graph is just a dictionary of sets
         self.vertices = {}
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+        self.vertices[Vertex(vertex)] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(Vertex(end))
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[start].add(Vertex(end))
 
     def dfs(self, start, target=None):
         x = []
@@ -55,3 +62,13 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+
+
+my_graph = Graph()
+my_graph.add_vertex('Smurf')
+# my_graph.add_edge('Smurf', 'Gizmo')
+
+print(my_graph.vertices)
+for key in my_graph.vertices.keys():
+    print(type(key))
