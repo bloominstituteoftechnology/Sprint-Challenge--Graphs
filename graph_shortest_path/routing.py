@@ -1,7 +1,7 @@
 #/usr/bin/env python
 
 import sys
-
+import queue
 
 # Edge class
 class Edge:
@@ -46,7 +46,7 @@ class Graph:
         # loop through all vertices
 
         for vertex in self.vertices:
-            
+
             # finds value
 
             if vertex.value == value:
@@ -64,8 +64,37 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+
+        visited = []
+        q = queue.Queue()
+
+        q.put(start)
+
+        # keeps track of a parent
+
+        start.parent = None
+
+        while not q.empty():
+            
+            current = q.get()
+            visited.add(current)
+
+            for edge in current.edges:
+                path = edge.destination
+
+            # we put in the value inside of visited/ route for the weight. Now we need the parent
+            # So the parent is the current value? Or the one before?
+            # if parent is being set to the current loocation we just put in visited then it would be:
+
+                if path not in visited:
+                    # visisted.append(path)
+                    q.append(path)
+                    path.parent = # ???
+
+
+
+
+        return visited
 
     def output_route(self, start):
         """
