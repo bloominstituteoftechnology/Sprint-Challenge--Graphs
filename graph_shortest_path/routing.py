@@ -13,7 +13,8 @@ class Edge:
 # Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
-        self.value = value
+
+        self.value = value # vertex value here 
         self.edges = []
         # Color of this vertex
         # Used to mark vertices for the traversal algorithm (BFS or DFS)
@@ -41,8 +42,20 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+
+        # loop through all vertices
+
+        for vertex in self.vertices:
+            
+            # finds value
+
+            if vertex.value == value:
+
+                return vertex
+
+            #return none if value isn't found
+
+            return None
 
     def bfs(self, start):
         """
