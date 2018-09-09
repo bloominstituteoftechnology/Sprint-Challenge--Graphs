@@ -14,7 +14,7 @@ class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=100, height=100,
                  show_axis=False, show_grid=False, circle_size=35,
-                 draw_components=False):
+                 draw_components=True):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
         self.graph = graph
