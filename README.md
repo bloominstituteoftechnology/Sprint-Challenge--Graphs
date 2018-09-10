@@ -1,4 +1,5 @@
 # Sprint Challenge: Graphs
+# word to the trizzle
 
 There are two parts to this sprint challenge:
 
