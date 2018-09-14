@@ -10,7 +10,7 @@ from draw import BokehGraph
 from graph import Graph, Vertex
 
 
-def main(num_vertices=8, num_edges=8, draw_components=True):
+def main(num_vertices=8, num_edges=0, draw_components=False):
     """Build and show random graph."""
     graph = Graph()
     # Add appropriate number of vertices
@@ -23,6 +23,8 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
         # TODO check if edge already exists
         graph.add_edge(vertices[0], vertices[1])
 
+    if num_edges > 0:
+        draw_components = True
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
 
