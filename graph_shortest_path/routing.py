@@ -58,7 +58,7 @@ class Graph:
         gray_color = "#999"
 
         for vertex in self.vertices:
-            self.colors[v] = white_color
+            vertex.color = white_color
 
         start.color = gray_color
         start.parent = None
@@ -76,9 +76,6 @@ class Graph:
                     dest.parent = current
                     queue.append(dest)
 
-
-
-
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -86,8 +83,11 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        vertex = start
+
+        while vertex:
+            print(vertex.value)
+            vertex = vertex.parent
 
     def route(self, start, end):
         # BFS to build the parent reference tree
