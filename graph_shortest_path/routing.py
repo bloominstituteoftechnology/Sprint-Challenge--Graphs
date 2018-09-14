@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,17 +55,36 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+
+        while queue:
+            vertex = queue.pop(0)
+            vertex.color = 'grey'
+
+            for edge in vertex.edges:
+                neighbor = edge.destination
+                if neighbor.color == 'white':
+                    neighbor.color == 'grey'
+                    neighbor.parent = vertex
+                    queue.append(neighbor)
 
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
-
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        vertex = start
+        fastest_route = ''
+        # Adds the vertex value to the fastest_route variable and sets
+        # the next vertex to the vertex's parent. Repeats until no more parents
+        while vertex:
+            fastest_route += vertex.value
+            if vertex.parent:
+                fastest_route += ' --> '
+            vertex = vertex.parent
+        print(fastest_route)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
