@@ -16,6 +16,10 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex in self.vertices:
+            raise Exception('Vertex already exists!')
+        if not set(edges).issubset(self.vertices):
+            raise Exception("Edges can't exist there!")
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
