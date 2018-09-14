@@ -12,6 +12,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
+
     def __init__(self, graph, title='Graph', width=100, height=100,
                  show_axis=False, show_grid=False, circle_size=35,
                  draw_components=False):
@@ -22,12 +23,12 @@ class BokehGraph:
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title, x_range=(
+            0, width), y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -47,6 +48,7 @@ class BokehGraph:
 
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
+
         self.randomize()  # Randomize vertex coordinates, and set as layout
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
@@ -95,13 +97,14 @@ class BokehGraph:
     def randomize(self):
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
+            # t make bounds and random draws less hacky
             self.pos[vertex.label] = (1 + random() * (self.width - 2),
                                       1 + random() * (self.height - 2))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
         self.graph.find_components()
+        print('checking _get_connected_component_colors')
         component_colors = self._get_random_colors(self.graph.components)
         vertex_colors = []
         for vertex in self.vertex_list:
