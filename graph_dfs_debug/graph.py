@@ -33,12 +33,11 @@ class Graph:
                 break
             x.extend((i for i in self.vertices[z] if i not in y))
             y.add(z)
-            print(z)
         return y
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.set(start)
         for v in self.vertices[start]:
             graph_rec(v)
         return x
