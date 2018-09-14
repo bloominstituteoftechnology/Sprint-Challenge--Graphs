@@ -7,8 +7,8 @@ class Vertex:
         self.component = component
         self.edges = set()
 
-    def __repr__(self):
-        return 'Vertex: ' + self.label
+    #def __repr__(self):
+        #return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
 class Graph:
@@ -24,19 +24,21 @@ class Graph:
         if bidirectional:
             self.vertices[end].edges.add(start)
 
-    def dfs(self, start, target=None):
-        print(start)
+    def dfs(self, start, target=None, visited=[]):
+        #print(start.label)
         x = []
         x.append(start)
         #y = set(x)
         visited = []
         while len(x) > 0:
             z = x.pop()
-            if self.vertices[start].label == target:
+            print(z.label)
+            visited.append(z)
+            if self.vertices[z].label == target:
                 print(True)
                 break
-            for child in self.vertices[start]:
-                visited.append(z)
+            for child in self.vertices[z].edges:
+                #print(child.label)
                 if child not in visited:
                     x.append(child)
             #x.extend(self.vertices[z])
