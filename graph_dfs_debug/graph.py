@@ -32,26 +32,23 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        queue = []
-        queue.append(start)
-        visited = set(queue)
-
-        while queue:
-            curr = queue.pop(-1)
-            if curr == target:
+        stack = []
+        stack.append(start)
+        visited = set()
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            visited.add(curr)
-            queue.extend(self.vertices[curr] - visited)
-            visited.update(self.vertices[curr])
-
+            stack.extend((self.vertices[current]))
+            visited.add(current)
         return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+        queue = set()
+        queue.set(start)
         for v in self.vertices[start]:
             graph_rec(v)
-        return x
+        return queue
 
     def find_components(self):
         visited = set()
