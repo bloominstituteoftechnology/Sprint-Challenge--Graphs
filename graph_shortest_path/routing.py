@@ -48,7 +48,7 @@ class Graph:
 
         return None
 
-    def bfs(self, start, target= None):
+    def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -57,15 +57,19 @@ class Graph:
         """
         queue = [start]
         start.color = 'blue'
+        start.parent = None
 
         while len(queue) > 0:
-            vert = queue.pop(0)
-            vert.color = 'grey'
-            for edge in vert.edges:
-                if edge.destination == 'white':
-                    edge.destination.parent = vert
-                    edge.destination.color = 'blue'
-                    queue.append(edge.destination)
+            #we get our first value and remove it
+            current = queue.pop(0)
+            for edge in current.edges:
+                neighbor = edge.destination
+ # colors set as white(unvisited), blue(being visited), red(we have visited)
+                if neighbor.color == 'white':
+                    neighbor.color ='blue'
+                    neighbor.parent = current
+                    queue.append(neighbor)
+            current.color = 'red'
 
             
     
@@ -79,14 +83,20 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        stack = []
+    
         current = start
-
-        while current is not None:
-            stack.append(current.value)
+        # will define this variable(connect) as an empty string to then connect vertices " --> " in my while loop
+        connect = ''
+        #if we have a vertex
+        while current != None:
+            connect += current.value
+            #we will connect only if next vertex is the parent (concatenate)
+            if current.parent:
+                connect += ' --> '
+            #we now want the current vertex to be the parent
             current = current.parent
 
-        return stack
+        print(connect)
 
     def route(self, start, end):
         # BFS to build the parent reference tree

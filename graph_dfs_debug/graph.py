@@ -1,6 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -10,6 +12,8 @@ class Vertex:
         return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
+
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -22,6 +26,7 @@ class Graph:
             raise Exception('Error: cannot have edge to nonexistent vertices')
         self.vertices[vertex] = set(edges)
 
+# our vertices were not connecting (see answers.md) we connect start to end , end to start to see edges
     def add_edge(self, start, end, bidirectional=True):
         if start not in self.vertices or end not in self.vertices:
             raise Exception('Connecting Vertices not in graph!')
@@ -29,25 +34,28 @@ class Graph:
         if bidirectional:
             self.vertices[end].add(start)
 
+# make this more readable for the team.  changed x = stack, y = visited (vertex), z = current (vertex)
     def dfs(self, start, target=None):
-        x = [start]
-        x.append(start)
-        y = set(x)
+        stack = []
+        stack.append(start)
+        visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend(self.vertices[z] - y)
+            stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
+# we make our recursive graph function more readable as well. we will change x to be our visited (vertices) to be able to connect your visited vertices.
 
     def graph_rec(self, start, target=None):
         visited = set()
+        #changed append to add as append doesnt work in this instance.
         visited.add(start)
         for vertex in self.vertices[start]:
             if vertex not in visited:
-                visited.update(self.graph_rec(vertex, target = target))
+                visited.update(self.graph_rec(vertex, target=target))
 
         return visited
 
@@ -56,6 +64,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
+            # we needed to add "not" in if statement below to make sure that our find components function works
             if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
