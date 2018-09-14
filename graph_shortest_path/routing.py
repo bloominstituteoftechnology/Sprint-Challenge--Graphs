@@ -41,8 +41,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +54,27 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        white_color = "#fff"
+        gray_color = "#999"
+
+        for vertex in self.vertices:
+            vertex.color = white_color
+
+        start.color = gray_color
+        start.parent = None
+        queue = [start]
+        visited = set()
+
+        while queue:
+            current = queue.pop(0)
+            visited.add(current)
+
+            for edge in current.edges:
+                dest = edge.destination
+                if dest not in visited and dest not in queue:
+                    dest.color = gray_color
+                    dest.parent = current
+                    queue.append(dest)
 
     def output_route(self, start):
         """
@@ -61,8 +83,11 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        vertex = start
+
+        while vertex:
+            print(vertex.value)
+            vertex = vertex.parent
 
     def route(self, start, end):
         # BFS to build the parent reference tree
