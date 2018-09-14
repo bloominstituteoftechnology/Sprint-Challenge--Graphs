@@ -19,9 +19,9 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
@@ -55,3 +55,14 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+g = Graph()
+
+print(g.vertices)
+g.add_vertex('1')
+g.add_vertex('2')
+g.add_vertex('3')
+print(g.vertices)
+g.add_edge('1', '3')
+g.add_edge('1', '2')
+print(g.vertices)
