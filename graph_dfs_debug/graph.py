@@ -35,7 +35,7 @@ class Graph:
                 return current
             stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
