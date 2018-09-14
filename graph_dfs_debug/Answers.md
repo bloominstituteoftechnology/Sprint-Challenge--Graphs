@@ -13,4 +13,4 @@ while x:
     y.add(z)  
 return y  
 ```
-* 
+* In `find_component` method, change to `if vertex not in visited`
