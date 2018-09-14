@@ -49,7 +49,7 @@ class Graph:
         # added loop to check for child nodes from start node
         for child_node in self.vertices[start]:
           if child_node not in visited:  # check each child node to see if we have looked at it yet. if not, run recursion
-            if self.dfs(child_node, target, visited):  # run recursion on child
+            if self.graph_rec(child_node, target, visited):  # run recursion on child
               return True  # if found return true
         return False
 
