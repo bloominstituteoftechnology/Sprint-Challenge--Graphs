@@ -72,7 +72,9 @@ class BokehGraph:
                     start_indices.append(vertex.label)
                     end_indices.append(destination.label)
                 checked.add(vertex)
-
+        print("edges:")
+        print(start_indices)
+        print(end_indices)
         return dict(start=start_indices, end=end_indices)
 
     def _setup_labels(self):
