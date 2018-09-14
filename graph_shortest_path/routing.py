@@ -29,6 +29,11 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
+
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
@@ -42,7 +47,7 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+       
 
     def bfs(self, start):
         """
