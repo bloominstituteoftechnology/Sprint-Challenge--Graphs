@@ -13,3 +13,4 @@ forever, even though my `draw.py` and `graph_demo.py` are totally just the same
 as from class.
 **To fix the dfs method I first removed "stack" from the set() module because it should be empty upon intialization (because no nodes have been visited yet). I added a line `visited.add(current)` in order to add the popped vertex into the visited list, and modified the next line to `stack.extend(self.vertices[current] - visited)` in order to update the stack. Also, rather than returning the stack we need to return a list of the verts and the order in which they were visited.
 **I also modified the find_components method to visit vertices that have NOT yet been visited.
+**I changed the graph_rec method to use the add operation rather than append because we're using it with a set(). Also needed to be calling self in the recursive for loop.
