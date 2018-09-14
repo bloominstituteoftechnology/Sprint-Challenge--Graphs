@@ -58,12 +58,23 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, target, visited=[], path=[]):
+        # update visited and path with the current vert
+        visited.append(start)
+        path.append(start)
+
+        # check to see if we've hit the target
+        if start == target:
+            return path
+
+        for child_vert in self.vertices[start]:
+            # only check verts not in visited
+            if child_vert not in visited:
+                new_path = self.graph_rec(child_vert, target, visited, path)
+                #  when the recursion unrolls, see if we have a new_path
+                if new_path:
+                    return new_path
+        return None
 
     def find_components(self):
         visited = set()
@@ -103,4 +114,5 @@ graph.add_edge(3, 6)
 graph.add_edge(7, 9)
 
 print(graph.vertices)
-print(graph.dfs(2, 8))
+print(graph.dfs(2, 6))
+print(graph.graph_rec(2, 3))

@@ -23,6 +23,17 @@ dfs
 - you have to remove the visited verts from this set `stack.extend(self.vertices[current_vert])`
 - instead of returning `stack` at the end, should return `visited`
 
+graph_rec
+
+- this looks like you're attempting a dfs via recursion
+- meaningful variable names really help you (and me!) keep things straight when coding
+- when doing recursion, have to keep track of our lists by calling them with each recursive iteration
+- because we are passing in visited, we don't need `visted = set()`, rather let's append
+- we also have to keep track of `path`
+- check to see if we've hit the target
+- let's change `v` to `child_vert`
+- when calling `graph_rec` need to include `self`, that is, `self.graph_rec`
+
 find_components
 
 - we should be checking for vertices NOT in visited
