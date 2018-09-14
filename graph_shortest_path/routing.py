@@ -2,6 +2,20 @@
 
 import sys
 
+# Added queue class from earlier this week
+
+# class Queue():
+#     def __init__(self):
+#         self.queue = []
+#     def enqueue(self, value):
+#         self.queue.append(value)
+#     def dequeue(self):
+#         if self.size() > 0:
+#             return self.queue.pop(0)
+#         else:
+#             return None
+#     def size(self):
+#         return len(self.queue)
 
 # Edge class
 class Edge:
@@ -42,7 +56,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +69,25 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices: # Changed all v to vertex, changed of to in
+            vertex.color = 'white' # I think this is already the case but for good measure
+            vertex.parent = None # Null to none
+
+        # queue = Queue() # Create a queue
+        start.color = 'gray' # Changed all colors to strings
+        queue = [start] # setting up the queue
+
+        while queue: # Changed syntax to see if queue exists
+            current_node = queue[0] # Changed all u to current_node
+
+            for edge in current_node.edges: # Changed of to in
+                if edge.destination.color == 'white': # edge.destination equals next vert
+                    edge.destination.color = 'gray'
+                    edge.destination.parent = current_node # Keep a parent link
+                    queue.enqueue(edge.destination)
+    
+            queue.dequeue()
+            current_node.color = 'black'
 
     def output_route(self, start):
         """
@@ -68,7 +103,7 @@ class Graph:
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        print(self.output_route(start)) # added print statement
 
 
 # Helper function to add bidirectional edges
