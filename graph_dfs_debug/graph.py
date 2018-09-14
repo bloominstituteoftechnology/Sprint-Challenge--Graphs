@@ -49,12 +49,21 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    # def graph_rec(self, start, target=None):
+    #     x = set()
+    #     x.append(start)
+    #     for v in self.vertices[start]:
+    #         graph_rec(v)
+    #     return x
+
+        def dfs_rec(self, start, target=None, visited=None):
+            if visited is None:
+                visited = []
+        visited.append(start)
+        for child_vert in self.vertices[start]:
+            if child_vert not in visited:
+                self.dfs_rec(child_vert, target, visited)
+        return visited
 
     def find_components(self):
         visited = set()
