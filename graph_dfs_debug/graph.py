@@ -36,12 +36,16 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_recursive(self, start, visited=None, target=None):
+        if visited == None:
+            visited = []
+        visited.append(start)
+        if start == target:
+            return True
+        for child in self.vertices[start]:
+            if child not in visited:
+                self.dfs_recursive(child, visited)
+        return visited
 
     def find_components(self):
         visited = set()
@@ -49,7 +53,7 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex not in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.dfs_recursive(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
