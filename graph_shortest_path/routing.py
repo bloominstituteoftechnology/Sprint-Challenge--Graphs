@@ -80,7 +80,7 @@ class Graph:
             visited.append(current.parent)
             current = current.parent
         for node in visited:
-            print(node)
+            print(node.value)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
