@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+import queue
 
 
 # Edge class
@@ -53,18 +54,24 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        ##Not working properly
-        nodes = []
-        my_queue = deque()
-        my_queue.append(start)
-        while len(my_queue) > 0:
-            current = my_queue[0]
-            edges = current.edges
-            for edge in edges:
-                    my_queue.append(edge.destination)
-                    edge.destination.parent = current
-            nodes.append(my_queue.popleft())
-        return nodes
+        
+        for vert in self.vertices:
+            vert.color = 'white'
+            vert.parent = None
+        start.color = 'gray'
+        queue = []
+        queue.append(start)
+        while queue:
+            u = queue[0]
+            for vert in u.edges:
+                if vert.destination.color == 'white':
+                    vert.destination.color = 'gray'
+                    vert.destination.parent = u
+                    queue.append(vert.destination)
+            
+            queue.pop(0)
+            u.color = 'black'
+    
 
     def output_route(self, start):
         """

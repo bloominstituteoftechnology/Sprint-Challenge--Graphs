@@ -14,4 +14,4 @@ Describe the fixes/improvements you made to the Graph implementation here.
     I also made it so any vertex that was visited as properly added into the visited set.
 
 2. Graph_demo.py
-    a. Added checks tgo see if edge already existed
+    a. Added checks to see if edge already existed
