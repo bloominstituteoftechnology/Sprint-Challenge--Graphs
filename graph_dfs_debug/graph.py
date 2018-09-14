@@ -16,7 +16,7 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set()
+        self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(end)
@@ -37,11 +37,11 @@ class Graph:
         return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        current_vert = set()
+        current_vert.append(start)
+        for vertex in self.vertices[start]:
+            graph_rec(vertex)
+        return current_vert
 
     def find_components(self):
         visited = set()
@@ -56,17 +56,21 @@ class Graph:
                 visited.update(reachable)
         self.components = current_component
 
-    def dft(self, node, visited=[]):
+    '''def dft(self, node, visited=[]):
         print(node)
         visited.append(node)
         for child_node in self.vertices[node]:
             if child_node not in visited:
                 self.dft(child_node, visited)
-        return visited
+        return visited'''
 
     def dfs_rec(self, start, target=None, visited=[]):
         visited.append(start)
-        for child in self.vertices[start]: #.edges
+        if start.label == target:
+            print(True)
+            return True
+        for child in self.vertices[start]: 
             if child not in visited:
-                self.dft_rec(child, target, visited)
-        return visited
+                self.dfs_rec(child, target, visited)
+        print(False)
+        return False
