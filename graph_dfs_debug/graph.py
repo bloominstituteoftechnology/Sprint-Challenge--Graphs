@@ -2,9 +2,11 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
+    def __init__(self, label, component=-1, color='white'):
         self.label = str(label)
         self.component = component
+        self.color = color
+        self.edges = set()
 
     def __repr__(self):
         return 'Vertex: ' + self.label
@@ -16,12 +18,20 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+        if vertex not in self.vertices:
+            self.vertices[vertex] = Vertex(vertex)
+        else:
+            IndexError('This vertex already exists')
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+        if start in self.vertices and end in self.vertices:
+            if bidirectional:
+                self.vertices[start].edges.add(end)
+                self.vertices[end].edges.add(start)
+            else:
+                self.vertices[start].edges.add(end)
+        else:
+            IndexError('Both ends of an edge must be in the list of vertices')
 
     def dfs(self, start, target=None):
         x = []
