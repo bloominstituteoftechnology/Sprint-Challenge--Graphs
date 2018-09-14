@@ -8,6 +8,7 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
+from bokeh.palettes import Spectral8                          
 
 
 class BokehGraph:
@@ -40,7 +41,7 @@ class BokehGraph:
             [vertex.label for vertex in self.vertex_list], 'index')
         colors = (self._get_connected_component_colors() if draw_components
                   else self._get_random_colors())
-        graph_renderer.node_renderer.data_source.add(colors, 'color')
+        graph_renderer.node_renderer.data_source.add(colors , 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
                                                     fill_color='color')

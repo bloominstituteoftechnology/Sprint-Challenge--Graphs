@@ -18,24 +18,40 @@ class Graph:
     def add_vertex(self, vertex, edges=()):
         self.vertices[vertex] = set(edges)
 
-    def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+    # def add_edge(self, start, end, bidirectional=True):
+    #     self.vertices[start].add(start)
+    #     if bidirectional:
+    #         self.vertices[end].add(end)
+    def add_edge(self, v1, v2):
+        if v1 in self.vertices and v2 in self.vertices: 
+            self.vertices[v1].add(v2)
+            self.vertices[v2].add(v1)
+        else:
+            raise IndexError("That vertex does not exist!")
+    # def dfs(self, start, target=None):
+    #     x = []
+    #     x.append(start)
+    #     y = set(x)
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    #     while x:
+    #         z = x.pop()
+    #         if x == target:
+    #             break
+    #         x.extend(self.vertices[z])
 
-        while x:
-            z = x.pop()
-            if x == target:
+    #     return x
+    def dfs(self, start_vert, target_value=None):
+        visited = []
+        visited.append(start_vert)
+        y = set(visited)
+
+        while visited:
+            z = visited.pop()
+            if visited == target_value:
                 break
-            x.extend(self.vertices[z])
+            visited.extend(self.vertices[z])
 
-        return x
-
+        return visited
     def graph_rec(self, start, target=None):
         x = set()
         x.append(start)
