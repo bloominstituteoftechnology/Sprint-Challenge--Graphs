@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +55,27 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        def BFS(graph, startVert):
+            queue = []
+            for v in graph.vertices:
+                v.color = "white"
+                v.parent = None  # <-- Add parent initialization
+
+            startVert.color = "gray"
+            queue.insert(startVert)
+
+            while len(queue) > 0:
+                u = queue.pop(0)
+
+                for v in u.neighbors:
+                    if v.color == "white":
+                        v.color = "gray"
+                        v.parent = u  # // <-- Keep a parent link
+                        queue.insert(v)
+
+                u.color = "black"
+
+        BFS(self.vertices, start)
 
     def output_route(self, start):
         """
