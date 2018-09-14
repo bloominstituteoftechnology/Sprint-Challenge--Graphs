@@ -1,6 +1,6 @@
 # Describe the fixes/improvements you made to the Graph implementation here.
 
-To show the edges, graph add_edge method was written in correctly (each vertex was connected to its self), the solution is, for each connection it must connect the start vertex with the end vertex, and it you are trying to make bidirectional connection, it will also need to conenct the end with the start vertex.
+To show the edges, graph add_edge method was written in correctly (each vertex was connected to its self), the solution is, for each connection the start vertex should be connected to the end vertex, and it you are trying to make bidirectional connection, it will also need to create a conenction from the end to the start vertex.
 
 For the second issue, the find_components method was not building up any component, to fix that problem, on line 60, I have changed the if statemment to check the current vertex, if it has not been visited. then, it can build up the connected components
 

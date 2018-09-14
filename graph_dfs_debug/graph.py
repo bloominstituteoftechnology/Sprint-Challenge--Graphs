@@ -31,23 +31,15 @@ class Graph:
         stack = []
         visited = []
         stack.append(start)
-        visited.append(start)
-
         while len(stack) > 0:
             current_node = stack.pop(0)
             if current_node == target:
                 return visited
-            print('current_node list', current_node)
             if current_node not in visited:
                 visited.append(current_node)
             for next_verts in self.vertices[current_node]:
-                print('next_verts list', next_verts)
                 if next_verts not in visited:
                     stack.append(next_verts)
-
-        print('start args', start)
-        print('target args', target)
-        print('\n')
         return visited
 
     def graph_rec(self, start, target=None, visited=set()):
