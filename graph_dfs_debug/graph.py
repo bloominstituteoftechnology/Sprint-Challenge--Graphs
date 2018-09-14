@@ -37,19 +37,21 @@ class Graph:
         return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        visited = set()
+        visited.add(start)
+        for vertex in self.vertices[start]:
+            if vertex not in visited:
+                self.graph_rec(vertex)
+        return visited
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
-                reachable = self.dfs(vertex)
+            if vertex not in visited:
+                #reachable = self.dfs(vertex)
+                reachable = self.graph_rec(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
