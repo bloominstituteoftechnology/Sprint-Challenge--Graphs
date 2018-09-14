@@ -3,7 +3,7 @@ Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
     def __init__(self, label, component=-1):
-        self.label = str(label)
+        self.label = label
         self.component = component
         self.edges = set()
 
@@ -24,7 +24,7 @@ class Graph:
         if bidirectional:
             self.vertices[end].edges.add(start)
 
-    def dfs(self, start, target=None, visited=[]):
+    def dfs(self, start, target=None):
         #print(start.label)
         x = []
         x.append(start)
@@ -34,7 +34,8 @@ class Graph:
             z = x.pop()
             print(z.label)
             visited.append(z)
-            if self.vertices[z].label == target:
+            print(target)
+            if str(self.vertices[z].label) == target:
                 print(True)
                 break
             for child in self.vertices[z].edges:
@@ -58,9 +59,17 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.dft(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+    def dft(self, node, visited=[]):
+        print(node)
+        visited.append(node)
+        for child_node in self.vertices[node].edges:
+            if child_node not in visited:
+                self.dft(child_node, visited)
+        return visited
