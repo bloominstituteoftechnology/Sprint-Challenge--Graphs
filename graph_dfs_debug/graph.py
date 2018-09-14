@@ -27,9 +27,9 @@ class Graph:
             raise Exception("Start not in graph!")
         if end not in self.vertices:
             raise Exception("End not in graph!")
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         queue = []
