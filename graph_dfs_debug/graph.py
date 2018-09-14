@@ -57,7 +57,7 @@ class Graph:
         if visited is None:
             visited = []
         visited.append(start)
-        for child in self.vertices[start].edges:
+        for child in self.vertices[start]:
             if child not in visited:
                 self.dfs_recursive(child, target, visited)
         return visited
