@@ -28,13 +28,19 @@ class Graph:
         x.append(start)
         y = set(x)
 
-        while x:
+        while len(x) > 0:
             z = x.pop()
-            if x == target:
+            if z == target:
                 break
-            x.extend(self.vertices[z])
+            # x.extend(self.vertices[z])
+            for e in self.vertices[z]:
+                x.append(e)
+                y.add(e)
+            x.pop()
 
-        return x
+        print(x)
+        print(y)
+        return y 
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -55,3 +61,12 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+g = Graph()
+g.add_vertex('0', ('1','3'))
+g.add_vertex('1', ('0'))
+g.add_vertex('2')
+g.add_vertex('3', ('0'))
+# print(g.vertices)
+# print(g.components)
+g.dfs('0')
