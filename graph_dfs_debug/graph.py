@@ -28,19 +28,30 @@ class Graph:
             self.vertices[v2].add(v1)
         else:
             raise IndexError("That vertex does not exist!")
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    # def dfs(self, start, target=None):
+    #     x = []
+    #     x.append(start)
+    #     y = set(x)
 
-        while x:
-            z = x.pop()
-            if x == target:
+    #     while x:
+    #         z = x.pop()
+    #         if x == target:
+    #             break
+    #         x.extend(self.vertices[z])
+
+    #     return x
+    def dfs(self, start_vert, target_value=None):
+        visited = []
+        visited.append(start_vert)
+        y = set(visited)
+
+        while visited:
+            z = visited.pop()
+            if visited == target_value:
                 break
-            x.extend(self.vertices[z])
+            visited.extend(self.vertices[z])
 
-        return x
-
+        return visited
     def graph_rec(self, start, target=None):
         x = set()
         x.append(start)

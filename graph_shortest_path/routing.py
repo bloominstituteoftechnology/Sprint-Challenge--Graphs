@@ -41,10 +41,35 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
+        
+            
+
         # !!!! IMPLEMENT ME
         pass
 
     def bfs(self, start):
+      for v in graph.vertices:
+        v.color = white
+        v.parent = None   
+        # // <-- Add parent initialization
+
+      startVert.color = gray
+      queue.enqueue(startVert)
+
+      while not queue.isEmpty():
+        u = queue[0]
+
+        for v in u.neighbors:
+          if v.color == white:
+            v.color = gray
+            v.parent = u     
+            # // <-- Keep a parent link
+            queue.enqueue(v)
+    
+        queue.dequeue()
+        u.color = black
+    
+      
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
