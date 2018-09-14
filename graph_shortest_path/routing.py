@@ -68,7 +68,7 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         queue = Queue()
-        queue.enqueue([start])
+        queue.enqueue(start)
         start.color = "black" #visited .append(start)
         while queue.size() > 0:
             vertex = queue.dequeue()
