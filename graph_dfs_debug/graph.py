@@ -44,19 +44,19 @@ class Graph:
         stack = []
         stack.append(start)
         # keep track of visited verts in case there's a loop
-        visted = []
-        # y = set(stack) # doesn't seem to be doing anything
+        visited = set([start])
 
+        # keep going as long as there are verts in the stack
         while stack:
-            vert = stack.pop()
-            # only check if we haven't already
-            if vert not in visited:
-                visited.append(vert)
-                if stack == target:
-                    return True
-            stack.extend(self.vertices[vert])
+            current_vert = stack.pop()
+            if current_vert == target:
+                break
+            # remove the visted verts (appends the set subtraction)
+            stack.extend(self.vertices[current_vert] - visited)
+            # update visted (set union: visited U vertices[vert])
+            visited.update(self.vertices[current_vert])
 
-        return stack
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -102,3 +102,4 @@ graph.add_edge(3, 6)
 graph.add_edge(7, 9)
 
 print(graph.vertices)
+print(graph.dfs(2, 8))
