@@ -15,8 +15,8 @@ class Graph:
         self.vertices = {}
         self.components = 0
 
-    def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+    def add_vertex(self, vertex): #removed edges from method parameters
+        self.vertices[vertex] = set() #initialized set without edges
 
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(start)
@@ -55,3 +55,9 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+test = Graph()
+test.add_vertex(4)
+test.add_vertex(8)
+
+print(test.vertices)
