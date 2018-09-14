@@ -14,4 +14,4 @@ I've made the following changes to your files:
 
 6. I have changed values like `x` and `y` into more descriptive names so you do not lose track of variables.
 
-7. I have added a generic recursive approach to dfs. One thing to note is that the recursive function has to receive `visited` as an argument so that it can keep track of what has been visited as it loops onto itself.
+7. I have added a generic recursive approach to dfs. One thing to note is that the recursive function has to receive `visited` as a parameter so that it can keep track of what has been visited as it loops onto itself.
