@@ -23,22 +23,28 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
+        if start not in self.vertices:
+            raise Exception("Start not in graph!")
+        if end not in self.vertices:
+            raise Exception("End not in graph!")
         self.vertices[start].add(start)
         if bidirectional:
             self.vertices[end].add(end)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        queue = []
+        queue.append(start)
+        visited = set(queue)
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while queue:
+            curr = queue.pop(-1)
+            if curr == target:
                 break
-            x.extend(self.vertices[z])
+            visited.add(curr)
+            queue.extend(self.vertices[curr] - visited)
+            visited.update(self.vertices[curr])
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
