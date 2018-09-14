@@ -72,7 +72,6 @@ class Graph:
                 # if we haven't explored this edge's destination
                 if edge.destination not in visited:
                     edge.destination.parent = vertex
-                    edge.parent = vertex
                     queue.append(edge.destination)
 
     def output_route(self, start):
