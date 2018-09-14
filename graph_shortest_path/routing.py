@@ -29,6 +29,11 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
+
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
@@ -42,9 +47,20 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+       
 
     def bfs(self, start):
+        queue = []
+        queue.append(start)
+        visited = []
+        while len(queue) > 0:
+            vertex = queue.pop()
+            visited.append(vertex)
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination not in visited:
+                    destination.parent = vertex
+                    queue.append(destination)
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
