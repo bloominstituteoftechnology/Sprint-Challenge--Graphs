@@ -100,8 +100,6 @@ class BokehGraph:
         grid_height = self.height / rows
         grid_width = self.width / cols
         for i, vertex in enumerate(self.vertex_list):
-            # Randomly place each vertex in a different grid cell
-            # TODO: improve, this spreads things out some but still collides
             col = (i % rows) + 1
             row = (i + 1) // cols
             x_pos = 10 + (col + random()) * grid_width - 15
