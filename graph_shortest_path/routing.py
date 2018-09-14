@@ -2,6 +2,20 @@
 
 import sys
 
+# Added queue class from earlier this week
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 # Edge class
 class Edge:
@@ -55,7 +69,25 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in graph.vertices: # Changed all v to vertex, changed of to in
+            vertex.color = 'white' # I think this is already the case but for good measure
+            vertex.parent = None # Null to none
+
+        queue = Queue() # Create a queue
+        start.color = 'gray' # Changed all colors to strings
+        queue.enqueue(start)
+
+        while queue: # Changed syntax to see if queue exists
+            current_node = queue[0] # Changed all u to current_node
+
+            for vertex in current_node.neighbors: # Changed of to in
+                if vertex.color == 'white':
+                    vertex.color = 'gray'
+                    vertex.parent = current_node # Keep a parent link
+                    queue.enqueue(vertex)
+    
+            queue.dequeue()
+            current_node.color = 'black'
 
     def output_route(self, start):
         """
