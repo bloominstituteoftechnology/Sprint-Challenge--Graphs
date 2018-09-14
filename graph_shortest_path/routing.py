@@ -56,7 +56,44 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        """
+        pseudocode
+        BFS(graph, startVert):
+        for v of graph.vertices:
+        v.color = white
+        v.parent = null   // <-- Add parent initialization
+
+        startVert.color = gray
+        queue.enqueue(startVert)
+
+        while !queue.isEmpty():
+        u = queue[0]
+
+        for v of u.neighbors:
+        if v.color == white:
+        v.color = gray
+        v.parent = u     // <-- Keep a parent link
+        queue.enqueue(v)
+    
+        queue.dequeue()
+        u.color = black 
+        """
+
+        
+        queue = [start]
+        start.color = 'gray'
+        start.parent = None
+
+        while queue:
+            current = queue.pop(0)
+            for edge in current.edges:
+                neighbor = edge.destination
+                if neighbor.color == 'white':
+                    neighbor.color = 'gray'
+                    neighbor.parent = current
+                    queue.append(neighbor)
+            current.color = 'black'
+
 
     def output_route(self, start):
         """
@@ -66,7 +103,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output = ''
+        while current is not None:
+            output += current.value
+            output += ' --> '
+            current = current.parent
+
+        print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
