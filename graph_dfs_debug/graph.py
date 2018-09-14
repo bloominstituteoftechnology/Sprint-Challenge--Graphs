@@ -2,12 +2,17 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
-        self.label = str(label)
+    def __init__(self, vertex_id, component=-1, value=None):
+        self.id = int(vertex_id)
+        self.label = str(vertex_id)
         self.component = component
+        self.value = value
+        self.edges = set() 
+        if self.value is None:
+            self.value = self.id
 
     def __repr__(self):
-        return 'Vertex: ' + self.label
+        return self.label
 
     """Trying to make this Graph class work..."""
     
@@ -16,22 +21,36 @@ class Graph:
         self.vertices = {}
         self.components = 0
 
-    def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+    def add_vertex(self, vertex_id):
+        self.vertices[vertex_id] = Vertex(vertex_id)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(end)
+        self.vertices[start].edges.add(end)
         if bidirectional:
-            self.vertices[end].add(start)
+            self.vertices[end].edges.add(start)
 
-    def dfs(self, node_id, search_node, visited=[]):
-        if node_id == search_node:
-            return True
-        visited.append(node_id)
-        for child_node in self.vertices[node_id]:
-            if child_node not in visited:
-                dfs(self, child_node, search_node, visited)
-        return False
+    def dfs(self, initial_vert, target_value, visited=[], path=[]):
+        visited.append(initial_vert)
+        path = path + [initial_vert]
+        if self.vertices[initial_vert].value == target_value:
+            return path
+        for child_vert in self.vertices[initial_vert].edges:
+            if child_vert not in visited:
+                new_path = self.dfs(child_vert, target_value, visited, path)
+                if new_path:
+                    return new_path
+        return None
+
+    # def dfs(self, node_id, search_node, visited=[]):
+    #     if node_id == search_node:
+    #         return True
+    #     visited.append(node_id)
+
+    #     for child_node in self.vertices[node_id].edges:
+    #         if child_node not in visited:
+    #             new_path = self.dfs_path(child_vert, target)
+    #             self.dfs(self, child_node, search_node, visited)
+    #     return False
 
     def graph_rec(self, start, target=None):
         x = set()

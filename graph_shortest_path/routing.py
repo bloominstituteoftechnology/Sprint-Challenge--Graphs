@@ -2,6 +2,19 @@
 
 import sys
 
+# Queue class
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 # Edge class
 class Edge:
@@ -42,7 +55,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vert in self.vertices:
+            if vert.value == value:
+                return value
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +68,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue(initial_vertex_id)
+        visited = []
+        while q.size() > 0:
+            vert = q.dequeue()
+            if vert not in visited:
+                print(self.vertices[vert].value)
+                visited.append(vert)
+                for next_vert in self.vertices[vert].edges:
+                    q.enqueue(next_vert)
 
     def output_route(self, start):
         """
@@ -62,7 +87,7 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -83,14 +108,14 @@ if __name__ == '__main__':
         sys.exit()
 
     graph = Graph()
-    vertA = Vertex('HostA')
-    vertB = Vertex('HostB')
-    vertC = Vertex('HostC')
-    vertD = Vertex('HostD')
-    vertE = Vertex('HostE')
-    vertF = Vertex('HostF')
-    vertG = Vertex('HostG')
-    vertH = Vertex('HostH')
+    vertA = Vertex('A')
+    vertB = Vertex('B')
+    vertC = Vertex('C')
+    vertD = Vertex('D')
+    vertE = Vertex('E')
+    vertF = Vertex('F')
+    vertG = Vertex('G')
+    vertH = Vertex('H')
 
     add_edge(vertA, vertB)
     add_edge(vertB, vertD)
@@ -127,3 +152,4 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+

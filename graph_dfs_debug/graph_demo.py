@@ -14,8 +14,8 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
     """Build and show random graph."""
     graph = Graph()
     # Add appropriate number of vertices
-    for num in range(num_vertices):
-        graph.add_vertex(Vertex(label=str(num)))
+    for vertex_id in range(num_vertices):
+        graph.add_vertex(vertex_id)
 
     # Add random edges between vertices
     for _ in range(num_edges):
@@ -23,9 +23,11 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
         # TODO check if edge already exists
         graph.add_edge(vertices[0], vertices[1])
 
+    # print(list(graph.vertices.keys())[0])
+    # pass
     graph.dfs(1, 5)
-    bokeh_graph = BokehGraph(graph, draw_components=draw_components)
-    bokeh_graph.show()
+    # bokeh_graph = BokehGraph(graph, draw_components=draw_components)
+    # bokeh_graph.show()
 
 
 if __name__ == '__main__':
