@@ -29,30 +29,25 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
-
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
-
-        @param {*} value: The value of the Vertex to find
-
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
 
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
+        # Should maintain parent references back from neighbors to their parent.
+
+        queue = []
+        queue.append(start)
+        visited = []
+        while len(queue) > 0:
+            vertex = queue.pop(0)
+            if vertex not in visited:
+                visited.append(vertex)
+                for next_vert in self.vertices[self.vertices.index(vertex)].edges:
+                    queue.append(next_vert.destination)
+        return visited
 
     def output_route(self, start):
         """
