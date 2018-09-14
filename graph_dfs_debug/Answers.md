@@ -1,8 +1,10 @@
 # Fixes
 
-I've made the following changes to `draw.py` and `graph.py`:
+I've made the following changes to your files:
 
 1. The connections were not showing up because the edges were pointing to themselves, so I've changed them to point to each other.
+
+6. I have changed values like `x` and `y` into more descriptive names so you do not lose track of variables.
 
 <!-- 
 2. All the vertexes are the same color.  They're supposed to be different colors
