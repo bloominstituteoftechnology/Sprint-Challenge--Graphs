@@ -19,29 +19,51 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
+
+    # def dfs(self, start, target=None):
+    #     x = []
+    #     x.append(start)
+    #     y = set(x)
+
+    #     while x:
+    #         z = x.pop()
+    #         if x == target:
+    #             break
+    #         x.extend(self.vertices[z])
+
+    #     return x
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = [start]
+        visited = set([start])
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend(self.vertices[z])
+            visited.add(current)
+            stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    # def graph_rec(self, start, target=None):
+    #     x = set()
+    #     x.append(start)
+    #     for v in self.vertices[start]:
+    #         graph_rec(v)
+    #     return x
+
+        def dfs_rec(self, start, target=None, visited=None):
+            if visited is None:
+                visited = []
+        visited.append(start)
+        for child_vert in self.vertices[start]:
+            if child_vert not in visited:
+                self.dfs_rec(child_vert, target, visited)
+        return visited
 
     def find_components(self):
         visited = set()
