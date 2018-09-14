@@ -2,6 +2,18 @@
 
 import sys
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 # Edge class
 class Edge:
@@ -55,14 +67,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        current = start
-
-        while current:
-            print(current.value)
-            current = current.parent
-
-        print()
-
+        queue = Queue()
+        queue.enqueue([start])
+        start.color = "black" #visited .append(start)
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination.color == 'white': #if start in visited
+                    destination.color = 'black'  #visited.append(start)
+                    destination.parent = vertex
+                    queue.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -72,23 +87,15 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        q = Queue()
-        q.enqueue([starting_vertex_id])
-        visited = []
-        while q.size() > 0:
-            print(q.queue)
-            path = q.dequeue()
-            v = path[-1]
-            if v not in visited:
-                if self.vertices[v].value == target_value:
-                    return path
-                visited.append(v) # ...mark as visited...
-                for next_vert in self.vertices[v].edges:
-                    # q.enqueue(next_vert)
-                    new_path = list(path)
-                    new_path.append(next_vert)
-                    q.enqueue(new_path)
-        return None
+        current = start
+        output_string_array = []
+        while current is not None:
+            output_string_array.append(current.value)
+            if current.parent is not None:
+                output_string_array.append("--> ")
+            current = current.parent
+        print ("".join(output_string_array))
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
