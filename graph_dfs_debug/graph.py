@@ -24,18 +24,14 @@ class Graph:
         if bidirectional:
             self.vertices[end].add(start)
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
-
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+    def dfs(self, node_id, search_node, visited=[]):
+        if node_id == search_node:
+            return True
+        visited.append(node_id)
+        for child_node in self.vertices[node_id]:
+            if child_node not in visited:
+                dfs(self, child_node, search_node, visited)
+        return False
 
     def graph_rec(self, start, target=None):
         x = set()
