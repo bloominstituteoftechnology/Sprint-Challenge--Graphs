@@ -22,7 +22,7 @@ class BokehGraph:
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title, x_range=(-10, width), y_range=(-10, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
@@ -57,7 +57,7 @@ class BokehGraph:
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            color = '#F'+''.join([choice('0123456789ABCDEF') for j in range(2)])+'F'+''.join([choice('0123456789ABCDEF') for j in range(2)])
             colors.append(color)
         return colors
 
@@ -95,9 +95,9 @@ class BokehGraph:
     def randomize(self):
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+            boundary = 10
+            self.pos[vertex.label] = (1 + random() * (self.width - boundary),
+                                      1 + random() * (self.height - boundary))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
