@@ -70,7 +70,7 @@ class Graph:
             if vertex not in visited:                  # Changed to not in (we want to perform this operation on vertices we HAVENT visited)
                 reachable = self.dft_stack(vertex)
                 for other_vertex in reachable:
-                    self.vertices[other_vertex].component = current_component   # 
+                    self.vertices[other_vertex].component = current_component  
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
