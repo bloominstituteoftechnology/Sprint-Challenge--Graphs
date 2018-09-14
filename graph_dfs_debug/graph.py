@@ -1,6 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -41,7 +43,6 @@ class Graph:
         visited = set()
         visited.add(start)
         for vert in self.vertices[start]:
-            # print(v)
             self.graph_rec(vert)
         return visited
 
