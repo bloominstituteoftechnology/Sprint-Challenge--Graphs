@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+import queue
 
 
 # Edge class
@@ -41,8 +42,10 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            if v.value == value:
+                 return v
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +54,24 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        
+        for vert in self.vertices:
+            vert.color = 'white'
+            vert.parent = None
+        start.color = 'gray'
+        queue = []
+        queue.append(start)
+        while queue:
+            u = queue[0]
+            for vert in u.edges:
+                if vert.destination.color == 'white':
+                    vert.destination.color = 'gray'
+                    vert.destination.parent = u
+                    queue.append(vert.destination)
+            
+            queue.pop(0)
+            u.color = 'black'
+    
 
     def output_route(self, start):
         """
@@ -61,8 +80,12 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        visited = []
+        visited.append(start.value)
+        while start.parent:
+            visited.append(start.parent.value)
+            start = start.parent
+        return visited
 
     def route(self, start, end):
         # BFS to build the parent reference tree

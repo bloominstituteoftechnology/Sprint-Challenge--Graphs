@@ -16,32 +16,39 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if vertex in self.vertices:
+            raise Exception('Vertex already exists!')
+        if not set(edges).issubset(self.vertices):
+            raise Exception("Edges can't exist there!")
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        if start not in self.vertices:
+            raise Exception("Start not in graph!")
+        if end not in self.vertices:
+            raise Exception("End not in graph!")
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
-
-        while x:
-            z = x.pop()
-            if x == target:
+        stack = []
+        stack.append(start)
+        visited = set()
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend(self.vertices[z])
-
-        return x
+            stack.extend((self.vertices[current]))
+            visited.add(current)
+        return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+        queue = set()
+        queue.set(start)
         for v in self.vertices[start]:
             graph_rec(v)
-        return x
+        return queue
 
     def find_components(self):
         visited = set()
