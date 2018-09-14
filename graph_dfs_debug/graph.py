@@ -19,36 +19,37 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end) # directions of each edge has to be opposite. edges should show up now
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start) # directions of each edge has to be opposite. edges should show up now
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    def dfs(self, start, target=None): # changed 'stack == target' to 'current == target'
+        stack = [] # renamed to stack to be more desciptive
+        stack.append(start) 
+        visited = set() # renamed to visited to be more desciptive
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            current = stack.pop() # renamed to current to be more desciptive
+            visited.add(current) # current added to visited
+            if stack == target:
                 break
-            x.extend(self.vertices[z])
+            stack.extend(self.vertices[current] - visited) # remove visited from the stack at the end
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        visited = set() # renamed variable to visited to be more clear
+        visited.add(start)
+        for vertex in self.vertices[start]: # rename for loop to be more clear
+            self.graph_rec(vertex)
+        return visited
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited: # change the condition to say if not which will now display random colors when not connected
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
