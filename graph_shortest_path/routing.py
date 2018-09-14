@@ -1,7 +1,7 @@
 #/usr/bin/env python
 
 import sys
-
+from pprint import pprint
 
 # Edge class
 class Edge:
@@ -42,9 +42,14 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            if v.value == value:
+                return v
+        return None
+        
 
-    def bfs(self, start):
+    # def bfs(self, start):
+    def bfs(self, start_vert):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -52,7 +57,25 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for v in graph.vertices:
+            v.color = 'white'
+            v.parent = None   #<-- Add parent initialization
+
+        q = []
+        start_vert.color = 'gray'
+        q.append(start_vert)
+        while len(q) > 0:
+
+            u = q[0]
+
+            for e in u.edges:
+                if e.destination.color == 'white':
+                    e.destination.color = 'gray'
+                    e.destination.parent = u     # <-- Keep a parent link
+                    q.append(e.destination)
+                
+            q.pop(0)
+            u.color = 'black'
 
     def output_route(self, start):
         """
@@ -62,13 +85,21 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        curr_vert = start
+        str = f"{curr_vert.value}"
+        while curr_vert.parent != None:
+             curr_vert=curr_vert.parent
+             str = f"{curr_vert.value} --> {str}"
+
+        print(str)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        # self.bfs(end)
+        self.bfs(start)
         # print the route from the start Vertex
-        self.output_route(start)
+        # self.output_route(start)
+        self.output_route(end)
 
 
 # Helper function to add bidirectional edges
@@ -81,6 +112,9 @@ if __name__ == '__main__':
     if len(sys.argv) != 3:
         print('Usage: routing.py hostA hostB')
         sys.exit()
+
+    # print(f"\n\nargv[1]: {sys.argv[1]}")
+    # print(f"argv[2]: {sys.argv[2]}")
 
     graph = Graph()
     vertA = Vertex('HostA')
@@ -111,6 +145,11 @@ if __name__ == '__main__':
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
 
+    # for v in graph.vertices:
+    #     print(f"\n\n{v.value}")
+    #     print(f" Parent: {v.parent}")
+    #     print(f" Edges: {[(e.destination.value,e.weight) for e in v.edges]}")
+
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
@@ -127,3 +166,8 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
+    # for v in graph.vertices:
+    #     print(f"\n\n{v.value}")
+    #     print(f" Parent: {v.parent}")
+    #     print(f" Edges: {[(e.destination.value,e.weight) for e in v.edges]}")
