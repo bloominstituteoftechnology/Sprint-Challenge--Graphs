@@ -1,1 +1,33 @@
 Describe the fixes/improvements you made to the Graph implementation here.
+
+- [x] Nothing seems to connect, my edges aren't showing up.
+
+To connect the edges, I used `add()` to add the opposite vertex. For example, `self.vertices[start].add(end)` rather than the same vertex: ``self.vertices[start].add(start)`
+
+```
+def add_edge(self, start, end, bidirectional=True):
+        self.vertices[start].add(end)
+        if bidirectional:
+            self.vertices[end].add(start)
+```
+
+- [x] All the vertexes are the same color.  They're supposed to be different colors
+if they're not connected, and right now none of them are.
+
+The key here was changing the if statement to look for vertices `not` in visited
+
+```
+if vertex in visited:
+# became
+if vertex not in visited:
+```
+
+- [ ] Sometimes I do something and when I run `python graph_demo.py` it just takes
+forever, even though my `draw.py` and `graph_demo.py` are totally just the same
+as from class.
+- [ ] I wanted to let it find a target vertex, but even back when it did kinda run
+this part didn't really work.
+- [ ] My editor sure is complaining a lot about something called "lint."
+- [ ] I keep losing track of my variables, I guess I should name them better?
+- [ ] I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
+got even more stuck.
