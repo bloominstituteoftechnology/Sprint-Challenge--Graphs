@@ -22,3 +22,7 @@ dfs
 - instead of checking if `stack == target`, we should check the current vert
 - you have to remove the visited verts from this set `stack.extend(self.vertices[current_vert])`
 - instead of returning `stack` at the end, should return `visited`
+
+find_components
+
+- we should be checking for vertices NOT in visited
