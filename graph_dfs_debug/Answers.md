@@ -4,6 +4,8 @@ I've made the following changes to your files:
 
 1. The connections were not showing up because the edges were pointing to themselves, so I've changed them to point to each other.
 
+5. The "lint" messages are coming up due to your code not conforming to style and structure conventions that make your code easier to read and less prone to errors.
+
 6. I have changed values like `x` and `y` into more descriptive names so you do not lose track of variables.
 
 <!-- 
@@ -13,6 +15,4 @@ if they're not connected, and right now none of them are.
 forever, even though my `draw.py` and `graph_demo.py` are totally just the same
 as from class.
 4. I wanted to let it find a target vertex, but even back when it did kinda run
-this part didn't really work.
-5. My editor sure is complaining a lot about something called "lint."
-6. I keep losing track of my variables, I guess I should name them better? -->
+this part didn't really work.-->
