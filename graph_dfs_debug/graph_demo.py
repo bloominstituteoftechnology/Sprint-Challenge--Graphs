@@ -25,6 +25,7 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
 
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
+    graph.dfs(vertices[0], 7)
 
 
 if __name__ == '__main__':

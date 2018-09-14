@@ -66,9 +66,9 @@ class BokehGraph:
         end_indices = []
         checked = set()
 
-        for vertex, edges in self.graph.vertices.items():
+        for vertex in self.graph.vertices:
             if vertex not in checked:
-                for destination in edges:
+                for destination in self.graph.vertices[vertex].edges:
                     start_indices.append(vertex.label)
                     end_indices.append(destination.label)
                 checked.add(vertex)

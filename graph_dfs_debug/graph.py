@@ -5,6 +5,7 @@ class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
         self.component = component
+        self.edges = set()
 
     def __repr__(self):
         return 'Vertex: ' + self.label
@@ -16,24 +17,30 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+        self.vertices[vertex] = Vertex(vertex)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(end)
+        self.vertices[start].edges.add(end)
         if bidirectional:
-            self.vertices[end].add(start)
+            self.vertices[end].edges.add(start)
 
     def dfs(self, start, target=None):
+        print(start)
         x = []
         x.append(start)
-        y = set(x)
-
-        while x:
+        #y = set(x)
+        visited = []
+        while len(x) > 0:
             z = x.pop()
-            if x == target:
+            if self.vertices[start].label == target:
+                print(True)
                 break
-            x.extend(self.vertices[z])
-
+            for child in self.vertices[start]:
+                visited.append(z)
+                if child not in visited:
+                    x.append(child)
+            #x.extend(self.vertices[z])
+        print(False)
         return x
 
     def graph_rec(self, start, target=None):
