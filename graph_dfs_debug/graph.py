@@ -23,18 +23,18 @@ class Graph:
         if bidirectional:
             self.vertices[end].add(start) #start and end variables updated
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
-
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+    def dfs(self, start, target=None, visited = []): #added visited list parameter to replace x
+        visited.append(start)
+        current = visited.pop()
+        if target == None:
+          raise Exception('You must provide a start and target value') #added exception handling if values not supplied
+        if current == target:
+            return True  # return true if target found
+        for child_node in self.vertices[start]: #added loop to check for child nodes from start node
+          if child_node not in visited: # check each child node to see if we have looked at it yet. if not, run recursion
+            if self.dfs(child_node, target, visited): #run recursion on child
+              return True #if found return true
+        return False
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -56,11 +56,14 @@ class Graph:
                 visited.update(reachable)
         self.components = current_component
 
+
+#testing, testing, can you hear me?
 test = Graph()
 test.add_vertex(4)
 test.add_vertex(6)
 test.add_vertex(8)
 test.add_vertex(10)
-# test.add_edge(4,6, bidirectional=False) #unidirectional edge
-# test.add_edge(4, 8, bidirectional=True)  # bbidirectional edge
-print(test.vertices)
+test.add_edge(4,6, bidirectional=False) #unidirectional edge
+test.add_edge(4,8, bidirectional=False)  # bidirectional edge
+test.add_edge(8,10, bidirectional=False)  # bidirectional edge
+print(test.dfs(4, 8))
