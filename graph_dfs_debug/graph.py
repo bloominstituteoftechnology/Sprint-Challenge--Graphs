@@ -19,9 +19,9 @@ class Graph:
         self.vertices[vertex] = set() #initialized set without edges
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end) #start and end variables updated
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start) #start and end variables updated
 
     def dfs(self, start, target=None):
         x = []
@@ -58,6 +58,9 @@ class Graph:
 
 test = Graph()
 test.add_vertex(4)
+test.add_vertex(6)
 test.add_vertex(8)
-
+test.add_vertex(10)
+# test.add_edge(4,6, bidirectional=False) #unidirectional edge
+# test.add_edge(4, 8, bidirectional=True)  # bbidirectional edge
 print(test.vertices)
