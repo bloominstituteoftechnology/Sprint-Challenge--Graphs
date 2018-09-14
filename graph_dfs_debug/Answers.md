@@ -1,1 +1,2 @@
 Describe the fixes/improvements you made to the Graph implementation here.
+Started with fixing the add edge method, not sure what the biderectional this dev was trying to use but set it up where if 2 vertices exist it will draw an edge
