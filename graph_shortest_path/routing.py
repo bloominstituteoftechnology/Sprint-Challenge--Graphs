@@ -55,10 +55,14 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        valueList = []
-        for vert in self.vertices:
-            valueList.append(vert.value)
-        if value in valueList:
+        # valueList = []
+        # for vert in self.vertices:
+        #     valueList.append(vert.value)
+        # if value in valueList:
+        #     return value
+        # return None
+
+        if value in self.vertices:
             return value
         return None
 
@@ -90,7 +94,12 @@ class Graph:
                     #print('PARENT!', v.parent.value)
                 else:
                     v.parent = None
-                print("Vertex: ", v, v.color, v.parent)
+                if v.parent:
+                    print("Vertex:{}, color: {}, parent:{} ".format(v.value, v.color, v.parent.value))
+                else:
+                    print("Vertex:{}, color: {}, parent: None ".format(v.value, v.color))
+
+
                 visited.append(v) #mark vertex as visited
                 for next_vert in v.edges:
 
@@ -110,7 +119,6 @@ class Graph:
 
         if start.parent:
             next_vert = start.parent
-            print('next_vert', next_vert)
 
             while next_vert.parent:
                 returnString += ' --> '
@@ -168,12 +176,14 @@ graph.vertices.append(vertF)
 graph.vertices.append(vertG)
 graph.vertices.append(vertH)
 
+print('FIND VERTEXT:')
 print(graph.find_vertex(vertA).value)
+print('\n')
 print('THEN THE BFS')
 print(graph.bfs(vertA))
+print('\n')
 print("THEN THE OUTPUT")
 print(graph.output_route(vertH))
-print('ttttt')
 
 
 if __name__ == '__main__':
