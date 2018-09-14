@@ -38,8 +38,12 @@ class BokehGraph:
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
+
+        print("\nRandom Colors")
+        print(self._get_random_colors(len(self.vertex_list)))
+
         colors = (self._get_connected_component_colors() if draw_components
-                  else self._get_random_colors())
+                  else self._get_random_colors(len(self.vertex_list)))
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
