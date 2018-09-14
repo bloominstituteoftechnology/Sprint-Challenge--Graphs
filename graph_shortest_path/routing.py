@@ -2,28 +2,18 @@
 
 import sys
 
-
-# Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
 
-
-# Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
         self.value = value
         self.edges = []
-        # Color of this vertex
-        # Used to mark vertices for the traversal algorithm (BFS or DFS)
         self.color = color
-        # Parent reference to keep track of the previous node in the
-        # graph when traversing through the graph
         self.parent = parent
 
-
-# Graph class
 class Graph:
     def __init__(self):
         self.vertices = []
@@ -35,9 +25,6 @@ class Graph:
         return None
 
     def bfs(self, start):
-
-        # Should maintain parent references back from neighbors to their parent.
-
         queue = []
         queue.append(start)
         visited = []
@@ -45,19 +32,24 @@ class Graph:
             vertex = queue.pop(0)
             if vertex not in visited:
                 visited.append(vertex)
-                for next_vert in self.vertices[self.vertices.index(vertex)].edges:
-                    queue.append(next_vert.destination)
-        return visited
+                for edge in vertex.edges:
+                    next_vert = edge.destination
+                    if not next_vert.parent:
+                        next_vert.parent = vertex
+                    queue.append(next_vert)
+
+    # print("Start: ", start)
+    # print("Start parent: ", start.parent)
+    # print("Current vert value: ", current_vert.value)
+    # print("Path: ", path)
 
     def output_route(self, start):
-        """
-        Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
-
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
-        # !!!! IMPLEMENT ME
-        pass
+        path = []
+        current_vert = start
+        while current_vert.parent:
+            path.append(current_vert.value)
+            current_vert = current_vert.parent
+        return " --> ".join(path)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
