@@ -30,22 +30,33 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        # make sure vertices exist
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception("ERROR: One or more vertices don't exist")
+        # start should connect to end
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            # end should connect to start
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        # DSF wants a stack - LIFO
+        stack = []
+        stack.append(start)
+        # keep track of visited verts in case there's a loop
+        visted = []
+        # y = set(stack) # doesn't seem to be doing anything
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        while stack:
+            vert = stack.pop()
+            # only check if we haven't already
+            if vert not in visited:
+                visited.append(vert)
+                if stack == target:
+                    return True
+            stack.extend(self.vertices[vert])
 
-        return x
+        return stack
 
     def graph_rec(self, start, target=None):
         x = set()
