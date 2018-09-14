@@ -59,6 +59,7 @@ class BokehGraph:
         for _ in range(num_colors):
             color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
             colors.append(color)
+        print(colors)
         return colors
 
     def _get_edge_indexes(self):
@@ -72,9 +73,6 @@ class BokehGraph:
                     start_indices.append(vertex.label)
                     end_indices.append(destination.label)
                 checked.add(vertex)
-        print("edges:")
-        print(start_indices)
-        print(end_indices)
         return dict(start=start_indices, end=end_indices)
 
     def _setup_labels(self):

@@ -82,7 +82,7 @@ class Graph:
         
         for vertex in self.vertices:
             if vertex not in visited:
-                print(self.dfs(vertex, test_v))
+                # print(self.dfs(vertex, test_v))
                 reachable = self.dfs_recursive(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
