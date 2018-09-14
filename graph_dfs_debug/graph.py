@@ -29,18 +29,25 @@ class Graph:
 
     def dfs(self, start, target=None):
         stack = []
+        visited = []
         stack.append(start)
-        visited = set(stack)
+        visited.append(start)
 
         while len(stack) > 0:
-            current_node = stack.pop(-1)
+            current_node = stack.pop(0)
             if current_node == target:
                 return visited
+            print('current_node list', current_node)
             if current_node not in visited:
-                visited.add(current_node)
-                for next_verts in self.vertices[current_node]:
-                    if next_verts not in visited:
-                        stack.append(self.vertices[current_node])
+                visited.append(current_node)
+            for next_verts in self.vertices[current_node]:
+                print('next_verts list', next_verts)
+                if next_verts not in visited:
+                    stack.append(next_verts)
+
+        print('start args', start)
+        print('target args', target)
+        print('\n')
         return visited
 
     def graph_rec(self, start, target=None, visited=set()):
