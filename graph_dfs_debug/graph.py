@@ -19,39 +19,61 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+
+        self.vertices[start].add(end) #start and end variables updated
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start) #start and end variables updated
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    def dfs(self, start, target=None): #fixed variable naming for x, y, z 
+      stack = []
+      stack.append(start)
+      visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+      while stack:
+        current = stack.pop()
+        visited.add(current)
+        if current == target:
+          return current
+        stack.extend(self.vertices[current] - visited)
 
-        return x
+      return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, target=None, visited=[]):  # added visited list parameter to replace x
+        visited.append(start)
+        current = visited.pop()
+        if target == None:
+          # added exception handling if values not supplied
+          raise Exception('You must provide a start and target value')
+        if current == target:
+            return True  # return true if target found
+        # added loop to check for child nodes from start node
+        for child_node in self.vertices[start]:
+          if child_node not in visited:  # check each child node to see if we have looked at it yet. if not, run recursion
+            if self.graph_rec(child_node, target, visited):  # run recursion on child
+              return True  # if found return true
+        return False
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+
+# testing, testing, can you hear me?
+# test = Graph()
+# test.add_vertex(4)
+# test.add_vertex(6)
+# test.add_vertex(8)
+# test.add_vertex(10)
+# test.add_edge(4,6, bidirectional=False) #unidirectional edge
+# test.add_edge(4,8, bidirectional=False)  # bidirectional edge
+# test.add_edge(8,10, bidirectional=False)  # bidirectional edge
+# print(test.dfs(4, 10))
