@@ -58,7 +58,6 @@ class Graph:
         # !!!! IMPLEMENT ME
         queue = [start]
         visited = set()
-        parent = start
         while queue:
             current = queue.pop(0)
             visited.add(current)
@@ -75,7 +74,13 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        visited = [start]
+        while current.parent:
+            visited.append(current.parent)
+            current = current.parent
+        for node in visited:
+            print(node)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
