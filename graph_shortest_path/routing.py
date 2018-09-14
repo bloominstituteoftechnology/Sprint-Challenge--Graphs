@@ -54,8 +54,30 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        white_color = "#fff"
+        gray_color = "#999"
+
+        for vertex in self.vertices:
+            self.colors[v] = white_color
+
+        start.color = gray_color
+        start.parent = None
+        queue = [start]
+        visited = set()
+
+        while queue:
+            current = queue.pop(0)
+            visited.add(current)
+
+            for edge in current.edges:
+                dest = edge.destination
+                if dest not in visited and dest not in queue:
+                    dest.color = gray_color
+                    dest.parent = current
+                    queue.append(dest)
+
+
+
 
     def output_route(self, start):
         """
