@@ -28,7 +28,24 @@ as from class.
 - [ ] I wanted to let it find a target vertex, but even back when it did kinda run
 this part didn't really work.
 - [ ] My editor sure is complaining a lot about something called "lint."
-- [ ] I keep losing track of my variables, I guess I should name them better?
+- [x] I keep losing track of my variables, I guess I should name them better?
+
+For dfs, I created a stack and visited list and changed `x` to `stack` and `y` to `visited`. I changed `z` to `current_node` and used `pop()`. Rather than comparing x (now stack) to `target`, I compared current_node. I extended stack adding unvisited nodes. Finally I returend `visited`. This one really showed the importance of variable naming conventions.
+
+```
+def dfs(self, start, target=None):
+    stack = [start]
+    visited = set()
+
+    while stack:
+        current_node = stack.pop()
+        if current_node == target:
+            break
+        stack.extend(self.vertices[current_node] - visited)
+
+    return visited
+```
+
 - [x] I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
 got even more stuck.
 
