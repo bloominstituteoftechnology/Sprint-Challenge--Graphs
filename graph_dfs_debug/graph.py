@@ -31,23 +31,34 @@ class Graph:
         while len(x) > 0:
             z = x.pop()
             if z == target:
-                break
+                print(f'Visited: {y}')
+                return True 
             # x.extend(self.vertices[z])
             for e in self.vertices[z]:
                 x.append(e)
                 y.add(e)
             x.pop()
 
-        print(x)
-        print(y)
-        return y 
+        print(f'Visited: {y}')
+        return False 
 
-    def graph_rec(self, start, target=None):
-        x = set()
+    def graph_rec(self, start, target=None, y=set()):
+        # x = set() 
+        x = []
         x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        y.add(start)
+
+        while len(x) > 0:
+            z = x.pop()
+            if z == target:
+                print(f'Visited: {y}')
+                return True 
+            for v in self.vertices[z]:
+                self.graph_rec(v, target, y)
+            x.pop()
+
+        print(f'Visited: {y}')
+        return False 
 
     def find_components(self):
         visited = set()
@@ -69,4 +80,6 @@ g.add_vertex('2')
 g.add_vertex('3', ('0'))
 # print(g.vertices)
 # print(g.components)
-g.dfs('0')
+print(g.dfs('0', '1'))
+print(g.dfs('0', '2'))
+# g.graph_rec('0', '1')
