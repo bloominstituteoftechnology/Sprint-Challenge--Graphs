@@ -22,8 +22,6 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
         vertices = sample(graph.vertices.keys(), 2)
         # TODO check if edge already exists
         graph.add_edge(vertices[0], vertices[1])
-    
-    graph.find_components()
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
 

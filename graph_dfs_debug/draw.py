@@ -103,7 +103,11 @@ class BokehGraph:
         """Return same-colors for vertices in connected components."""
         self.graph.find_components()
         component_colors = self._get_random_colors(self.graph.components)
+        print(component_colors)
         vertex_colors = []
         for vertex in self.vertex_list:
+            print(vertex)
+            print(vertex.component)
             vertex_colors.append(component_colors[vertex.component])
+        print(vertex_colors)
         return vertex_colors
