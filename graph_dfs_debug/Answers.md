@@ -29,5 +29,16 @@ as from class.
 this part didn't really work.
 - [ ] My editor sure is complaining a lot about something called "lint."
 - [ ] I keep losing track of my variables, I guess I should name them better?
-- [ ] I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
+- [x] I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
 got even more stuck.
+
+I made the recursive dfs more descriptive by changing `graph_rec` to `dfs_rec`, `x` to `visited`, and `v` to `vertex`. I changed `append` to `add` because add works better with `set()` and add doesn't add items already present. To make the recursion work, I called `dfs_rec` with `self.dfs_rec`.
+
+```
+def dfs_rec(self, start, target=None):
+    visited = set()
+    visited.add(start)
+    for vertex in self.vertices[start]:
+        self.dfs_rec(vertex)
+    return visited
+```

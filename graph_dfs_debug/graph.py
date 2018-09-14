@@ -36,12 +36,12 @@ class Graph:
 
         return x
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_rec(self, start, target=None):
+        visited = set()
+        visited.add(start)
+        for vertex in self.vertices[start]:
+            self.dfs_rec(vertex)
+        return visited
 
     def find_components(self):
         visited = set()
