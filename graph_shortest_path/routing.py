@@ -83,13 +83,18 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        current = start
+        # set our route and current to start
         route = [start]
+        current = start
+        # as long as we have a parent
         while current.parent:
+            # add it to our route
             route.append(current.parent)
+            # and go to that node
             current = current.parent
-        for vertex in route:
-            print(vertex.value)
+        # print all our nodes
+        for node in route:
+            print(node.value)
 
     def route(self, start, end):
         # BFS to build the parent reference tree

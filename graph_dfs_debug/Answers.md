@@ -2,6 +2,8 @@ Describe the fixes/improvements you made to the Graph implementation here.
 
 It's always a good idea to have a `.gitignore` file that excludes things like `__pycache__` from being included in the repo.
 
+Lint is a program that checks your code for potential errors. Python is a bit tricky to set up, so if you need help, message me and we'll get a zoom going.
+
 The first pass of going through your class, going from top to bottom, here are some thoughts.
 
 add_vertex
