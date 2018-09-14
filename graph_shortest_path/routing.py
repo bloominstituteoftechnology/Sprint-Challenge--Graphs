@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +55,24 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for v in graph.vertices:
+            v.parent = None
+        # start the queue
+        queue = [start]
+        # set up our visited list
+        visited = []
+
+        while queue:
+            # grab first thing from the queue
+            vertex = queue.pop(0)
+            # update visited
+            visited.append(vertex)
+            # check all the edges
+            for edge in vertex.edges:
+                # if we haven't explored this edge's destination
+                if edge.destination not in visited:
+                    edge.destination.parent = vertex
+                    queue.append(edge.destination)
 
     def output_route(self, start):
         """
@@ -62,7 +82,18 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        # set our route and current to start
+        route = [start]
+        current = start
+        # as long as we have a parent
+        while current.parent:
+            # add it to our route
+            route.append(current.parent)
+            # and go to that node
+            current = current.parent
+        # print all our nodes
+        for node in route:
+            print(node.value)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
