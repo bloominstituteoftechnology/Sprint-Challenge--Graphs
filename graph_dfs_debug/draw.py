@@ -57,7 +57,7 @@ class BokehGraph:
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            color = '#F'+''.join([choice('0123456789ABCDEF') for j in range(2)])+'F'+''.join([choice('0123456789ABCDEF') for j in range(2)])
             colors.append(color)
         return colors
 
