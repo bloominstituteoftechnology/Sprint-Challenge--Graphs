@@ -58,14 +58,16 @@ class Graph:
 
         return visited
 
-    def graph_rec(self, start, target, visited=[], path=[]):
+# removed TARGET so will work with find_components method below
+    # def graph_rec(self, start, target, visited=[], path=[]):
+    def graph_rec(self, start, visited=[], path=[]):
         # update visited and path with the current vert
         visited.append(start)
         path.append(start)
 
         # check to see if we've hit the target
-        if start == target:
-            return path
+        # if start == target:
+        #     return path
 
         for child_vert in self.vertices[start]:
             # only check verts not in visited
@@ -74,7 +76,7 @@ class Graph:
                 #  when the recursion unrolls, see if we have a new_path
                 if new_path:
                     return new_path
-        return None
+        return path
 
     def find_components(self):
         visited = set()
