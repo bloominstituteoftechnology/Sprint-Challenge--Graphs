@@ -6,10 +6,14 @@ in add_edge, swapped end assignment of edges so start attaches to end and end to
 
 in add_vertex, removed ability to pass in edge list when creating vertex, these edges wouldn't be properly connected to their corresponding endpoints, edges can be added only through add_edge in keeping with the principle that each function does one thing well. 
 
-In DFS, changed "y" to "visited". Changed "x" to "stack". change "z" to "current". and x.pop() to stack.pop(). Changed Break to return True if current == value, added visited to dfs. Changed stack.extend(self.vertices[z]) to a for loop which checks each child node of current, and only adds them if they're no in visited already. Changed return x to return False, if we haven't found the node. Added .edges to self.vertices[current] to access the Vertice objects edges. 
+In DFS, changed "y" to "visited". Changed "x" to "stack". change "z" to "current". and x.pop() to stack.pop(). Changed Break to return True if current == value, added visited to dfs. Changed stack.extend(self.vertices[z]) to a for loop which checks each child node of current, and only adds them if they're no in visited already. Changed return x to return False, if we haven't found the node. Added .edges to self.vertices[current] to access the Vertice objects edges. Removed the defaut None from target, we want this function to be called with a target value
 
-Changed graph_rec to dfs_recursive(). Added visited to the arguments of dfs_recursive.  changed, x = set() and x.append(start) to simply visited.append(start). Made a base case to check if our current value is the target value and return True if so. Changed v to child. Add conditional to check if child nodes of current not already in visited. 
+Changed graph_rec to dfs_recursive(). Added visited to the arguments of dfs_recursive.  changed, x = set() and x.append(start) to simply visited.append(start). Made a base case to check if our current value is the target value and return True if so. Changed v to child. Add conditional to check if child nodes of current not already in visited. Added recursive call to check nested child elements for target value
 
+
+Add dft_stack, find components needs paths of connected components, not a True or False value that dfs returns (like it's calling now). Changing find_components to use dft_stack
+
+In find components, changedline 70 "if in visited" to "if not in visited". We want to check the nodes we haven't visited yet. Line 73, add self.vertices[other_vertex] to access the appropriate vertex and change its component
 
 
 In Draw.py

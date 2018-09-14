@@ -113,9 +113,20 @@ graph = Graph()
 
 for i in range(6):
     graph.add_vertex(i)
-for i in range(5):
-    graph.add_edge(i, 5 - i)
 
-b_graph = BokehGraph(graph)
+graph.add_edge(1,5)
+graph.add_edge(0,2)
+graph.add_edge(2,3)
+graph.add_edge(3,4)
+
+print(graph.dfs(1, 5))
+print(graph.dfs(0, 5))
+
+print(graph.dfs_recursive(1, 5))
+print(graph.dfs_recursive(0, 5))
+
+print('\n', graph.dft_stack(0))
+print(graph.dft_stack(1))
+b_graph = BokehGraph(graph, draw_components=True)
 
 b_graph.show()
