@@ -23,7 +23,8 @@ Describe the fixes/improvements you made to the Graph implementation here.
  * added exception handling if values not supplied
  * updated with working recursive call on child nodes
 
-
+ #find_components updated
+ * fixed line 61, changed to if *not* in visited, to fix color change issues
 
  
 

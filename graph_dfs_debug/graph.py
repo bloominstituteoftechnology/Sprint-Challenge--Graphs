@@ -58,7 +58,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
@@ -68,12 +68,12 @@ class Graph:
 
 
 # testing, testing, can you hear me?
-test = Graph()
-test.add_vertex(4)
-test.add_vertex(6)
-test.add_vertex(8)
-test.add_vertex(10)
-test.add_edge(4,6, bidirectional=False) #unidirectional edge
-test.add_edge(4,8, bidirectional=False)  # bidirectional edge
-test.add_edge(8,10, bidirectional=False)  # bidirectional edge
-print(test.dfs(4, 10))
+# test = Graph()
+# test.add_vertex(4)
+# test.add_vertex(6)
+# test.add_vertex(8)
+# test.add_vertex(10)
+# test.add_edge(4,6, bidirectional=False) #unidirectional edge
+# test.add_edge(4,8, bidirectional=False)  # bidirectional edge
+# test.add_edge(8,10, bidirectional=False)  # bidirectional edge
+# print(test.dfs(4, 10))
