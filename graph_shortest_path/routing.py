@@ -57,7 +57,7 @@ class Graph:
         # !!!! IMPLEMENT ME
         for vert in self.vertices:
             if vert.value == value:
-                return value
+                return vert
         return None
 
     def bfs(self, start):
@@ -69,15 +69,23 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         q = Queue()
-        q.enqueue(initial_vertex_id)
-        visited = []
+        q.enqueue(start)
+
+        start.color = 'red'
+
         while q.size() > 0:
-            vert = q.dequeue()
-            if vert not in visited:
-                print(self.vertices[vert].value)
-                visited.append(vert)
-                for next_vert in self.vertices[vert].edges:
-                    q.enqueue(next_vert)
+            vertex = q.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination.color == 'white':
+                    destination.color = 'red'
+                    destination.parent = vertex
+                    q.enqueue(destination)
+            # if vert not in visited:
+            #     print(self.vertices[vert].value)
+            #     visited.append(vert)
+            #     for next_vert in self.vertices[vert].edges:
+            #         q.enqueue(next_vert)
 
     def output_route(self, start):
         """
@@ -87,7 +95,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        
+        current = start
+        output_string = ""
+        while current is not None:
+            output_string += current.value
+            if current.parent is not None:
+                output_string += " --> "
+            current = current.parent
+        print(output_string)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
