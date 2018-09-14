@@ -42,7 +42,11 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +55,25 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+        start.color = 'blue'
+        start.parent = None
+
+        while len(queue) > 0:
+            #we get our first value and remove it
+            current = queue.pop(0)
+            for edge in current.edges:
+                neighbor = edge.destination
+ # colors set as white(unvisited), blue(being visited), red(we have visited)
+                if neighbor.color == 'white':
+                    neighbor.color ='blue'
+                    neighbor.parent = current
+                    queue.append(neighbor)
+            current.color = 'red'
+
+            
+    
+        
 
     def output_route(self, start):
         """
@@ -62,13 +83,26 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+    
+        current = start
+        # will define this variable(connect) as an empty string to then connect vertices " --> " in my while loop
+        connect = ''
+        #if we have a vertex
+        while current != None:
+            connect += current.value
+            #we will connect only if next vertex is the parent (concatenate)
+            if current.parent:
+                connect += ' --> '
+            #we now want the current vertex to be the parent
+            current = current.parent
+
+        print(connect)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        print(self.output_route(start))
 
 
 # Helper function to add bidirectional edges
