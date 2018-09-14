@@ -77,7 +77,7 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for vertex in self.vertices:
-            if vertex == value:
+            if vertex.value == value:
                 return vertex
         return None
 
@@ -91,10 +91,15 @@ class Graph:
         # !!!! IMPLEMENT ME
         queue = Queue()
         queue.enqueue(start)
+        start.color = "black"
         while queue.size() > 0:
             v = queue.dequeue()
-            for child_node in self.vertices:
-                queue.enqueue(child_node)
+            for child_node in v.edges:
+                destination = child_node.destination
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = v
+                    queue.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -106,12 +111,12 @@ class Graph:
         # !!!! IMPLEMENT ME
         v = start
         route = []
-        while v not None:
-            route += v.value
-            if v.parent:
-                route.append(v)
+        while v is not None:
+            route.append(v.value)
+            if v.parent is not None:
+                route.append(" --> ")
             v = v.parent
-        print(route)
+        print("".join(route))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
