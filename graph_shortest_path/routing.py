@@ -50,6 +50,17 @@ class Graph:
        
 
     def bfs(self, start):
+        queue = []
+        queue.append(start)
+        visited = []
+        while len(queue) > 0:
+            vertex = queue.pop()
+            visited.append(vertex)
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination not in visited:
+                    destination.parent = vertex
+                    queue.append(destination)
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
