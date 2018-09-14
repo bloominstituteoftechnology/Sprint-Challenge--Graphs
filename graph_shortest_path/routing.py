@@ -1,5 +1,3 @@
-#/usr/bin/env python
-
 import sys
 
 
@@ -41,18 +39,56 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        ##########################
+        ##### solution lecture ###
+        ##########################
+       """ for vertex in self.vertices:
+            if vertex == value:
+                return vertex
+        return None"""
+
+        ########################
+        ###### Sprint Code ######
+        #########################
+        vert = [v for v in self.vertices if v.value == value]
+
+        return vert[0]
 
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
-
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        ########################
+        ### Solution Lecture ###
+        ########################
+        """queue = [start]
+        start.color = "gray"
+
+        while queue:
+            current = queue.pop(0)
+            for edge in current.edges:
+                neighbor = edge.destination
+                if neighbor.color == 'white'
+                    neightbor.color = 'gray'
+                    neighbor.parent = current
+                    queue.append(neighbor)
+            current.color = 'black'"""
+        #####################
+        ### Sprint Code #####
+        #####################
+        queue = [start]
+        start.color = "grey"
+
+        while queue:
+            current = queue.pop(0)
+            for edge in current.edges:
+                if edge.destination.color == 'white':
+                    edge.destination.color = 'grey'
+                    edge.destination.parent = current
+                    queue.append(edge.destination)
+            current.color = 'black'
 
     def output_route(self, start):
         """
@@ -61,8 +97,32 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        ########################
+        ### Solution Lecture ###
+        ########################
+        """current = start
+        output = ''
+
+        while current is not None:
+            output += current.value
+            if current.parent:
+                output += ' --> ' 
+                current = current.parent
+        print(output)"""
+        #####################
+        ### Sprint Code #####
+        #####################
+        vertex = start
+        output = ''
+
+        while vertex:
+            output += vertex.value
+            if vertex.parent:
+                output += ' --> '
+
+            vertex = vertex.parent
+
+        print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree

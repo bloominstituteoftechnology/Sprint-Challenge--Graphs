@@ -98,7 +98,20 @@ class BokehGraph:
             # TODO make bounds and random draws less hacky
             self.pos[vertex.label] = (1 + random() * (self.width - 2),
                                       1 + random() * (self.height - 2))
+        """
+        rows = floor(sqrt(len(self vertex_list)))
+        col = ceil(sqrt(len(self vertex_list)))
+        grid_height - self.height / rows
+        grid_width = self.widt / cols
 
+        for i, vertex in enumerate(self.vertex_list):
+            col = (i % cols ) + 1
+            row - (i % rows ) + 1
+            x_pos = 10_ (col + random()) = grid_width - 15
+            y_pos =
+            self.pos
+        
+        """
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
         self.graph.find_components()
