@@ -24,23 +24,24 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set()
-        while x:
-            z = x.pop()
-            if z == target:
+        stack = []
+        stack.append(start)
+        visited = set()
+        while stack:
+            current = stack.pop()
+            if current == target:
                 break
-            x.extend((i for i in self.vertices[z] if i not in y))
-            y.add(z)
-        return y
+            stack.extend((i for i in self.vertices[current] if i not in visited))
+            visited.add(current)
+        return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.set(start)
+        queue = set()
+        queue.set(start)
+        visited = []
         for v in self.vertices[start]:
             graph_rec(v)
-        return x
+        return visited
 
     def find_components(self):
         visited = set()

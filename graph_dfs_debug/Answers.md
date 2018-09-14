@@ -14,5 +14,6 @@ while x:
 return y  
 ```
 * In `find_component` method, change to `if vertex not in visited`
+* Change variables' names for readability
 * Install pylint to fix the linting probles
 * In `graph_demo.py`, add `if vertices[1] not in graph.vertices[vertices[0]] and vertices[0] not in graph.vertices[vertices[1]]:` to check if edge already exists
