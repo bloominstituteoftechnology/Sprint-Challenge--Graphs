@@ -19,29 +19,47 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[start].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
         x.append(start)
         y = set(x)
 
-        while x:
+        while len(x) > 0:
             z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+            if z == target:
+                print(f'Visited: {y}')
+                return True 
+            # x.extend(self.vertices[z])
+            for e in self.vertices[z]:
+                x.append(e)
+                y.add(e)
+            x.pop()
 
-        return x
+        print(f'Visited: {y}')
+        return False 
 
-    def graph_rec(self, start, target=None):
-        x = set()
+    def graph_rec(self, start, target=None, y=set()):
+        # x = set() 
+        x = []
         x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        y.add(start)
+
+        while len(x) > 0:
+            z = x.pop()
+            if z == target:
+                print(f'Visited: {y}')
+                return True 
+            for v in self.vertices[z]:
+                self.graph_rec(v, target, y)
+            x.pop()
+
+        print(f'Visited: {y}')
+        return False 
 
     def find_components(self):
         visited = set()
@@ -55,3 +73,14 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+g = Graph()
+g.add_vertex('0', ('1','3'))
+g.add_vertex('1', ('0'))
+g.add_vertex('2')
+g.add_vertex('3', ('0'))
+# print(g.vertices)
+# print(g.components)
+# print(g.dfs('0', '1'))
+# print(g.dfs('0', '2'))
+# g.graph_rec('0', '1')
