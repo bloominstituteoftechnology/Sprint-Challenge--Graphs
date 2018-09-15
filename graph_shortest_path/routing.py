@@ -2,7 +2,6 @@
 
 import sys
 
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
@@ -41,10 +40,13 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+            
+        return None
 
-    def bfs(self, start):
+    def bfs(self, start_vert):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -52,17 +54,40 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
 
-    def output_route(self, start):
+        queue = [start_vert]
+        while len(queue):
+            vert = queue.pop(0)
+            if vert.color == 'white':
+                # Ensuring the vertex does not get visited again
+                vert.color = 'black'
+                for edge in vert.edges:
+                    # Find all edges that current vertex has
+                    # Get the vertex on the other end of the current vertex
+                    next_vert = edge.destination
+                    # Since the edges are bi-directional, we don't want to go back
+                    # to the parent node which is now colored black
+                    if edge.destination.color == 'black':
+                        continue
+                    else:
+                        next_vert.parent = vert
+                        queue.append(next_vert)
+        
+
+        
+        
+
+    def output_route(self, start_vert):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        vert = start_vert
+        while vert is not None:
+            print(vert.value)
+            vert = vert.parent
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -79,7 +104,7 @@ def add_edge(start, end):
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print('Usage: routing.py hostA hostB')
+        print('Usage: routing.py HostA HostB')
         sys.exit()
 
     graph = Graph()
@@ -110,7 +135,6 @@ if __name__ == '__main__':
     graph.vertices.append(vertF)
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
-
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
