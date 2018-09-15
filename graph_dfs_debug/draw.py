@@ -8,7 +8,7 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
-from graph import Graph
+
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
@@ -33,7 +33,7 @@ class BokehGraph:
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
         # Saving vertices in an arbitrary but persistent order
-        self.vertex_list = list(self.graph.vertices.values())       # Changed from .keys() to .values()
+        self.vertex_list = list(self.graph.vertices.keys())
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
@@ -66,11 +66,11 @@ class BokehGraph:
         end_indices = []
         checked = set()
 
-        for vertex, vertexObject in self.graph.vertices.items():
+        for vertex, edges in self.graph.vertices.items():
             if vertex not in checked:
-                for destination in vertexObject.edges:
-                    start_indices.append(vertex)
-                    end_indices.append(destination)
+                for destination in edges:
+                    start_indices.append(vertex.label)
+                    end_indices.append(destination.label)
                 checked.add(vertex)
 
         return dict(start=start_indices, end=end_indices)
@@ -107,26 +107,3 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
-
-
-graph = Graph()
-
-for i in range(6):
-    graph.add_vertex(i)
-
-graph.add_edge(1,5)
-graph.add_edge(0,2)
-graph.add_edge(2,3)
-graph.add_edge(3,4)
-
-print(graph.dfs(1, 5))
-print(graph.dfs(0, 5))
-
-print(graph.dfs_recursive(1, 5))
-print(graph.dfs_recursive(0, 5))
-
-print('\n', graph.dft_stack(0))
-print(graph.dft_stack(1))
-b_graph = BokehGraph(graph, draw_components=True)
-
-b_graph.show()
