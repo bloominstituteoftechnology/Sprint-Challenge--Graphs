@@ -2,7 +2,6 @@
 
 import sys
 
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
@@ -71,8 +70,9 @@ class Graph:
                     if edge.destination.color == 'black':
                         continue
                     else:
-                    next_vert.parent = vert
-                    queue.append(next_vert)
+                        next_vert.parent = vert
+                        queue.append(next_vert)
+        
 
         
         
@@ -104,7 +104,7 @@ def add_edge(start, end):
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        print('Usage: routing.py hostA hostB')
+        print('Usage: routing.py HostA HostB')
         sys.exit()
 
     graph = Graph()
@@ -135,7 +135,6 @@ if __name__ == '__main__':
     graph.vertices.append(vertF)
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
-
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
