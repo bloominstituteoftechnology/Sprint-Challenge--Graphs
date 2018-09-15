@@ -54,15 +54,20 @@ class Graph:
         # !!!! IMPLEMENT ME
 
         queue = [start_vert]
-
         while len(queue):
             vert = queue.pop(0)
-
-            if vert == 'white':
+            if vert.color == 'white':
                 # Ensuring the vertex does not get visited again
                 vert.color = 'black'
-                for next_vert in self.vertices[vert]:
-                    # Child nodes keeps a reference of parent
+                for edge in vert.edges:
+                    # Find all edges that current vertex has
+                    # Get the vertex on the other end of the current vertex
+                    next_vert = edge.destination
+                    # Since the edges are bi-directional, we don't want to go back
+                    # to the parent node which is now colored black
+                    if edge.destination.color == 'black':
+                        continue
+                    else:
                     next_vert.parent = vert
                     queue.append(next_vert)
 
