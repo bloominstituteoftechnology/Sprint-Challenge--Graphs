@@ -30,17 +30,22 @@ class Graph:
 
         while len(stack) > 0:
             current = stack.pop()
-            visited.append(current)
+            visited.add(current)
             # Remove "if current = target" since it will never be true, target will be an integer, current a Vertex object
+            print("visited", visited)
+            print("current", current)
+            print("self.vertices[current]", self.vertices[current])
             stack.extend([vertex for vertex in self.vertices[current] if vertex not in visited])
+            print("Stack", stack)
 
         return visited
 
     def graph_rec(self, start, visited = []):
-        visited = set()
         visited.append(start)
         for vertex in self.vertices[start]:
-            graph_rec(vertex)
+            print("Visited", visited)
+            if vertex not in visited:
+                self.graph_rec(vertex, visited)
         return visited
 
     def find_components(self):
@@ -48,7 +53,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
