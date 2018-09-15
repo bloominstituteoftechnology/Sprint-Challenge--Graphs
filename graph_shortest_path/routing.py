@@ -74,14 +74,17 @@ class Graph:
         
         
 
-    def output_route(self, start):
+    def output_route(self, start_vert):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        pass
+        vert = start_vert
+        while vert is not None:
+            print(vert.value)
+            vert = vert.parent
 
     def route(self, start, end):
         # BFS to build the parent reference tree
