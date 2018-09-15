@@ -26,17 +26,14 @@ class Graph:
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
-        visited = set()
+        visited = []
 
         while len(stack) > 0:
             current = stack.pop()
-            visited.add(current)
+            visited.append(current)
             # Remove "if current = target" since it will never be true, target will be an integer, current a Vertex object
-            print("visited", visited)
-            print("current", current)
-            print("self.vertices[current]", self.vertices[current])
-            stack.extend([vertex for vertex in self.vertices[current] if vertex not in visited])
-            print("Stack", stack)
+            stack.extend([vertex for vertex in self.vertices[current] if vertex not in visited and vertex not in stack])
+
 
         return visited
 
