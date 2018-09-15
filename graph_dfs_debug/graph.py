@@ -32,16 +32,16 @@ class Graph:
             current = stack.pop()
             visited.append(current)
             # Remove "if current = target" since it will never be true, target will be an integer, current a Vertex object
-            stack.extend([node for node in self.vertices[current] if node not in visited])
+            stack.extend([vertex for vertex in self.vertices[current] if vertex not in visited])
 
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, visited = []):
+        visited = set()
+        visited.append(start)
+        for vertex in self.vertices[start]:
+            graph_rec(vertex)
+        return visited
 
     def find_components(self):
         visited = set()
