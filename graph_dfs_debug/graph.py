@@ -42,12 +42,18 @@ class Graph:
 
         return vertices
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_recursion(self, start, target=None, visited = {}):
+        
+        if start not in visited:
+            visited[start] = 1
+        if start == target:
+            return visited
+        
+        for next_vertex in self.vertices[start]:
+            if next_vertex not in visited:
+                self.dfs_recursion(next_vertex, target, visited)
+
+        return visited
 
     def find_components(self):
         visited = set()
