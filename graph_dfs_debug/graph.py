@@ -62,12 +62,18 @@ class Graph:
 
         # return x
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, target=None, visited=[]):
+        visited.append(start)
+        for vertex in self.vertices[start]:
+          if vertex not in visited:
+            self.graph_rec(vertex, target, visited)
+        return visited
+
+        # x = set()
+        # x.append(start)
+        # for v in self.vertices[start]:
+        #     graph_rec(v)
+        # return x
 
     def find_components(self):
         visited = set()
