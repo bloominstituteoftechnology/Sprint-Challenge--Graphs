@@ -43,7 +43,7 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for vertice in self.vertices:
-            if vertice.value = value:
+            if vertice.value == value:
                 return vertice
         return None
 
@@ -55,8 +55,27 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
 
+        queue = []
+        for vertice in self.vertices:
+            vertice.color = 'white'
+            vertice.parent = None
+        
+        start.color = 'black'
+        queue.append(start)
+
+        while queue:
+            current = queue.pop(0)
+
+            for edge in current.edges:
+                destination = edge.destination
+                if destination.color != 'black':
+                    queue.append(destination)
+                    destination.parent = current
+                    destination.color = 'black'
+
+        
+        
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -65,7 +84,13 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        outputString = start.value
+        current = start
+        while current.parent is not None:
+            current = current.parent
+            outputString = outputString + '-->' + current.value
+
+        print(outputString)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
