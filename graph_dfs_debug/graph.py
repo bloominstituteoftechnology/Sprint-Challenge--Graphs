@@ -1,6 +1,19 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+class Stack():
+  def __init__(self):
+    self.stack = []
+  def push(self, value):
+    self.stack.append(value)
+  def pop(self):
+    if self.size() > 0:
+      return self.stack.pop()
+    else:
+      return None
+  def size(self):
+    return len(self.stack)
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -24,17 +37,30 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        visited = []
+        stack = Stack()
+        stack.push(start)
+        while stack.size() > 0:
+          current = stack.pop()
+          if current not in visited:
+            if current == target:
+              break
+            visited.append(current)
+            for vert in self.vertices[current]:
+              stack.push(vert)
+        return visited
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        # x = []
+        # x.append(start)
+        # y = set(x)
 
-        return x
+        # while x:
+        #     z = x.pop()
+        #     if x == target:
+        #         break
+        #     x.extend(self.vertices[z])
+
+        # return x
 
     def graph_rec(self, start, target=None):
         x = set()
