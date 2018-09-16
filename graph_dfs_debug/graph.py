@@ -34,7 +34,6 @@ class Graph:
             # Remove "if current = target" since it will never be true, target will be an integer, current a Vertex object
             stack.extend([vertex for vertex in self.vertices[current] if vertex not in visited and vertex not in stack])
 
-
         return visited
 
     def graph_rec(self, start, visited = []):

@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertice in self.vertices:
+            if vertice.value = value:
+                return vertice
+        return None
 
     def bfs(self, start):
         """
