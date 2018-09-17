@@ -16,39 +16,65 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+        if vertex not in self.vertices:
+            self.vertices[vertex] = set(edges)
+        else:
+            IndexError('This vertex already exists')
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+        if start in self.vertices and end in self.vertices:
+            self.vertices[start].add(end)
+            if bidirectional:
+                self.vertices[end].add(start)
+        else:
+            IndexError('Both ends of an edge must be in the list of vertices')
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        visited = []
+        stack = [start]
+        while len(stack) > 0:
+            current = stack.pop()
+            if current not in visited:
+                if current == target:
+                    break
+                visited.append(current)
+                for next_vert in self.vertices[current]:
+                    stack.append(next_vert)
+        return visited
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        # x = []
+        # x.append(start)
+        # y = set(x)
 
-        return x
+        # while x:
+        #     z = x.pop()
+        #     if x == target:
+        #         break
+        #     x.extend(self.vertices[z])
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        # return x
+
+    def dfs_rec(self, start, target=None, visited=[]):
+        if visited is None:
+            visited = []
+        visited.append(start)
+        for child in self.vertices[start]:
+            if child not in visited:
+                self.dfs_rec(child, target, visited)
+        return visited
+
+        # x = set()
+        # x.append(start)
+        # for v in self.vertices[start]:
+        #     graph_rec(v)
+        # return x
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
