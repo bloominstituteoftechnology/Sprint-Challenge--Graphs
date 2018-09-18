@@ -39,7 +39,7 @@ class Graph:
             if current == target:
                 break
             visited.add(current)
-            stack.extend(self.vertices[current])
+            stack.extend(self.vertices[current] - visited)
 
         return visited
 
@@ -62,3 +62,19 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+graph = Graph()
+one = Vertex(label=str('1'))
+two = Vertex(label=str('2'))
+three = Vertex(label=str('3'))
+four = Vertex(label=str('4'))
+graph.add_vertex(one)
+graph.add_vertex(two)
+graph.add_vertex(three)
+graph.add_vertex(four)
+graph.add_edge(one, four)
+graph.add_edge(three, one)
+graph.add_edge(one, two)
+
+print(graph.vertices)
+print(graph.dfs(one))
