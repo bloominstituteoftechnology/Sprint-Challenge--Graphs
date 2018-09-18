@@ -19,29 +19,36 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        if start not in self.vertices and end not in self.vertices:
+            raise ValueError("No Entries.")
+
+        self.vertices[start].add(end) # start and start? its start node to end node to create the vertex
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
 
-        while x:
-            z = x.pop()
-            if x == target:
+        # DFS works with stacks
+
+        stack = [start] # the stack
+
+        visited = set() # visited node
+
+        while stack:
+            current = stack.pop() # why a z?
+            if current == target:
                 break
-            x.extend(self.vertices[z])
+            visited.add(current)
+            stack.extend(self.vertices[current] - visited)
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        visited.append(start)
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+            self.graph_rec(v)
+        return visited
 
     def find_components(self):
         visited = set()
@@ -55,3 +62,19 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+graph = Graph()
+one = Vertex(label=str('1'))
+two = Vertex(label=str('2'))
+three = Vertex(label=str('3'))
+four = Vertex(label=str('4'))
+graph.add_vertex(one)
+graph.add_vertex(two)
+graph.add_vertex(three)
+graph.add_vertex(four)
+graph.add_edge(one, four)
+graph.add_edge(three, one)
+graph.add_edge(one, two)
+
+print(graph.vertices)
+print(graph.dfs(one))
