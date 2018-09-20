@@ -54,20 +54,16 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        queue = [start]
-        start.color = 'white'
-        while len(queue) > 0:
-            parent = queue.pop(0)
-            for el in parent.edges:
-                # child_node = node.destination
-                if el.color == 'white':
-                    child_node.color = 'black'
-                    child_node.parent = parent
-                    queue.append(child_node)
-
-
-
+        start.color = 'black'
+        q = [start] 
+        while q:
+            popped = q.pop(0) 
+            for edge in popped.edges:
+                n = edge.destination 
+                if n.color == 'white': 
+                    n.color = 'black'
+                    n.parent = popped
+                    q.append(n) 
 
     def output_route(self, start):
         """
@@ -77,6 +73,7 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
+        # print(start.value)
         print(start.value)
         if start.parent is not None:
             print('-->')
