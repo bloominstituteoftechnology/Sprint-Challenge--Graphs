@@ -6,10 +6,7 @@ Issue 1: No edges connecting the vertices
 Issue 2: All vertices are the same color
 -In find_components method it needed to check if was not in visited
 
-Issue 3: Adding a new vertex does not create an object from the Vertex class
--
-
-Issue 4: Variables in dfs and graph_rec methods are not descriptive
+Issue 3: Variables in dfs and graph_rec methods are not descriptive
 -Changed the following variable names
 dfs:
 x => stack
