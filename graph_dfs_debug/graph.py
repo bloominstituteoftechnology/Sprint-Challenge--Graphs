@@ -10,6 +10,20 @@ class Vertex:
         return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
+
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -27,8 +41,9 @@ class Graph:
         if bidirectional:
             self.vertices[end].add(start)
 
-    def dfs(self, start, target=None):
-        x = []
+    def dfs(self, start, target=None, visited=False):
+        # x = []
+        visited=[]
         x.append(start)
         y = set(x)
 
@@ -52,7 +67,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
