@@ -10,5 +10,8 @@ has two lines to be fixed:
 2. self.vertices[end].add(end) - same thing. End point needs to be connected with the start point
 => self.vertices[end].add(start)
 
-B. changed naming of DFS and DFS_rec variables
+B. changed naming of DFS and DFS_rec variables to be more descriptive
+x -> stack
+y -> visited
+z -> popped
 C. changed:  if vertex not in visited 
