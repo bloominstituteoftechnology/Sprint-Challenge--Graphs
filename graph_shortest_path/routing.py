@@ -83,16 +83,16 @@ class Graph:
         queue.append(start)
 
         while queue:
-            vertex = queue.pop()
+            current_vertex = queue[0]
 
             for vertex in vertex.edges:
                 if vertex.color == "white":
                     vertex.color = "gray"
-                    vertex.parent = vertex
+                    vertex.parent = current_vertex
                     queue.enqueue(vertex)
 
             queue.dequeue()
-            vertex.color = "black"
+            current_vertex.color = "black"
 
 
     def output_route(self, start):
