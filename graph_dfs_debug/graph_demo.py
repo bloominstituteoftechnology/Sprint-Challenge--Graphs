@@ -7,7 +7,7 @@ Demonstration of Graph and BokehGraph functionality.
 from random import sample
 from sys import argv
 from draw import BokehGraph
-from graph import Graph, Vertex
+from graph1 import Graph, Vertex
 
 
 def main(num_vertices=8, num_edges=8, draw_components=True):
