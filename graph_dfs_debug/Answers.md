@@ -12,4 +12,4 @@ So breath first search is a traversal algorithm. Which is a FIFO(First in first 
 
 # Depth First Search
 
-So depth first search is a recursive algorithm. Its simular to Breath First Search, but instead of a Queue you use a Stack. This means you go down the node tree touching every node until you find the node your looking for. SO if your starting at node "A" and want to get to node "F" you would ave to touch each node and its children until you get to were your going.
+So depth first search is a recursive algorithm. Its similar to Breath First Search, but instead of a Queue you use a Stack. This means you go down the node tree touching every node until you find the node your looking for. SO if your starting at node "A" and want to get to node "F" you would ave to touch each node and its children until you get to were your going.
