@@ -1,4 +1,4 @@
-# Sprint Challenge: Graphs
+# Sprint Challenge: Graphs 
 
 There are two parts to this sprint challenge:
 
