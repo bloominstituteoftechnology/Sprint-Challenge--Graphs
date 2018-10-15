@@ -84,6 +84,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
+            # was "in"
             if vertex not in visited:
                 reachable = self.graph_rec(vertex)
                 #reachable = self.dfs(vertex)
