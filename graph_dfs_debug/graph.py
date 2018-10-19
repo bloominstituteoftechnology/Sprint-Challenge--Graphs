@@ -24,31 +24,52 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = []
+        stack.append(start)
+        visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        while stack:
+            current = stack.pop()
+            visited.add(current)
+            if current == target:
+                return current
+            stack.extend(self.vertices[current] - visited)
+        return visited
+        # x = []
+        # x.append(start)
+        # y = set(x)
 
-        return x
+        # while x:
+        #     z = x.pop()
+        #     if x == target:
+        #         break
+        #     x.extend(self.vertices[z])
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        # return x
+
+    def graph_rec(self, start, target=None, visited=None):
+        if visited is None:
+            visited = []
+        visited.append(start)
+        if start == target:
+            return True
+        for node in self.vertices[start]:
+            if node not in visited:
+                if self.graph_rec(node, target, visited):
+                    return True
+        return False
+        # x = set()
+        # x.append(start)
+        # for v in self.vertices[start]:
+        #     graph_rec(v)
+        # return x
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
