@@ -28,18 +28,20 @@ class Graph:
             self.vertices[end].add(end)
 
     # maybe just redoing this whole thing with recursion would be better
-
-    def dfs(self, start, target, visited=None):
-        if visited is None:
-            visited = []
-        visited.append(start)
-        if start == target:
-            return True
-        for vert in self.vertices[start].edges:
-            if vert not in visited:
-                if self.dfs(vert, target, visited):
-                    return True
-        return False
+    # looking at the connected components method it seems like the vertex being
+    # the input
+    # and it looks for verticed to parse, not boleans
+    # so I think I need to swtich to a stack like it was before.
+    def dfs(self, start, target=None, visited=None):
+        x = []
+        x. append(start)
+        y = set()
+        while x:
+            z = x.pop()
+            if z == target:
+                break
+            x.extend(self.vertices[z])
+        return y
 
     def graph_rec(self, start, target=None):
         visited = set()
@@ -53,10 +55,16 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+        graph = Graph()
+        one = Vertex(1)
+        graph.add_vertex(one)
+
+        print('hell', self.vertices)
