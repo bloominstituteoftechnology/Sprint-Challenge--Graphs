@@ -11,5 +11,5 @@ For the recursive search graph_rec, removed =None from target parameter and adde
 1. Vertices / edges are now setup correctly.
 2. 
 3. 
-4. 
+4. Created a stack class to use for the DFS method.  Refactored and debugged DFS so that it is now working.
 5. I've renamed several variable to make the code more clear.
