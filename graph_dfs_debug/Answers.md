@@ -7,3 +7,7 @@ Describe the fixes/improvements you made to the Graph implementation here.
 the pop element with target, need to take out visited elements on extend
 - `find_components` method needed to have `not in visited`, wouldn't run the function
 with just `in visited` because nothing is in visited initially
+
+### Bokeh
+- `randomize` was altered to only take unique int pairs for vertices, which should
+minimize collision.

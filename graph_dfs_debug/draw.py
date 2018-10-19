@@ -93,10 +93,14 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
+        taken = set()
         for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+            while True:
+                test = (1 + int(random() * (self.width - 2)), 1 + int(random() * (self.height - 2)))
+                if test not in taken:
+                    self.pos[vertex.label] = test
+                    break
+
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
