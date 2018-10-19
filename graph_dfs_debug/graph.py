@@ -30,7 +30,7 @@ class Graph:
 
         while len(x) > 0:
             z = x.pop()
-            if x == target:
+            if z == target:
                 return True
             x.extend(self.vertices[z])
 
