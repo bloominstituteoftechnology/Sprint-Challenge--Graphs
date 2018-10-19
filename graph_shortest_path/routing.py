@@ -21,6 +21,8 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+    # def __repr__(self):
+    #     return 'Vertex: ' + self.value + 'Edges: ' + self.edges + 'Color: ' + self.color + 'Parent: ' + self.parent
 
 
 # Graph class
@@ -29,6 +31,10 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
@@ -41,28 +47,33 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
 
     def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
-
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
+        visited = []
+        q = []
+        q.append(start)
+        while q:
+            current = q.pop(0)
+            visited.append(current)
+            for edge in current.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = current
+                    q.append(edge.destination)
 
     def output_route(self, start):
+        route = []
+        route.append(start.value)
+        current = start
+        while current.parent != None:
+            current = current.parent
+            route.append(current.value)
+        print(route)
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -83,14 +94,14 @@ if __name__ == '__main__':
         sys.exit()
 
     graph = Graph()
-    vertA = Vertex('HostA')
-    vertB = Vertex('HostB')
-    vertC = Vertex('HostC')
-    vertD = Vertex('HostD')
-    vertE = Vertex('HostE')
-    vertF = Vertex('HostF')
-    vertG = Vertex('HostG')
-    vertH = Vertex('HostH')
+    vertA = Vertex('hostA')
+    vertB = Vertex('hostB')
+    vertC = Vertex('hostC')
+    vertD = Vertex('hostD')
+    vertE = Vertex('hostE')
+    vertF = Vertex('hostF')
+    vertG = Vertex('hostG')
+    vertH = Vertex('hostH')
 
     add_edge(vertA, vertB)
     add_edge(vertB, vertD)
