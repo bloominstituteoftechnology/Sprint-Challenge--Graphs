@@ -30,6 +30,8 @@ class Graph:
 
         while x.size() > 0:
             z = x.pop()
+            x.append(z)
+            print(z, 'z')
             if x == target:
                 break
             x.extend(self.vertices[z])
