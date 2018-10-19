@@ -33,14 +33,19 @@ class Graph:
     # and it looks for verticed to parse, not boleans
     # so I think I need to swtich to a stack like it was before.
     def dfs(self, start, target=None, visited=None):
+        # stack
         x = []
         x. append(start)
+        # queue
         y = set()
         while x:
-            z = x.pop()
+            z = x.pop(0)
             if z == target:
                 break
-            x.extend(self.vertices[z])
+            # add iterabile verts to stack if they aren't in the queue
+            x.extend(vert for vert in self.vertices[z] if vert not in y)
+            # put into back of queue of visited verts
+            y.add(z)
         return y
 
     def graph_rec(self, start, target=None):
@@ -63,8 +68,13 @@ class Graph:
                 visited.update(reachable)
         self.components = current_component
 
-        graph = Graph()
-        one = Vertex(1)
-        graph.add_vertex(one)
 
-        print('hell', self.vertices)
+graph = Graph()
+one = Vertex(1)
+two = Vertex(2)
+three = Vertex(3)
+graph.add_vertex(one)
+graph.add_vertex(two)
+graph.add_vertex(three)
+
+print(graph.vertices, graph.dfs(one, two))
