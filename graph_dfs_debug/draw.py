@@ -12,6 +12,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
+
     def __init__(self, graph, title='Graph', width=100, height=100,
                  show_axis=False, show_grid=False, circle_size=35,
                  draw_components=False):
@@ -27,7 +28,6 @@ class BokehGraph:
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -67,6 +67,8 @@ class BokehGraph:
         checked = set()
 
         for vertex, edges in self.graph.vertices.items():
+            print('vertex', vertex)
+            print('edges', edges)
             if vertex not in checked:
                 for destination in edges:
                     start_indices.append(vertex.label)

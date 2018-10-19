@@ -1,6 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -10,6 +12,8 @@ class Vertex:
         return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
+
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -17,11 +21,13 @@ class Graph:
 
     def add_vertex(self, vertex, edges=()):
         self.vertices[vertex] = set(edges)
+        print('add vertex', vertex)
 
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(start)
         if bidirectional:
             self.vertices[end].add(end)
+        print('adding edge', start, end)
 
     def dfs(self, start, target=None):
         x = []
