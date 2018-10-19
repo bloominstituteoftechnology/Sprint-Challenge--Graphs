@@ -1,6 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -10,6 +12,8 @@ class Vertex:
         return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
+
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -23,25 +27,26 @@ class Graph:
         if bidirectional:
             self.vertices[end].add(end)
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    # maybe just redoing this whole thing with recursion would be better
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+    def dfs(self, start, target, visited=None):
+        if visited is None:
+            visited = []
+        visited.append(start)
+        if start == target:
+            return True
+        for vert in self.vertices[start].edges:
+            if vert not in visited:
+                if self.dfs(vert, target, visited):
+                    return True
+        return False
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+        visited = set()
+        visited.append(start)
         for v in self.vertices[start]:
             graph_rec(v)
-        return x
+        return visited
 
     def find_components(self):
         visited = set()
