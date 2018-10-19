@@ -43,7 +43,7 @@ class Graph:
             if dequeued == target:
                 break
             # add iterabile verts to stack if they aren't in the queue
-            stack.extend(vert for vert in self.vertices[dequeued] if vert not in visited)
+            stack.extend(vert for vert in self.vertices[dequeued] - visited)
             # put into back of queue of visited verts
             visited.add(dequeued)
         return visited

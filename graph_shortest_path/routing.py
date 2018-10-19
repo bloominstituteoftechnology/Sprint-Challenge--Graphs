@@ -41,8 +41,14 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # iterate through vetices;
+        for vert in self.vertices:
+            # if it equals the parameter
+            if vert == value:
+                # return the vert
+                return vert
+        # if we don't find it dream is dead
+        return None
 
     def bfs(self, start):
         """
