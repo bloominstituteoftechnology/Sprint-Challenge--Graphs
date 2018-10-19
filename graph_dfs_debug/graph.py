@@ -19,9 +19,11 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        #changed start to end for add to make connection
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            #changed end to start for add to make connection
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
@@ -32,7 +34,10 @@ class Graph:
             z = x.pop()
             if x == target:
                 break
-            x.extend(self.vertices[z])
+            #added z which is the current vertex to the y which is used to check current
+            y.add(z)
+            #added a minus y to your vertices so it doesn't return everything
+            x.extend(self.vertices[z] - y)
 
         return x
 
