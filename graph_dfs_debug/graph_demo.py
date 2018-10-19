@@ -44,8 +44,11 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
         
     #     graph.add_edge(vertices[0], vertices[1])
 
-    # bokeh_graph = BokehGraph(graph, draw_components=draw_components)
-    # bokeh_graph.show()
+    # bg = BokehGraph(graph)
+    # bg._setup_graph_renderer()
+
+    bokeh_graph = BokehGraph(graph, draw_components=draw_components)
+    bokeh_graph._setup_graph_renderer("1")
 
 
 if __name__ == '__main__':
@@ -56,3 +59,4 @@ if __name__ == '__main__':
         main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
     else:
         main()
+

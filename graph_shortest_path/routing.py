@@ -80,7 +80,7 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        visited = []
+        # visited = []
         q = Queue()
         for v in range(graph.vertices):
             v.color = white
@@ -89,8 +89,9 @@ class Graph:
         startVert.color = grey
         q.enqueue(start)
 
-        while !q.isEmpty():
+        while q.size() > 0:
             u = q[0]
+            print(q)
 
             for v in u.neighbors:
                 if v.color == white:
@@ -127,7 +128,7 @@ def add_edge(start, end):
 if __name__ == '__main__':
     if len(sys.argv) != 3:
         print('Usage: routing.py hostA hostB')
-        sys.exit()
+        # sys.exit()
 
     graph = Graph()
     vertA = Vertex('HostA')
@@ -174,3 +175,5 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
+    # print(graph.bfs)
