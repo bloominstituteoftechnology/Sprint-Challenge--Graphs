@@ -8,7 +8,8 @@ class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-    def __repr__(self):
+    def __str__(self):
+        #pass
         return f"DESTINATION: {self.destination} WEIGHT: {self.weight}"
 
 # Vertex class
@@ -22,10 +23,22 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-    def __repr__(self):
+    def __str__(self):
+        #pass
         return f"VALUE: {self.value} EDGES: {self.edges}"
 
-
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 # Graph class
 class Graph:
     def __init__(self):
@@ -59,9 +72,30 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        # adj = self.vertices
-        # for vertex in adj:
-        #     if 
+        vertices = self.vertices
+        q = Queue()
+        q.enqueue([start])
+        visited =[]
+        while q.size() > 0:
+            path = q.dequeue()
+            v = path
+            if v not in visited:
+                print(path)
+                visited.append(v)
+                if  v in  vertices:
+                    vertices.remove(v)
+                for next_vert in self.vertices:
+                    #appears to go through an infite loop. Not sure how to go through this because 
+                    new_path = list(path)
+                    for edge in next_vert.edges:
+                        new_path.append(edge.destination)
+                        q.enqueue(new_path)
+        return visited
+                
+
+                
+            
+        #return visited
 
     def output_route(self, start):
         """
@@ -71,7 +105,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        levels = self.bfs(start)
+        
+        for level in levels:
+            for edge in level.edges:
+                print(edge.destination.value)
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
