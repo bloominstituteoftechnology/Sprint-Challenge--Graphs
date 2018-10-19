@@ -71,7 +71,7 @@ if __name__ == '__main__':
     for i in range(6):
         graph.add_vertex(str(i))
 
-    graph.add_edge('0', '1', True)
+    graph.add_edge('0', '1')
     graph.add_edge('0', '3')
     graph.add_edge('1', '2')
     graph.add_edge('2', '4')
@@ -81,5 +81,5 @@ if __name__ == '__main__':
     # print('===graph.bfs_path:', graph.bfs_path('0', '4'))
     # print(graph.dft('0'))
 
-print(graph.vertices)
+    print(graph.vertices)
     # print(graph.vertices)
