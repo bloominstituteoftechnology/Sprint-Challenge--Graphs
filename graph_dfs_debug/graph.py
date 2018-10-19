@@ -22,7 +22,7 @@ class Graph:
         self.vertices[start].add(start)
         if bidirectional:
             self.vertices[end].add(end)
-
+    # address issues in dfs
     def dfs(self, start, target=None):
         x = []
         x.append(start)
