@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+import collections
 
 
 # Edge class
@@ -42,7 +43,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +56,19 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        queue = collections.deque([start])
+        visited = [start]
+        while queue:
+            current = queue.popleft() 
+            # if current not in visited:
+            #     visited.append(current)
+            for edge in current.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = current
+                    queue.append(edge.destination)
+                    visited.append(edge.destination)
+        # return visited
 
     def output_route(self, start):
         """
@@ -62,7 +78,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        current = start
+
+        print(current.value)
+
+        while current.parent:
+            current = current.parent
+            print(f' --> {current.value}')
 
     def route(self, start, end):
         # BFS to build the parent reference tree
