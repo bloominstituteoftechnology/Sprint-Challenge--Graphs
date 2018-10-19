@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+import collections
 
 
 # Edge class
@@ -42,7 +43,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +56,29 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            vertex.color = "white"
+            # print(f'Vertex value:{vertex.value}, vertex color: {vertex.color} ')
+        start.color = "gray"
+        queue = collections.deque([start])
+        visited = [start]
+        while queue:
+            current = queue.popleft()
+            print(f'popped value: {current.value}') 
+            # if current not in visited:
+            #     visited.append(current)
+            for edge in current.edges:
+                if edge.destination not in visited:
+                    edge.destination.color = "gray"
+                    print(f'destination value: {edge.destination.value}, destination color: {edge.destination.color}')
+                    edge.destination.parent = current
+                    queue.append(edge.destination)
+                    visited.append(edge.destination)
+                    for vertex in visited:
+                        print(f'Visited: {vertex.value}')
+            current.color = "black"
+            print(f'current value: {current.value}, current color: {current.color}')
+        # return visited
 
     def output_route(self, start):
         """
@@ -62,7 +88,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        current = start
+
+        print(current.value)
+
+        while current.parent:
+            current = current.parent
+            print(f' --> {current.value}')
 
     def route(self, start, end):
         # BFS to build the parent reference tree
