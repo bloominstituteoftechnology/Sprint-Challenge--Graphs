@@ -28,7 +28,6 @@ class BokehGraph:
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
 
-
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
@@ -94,10 +93,14 @@ class BokehGraph:
 
     def randomize(self):
         """Randomize vertex positions."""
+        taken = set()
         for vertex in self.vertex_list:
-            # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+            while True:
+                test = (1 + int(random() * (self.width - 2)), 1 + int(random() * (self.height - 2)))
+                if test not in taken:
+                    taken.add(test)
+                    self.pos[vertex.label] = test
+                    break
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
