@@ -101,7 +101,6 @@ class BokehGraph:
                     self.pos[vertex.label] = test
                     break
 
-
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
         self.graph.find_components()
