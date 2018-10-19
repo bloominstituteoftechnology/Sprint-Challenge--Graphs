@@ -2,6 +2,20 @@
 
 import sys
 
+# Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # Edge class
 class Edge:
@@ -42,7 +56,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            if v.value = value:
+                return v
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +69,18 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        visited = []
+        q.enqueue(start)
+        while q.size() > 0:
+            curr = q.dequeue()
+            visited.append(curr)
+            for edge in curr.edges:
+                if edge not in visited:
+                    q.enqueue(edge)
+                    edge.parent = curr
+        return visited
+
 
     def output_route(self, start):
         """
@@ -62,7 +90,15 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        path = []
+        v = []
+        v.append(start)
+        while len(v) > 0:
+            curr = v.pop()
+            parent = curr.parent
+            path.append(curr)
+            v.append(parent)
+        return path
 
     def route(self, start, end):
         # BFS to build the parent reference tree
