@@ -88,7 +88,7 @@ class Graph:
             if current == target:
                 return True
             # Get all adjacent vertices of the dequeued vertex.  If adjacent has not been visited, then mark it visited and enqueue it
-            for vertex in self.vertices[removed].edges: # for each child node
+            for vertex in self.vertices[current].edges: # for each child node
                 if vertex not in visited: # if the node has not been visited
                     queue.enqueue(vertex) # place the node in the back of the queue
                     vertex.destination.color = 'red'
