@@ -2,6 +2,32 @@
 
 import sys
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+
+class Stack:
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
 
 # Edge class
 class Edge:
@@ -21,7 +47,8 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
+    def __repr__(self):
+        return self.value
 
 # Graph class
 class Graph:
@@ -42,8 +69,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -53,7 +82,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue(start)
+        start.color = 'blue'
+        while q.size() > 0:
+            v = q.dequeue()
+            for child in v.edges:
+                destination = child.destination
+                if destination.color == 'white':
+                    destination.color = 'blue'
+                    destination.parent = v
+                    q.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -63,7 +102,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        v = start
+        route = []
+        while v is not None:
+            route.append(v.value)
+            if v.parent is not None:
+                route.append('--------->')
+            v = v.parent
+        print(''.join(route))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
