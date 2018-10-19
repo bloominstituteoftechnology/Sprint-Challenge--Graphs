@@ -75,11 +75,15 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         current = start
-        seen = set()
-        while current.parent:
-            seen.add(current)
+        seen = []
+        while True:
+            seen.append(current)
             current = current.parent
-        print(seen)
+            if current.parent is None:
+                seen.append(current)
+                break
+        for host in seen:
+            print(host.value)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
