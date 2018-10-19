@@ -88,7 +88,7 @@ class Graph:
                 if destination.color == 'white': # if the node has not been visited
                     destination.color = 'green'
                     destination.parent = vertex
-                    queue.enqueue(destination)
+                    queue.enqueue(destination) # a problem here was using * push * instead of * enquque *
 
     def output_route(self, start):
         """
