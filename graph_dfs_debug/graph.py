@@ -24,6 +24,7 @@ class Graph:
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
+
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
@@ -39,14 +40,18 @@ class Graph:
         return visited
 
 
-    def graph_rec(self, start, target=None):
-        visited = set()
+    def graph_rec(self, start, target, visited=None):
+        if visited is None:
+            visited = set()
         visited.add(start)
+        print(visited)
         if start == target:
             return True
         for vertex in self.vertices[start]:
-            self.graph_rec(vertex, target)
-        return visited
+            if vertex not in visited:
+                if self.graph_rec(vertex, target, visited):
+                    return True
+        return False
 
 
 
