@@ -32,6 +32,7 @@ class Graph:
 
         while x:
             z = x.pop()
+            # was checking for x(whole array) instead of z (current).
             if z == target:
                 break
             #added z which is the current vertex to the y which is used to check current
@@ -43,8 +44,11 @@ class Graph:
 
     def graph_rec(self, start, target=None):
         x = set()
+        #add instead of append here as it's a set
         x.add(start)
         for v in self.vertices[start]:
+            #Seems like a recurisve method but it wasn't recognizing graph_rec. 
+            #I made it self.graph_rec. idk if that fixes because idk what this does
             self.graph_rec(v)
         return x
 
