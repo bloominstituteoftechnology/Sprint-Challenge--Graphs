@@ -126,6 +126,7 @@ class BokehGraph:
                     1 + int(random() * (self.height - 2)),
                 )
                 if test not in taken:
+                    taken.add(test)
                     self.pos[vertex.label] = test
                     break
 
