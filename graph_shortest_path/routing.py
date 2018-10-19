@@ -72,30 +72,19 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        vertices = self.vertices
         q = Queue()
-        q.enqueue([start])
-        visited =[]
+        start.color = "black"
+        q.enqueue(start)
         while q.size() > 0:
-            path = q.dequeue()
-            v = path
-            if v not in visited:
-                print(path)
-                visited.append(v)
-                if  v in  vertices:
-                    vertices.remove(v)
-                for next_vert in self.vertices:
-                    #appears to go through an infite loop. Not sure how to go through this because 
-                    new_path = list(path)
-                    for edge in next_vert.edges:
-                        new_path.append(edge.destination)
-                        q.enqueue(new_path)
-        return visited
-                
-
-                
+            vertex = q.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination #child 
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    q.enqueue(destination) 
             
-        #return visited
+        #can use a list and pop and append instead. 
 
     def output_route(self, start):
         """
@@ -105,11 +94,15 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        levels = self.bfs(start)
-        
-        for level in levels:
-            for edge in level.edges:
-                print(edge.destination.value)
+        current = start
+        output_str = ""
+
+        while current is not None:
+            output_str += current.value
+            if current.parent is not None:
+                output_str += "-->"
+            current = current.parent
+        print(output_str)
         
 
     def route(self, start, end):
