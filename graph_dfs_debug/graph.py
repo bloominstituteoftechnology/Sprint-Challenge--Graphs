@@ -19,7 +19,7 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        # was self.vertices[start].add(start)
+        # was self.vertices[start].add(start) - was connecting to itself
         self.vertices[start].add(end)
         if bidirectional:
             # was self.vertices[start].add(end)
@@ -67,7 +67,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
