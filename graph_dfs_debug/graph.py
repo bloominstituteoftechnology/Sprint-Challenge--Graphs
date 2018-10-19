@@ -19,22 +19,23 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
-
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+        stack = []
+        visited = []
+        stack.append(start)
+        while len(stack) > 0:
+            current = stack.pop()
+            if current not in visited:
+                visited.add(current)
+                if current == target:
+                    break
+                for next_vert in self.vertices[current]:
+                    stack.append(next_vert)
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
