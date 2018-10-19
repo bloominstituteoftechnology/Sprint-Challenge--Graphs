@@ -125,11 +125,12 @@ class Graph:
 
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(end)
-        start.component = start.component + 1
+        # start.component = start.component + 1
+        # print(f'start component:{start.component}')
         if bidirectional:
             self.vertices[end].add(start)
-            end.component = end.component + 1
-
+            # end.component = end.component + 1
+        # print(f'end component:{end.component}')
     def dfs(self, start, target=None):
         stack = []
         stack.append(start)
@@ -166,5 +167,6 @@ class Graph:
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
+                print(current_component)
                 visited.update(reachable)
         self.components = current_component
