@@ -1,13 +1,10 @@
 # Shortest Path across the Internet
 
-For a computer network, it's useful to know how to get a packet from one host to
-another across the Internet.
+For a computer network, it's useful to know how to get a packet from one host to another across the Internet.
 
-For this challenge, you will print out the shortest route from one host to
-another on the console.
+For this challenge, you will print out the shortest route from one host to another on the console.
 
-Even though we're using this to see how packets are routed on a network, the
-exact same procedure could be used to:
+Even though we're using this to see how packets are routed on a network, the exact same procedure could be used to:
 
 * find how you're connected to a friend of a friend
 * route an AI through a level
@@ -66,3 +63,4 @@ HostA
 $ python routing.py HostE HostB
 HostE --> HostF --> HostC --> HostA --> HostB
 ```
+

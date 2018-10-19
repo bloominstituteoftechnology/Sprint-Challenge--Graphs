@@ -26,23 +26,25 @@ class Graph:
     def dfs(self, start, target=None):
         x = [] # this is the stack
         x.append(start)
-        y = set(x) #unused variable - questionable 
+        visited = set(x) #unused variable - questionable 
 
         while x:
-            z = x.pop() # takes off the back that would be for a stack - good 
-            if x == target: # should most likely be z --change
+            node = x.pop() # takes off the back that would be for a stack - good 
+            if node == target: # should most likely be z --change
                 break
-            x.extend(self.vertices[z]) #extend just flattens the list - good
+            x.extend(self.vertices[node]) #extend just flattens the list - good
         print('x - dfs -> ', x)
         print('y - dfs -> ', y)
-        return x # this would return the path? 
+        return visited # this would return the path? 
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start) # should be add? 
+    def dfs_rec(self, start, target=None, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start) # should be add? 
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x # not returning anything from for loop
+            if v not in visited:
+                self.dfs_rec(v, visited)
+        return visited # not returning anything from for loop
 
     def find_components(self):
         visited = set()
