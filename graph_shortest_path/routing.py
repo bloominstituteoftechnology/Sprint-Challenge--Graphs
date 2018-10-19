@@ -32,7 +32,7 @@ class Graph:
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
-
+        
         Used in the `main` function to look up the vertices passed in
         from the command line.
 
@@ -41,10 +41,13 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex == value:
+                return vertex
+            else:
+                return None
 
-    def bfs(self, start):
+    def bfs(self, start, target):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -52,7 +55,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = [start]
+        visited = []
+        while len(queue) > 0:
+            cur_node = queue.pop(0)
+            if cur_node == target:
+                return True
+            for edge in self.vertices[cur_node].edges:
+                if edge not in visited:
+                    visited.append(edge)
+                    queue.append(edge)
+            return False
 
     def output_route(self, start):
         """

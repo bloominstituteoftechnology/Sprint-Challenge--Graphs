@@ -38,6 +38,7 @@ class Graph:
             if cur_node == target:
                 break
             visited.add(cur_node)
+            stack.extend(self.vertices[cur_node] - visited)
         return visited
 
     def graph_rec(self, start, target=None):
