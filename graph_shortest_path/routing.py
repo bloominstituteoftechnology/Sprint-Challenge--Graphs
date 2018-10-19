@@ -25,22 +25,10 @@ class Graph:
     def __init__(self):
         self.vertices = []
 
-    def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
-
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
-
-        @param {*} value: The value of the Vertex to find
-
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
-        # !!!! IMPLEMENT ME
-        if value in self.vertices:
-            return self.vertices[value]
+    def find_vertex(self, name):
+        for obj in self.vertices:
+            if obj.value == name:
+                return obj
         else:
             return None
 
@@ -51,30 +39,23 @@ class Graph:
         while len(queue) > 0:
             current = queue[0]
             for node in current.edges:
-                if node.color == "white":
-                    node.color = "pink"
-                    node.parent = current
-                    queue.append(node)
+                if node.destination.color == "white":
+                    node.destination.color = "pink"
+                    node.destination.parent = current
+                    queue.append(node.destination)
             del queue[0]
             current.color = "black"
 
       
     def output_route(self, start):
-        """
-        Print out the route from the start vertex along its parent
-        references (these were set in the `bfs` method)
-
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
         parent = start.parent
-        path = []
+        path = [start.value]
         while parent != None:
-            path.append(parent)
+            path.append(parent.value)
             parent = parent.parent
+        print(path)
         return path
 
-
-        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -87,7 +68,6 @@ class Graph:
 def add_edge(start, end):
     start.edges.append(Edge(end))
     end.edges.append(Edge(start))
-
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
@@ -123,8 +103,8 @@ if __name__ == '__main__':
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
 
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
+    #Look up the hosts passed in from the command line by
+    #name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
 
     if hostAVert is None:
@@ -137,5 +117,6 @@ if __name__ == '__main__':
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
 
-    # Show the route from one Vertex to the other
+    #Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
