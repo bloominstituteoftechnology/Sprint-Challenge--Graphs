@@ -26,17 +26,23 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        # Queue for breadth first, Stack for Depth first
+        stack = []
+        # append starting node
+        stack.append(start)
+        visited = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+        # iterate through stack to find visited nodes
+        while stack:
+            current_node = stack.pop()
+            visited.add(current_node)
+            # check if next node is visited
+            for next_node in self.vertices[current_node]:
+                # if not, leave in stack and check next node
+                if next_node not in visited:
+                    stack.append(next_node)
+        # return all visted nodes
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
@@ -50,11 +56,13 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            # call dfs on node if NOT visted to add it to stack
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
+                # updates visited nodes with a new color, leaves nodes still in stack with original color
                 visited.update(reachable)
         self.components = current_component
 
