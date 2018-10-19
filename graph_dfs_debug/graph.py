@@ -39,10 +39,10 @@ class Graph:
 
     def graph_rec(self, start, target=None):
         queue = set()
-        queue.append(start)
+        queue.add(start)
         for vertex in self.vertices[start]:
-            graph_rec(vertex)
-        return queue
+            self.graph_rec(vertex)
+        return queue       
 
     def find_components(self):
         visited = set()

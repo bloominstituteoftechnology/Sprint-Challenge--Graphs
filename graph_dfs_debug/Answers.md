@@ -10,7 +10,7 @@ Fixed find_components method so it checks if the vertex is not in visited
 Fixed dfs method so nodes are taken from the stack and added to visited, otherwise the while stack loop will run forever
 
 4. I wanted to let it find a target vertex, but even back when it did kinda run this part didn't really work.
-
+I think that I fixed this issue when I fixed the dfs method, but I'm not sure. Does it find target vertex by not coloring it for not being connected?
 5. My editor sure is complaining a lot about something called "lint."
 
 6. I keep losing track of my variables, I guess I should name them better?
