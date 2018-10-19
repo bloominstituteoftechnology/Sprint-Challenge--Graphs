@@ -9,7 +9,6 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
-
 # Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
@@ -21,7 +20,6 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
 
 # Graph class
 class Graph:
@@ -45,7 +43,7 @@ class Graph:
         for vertex in self.vertices:
             if vertex.value == value:
                 return vertex
-            return None
+        return None
 
     def bfs(self, start):
         """
@@ -64,7 +62,8 @@ class Graph:
             for edge in dequeued.edges:
                 if edge.destination not in visited:
                     edge.destination.parent = dequeued
-                    q.append(edge)
+                    q.append(edge.destination)
+                    visited.add(edge.destination)
 
 
     def output_route(self, start):
@@ -76,9 +75,10 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         track = [start]
-        while start.parent:
-            track.append(start.parent)
-            start = start.parent
+        current = start
+        while current.parent:
+            track.append(current.parent)
+            current = current.parent
         for node in track:
             print(node)
 
