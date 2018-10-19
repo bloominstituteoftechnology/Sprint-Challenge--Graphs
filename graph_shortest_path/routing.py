@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if value == vertex.value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +55,22 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        stack = []
+        stack.append(start)
+        visited = set()
+
+        while stack:
+            current = stack.pop(0)
+            if current.value not in visited:
+                # print('CURRENT BFS: ', current.value)
+                # print('VISITED: ', visited, '\n')
+                visited.add(current.value)
+                for edge in current.edges:
+                    if edge.destination.value not in visited:
+                        edge.destination.parent = current
+                        stack.append(edge.destination)
+
+        return visited
 
     def output_route(self, start):
         """
@@ -62,12 +80,32 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        route = []
+        counter = 1
+        current = start
+
+        while current.parent:
+            # print(counter, current.parent.value)
+            route.append(current.value)
+            counter += 1
+            current = current.parent
+        route.append(current.value)
+
+        print(f'''
+            Took {counter} steps.
+            {' --> '.join(route)}
+
+        **************END SHORTER ROUTE*****************
+        ''')
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
+        print(f'''
+        **************SHORTER ROUTE*****************
+        
+        Route form {start.value} to {end.value}:''')
         self.output_route(start)
 
 
@@ -114,6 +152,8 @@ if __name__ == '__main__':
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
+    # print(hostAVert)
+    # print('graph.bfs', graph.bfs(vertB))
 
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
