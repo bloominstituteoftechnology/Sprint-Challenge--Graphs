@@ -37,15 +37,17 @@ class Graph:
         stack = [start] # create a stack dictionary where start is placed
         while len(stack) > 0: # while stack is still holding start loop through it
             # pop off each off the elements
-            destacked = stack.pop()
+            current = stack.pop()
             #check to see if any of the destacked elements have been visited
             #and if any of the destacked elements are the target.
-
-            if destacked not in visited:
-                if destacked == target:
+            if current not in visited:
+                if current == target:
                     break
                     # place all of the destacked elements into the visited dictionary
-                visited.append(destacked)
+                visited.append(current)
+                for next_vert in self.vertices[current]:
+                    stack.append(next_vert)
+            return visited
        
 
     def graph_rec(self, start, target=None):
@@ -60,7 +62,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
