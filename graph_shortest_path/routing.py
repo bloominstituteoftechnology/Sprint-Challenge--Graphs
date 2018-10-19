@@ -60,11 +60,11 @@ class Graph:
         visited = set()
         while storage:
             current = storage.pop(0)
-            if current not in visited:
-                visited.add(current)
-                for edge in current.edges:
+            visited.add(current)
+            for edge in current.edges:
+                if edge.destination not in visited:
                     edge.destination.parent = current
-                    storage.append(edge)
+                    storage.append(edge.destination)
 
     def output_route(self, start):
         """
@@ -74,7 +74,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        seen = set()
+        while current.parent:
+            seen.add(current)
+            current = current.parent
+        print(seen)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
