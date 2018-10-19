@@ -10,6 +10,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
 
 
+
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=100, height=100,
