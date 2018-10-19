@@ -21,3 +21,4 @@ Describe the fixes/improvements you made to the Graph implementation here.
 `graph.add_edge(0, 1)`
 `print(graph.dfs(0, 1))`
 running `python graph.py` will return true, but with `print(graph.dfs(0, 2))`, running the same file will result in the visited set, `{0, 1}`
+5) in function `graph_rec`, here are some pointers: change `x` to be called `visited` and be an empty set. Call `self.graph_rec()` instead of `graph_rec()` when recursing. return True if the start node matches the target node.
