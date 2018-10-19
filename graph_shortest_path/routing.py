@@ -2,6 +2,33 @@
 
 import sys
 
+class Queue:  #FIFO
+    def __init__(self):
+        self.queue = []
+    
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else: 
+            return None
+    def size(self):
+        return len(self.queue)
+
+
+class Stack:  #LIFO
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if(self.size()) > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
 
 # Edge class
 class Edge:
@@ -42,7 +69,8 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        
+
 
     def bfs(self, start):
         """
@@ -52,12 +80,31 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        visited = []
+        q = Queue()
+        for v in range(graph.vertices):
+            v.color = white
+            v.parent = null
+
+        startVert.color = grey
+        q.enqueue(start)
+
+        while !q.isEmpty():
+            u = q[0]
+
+            for v in u.neighbors:
+                if v.color == white:
+                    v.color = gray
+                    v.parent = u
+                    q.enqueue(v)
+            q.dequeue()
+            u.color = black
 
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
+
 
         @param {Vertex} start: The starting Vertex to follow and print
         """

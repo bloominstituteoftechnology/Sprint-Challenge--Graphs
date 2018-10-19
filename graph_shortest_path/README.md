@@ -21,8 +21,7 @@ This is what is in the boilerplate:
 
 ## Modified BFS
 
-Take your BFS code and modify it so that each neighbor gets a link back to its
-parent:
+Taske your BFS code and modify it so that each neighbor gets a link back to its parent:
 
 ```pseudocode
 BFS(graph, startVert):
