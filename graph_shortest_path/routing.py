@@ -8,7 +8,9 @@ class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-
+    def __str__(self):
+        #pass
+        return f"DESTINATION: {self.destination} WEIGHT: {self.weight}"
 
 # Vertex class
 class Vertex:
@@ -21,8 +23,22 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+    def __str__(self):
+        #pass
+        return f"VALUE: {self.value} EDGES: {self.edges}"
 
-
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 # Graph class
 class Graph:
     def __init__(self):
@@ -42,7 +58,11 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +72,19 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        start.color = "black"
+        q.enqueue(start)
+        while q.size() > 0:
+            vertex = q.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination #child 
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    q.enqueue(destination) 
+            
+        #can use a list and pop and append instead. 
 
     def output_route(self, start):
         """
@@ -62,7 +94,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_str = ""
+
+        while current is not None:
+            output_str += current.value
+            if current.parent is not None:
+                output_str += "-->"
+            current = current.parent
+        print(output_str)
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -124,6 +165,7 @@ if __name__ == '__main__':
     if hostBVert is None:
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
+    
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
