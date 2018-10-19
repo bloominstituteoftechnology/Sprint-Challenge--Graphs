@@ -1,7 +1,7 @@
 """
 General drawing methods for graphs using Bokeh.
 """
-
+from graph import Graph
 from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
@@ -37,7 +37,7 @@ class BokehGraph:
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
-            [vertex.label for vertex in self.vertex_list], 'index')
+            self.vertex_list, 'index')
         colors = (self._get_connected_component_colors() if draw_components
                   else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
@@ -107,3 +107,15 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
+
+graph = Graph()  # Instantiate your graph
+graph.add_vertex('0')
+graph.add_vertex('1')
+graph.add_vertex('2')
+graph.add_vertex('3')
+graph.add_edge('0', '1', True)
+graph.add_edge('0', '3', True)
+print(graph.vertices)
+
+bg = BokehGraph(graph)
+bg.show()
