@@ -106,7 +106,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output = f"{current.value}"
+        while current.parent is not None:
+            current = current.parent
+            output = f"{current.value} --> {output}"
+        print(output)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
