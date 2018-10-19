@@ -29,7 +29,7 @@ class Edge:
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
         self.value = value
-        self.edges = []
+        self.edges = [] # note edges are a list not a set
         # Color of this vertex
         # Used to mark vertices for the traversal algorithm (BFS or DFS)
         self.color = color
@@ -70,24 +70,33 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
     def bfs(self, start, target):
-        # mark all of the vertices as not visited
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+
         visited = []
         # create a queue for BFS
         queue = Queue()
         # mark the source node as visited and enqueue
-        queue.enqueue(start)
+        start.color = 'green' # give the starting vertext a color
+        queue.enqueue(start) # place the starting node in the queue
         while queue.size() > 0: # when the queue is not empty
             # Dequeue a vertex from the queue and print it
-            removed = queue.dequeue() # remove the first element from the queue
-            visited.append(removed) # mark the removed node as visited
-            print(removed)
-            if removed == target:
+            current = queue.dequeue() # remove the first element from the queue
+            visited.append(current) # mark the removed node as visited
+            print(current)
+            if current == target:
                 return True
             # Get all adjacent vertices of the dequeued vertex.  If adjacent has not been visited, then mark it visited and enqueue it
             for vertex in self.vertices[removed].edges: # for each child node
                 if vertex not in visited: # if the node has not been visited
                     queue.enqueue(vertex) # place the node in the back of the queue
-        return False
+                    vertex.destination.color = 'red'
+                    vertex.destination.parent = current
+                    queue.push(vertex.destination)
+            queue.dequeue()
+
+            current.color = 'grey'
 
     def output_route(self, start):
         """
@@ -162,3 +171,5 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+    graph.route(hostAVert, hostDVert)
+
