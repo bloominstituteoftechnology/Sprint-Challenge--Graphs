@@ -14,3 +14,7 @@ In the graph class:
 
     In the find_components method, added check to make sure vertex is NOT in
   list of visited vertices, only want to search through ones we have seen.
+
+    In the graph_rec method, the list has to be passed through to the recursive
+  function calls so they all add to the same list which is a collection of all
+  the combined vertices
