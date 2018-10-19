@@ -1,1 +1,2 @@
 Describe the fixes/improvements you made to the Graph implementation here.
+1) in add_edge function, changed self.vertices[start].add(start) to self.vertices[start].add(end) and self.vertices[end].add(end) to self.vertices[end].add(start)
