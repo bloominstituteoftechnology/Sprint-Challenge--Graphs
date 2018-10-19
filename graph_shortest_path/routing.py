@@ -2,13 +2,14 @@
 
 import sys
 
-
+print(sys.argv) # only features ['c:\\Users\\Jonathan\\Lambda School Projects\\Sprint-Challenge--Graphs\\graph_shortest_path\\routing.py']
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-
+    def __repr__(self):
+        return f"DESTINATION: {self.destination} WEIGHT: {self.weight}"
 
 # Vertex class
 class Vertex:
@@ -21,6 +22,8 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+    def __repr__(self):
+        return f"VALUE: {self.value} EDGES: {self.edges}"
 
 
 # Graph class
@@ -42,7 +45,12 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        print(self.vertices)
+        print("running looking for : ", value)
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +60,9 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        # adj = self.vertices
+        # for vertex in adj:
+        #     if 
 
     def output_route(self, start):
         """
@@ -123,6 +133,10 @@ if __name__ == '__main__':
 
     if hostBVert is None:
         print('routing.py: could not find host: ', sys.argv[2])
+        sys.exit()
+    else:
+        print("FOUND THE HOST")
+        print(hostBVert)
         sys.exit()
 
     # Show the route from one Vertex to the other
