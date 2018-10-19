@@ -20,7 +20,6 @@ class BokehGraph:
         self.graph = graph
         self.width = width
         self.height = height
-        self.vertex_list = list(self.graph.vertices.keys())
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
         self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
@@ -34,19 +33,14 @@ class BokehGraph:
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
         # Saving vertices in an arbitrary but persistent order
-        """
-        below Moved into constructor
-        """
-        # self.vertex_list = list(self.graph.vertices.keys())
+        self.vertex_list = list(self.graph.vertices.keys())
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
         colors = (self._get_connected_component_colors() if draw_components
                   else self._get_random_colors())
-
         graph_renderer.node_renderer.data_source.add(colors, 'color')
-        
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
                                                     fill_color='color')
@@ -102,37 +96,14 @@ class BokehGraph:
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            # self.pos[vertex.label] = (1 + random() * (self.width - 2),
-            #                           1 + random() * (self.height - 2))
-            self.pos[vertex] = (1 + random() * (self.width - 2),
+            self.pos[vertex.label] = (1 + random() * (self.width - 2),
                                       1 + random() * (self.height - 2))
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
-        # self.graph.find_components()
-        # component_colors = self._get_random_colors(self.graph.components)
-        # vertex_colors = []
-        # for vertex in self.vertex_list:
-        #     vertex_colors.append(component_colors[vertex.component])
-        # return vertex_colors
-
-        if randint(0, 1) == 0:
-            print('\n\n********** BUILD WITH RECURSIVE DFS **********\n\n')
-            self.graph.get_components('recursive')
-        else:
-            print('\n\n********** BUILD WITH NO-RECURSIVE DFS **********\n\n')
-            self.graph.get_components('dfs')
-
-        connected_components = self.graph.components
-        component_colors = self._get_random_colors(len(self.graph.components))
-
-        vertex_colors = [0] * len(self.vertex_list)
-
-        # Assign to each connected component a unique single color.
-        for i in range(len(component_colors)):
-            color = component_colors[i]
-            component = connected_components[i]
-            for vertex in component:
-                vertex_colors[int(vertex)] = color
-
+        self.graph.find_components()
+        component_colors = self._get_random_colors(self.graph.components)
+        vertex_colors = []
+        for vertex in self.vertex_list:
+            vertex_colors.append(component_colors[vertex.component])
         return vertex_colors

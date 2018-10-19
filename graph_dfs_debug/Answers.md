@@ -15,7 +15,7 @@ Checks for return Exceptions if the vertex is not part of the Graph.
 
 general:
 
-1.  Mixing data types, str with int.
+1.  Mixing data types, e.g. str with int.
 
 find_components() -> get_components()
 
@@ -25,5 +25,5 @@ find_components() -> get_components()
 BUGS isn draw.py:
 
 1.  Several Bugs fixed: due to the new implementation done, fix references to new properties,as well to change the calls to methods with new names
-2.  REFACTORED: get_connected_component_colors(), redone overall
+2. get_connected_component_colors(), redone overall
     
