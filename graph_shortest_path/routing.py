@@ -42,50 +42,51 @@ class Graph:
         # !!!! IMPLEMENT ME
         
         for vertex in self.vertices:
-            print('45', vertex.value)
-            print(value)
+            # print('45', vertex.value)
+            # print(value)
             if vertex.value == value:
                 return vertex
         return None
 
-    def bfs(self, start):
+    def bfs(self, start, begin):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        print('bfs start')
+        # print('bfs start')
         q = []
-        q.append([self.vertices[0]])
+        s_index = self.vertices.index(begin)
+        q.append([self.vertices[s_index]])
         visited = []
         while q:
             path = q.pop(0)
             node = path[-1]
-            print('-------------------')
-            print('path', path)
-            print('node.value', node.value)
-            print('start.value', start.value)
+            # print('-------------------')
+            # print('path', path)
+            # print('node.value', node.value)
+            # print('start.value', start.value)
 
             if node.value == start.value:
-                print('final path', path)
+                # print('final path', path)
                 return path
                 break
             else: 
                 visited.append(node)
                 for edge in node.edges:
                     if edge not in visited:
-                        print('edge', edge.destination)
+                        # print('edge', edge.destination)
                         new_path = list(path)
                         new_path.append(edge.destination)
                         q.append(new_path)
-        print('false')
+        # print('false')
         return False
 
         # !!!! IMPLEMENT ME
         # return path
 
-    def output_route(self, start):
+    def output_route(self, start, begin):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
@@ -93,24 +94,24 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        route = self.bfs(start)
-        print('route', route)
+        route = self.bfs(start, begin)
+        # print('route', route)
         global sen
         sen = []
         for v in route:
-            print('v', v.value)
-            print('sen', sen)
+            # print('v', v.value)
+            # print('sen', sen)
             sen.append(v.value)
-            print('sen', sen)
+            # print('sen', sen)
         arr = ' --> '.join(sen)
-        print('arr', arr)
-        return sen
+        print('\nROUTE:', arr)
+        return arr
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        # self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(end)
+        self.output_route(end, start)
 
 
 # Helper function to add bidirectional edges
@@ -156,14 +157,14 @@ if __name__ == '__main__':
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
-    print(hostAVert)
+    # print(hostAVert)
 
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
         sys.exit()
 
     hostBVert = graph.find_vertex(sys.argv[2])
-    print(hostBVert)
+    # print(hostBVert)
 
     if hostBVert is None:
         print('routing.py: could not find host: ', sys.argv[2])
