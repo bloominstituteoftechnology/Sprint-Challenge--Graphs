@@ -35,7 +35,7 @@ class Graph:
             x.extend(self.vertices[z])
 
         return x
-
+        
     def graph_rec(self, start, target=None):
         x = set()
         x.append(start)
