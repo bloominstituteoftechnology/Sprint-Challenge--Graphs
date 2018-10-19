@@ -23,26 +23,28 @@ class Graph:
             raise Exception("Cannot put an edge on a nonexistent vertex")
         else:
             self.vertices[start].add(end)
+            start.component += 1
             if bidirectional:
                 self.vertices[end].add(start)
+                end.component += 1
 
-    def dfs(self, start, target=None, visited=None):
-        if visited is None:
-            visited = []
-        visited.append(start)
-        if start == target:
-            return True
-        for node in self.vertices[start].edges:
-            if node not in visited:
-                if self.dfs(node, target, visited):
-                    return True
-        return False
+    def dfs(self, start, target=None):
+        stack = []
+        stack.append(start)
+        visited = set(stack)
+
+        while stack:
+            cur_node = stack.pop()
+            if cur_node == target:
+                break
+            visited.add(cur_node)
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
@@ -50,7 +52,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
