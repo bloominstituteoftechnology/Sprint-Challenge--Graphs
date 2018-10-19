@@ -60,41 +60,54 @@ class Graph:
         # for v in self.vertices:
         #     v.parent = v.edges[0].destination
         start = start
-        print(start.edges)
+        # print(start.edges)
         visited = []
         queue = []
         queue.append(start)
-        print(f"queue:::::::: {queue}")
         while len(queue) > 0:
             curr_node = queue.pop(0)
             if curr_node not in visited:
                 visited.append(curr_node)
                 # if curr_node.parent is not None:
                 #     parents.append(curr_node.parent)
+                if curr_node.color == 'white':
+                    curr_node.color = 'gray'
                 for kid in curr_node.edges:
                     if kid.destination not in visited:
                         visited.append(kid)
                         queue.append(kid)
-                        print(f"curr node::::::::{curr_node}")
                         kid.destination.parent = curr_node
-                        print(f"parent of:::::::: {kid.destination.parent.value}")
+        # print(f"check for parent {self.vertices[2].parent}")
         queue.clear()
 
 
     def output_route(self, start):
-        """
-        Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
 
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
-        # !!!! IMPLEMENT ME
-        pass
+        route = []
+        queue = []
+
+        if start:
+            route.append(start)
+            queue.append(start)
+
+            while len(queue) > 0:
+                curr_node = queue.pop(0)
+                if curr_node.parent:
+                    if curr_node.parent not in route:
+                        parent_node = curr_node.parent
+                        route.append(parent_node)
+                        queue.append(parent_node)
+        r = ""
+        route.reverse()
+        for v in range(len(route)):
+            if v == 0:
+                r += route[v].value
+            else:
+                r += " --> " + route[v].value
+        print(r)
 
     def route(self, start, end):
-        # BFS to build the parent reference tree
         self.bfs(end)
-        # print the route from the start Vertex
         self.output_route(start)
 
 
@@ -137,24 +150,26 @@ graph.vertices.append(vertE)
 graph.vertices.append(vertF)
 graph.vertices.append(vertG)
 graph.vertices.append(vertH)
+#
+print(f"F, A  {graph.route(vertF, vertA)}")
+print(f"E, B  {graph.route(vertE, vertB)}")
+print(f"D, F  {graph.route(vertD, vertF)}")
+print(f"C, H  {graph.route(vertC, vertH)}")
 
-print(graph.bfs(vertH))
-print(graph.bfs(vertH))
 
-
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
-    # hostAVert = graph.find_vertex(sys.argv[1])
-    #
-    # if hostAVert is None:
-    #     print('routing.py: could not find host: ', sys.argv[1])
-    #     sys.exit()
-    #
-    # hostBVert = graph.find_vertex(sys.argv[2])
-    #
-    # if hostBVert is None:
-    #     print('routing.py: could not find host: ', sys.argv[2])
-    #     sys.exit()
-    #
-    # # Show the route from one Vertex to the other
-    # graph.route(hostAVert, hostBVert)
+# Look up the hosts passed in from the command line by
+# name to see if we can find them.
+# hostAVert = graph.find_vertex(sys.argv[1])
+#
+# if hostAVert is None:
+#     print('routing.py: could not find host: ', sys.argv[1])
+# sys.exit()
+#
+# hostBVert = graph.find_vertex(sys.argv[2])
+#
+# if hostBVert is None:
+#     print('routing.py: could not find host: ', sys.argv[2])
+# sys.exit()
+#
+# # Show the route from one Vertex to the other
+# graph.route(hostAVert, hostBVert)
