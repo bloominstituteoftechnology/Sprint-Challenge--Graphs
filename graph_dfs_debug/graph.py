@@ -3,7 +3,7 @@ Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
     def __init__(self, label, component=-1):
-        self.label = str(label)
+        self.label = str(label) 
         self.component = component
 
     def __repr__(self):
