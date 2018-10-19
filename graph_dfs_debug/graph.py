@@ -1,24 +1,26 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
-class Vertex:
-    def __init__(self, label, component=-1):
-        self.label = str(label)
-        self.component = component
+from draw import BokehGraph
 
-    def __repr__(self):
-        return 'Vertex: ' + self.label
+"""Trying to make this Graph class work..."""
 
-    """Trying to make this Graph class work..."""
 class Graph:
     def __init__(self):
         self.vertices = {}
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
+        if not set(edges).issubset(self.vertices):
+            raise Exception("Error: Cannot have edge to nonexistent vertices")
+        if vertex in self.vertices:
+            raise Exception("Error: Vertex already exists.")
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
+        # check to see if we have a starting or ending node
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception("Error: No vertices found")
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
@@ -55,3 +57,12 @@ class Graph:
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+        
+class Vertex:
+    def __init__(self, label, component=-1):
+        self.label = str(label)
+        self.component = component
+
+    def __repr__(self):
+        return 'Vertex: ' + self.label

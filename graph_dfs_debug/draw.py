@@ -48,6 +48,8 @@ class BokehGraph:
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()  # Randomize vertex coordinates, and set as layout
+
+        
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
         # Attach the prepared renderer to the plot so it can be shown
