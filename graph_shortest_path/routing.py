@@ -22,6 +22,22 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+# Queue Class
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def dequeue(self):
+        return self.items.pop(0)
+
+    def size(self):
+        return len(self.items) 
 
 # Graph class
 class Graph:
@@ -41,8 +57,12 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
+        
+
 
     def bfs(self, start):
         """
@@ -52,7 +72,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        start.color = "black"
+        q.enqueue(start)
+        while q.size() > 0:
+            vertex = q.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    q.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -62,7 +92,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_str = ""
+
+        while current is not None:
+            output_str += current.value
+            if current.parent is not None:
+                output_str += " --> "
+            current = current.parent
+        print(output_str)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
