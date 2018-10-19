@@ -21,7 +21,7 @@ class Graph:
     def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(start)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
@@ -32,15 +32,16 @@ class Graph:
             z = x.pop()
             if x == target:
                 break
-            x.extend(self.vertices[z])
+            y.add(x)
+            x.extend(self.vertices[z]-x)
 
         return x
-
+        
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.update(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
