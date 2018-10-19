@@ -43,7 +43,6 @@ class Graph:
         """
         for vert in self.vertices:
             # print(self.vertices)
-            print(value)
             if vert.value == value:
                 return vert
         return None
@@ -56,19 +55,19 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        visited = [False] * (len(self.vertices))
-
         queue = []
 
         queue.append(start)
-        visited[start] = True
-
-        while queue:
-            s=queue.pop(0)
-            for i in self.vertices[start]:
-                if visited[i] == False:
-                    queue.append(i)
-                    visited[i] = True
+        start.color = 'blue'
+        while len(queue) > 0:
+            v = queue.pop(0)
+            for i in start.edges:
+                print(i.destination.color)
+                destination = i.destination
+                if destination.color == 'white':
+                    destination.color = 'blue'
+                    destination.parent = v
+                    queue.append(destination)
 
 
     def output_route(self, start):
@@ -79,10 +78,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         current = start
-        while current.parent:
+        route = []
+        while current is not None:
+            route.append(current.value)
+            if current.parent is not None:
+                route.append('-->')
             current = current.parent
-            print(current.value)
-        # !!!! IMPLEMENT ME
+        print(''.join(route))
+
         
 
     def route(self, start, end):
