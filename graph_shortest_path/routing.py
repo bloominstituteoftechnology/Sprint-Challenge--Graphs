@@ -1,7 +1,7 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
-
+from collections import deque
 
 # Edge class
 class Edge:
@@ -12,7 +12,7 @@ class Edge:
 
 # Vertex class
 class Vertex:
-    def __init__(self, value='vertex', color='white', parent=None):
+    def __init__(self, value="vertex", color="white", parent=None):
         self.value = value
         self.edges = []
         # Color of this vertex
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +54,15 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = deque([start])
+        visited = [start]
+        while queue:
+            curr = queue.popleft()
+            for edge in curr.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = curr
+                    queue.append(edge.destination)
+                    visited.append(edge.destination)
 
     def output_route(self, start):
         """
@@ -61,8 +71,14 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        print("output")
+        curr = start
+        print("START")
+        print(curr.value)
+        while curr.parent:
+            curr = curr.parent
+            print(curr.value)
+        print("END")
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -77,20 +93,20 @@ def add_edge(start, end):
     end.edges.append(Edge(start))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print('Usage: routing.py hostA hostB')
+        print("Usage: routing.py hostA hostB")
         sys.exit()
 
     graph = Graph()
-    vertA = Vertex('HostA')
-    vertB = Vertex('HostB')
-    vertC = Vertex('HostC')
-    vertD = Vertex('HostD')
-    vertE = Vertex('HostE')
-    vertF = Vertex('HostF')
-    vertG = Vertex('HostG')
-    vertH = Vertex('HostH')
+    vertA = Vertex("HostA")
+    vertB = Vertex("HostB")
+    vertC = Vertex("HostC")
+    vertD = Vertex("HostD")
+    vertE = Vertex("HostE")
+    vertF = Vertex("HostF")
+    vertG = Vertex("HostG")
+    vertH = Vertex("HostH")
 
     add_edge(vertA, vertB)
     add_edge(vertB, vertD)
@@ -116,13 +132,13 @@ if __name__ == '__main__':
     hostAVert = graph.find_vertex(sys.argv[1])
 
     if hostAVert is None:
-        print('routing.py: could not find host: ', sys.argv[1])
+        print("routing.py: could not find host: ", sys.argv[1])
         sys.exit()
 
     hostBVert = graph.find_vertex(sys.argv[2])
 
     if hostBVert is None:
-        print('routing.py: could not find host: ', sys.argv[2])
+        print("routing.py: could not find host: ", sys.argv[2])
         sys.exit()
 
     # Show the route from one Vertex to the other
