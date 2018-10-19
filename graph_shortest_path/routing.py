@@ -21,6 +21,9 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __repr__(self):
+        return f'{self.value}'
+
 # Graph class
 class Graph:
     def __init__(self):
