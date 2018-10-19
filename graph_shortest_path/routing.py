@@ -9,7 +9,6 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
-
 # Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
@@ -22,6 +21,8 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __repr__(self):
+        return f'{self.value}'
 
 # Graph class
 class Graph:
@@ -42,7 +43,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +56,18 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = []
+        visited = set()
+        q.append(start)
+        while q:
+            dequeued = q.pop(0)
+            visited.add(dequeued)
+            for edge in dequeued.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = dequeued
+                    q.append(edge.destination)
+                    visited.add(edge.destination)
+
 
     def output_route(self, start):
         """
@@ -62,7 +77,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        track = [start]
+        current = start
+        while current.parent:
+            track.append(current.parent)
+            current = current.parent
+        for node in track:
+            print(node)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
