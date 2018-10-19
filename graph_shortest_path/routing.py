@@ -43,10 +43,10 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for vertex in self.vertices:
-            if vertex is None:
+            if vertex.value is None:
                 return None
             else:
-                return vertex
+                return vertex.value
 
     def bfs(self, start):
         """
