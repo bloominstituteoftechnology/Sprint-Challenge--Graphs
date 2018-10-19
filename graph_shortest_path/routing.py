@@ -2,7 +2,7 @@
 
 import sys
 
-print(sys.argv) # only features ['c:\\Users\\Jonathan\\Lambda School Projects\\Sprint-Challenge--Graphs\\graph_shortest_path\\routing.py']
+
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
@@ -45,8 +45,7 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        print(self.vertices)
-        print("running looking for : ", value)
+        
         for vertex in self.vertices:
             if vertex.value == value:
                 return vertex
@@ -134,10 +133,7 @@ if __name__ == '__main__':
     if hostBVert is None:
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
-    else:
-        print("FOUND THE HOST")
-        print(hostBVert)
-        sys.exit()
+    
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
