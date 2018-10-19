@@ -4,34 +4,80 @@
 Demonstration of Graph and BokehGraph functionality.
 """
 
-from random import sample
+import random
 from sys import argv
 from draw import BokehGraph
 from graph import Graph, Vertex
 
 
-def main(num_vertices=8, num_edges=8, draw_components=True):
-    """Build and show random graph."""
-    graph = Graph()
-    # Add appropriate number of vertices
-    for num in range(num_vertices):
-        graph.add_vertex(Vertex(label=str(num)))
+def createDefaultGraph():
+    graph = Graph()  
+    graph.add_vertex('0')
+    graph.add_vertex('1')
+    graph.add_vertex('2')
+    graph.add_vertex('3')
+    graph.add_vertex('4')    
+    graph.add_vertex('5')
+    graph.add_vertex('6')
 
-    # Add random edges between vertices
-    for _ in range(num_edges):
-        vertices = sample(graph.vertices.keys(), 2)
-        # TODO check if edge already exists
-        graph.add_edge(vertices[0], vertices[1])
+    graph.add_edge('0', '1')
+    graph.add_edge('0', '3')
+    graph.add_edge('1', '2')
+    graph.add_edge('2', '4')
+    graph.add_edge('4', '5')
 
-    bokeh_graph = BokehGraph(graph, draw_components=draw_components)
-    bokeh_graph.show()
+    bg = BokehGraph(graph)
+    bg.draw()
+
+def createRandomGraph(numNodes):
+    graph = Graph() 
+
+    edges = [] 
+
+    for i in range(numNodes):
+        for j in range(i + 1, numNodes):
+            edges.append((i , j))
+    print(edges)
+    random.shuffle(edges)
+    edges=[edge for index, edge in enumerate(edges) if 1 < index < random.randrange(2, len(edges))]
+
+    for i in range(numNodes):
+        graph.add_vertex(i)
+
+    for edge in edges:
+        graph.add_edge(edge[0], edge[1])
+
+    bg = BokehGraph(graph)
+    bg.draw()
+
+def main(style, numNodes):
+    if style == 'default':
+        createDefaultGraph()
+    elif style == 'random':
+        createRandomGraph(numNodes)
+    else:
+        createDefaultGraph()
 
 
 if __name__ == '__main__':
-    if len(argv) == 4:
-        NUM_VERTICES = int(argv[1])
-        NUM_EDGES = int(argv[2])
-        DRAW_COMPONENTS = bool(int(argv[3]))
-        main(NUM_VERTICES, NUM_EDGES, DRAW_COMPONENTS)
-    else:
-        main()
+    style = 'default'
+    numNodes = 2
+    edges = 1
+    
+    for arg in argv:
+        arg_split = arg.split('=')
+        if len(arg_split) == 2:
+            if arg_split[0] == 'style':
+                style = arg_split[1].lower()
+            elif arg_split[0] == 'nodes':
+                if arg_split[1] == 'random':
+                    numNodes = random.randrange(2,20)
+                else:
+                    numNodes = int(arg_split[1])
+            elif arg_split[0] == 'edges':
+                edges = int(arg_split[1])
+            else: 
+                print("I don't understand that command")
+
+
+    main(style, numNodes)
