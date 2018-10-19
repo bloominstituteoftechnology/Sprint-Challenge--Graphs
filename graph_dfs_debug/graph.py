@@ -19,28 +19,31 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
+        start.component+=1
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
+            end.component+=1
 
     def dfs(self, start, target=None):
         x = []
         x.append(start)
-        y = set(x)
+        y=set(x)
 
         while x:
             z = x.pop()
-            if x == target:
+            if z == target:
                 break
-            x.extend(self.vertices[z])
+            y.add(z)
+            x.extend(self.vertices[z]-y)
 
         return x
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
@@ -48,7 +51,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
