@@ -2,6 +2,20 @@
 
 import sys
 
+# Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # Edge class
 class Edge:
@@ -41,18 +55,39 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        if value not in self.vertices:
+            return None
+        else:
+            return self.vertices[value]
 
-    def bfs(self, start):
+    def bfs(self, start, target_vertex=None):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue([start])
+        visited = []
+
+        verticies = list(self.vertices.keys())
+        last_vertex = verticies[-1]
+            
+        while q.size() > 0:
+            path = q.dequeue()
+            v = path[-1]
+            if v not in visited:
+                if v == target_vertex: 
+                    return path
+                elif v == last_vertex:
+                    return path
+                visited.append(v) 
+                for next_vert in self.vertices[v].edges:  
+                    new_path = list(path)
+                    new_path.append(next_vert) 
+                    q.enqueue(new_path)
+        return None
 
     def output_route(self, start):
         """
@@ -61,8 +96,25 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue([start])
+        visited = []
+
+        verticies = list(self.vertices.keys())
+        last_vertex = verticies[-1]
+            
+        while q.size() > 0:
+            path = q.dequeue()
+            v = path[-1]
+            if v not in visited:
+                elif v == last_vertex:
+                    return path
+                visited.append(v) 
+                for next_vert in self.vertices[v].edges:  
+                    new_path = list(path)
+                    new_path.append(next_vert) 
+                    q.enqueue(new_path)
+        return None
 
     def route(self, start, end):
         # BFS to build the parent reference tree

@@ -19,6 +19,7 @@ they are listed. I think these are all problems with `graph.py`.
     f. Seperated directional and bi-directional edges into two functions for ease of calling and code clarity.  
     g. Adjusted parameters in functions accordingly with code changes. 
     h. You'll notice an x/y randomizer in the Vertex init class. This exists to give random locations to the Bokeh class for x/y coordinates to be created to represent the location of the nodes randomly. 
+    i. I'm not clear on what you are attempting to do with your find_components function. If you are searching for edges, I'm not entirely sure why. I have commented this out in the meantime. 
     
     graph_demo.py
     a. Created seperate functions for default and random graph creation. 
@@ -36,27 +37,34 @@ they are listed. I think these are all problems with `graph.py`.
 2. All the vertexes are the same color.  They're supposed to be different colors
 if they're not connected, and right now none of them are.
     a. It's hard for me to discern exactly what you were attempting to do. I like the attempt to create multiple functions for different aspects of the graph, but you might be better off simply getting bokeh to function first and then building out from there. In this vein I refactored the code and included broad explanations. I also left your code in there, commented out at the bottom, so that you can compare.
+
 3. Sometimes I do something and when I run `python graph_demo.py` it just takes
 forever, even though my `draw.py` and `graph_demo.py` are totally just the same
 as from class.
     a. This is likely due to your recursive attempt at dft. You need to make sure you always have a solid base case or your stack will overflow. 
+
 4. I wanted to let it find a target vertex, but even back when it did kinda run
 this part didn't really work.
-    a. I am assuming you are talking about both your bfs and your dfs. 
-
-
-
+    a. I am assuming you are talking about your dfs? Please be more specific with your references as I'm not sure what "it" is. 
+    b. Assuming you are referencing your dfs funciton, I have commented yours out and replaced it with a functional version. You were on the right track, but a couple things:
+        - Unless you are creating a path, I would stay away from using sets, and even then, you are better off with lists. 
+        - 
 
 5. My editor sure is complaining a lot about something called "lint."
     a. You need to install linter and a linting software, like flake8. 
+
 6. I keep losing track of my variables, I guess I should name them better?
     a. Yes, your variables should be named in the most straightforward fashion possible and kep consistent throughout the program. For example, you named your edges components in your Vertex class. Keep them as edges. 
+
 7. I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
 got even more stuck. It was running forever so I tried adding a thing to keep
 track of vertices, and now I just get an error message. Please try to fix this
 too if you can, or at least give me some pointers on what I should be doing.
-- 
-
+    a. You are not maintaining a reference to your visited nodes, so there is no way to create a base case to stop the recursion. This is likely why you are experiencing the endless cycle when trying to run it. 
+    b. I have kept your version commented out to compare with the one I wrote. You'll notice that I am doing two main things: 
+        - reseting the starting node to the child node each recursion
+        - appending the starting node to the visited list each recursion j
+    c. Also note that this is a dft. Recursions are very, very hard to do on bft and, therefore, are not approached in this manner. 
 
 
 

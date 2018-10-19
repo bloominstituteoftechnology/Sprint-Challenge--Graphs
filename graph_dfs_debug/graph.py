@@ -24,6 +24,25 @@ class Graph:
         else:
             raise IndexError("That vertex does not exist!")
 
+
+    def dft(self, starting_node=None, visited=None, target_node=None):
+        # print('starting node', starting_node)
+        if visited is None:
+            visited = []
+       if starting_node == target_node:
+            return True
+        if starting_node is None: 
+            verticies = list(self.vertices.keys())
+            starting_node = verticies[0]
+            # print('first starting node', starting_node)
+        visited.append(starting_node)
+        
+        for child in self.vertices[starting_node].edges:
+            if child not in visited:
+                if self.dfs(node, target_node, visited):
+                    return True
+        return False
+
     # def dfs(self, start, target=None):
     #     x = []
     #     x.append(start)
