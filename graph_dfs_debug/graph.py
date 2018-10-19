@@ -21,13 +21,11 @@ class Graph:
 
     def add_vertex(self, vertex, edges=()):
         self.vertices[vertex] = set(edges)
-        print('add vertex', vertex)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
-        print('adding edge', start, end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
