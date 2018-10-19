@@ -25,16 +25,18 @@ class Graph:
 
     def dfs(self, start, target=None):
         storage = []
-        x.append(start)
-        y = set(x)
+        storage.append(start)
+        visited = set()
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        while storage:
+            current = storage.pop()
+            if current not in visited:
+                visited.add(current)
+                if current == target:
+                    break
+                storage.extend(self.vertices[current])
 
-        return x
+        return visited
 
     def graph_rec(self, start, target=None):
         x = set()
