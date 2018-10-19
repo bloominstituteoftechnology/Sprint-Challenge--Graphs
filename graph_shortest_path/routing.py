@@ -57,9 +57,9 @@ class Graph:
         # !!!! IMPLEMENT ME
         for vert in self.vertices:
             if vert.value == value:
-                return self.vertices[vert]
-            else:
-                return None
+                # return self.vertices[vert]
+                return vert
+        return None
 
     def bfs(self, start):
         """
