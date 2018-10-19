@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +55,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        storage = []
+        storage.append(start)
+        visited = set()
+        while storage:
+            current = storage.pop(0)
+            if current not in visited:
+                visited.add(current)
+                for edge in current.edges:
+                    edge.destination.parent = current
+                    storage.append(edge)
 
     def output_route(self, start):
         """
