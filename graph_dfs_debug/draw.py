@@ -60,7 +60,7 @@ class BokehGraph:
             color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
             colors.append(color)
         return colors
-
+ 
     def _get_edge_indexes(self):
         start_indices = []
         end_indices = []
