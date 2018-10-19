@@ -19,9 +19,12 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+        if start not in self.vertices or end not in self.vertices:
+            raise Exception("Cannot put an edge on a nonexistent vertex")
+        else:
+            self.vertices[start].add(end)
+            if bidirectional:
+                self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []

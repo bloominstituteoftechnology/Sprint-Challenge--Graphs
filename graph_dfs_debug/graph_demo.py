@@ -16,7 +16,6 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
     # Add appropriate number of vertices
     for num in range(num_vertices):
         graph.add_vertex(Vertex(label=str(num)))
-
     # Add random edges between vertices
     for _ in range(num_edges):
         vertices = sample(graph.vertices.keys(), 2)
