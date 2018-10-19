@@ -2,7 +2,7 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
+    def __init__(self, label, component=-1): #idk what component =-1 is doing but seems fishy
         self.label = str(label)
         self.component = component
 
@@ -19,9 +19,11 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        #changed start to end for add to make connection
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            #changed end to start for add to make connection
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
@@ -30,28 +32,42 @@ class Graph:
 
         while x:
             z = x.pop()
-            if x == target:
+            # was checking for x(whole array) instead of z (current).
+            if z == target:
                 break
-            x.extend(self.vertices[z])
+            #added z which is the current vertex to the y which is used to check current
+            y.add(z)
+            #added a minus y to your vertices so it doesn't return everything
+            x.extend(self.vertices[z] - y)
 
         return x
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        #add instead of append here as it's a set
+        x.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            #Seems like a recurisve method but it wasn't recognizing graph_rec. 
+            #I made it self.graph_rec. idk if that fixes because idk what this does
+            self.graph_rec(v)
         return x
 
-    def find_components(self):
+    def find_components(self): # Bet there are problems here
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
+            #added the vertex's into visited. idk if that's 
+            # what I need to do. if not I don't believe the loop
+            # runs. Most likely not the right idea but something is up 
+            # in this loop not making the right connections
+            visited.add(vertex)
             if vertex in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.dfs(vertex)   
                 for other_vertex in reachable:
-                    other_vertex.component = current_component
+                    other_vertex.component = visited
                 current_component += 1
                 visited.update(reachable)
+        print(current_component)
+        # print(reachable)
         self.components = current_component

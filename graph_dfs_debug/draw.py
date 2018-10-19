@@ -8,6 +8,7 @@ from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
                           ColumnDataSource)
+from graph import Graph
 
 
 class BokehGraph:
@@ -39,7 +40,7 @@ class BokehGraph:
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
         colors = (self._get_connected_component_colors() if draw_components
-                  else self._get_random_colors())
+                else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
@@ -56,6 +57,7 @@ class BokehGraph:
     def _get_random_colors(self, num_colors=None):
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
+        print(num_colors)
         for _ in range(num_colors):
             color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
             colors.append(color)
@@ -107,3 +109,20 @@ class BokehGraph:
         for vertex in self.vertex_list:
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors
+
+
+def main():
+# This is just a test that will be modified to fit this 
+# code. 
+    graph = Graph()
+    graph.add_vertex('0')
+    graph.add_vertex('1', ("0"))
+    graph.add_vertex('2', ('1'))
+    bg = BokehGraph(graph)
+    dir(bg)
+    bg.pos
+    bg.show()
+
+if __name__ == '__main__':
+    main()
+        
