@@ -1,6 +1,21 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+class Stack:
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if (self.size()) > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
+
 class Vertex:
     def __init__(self, label, x=None, y=None):
         self.label = label
@@ -23,28 +38,37 @@ class Vertex:
 class Graph:
     def __init__(self):
         self.vertices = {}
-        self.components = 0
 
-    def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+    def add_vertex(self, label):
+        self.vertices[label] = Vertex(label)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+        if start in self.vertices and end in self.vertices:
+            self.vertices[start].edges.add(end) 
+            if bidirectional:
+                self.vertices[end].edges.add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        visited = []
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        s = Stack()
 
-        return x
+        s.push(start)
+
+        while s.size() > 0:
+            destacked = s.pop()
+
+            if destacked not in visited:
+                visited.append(destacked)
+                print(destacked)
+
+                if destacked == target:
+                    return True
+
+                for edge in self.vertices[destacked].edges:
+                    s.push(edge)
+
+        return False
 
     def graph_rec(self, start, target=None):
         x = set()
