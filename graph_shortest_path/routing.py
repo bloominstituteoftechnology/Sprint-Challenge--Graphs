@@ -2,6 +2,86 @@
 
 import sys
 
+# Linked List
+class Node:
+  def __init__(self, value=None, next_node=None):
+    self.value = value
+    self.next_node = next_node
+
+  def get_value(self):
+    return self.value
+
+  def get_next(self):
+    return self.next_node
+
+  def set_next(self, new_next):
+    self.next_node = new_next
+
+class LinkedList:
+  def __init__(self):
+    self.head = None
+    self.tail = None
+
+  def add_to_tail(self, value):
+    new_node = Node(value, None)
+    if not self.head:
+      self.head = new_node
+      self.tail = new_node
+    else:
+      self.tail.set_next(new_node)
+      self.tail = new_node
+
+  def remove_head(self):
+    if not self.head:
+      return None
+    if not self.head.get_next():
+      head = self.head
+      self.head = None
+      self.tail = None
+      return head.get_value()
+    value = self.head.get_value()
+    self.head = self.head.get_next()
+    return value
+
+  def contains(self, value):
+    if not self.head:
+      return False
+    current = self.head
+    while current:
+      if current.get_value() == value:
+        return True
+      current = current.get_next()
+    return False
+
+  def get_max(self):
+    if not self.head:
+      return None
+    max_value = self.head.get_value()
+    current = self.head.get_next()
+    while current:
+      if current.get_value() > max_value:
+        max_value = current.get_value()
+      current = current.get_next()
+    return max_value
+
+
+class Queue:
+  def __init__(self):
+    self.size = 0
+    self.storage = LinkedList()
+
+  def enqueue(self, value):
+    self.storage.add_to_tail(value)
+    self.size += 1
+  
+  def dequeue(self):
+    if self.size > 0:
+      self.size -= 1
+    return self.storage.remove_head()
+
+  def len(self):
+    return self.size
+
 
 # Edge class
 class Edge:
@@ -42,7 +122,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vert in self.vertices:
+            if vert.value == value:
+                return vert
+        return False
 
     def bfs(self, start):
         """
@@ -52,7 +135,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue(start)
+        visited = []
+        while q.size > 0:
+            current_node = q.dequeue()
+            visited.append(current_node)
+            for edge in self.vertices[current_node].edges:
+                if edge not in visited:
+                    q.enqueue(edge)
+        return visited
 
     def output_route(self, start):
         """
