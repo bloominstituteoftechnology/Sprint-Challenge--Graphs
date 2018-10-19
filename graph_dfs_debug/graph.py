@@ -32,7 +32,7 @@ class Graph:
 
         while x:
             z = x.pop()
-            if x == target:
+            if z == target:
                 break
             #added z which is the current vertex to the y which is used to check current
             y.add(z)
@@ -43,9 +43,9 @@ class Graph:
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
