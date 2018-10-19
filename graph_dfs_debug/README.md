@@ -18,6 +18,7 @@ they are listed. I think these are all problems with `graph.py`.
     e. Added catch for add_edge in case vertex does not exist. 
     f. Seperated directional and bi-directional edges into two functions for ease of calling and code clarity.  
     g. Adjusted parameters in functions accordingly with code changes. 
+    h. You'll notice an x/y randomizer in the Vertex init class. This exists to give random locations to the Bokeh class for x/y coordinates to be created to represent the location of the nodes randomly. 
     
     graph_demo.py
     a. Created seperate functions for default and random graph creation. 
@@ -25,32 +26,40 @@ they are listed. I think these are all problems with `graph.py`.
     c. When calling graph creation, you just need to pass in your graph object to BokehGraph() and then call draw. 
     d. Keep your main function as a juncture where you direct the call of either default or random graphs.
     e. Use your __name__ == '__main__' to interpret your user's input when they call the program. Currently there is nothing equating inputs with functionality/appropriate variables to be called on the program. Adjusted to allow for style, nodes and edges to be defaulted, adjusted or randomized. This may not be perfect still, so will require you to do a little more work, but it is functional.  
+    f. I had to do quite a bit of restructuring here to make this portion functional, but I think you should be able to work through understanding most of it.
+        - In broad strokes, in the function, createRandomGraph, I am first creating the same number of edges as necessary for the nodes, shuffling them and then picking a random number of them to generate random edges. Then I'm applying that edge set to the graph using the add_edge function.
 
     draw.py
     a. Don't seperate all the bokeh components into their own functions. You need to be able to call self.draw on the graph object you've created to apply the graph object to Bookeh's code. I condensed these accordingly. 
     b. Adjusted excessive class properties and params in __init__. 
-
-
+    
 2. All the vertexes are the same color.  They're supposed to be different colors
 if they're not connected, and right now none of them are.
-- 
+    a. It's hard for me to discern exactly what you were attempting to do. I like the attempt to create multiple functions for different aspects of the graph, but you might be better off simply getting bokeh to function first and then building out from there. In this vein I refactored the code and included broad explanations. I also left your code in there, commented out at the bottom, so that you can compare.
 3. Sometimes I do something and when I run `python graph_demo.py` it just takes
 forever, even though my `draw.py` and `graph_demo.py` are totally just the same
 as from class.
-- 
+    a. This is likely due to your recursive attempt at dft. You need to make sure you always have a solid base case or your stack will overflow. 
 4. I wanted to let it find a target vertex, but even back when it did kinda run
 this part didn't really work.
-- 
+    a. I am assuming you are talking about both your bfs and your dfs. 
+
+
+
+
 5. My editor sure is complaining a lot about something called "lint."
     a. You need to install linter and a linting software, like flake8. 
 6. I keep losing track of my variables, I guess I should name them better?
     a. Yes, your variables should be named in the most straightforward fashion possible and kep consistent throughout the program. For example, you named your edges components in your Vertex class. Keep them as edges. 
-
 7. I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
 got even more stuck. It was running forever so I tried adding a thing to keep
 track of vertices, and now I just get an error message. Please try to fix this
 too if you can, or at least give me some pointers on what I should be doing.
 - 
+
+
+
+
 
 I'm still trying to learn this stuff, so please don't just fix the code for me.
 Let me know in the `Answers.md` file where my bugs are and what you did to fix

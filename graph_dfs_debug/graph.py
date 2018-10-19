@@ -1,9 +1,8 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+import random
 
-
-    """Trying to make this Graph class work..."""
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -12,8 +11,8 @@ class Graph:
     def add_vertex(self, vertex):
         self.vertices[vertex] = Vertex(vertex)
 
-    def add_bidirectional_edge(self, edgeStart, edgeEnd):
-        if start in self.vertices and end in self.vertices:
+    def add_edge(self, edgeStart, edgeEnd):
+        if edgeStart in self.vertices and edgeEnd in self.vertices:
             self.vertices[edgeStart].edges.add(edgeEnd)
             self.vertices[edgeEnd].edges.add(edgeStart)
         else:
@@ -59,9 +58,17 @@ class Graph:
     #     self.components = current_component
 
 class Vertex:
-    def __init__(self, vertex):
+    def __init__(self, vertex, x=None, y=None):
         self.id = vertex
         self.edges = set()
+        if x is None:
+            self.x = random.random() * 10 - 5
+        else:
+            self.x = x
+        if y is None:
+            self.y = random.random() * 10 - 5
+        else:
+            self.y = y
 
     def __repr__(self):
         return 'Vertex: ' + self.label
