@@ -1,10 +1,12 @@
+
 """
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label):
+    def __init__(self, label, component):
         self.label = str(label)
         self.edges = set()
+        self.component = component
 
     def __repr__(self):
         return 'Vertex: ' + self.label
@@ -13,6 +15,7 @@ class Vertex:
 class Graph:
     def __init__(self):
         self.vertices = {}
+        self.components = 0
 
     def add_vertex(self, vertex, edges=()):
         if vertex in self.vertices:
@@ -67,4 +70,7 @@ graph.add_vertex('2')
 graph.add_vertex('3')
 graph.add_edge('0', '1')
 graph.add_edge('0', '3')
+
+# bg=BokehGraph
+# bg.show()
 print(graph.vertices)
