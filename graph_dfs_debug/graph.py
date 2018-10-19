@@ -2,6 +2,21 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 
+import random 
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class Stack:
     def __init__(self):
         self.stack = []
@@ -48,7 +63,7 @@ class Graph:
             if bidirectional:
                 self.vertices[end].edges.add(start)
 
-    def dfs(self, start, target=None):
+    def dfs(self, start, target):
         visited = []
 
         s = Stack()
@@ -70,12 +85,14 @@ class Graph:
 
         return False
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, visited=None):
+        if visited is None:
+            visited = []
+        visited.append(start)
+        for vertex in self.vertices[start].edges:
+            if vertex not in visited:
+                self.graph_rec(vertex, visited)
+        return visited
 
     def find_components(self):
         visited = set()
