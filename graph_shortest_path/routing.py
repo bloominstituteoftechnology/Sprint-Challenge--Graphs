@@ -57,10 +57,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        if value in self.vertices:
-            return self.vertices[value]
-        else:
-            return None
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -69,34 +69,26 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-    def bfs(self, start, target):
+    def bfs(self, start):
+        # initially color the vertices white
         for vertex in self.vertices:
             vertex.color = 'white'
             vertex.parent = None
 
-        visited = []
         # create a queue for BFS
         queue = Queue()
         start.color = 'green' # give the starting vertext a color
         queue.enqueue(start) # place the starting node in the queue
         while queue.size() > 0: # when the queue is not empty
             # Dequeue a vertex from the queue and print it
-            current = queue.dequeue() # remove the first element from the queue
-            visited.append(current) # mark the removed node as visited
-            print(current)
-            if current == target:
-                return True
+            vertex = queue.dequeue() # remove the first element from the queue
             # Get all adjacent vertices of the dequeued vertex.  If adjacent has not been visited, then mark it visited and enqueue it
-            for vertex in self.vertices[current].edges: # for each child node
-                if vertex not in visited: # if the node has not been visited
-                    queue.enqueue(vertex) # place the node in the back of the queue
-                    vertex.destination.color = 'red'
-                    vertex.destination.parent = current
-                    queue.push(vertex.destination)
-            queue.dequeue()
-            current.color = 'grey'
-
-        return False
+            for edge in vertex.edges: # for each child node
+                destination = edge.destination
+                if destination.color == 'white': # if the node has not been visited
+                    destination.color = 'green'
+                    destination.parent = vertex
+                    queue.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -176,9 +168,15 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
-    graph.route(hostAVert, hostDVert)
 
-main()
+# $ python routing.py HostA HostD
+# HostA --> HostB --> HostD
+# $ python routing.py HostA HostH
+# HostA --> HostC --> HostF --> HostH
+# $ python routing.py HostA HostA
+# HostA
+# $ python routing.py HostE HostB
+# HostE --> HostF --> HostC --> HostA --> HostB
 
 
 
