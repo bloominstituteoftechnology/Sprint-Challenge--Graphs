@@ -3,7 +3,7 @@ General drawing methods for graphs using Bokeh.
 """
 
 from math import ceil, floor, sqrt
-from random import choice, random
+from random import choice, random, randint
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
@@ -12,6 +12,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
+
     def __init__(self, graph, title='Graph', width=100, height=100,
                  show_axis=False, show_grid=False, circle_size=35,
                  draw_components=False):
@@ -27,7 +28,6 @@ class BokehGraph:
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -57,7 +57,10 @@ class BokehGraph:
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            # color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            color = '#{:02x}{:02x}{:02x}'.format(randint(200, 255),
+                                                 randint(200, 255),
+                                                 randint(200, 255))
             colors.append(color)
         return colors
 
