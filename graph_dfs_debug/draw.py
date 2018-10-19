@@ -6,9 +6,7 @@ from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
-from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
-                          ColumnDataSource)
-
+from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet, ColumnDataSource)
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
@@ -60,7 +58,7 @@ class BokehGraph:
             color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
             colors.append(color)
         return colors
- 
+
     def _get_edge_indexes(self):
         start_indices = []
         end_indices = []
