@@ -2,12 +2,22 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
-        self.label = str(label)
-        self.component = component
+    def __init__(self, label, x=None, y=None):
+        self.label = label
+        self.edges = set()
+
+        if x is None:
+            self.x = random.random() * 10 - 5
+        else:
+            self.x = x
+
+        if y is None:
+            self.y = random.random() * 10 - 5
+        else:
+            self.y = y
 
     def __repr__(self):
-        return 'Vertex: ' + self.label
+        return f"{self.edges}" 
 
     """Trying to make this Graph class work..."""
 class Graph:
