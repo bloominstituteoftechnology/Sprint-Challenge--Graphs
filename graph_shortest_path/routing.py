@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -41,8 +41,10 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vextex in self.vertices:
+            if vextex.value == value:
+                return vextex
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +53,19 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+
+        def recurse(target):
+            target.color = 'gray'
+            for edge in target.edges:
+                if edge.destination.color == 'white':
+                    edge.destination.parent = target
+                    recurse(edge.destination)
+            target.color = 'black'
+        recurse(start)
 
     def output_route(self, start):
         """
@@ -61,14 +74,24 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        holdingArr = []
+        currentParent = start.parent
+        holdingArr.append(start.value)
+        while(currentParent):
+            holdingArr.append(currentParent.value)
+            currentParent = currentParent.parent
+        return holdingArr
 
     def route(self, start, end):
+        outputString = ""
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        arrInNeedofFormating=self.output_route(start)
+        for item in arrInNeedofFormating:
+            outputString += item +" --> "
+        print (outputString[:-5])
+
 
 
 # Helper function to add bidirectional edges

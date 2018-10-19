@@ -13,3 +13,5 @@ Describe the fixes/improvements you made to the Graph implementation here.
 - renamed x,y,z varible scheme in graph.py to something more readable
 
 - I'm unable to reproduce problem 3 perhaps adding that check fixed it
+
+- I took a look at your recursive function. You needed a way to keep track of what's been visited, so I added the queue param. The queue updates everytime it finds a new value and then returns the queue up to the function above it. The bit on the top is because if queue=set() was there then it would just keep modifying the same set and not reset each time you call it.

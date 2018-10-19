@@ -40,12 +40,14 @@ class Graph:
         else:
             return False
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.add(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
-        return x
+    def graph_rec(self, start, target=None,queue=None):
+        if queue is None:
+            queue=set()
+        queue.add(start)
+        for connected in self.vertices[start]:
+            if connected not in queue:
+                queue.update(self.graph_rec(connected,target, queue))
+        return queue
 
     def find_components(self):
         visited = set()
@@ -53,7 +55,7 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex not in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.graph_rec(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                     visited.add(other_vertex)
