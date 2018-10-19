@@ -3,7 +3,7 @@ Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
     def __init__(self, label, component=-1):
-        self.label = str(label)
+        self.label = str(label) #id
         self.component = component
 
     def __repr__(self):
@@ -19,39 +19,47 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        stack = [] # this is the stack
+        stack.append(start)
+        visited = [] #unused variable - questionable 
 
-        while x:
-            z = x.pop()
-            if x == target:
+        while stack:
+            node = stack.pop() # takes off the back that would be for a stack - good 
+            if node == target: # should most likely be z --change
                 break
-            x.extend(self.vertices[z])
+            visited.append(node)
+            stack.extend(self.vertices[node]- visited) #extend just flattens the list - good
+        # print('x - dfs -> ', x)
+        # print('y - dfs -> ', y)
+        return visited # this would return the path? 
 
-        return x
-
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
+    def dfs_rec(self, start, target=None, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start) # should be add? 
         for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+            if v not in visited:
+                self.dfs_rec(v, visited)
+        return visited # not returning anything from for loop
 
     def find_components(self):
         visited = set()
         current_component = 0
 
-        for vertex in self.vertices:
-            if vertex in visited:
-                reachable = self.dfs(vertex)
-                for other_vertex in reachable:
-                    other_vertex.component = current_component
+        for vertex in self.vertices: #checks all the vertex
+            if vertex in visited: #if they are also in visited
+                reachable = self.dfs(vertex) #should return a traversal? -- wrong or dfs is wrong
+                for other_vertex in reachable: # for all nodes connected to the vertex and in visited (which is empty) 
+                    other_vertex.component = current_component # that component is now zero
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+                #searches through all vertexs in visited(which is set to 0) and assigns other_ertex to the current component which is 0. then sets self.components to the last component
+
+                #______all components are labeled -1 by default so this assignes labels_____________

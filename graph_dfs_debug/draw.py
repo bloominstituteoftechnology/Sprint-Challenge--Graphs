@@ -13,7 +13,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
     def __init__(self, graph, title='Graph', width=100, height=100,
-                 show_axis=False, show_grid=False, circle_size=35,
+                 show_axis=True, show_grid=True, circle_size=35,
                  draw_components=False):
         if not graph.vertices:
             raise Exception('Graph should contain vertices!')
@@ -46,6 +46,7 @@ class BokehGraph:
                                                     fill_color='color')
 
         # Add the edge [start, end] indices as instructions for drawing edges
+        print(self._get_edge_indexes())
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()  # Randomize vertex coordinates, and set as layout
         graph_renderer.layout_provider = StaticLayoutProvider(
@@ -90,14 +91,16 @@ class BokehGraph:
     def show(self, output_path='./graph.html'):
         """Render the graph to a file on disk and open with default browser."""
         output_file(output_path)
+        print('self.plot -> ', self.plot)
         show(self.plot)
 
     def randomize(self):
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
-                                      1 + random() * (self.height - 2))
+            def ran():
+                return random() * (self.width - 1)
+            self.pos[vertex.label] = (ran(), ran())
 
     def _get_connected_component_colors(self):
         """Return same-colors for vertices in connected components."""
