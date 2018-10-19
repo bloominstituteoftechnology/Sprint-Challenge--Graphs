@@ -54,14 +54,20 @@ class Graph:
         q.append(start)
         while q:
             current = q.pop(0)
+            visited.append(current)
             for edge in current.edges:
                 if edge.destination not in visited:
-                    print(edge.destination.value)
                     edge.destination.parent = current
                     q.append(edge.destination)
-                    visited.append(edge.destination)
 
     def output_route(self, start):
+        route = []
+        route.append(start.value)
+        current = start
+        while current.parent != None:
+            current = current.parent
+            route.append(current.value)
+        print(route)
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
