@@ -11,7 +11,10 @@ Fixed dfs method so nodes are taken from the stack and added to visited, otherwi
 
 4. I wanted to let it find a target vertex, but even back when it did kinda run this part didn't really work.
 I think that I fixed this issue when I fixed the dfs method, but I'm not sure. Does it find target vertex by not coloring it for not being connected?
+
 5. My editor sure is complaining a lot about something called "lint."
+graph.py: In graph_rec I changed queue.append to queue.add and I changed graph_rec(vertex) to self.graph_rec(vertex)
+draw.py: Getting 4 errors. 3 of them are Instance of 'Instance' has no 'data_source' member. 1 is Instance of 'List' has no 'append' member. Spent time trying to fix this and will come back later if I have time.
 
 6. I keep losing track of my variables, I guess I should name them better?
 The variables in dfs and graph_rec methods were not descriptive so I changed the following variable names:
