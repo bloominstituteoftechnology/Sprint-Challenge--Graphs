@@ -37,14 +37,13 @@ class BokehGraph:
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
-            [vertex.label for vertex in self.vertex_list], 'index')
+            [vertex for vertex in self.vertex_list], 'index')
         colors = (self._get_connected_component_colors() if draw_components
                   else self._get_random_colors())
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
                                                     fill_color='color')
-
         # Add the edge [start, end] indices as instructions for drawing edges
         graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
         self.randomize()  # Randomize vertex coordinates, and set as layout
@@ -64,15 +63,17 @@ class BokehGraph:
     def _get_edge_indexes(self):
         start_indices = []
         end_indices = []
-        checked = set()
-
-        for vertex, edges in self.graph.vertices.items():
-            if vertex not in checked:
-                for destination in edges:
-                    start_indices.append(vertex.label)
-                    end_indices.append(destination.label)
-                checked.add(vertex)
-
+        # checked = set()
+        for key in list(self.graph.vertices.keys()):
+            for node in self.graph.vertices[key].edges:
+                start_indices.append(key)
+                end_indices.append(node)
+        #     if key not in checked:
+        #         for destination in vertex.edges:
+        #             start_indices.append(vertex.label)
+        #             end_indices.append(destination.label)
+        #         checked.add(vertex.label)
+        # print(start_indices, end_indices)
         return dict(start=start_indices, end=end_indices)
 
     def _setup_labels(self):
@@ -96,7 +97,7 @@ class BokehGraph:
         """Randomize vertex positions."""
         for vertex in self.vertex_list:
             # TODO make bounds and random draws less hacky
-            self.pos[vertex.label] = (1 + random() * (self.width - 2),
+            self.pos[vertex] = (1 + random() * (self.width - 2),
                                       1 + random() * (self.height - 2))
 
     def _get_connected_component_colors(self):
@@ -104,6 +105,6 @@ class BokehGraph:
         self.graph.find_components()
         component_colors = self._get_random_colors(self.graph.components)
         vertex_colors = []
-        for vertex in self.vertex_list:
+        for vertex in list(self.graph.vertices.values()):
             vertex_colors.append(component_colors[vertex.component])
         return vertex_colors

@@ -2,13 +2,11 @@
 
 import sys
 
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-
 
 # Vertex class
 class Vertex:
@@ -21,7 +19,6 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
 
 # Graph class
 class Graph:
@@ -42,27 +39,42 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        if value in self.vertices:
+            return self.vertices[value]
+        else:
+            return None
 
     def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
+        start.color = "pink"
+        queue = []
+        queue.append(start)
+        while len(queue) > 0:
+            current = queue[0]
+            for node in current.edges:
+                if node.color == "white":
+                    node.color = "pink"
+                    node.parent = current
+                    queue.append(node)
+            del queue[0]
+            current.color = "black"
 
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
-
+      
     def output_route(self, start):
         """
-        Print out the route from the start vertex back along its parent
+        Print out the route from the start vertex along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        parent = start.parent
+        path = []
+        while parent != None:
+            path.append(parent)
+            parent = parent.parent
+        return path
+
+
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree

@@ -17,12 +17,14 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex):
-        self.vertices[vertex] = Vertex(vertex)
+        if vertex not in self.vertices:
+            self.vertices[vertex] = Vertex(vertex)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].edges.add(end)
-        if bidirectional:
-            self.vertices[end].edges.add(start)
+        if end not in self.vertices[start].edges:
+            self.vertices[start].edges.add(end)
+            if bidirectional:
+                self.vertices[end].edges.add(start)
 
     def dfs(self, start, target=None):
         x = []
@@ -35,12 +37,14 @@ class Graph:
             x.extend(self.vertices[z])
         return x
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.add(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
-        return x
+    def graph_rec(self, start, target=None, x=[]):
+        x = x
+        x.append(start)
+        if start.edges:
+            for edge in start.edges:
+                if edge not in x:
+                    self.graph_rec(self.vertices[edge], x)
+            return self.answer
 
     def find_components(self):
         visited = set()
@@ -61,4 +65,4 @@ test.add_vertex(2)
 test.add_edge(0, 1)
 test.add_edge(1, 2, False)
 test.add_edge(2, 0, False)
-print(test.vertices)
+print()
