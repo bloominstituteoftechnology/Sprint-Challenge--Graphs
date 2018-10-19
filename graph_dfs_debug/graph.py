@@ -24,17 +24,18 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = [] # this is the stack
-        x.append(start)
-        visited = set(x) #unused variable - questionable 
+        stack = [] # this is the stack
+        stack.append(start)
+        visited = [] #unused variable - questionable 
 
-        while x:
-            node = x.pop() # takes off the back that would be for a stack - good 
+        while stack:
+            node = stack.pop() # takes off the back that would be for a stack - good 
             if node == target: # should most likely be z --change
                 break
-            x.extend(self.vertices[node]) #extend just flattens the list - good
-        print('x - dfs -> ', x)
-        print('y - dfs -> ', y)
+            visited.append(node)
+            stack.extend(self.vertices[node]- visited) #extend just flattens the list - good
+        # print('x - dfs -> ', x)
+        # print('y - dfs -> ', y)
         return visited # this would return the path? 
 
     def dfs_rec(self, start, target=None, visited=None):
