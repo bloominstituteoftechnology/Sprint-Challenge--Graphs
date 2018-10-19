@@ -44,12 +44,21 @@ class Graph:
             stack.extend(self.vertices[curr] - visited)
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.add(start)
-        for v in self.vertices[start]:
-            self.graph_rec(v)
-        return x
+    # def graph_rec(self, start, target=None):
+    #     x = set()
+    #     x.add(start)
+    #     for v in self.vertices[start]:
+    #         self.graph_rec(v)
+    #     return x
+
+    def dfs_rec(self, start, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for other_vertex in self.vertices[start]:
+            if other_vertex not in visited:
+                self.dfs_rec(other_vertex, visited)
+        return visited
 
     def find_components(self):
         visited = set()
@@ -57,7 +66,7 @@ class Graph:
 
         for vertex in self.vertices:
             if vertex not in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.dfs_rec(vertex)  # change to dfs_rec
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
