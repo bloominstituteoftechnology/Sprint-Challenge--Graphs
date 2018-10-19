@@ -37,10 +37,10 @@ class Graph:
         return x
 
     def graph_rec(self, start, target=None):
-        x = set()
+        x = []
         x.append(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):
