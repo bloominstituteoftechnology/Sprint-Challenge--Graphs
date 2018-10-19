@@ -29,7 +29,6 @@ class Graph:
     def dfs(self, start, target=None):
         x = []
         x.append(start)
-        y = set(x)
         while x:
             z = x.pop()
             if x == target:
@@ -37,14 +36,14 @@ class Graph:
             x.extend(self.vertices[z])
         return x
 
-    def graph_rec(self, start, target=None, x=[]):
+    def graph_rec(self, start, x=[]):
         x = x
-        x.append(start)
+        x.append(start.label)
         if start.edges:
             for edge in start.edges:
-                if edge not in x:
+                if str(edge) not in x:
                     self.graph_rec(self.vertices[edge], x)
-            return self.answer
+            return x
 
     def find_components(self):
         visited = set()
@@ -65,4 +64,4 @@ test.add_vertex(2)
 test.add_edge(0, 1)
 test.add_edge(1, 2, False)
 test.add_edge(2, 0, False)
-print()
+print(test.graph_rec(test.vertices[2]))
