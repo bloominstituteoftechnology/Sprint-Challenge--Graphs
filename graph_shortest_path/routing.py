@@ -9,6 +9,19 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # Vertex class
 class Vertex:
@@ -55,16 +68,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        storage = []
-        storage.append(start)
-        visited = set()
-        while storage:
-            current = storage.pop(0)
-            visited.add(current)
-            for edge in current.edges:
+        q = Queue()
+        q.enqueue(start)
+        visited = [start]
+        while q.size() > 0:
+            curr = q.dequeue()
+            for edge in curr.edges:
                 if edge.destination not in visited:
-                    edge.destination.parent = current
-                    storage.append(edge.destination)
+                    edge.destination.parent = curr
+                    q.enqueue(edge.destination)
+                    visited.append(edge.destination)
 
     def output_route(self, start):
         """
@@ -74,7 +87,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        visited = set()
+        while current.parent:
+            visited.add(current)
+            current = current.parent
+        print(visited)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
