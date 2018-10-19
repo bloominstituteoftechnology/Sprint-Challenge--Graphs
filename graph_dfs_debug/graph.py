@@ -47,7 +47,7 @@ class Graph:
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.add(start)
         for v in self.vertices[start]:
             graph_rec(v)
         return x
@@ -57,7 +57,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component

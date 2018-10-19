@@ -2,6 +2,21 @@
 
 import sys
 
+# Queue Class
+
+class Queue: #FIFO
+    def __init__(self):
+        self.queue = []
+    def enqueue(self,value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # Edge class
 class Edge:
@@ -42,7 +57,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        if value in self.vertices:
+            return self.vertices[value]
+        else:
+            return None
 
     def bfs(self, start):
         """
@@ -51,8 +69,25 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+    def bfs(self, start, target):
+        # mark all of the vertices as not visited
+        visited = []
+        # create a queue for BFS
+        queue = Queue()
+        # mark the source node as visited and enqueue
+        queue.enqueue(start)
+        while queue.size() > 0: # when the queue is not empty
+            # Dequeue a vertex from the queue and print it
+            removed = queue.dequeue() # remove the first element from the queue
+            visited.append(removed) # mark the removed node as visited
+            print(removed)
+            if removed == target:
+                return True
+            # Get all adjacent vertices of the dequeued vertex.  If adjacent has not been visited, then mark it visited and enqueue it
+            for vertex in self.vertices[removed].edges: # for each child node
+                if vertex not in visited: # if the node has not been visited
+                    queue.enqueue(vertex) # place the node in the back of the queue
+        return False
 
     def output_route(self, start):
         """
