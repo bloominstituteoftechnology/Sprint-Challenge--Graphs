@@ -3,7 +3,7 @@ General drawing methods for graphs using Bokeh.
 """
 
 from math import ceil, floor, sqrt
-from random import choice, random
+from random import choice, random, randint
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
 from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
@@ -57,7 +57,10 @@ class BokehGraph:
         colors = []
         num_colors = num_colors or len(self.graph.vertices)
         for _ in range(num_colors):
-            color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            # color = '#'+''.join([choice('0123456789ABCDEF') for j in range(6)])
+            color = '#{:02x}{:02x}{:02x}'.format(randint(200, 255),
+                                                 randint(200, 255),
+                                                 randint(200, 255))
             colors.append(color)
         return colors
 
