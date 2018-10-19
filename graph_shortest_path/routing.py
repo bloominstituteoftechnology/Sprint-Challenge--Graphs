@@ -43,7 +43,7 @@ class Graph:
         """
         # iterate through vetices;
         for vert in self.vertices:
-            # if it's value the parameter
+            # if it's value the parameters
             if vert.value == value:
                 # return the vert
                 return vert
@@ -57,8 +57,29 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # create an empty list to use as queue:
+        queue = []
+        # create a visited stack, no class to refer to,  so initliaze as set:
+        visited = set(queue)
+        # put the first vertex into the queue
+        queue.append(start)
+        # while loop
+        while q.size() > 0:
+            # create current test node
+            current_node = queue.pop(0)
+            # add the dequeued node to the stack since it's a set
+            visited.add()
+            # now iterate through self.vertices.edges:
+            for edge in self.vertices[crurent_node].edges:
+                # if the node is not in visited
+                if edge not in visited:
+                    # set it to current
+                    edge = current_node
+                    # add to back of queue
+                    queue.append(edge)
+                    # add to visited stack
+                    visited.add(edge)
+                    # not sure what to return or how to test tbh or what parent referecnes are
 
     def output_route(self, start):
         """
@@ -133,3 +154,11 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
+
+g = Graph()
+g.add_vertex(Vertex(1))
+g.add_vertex(Vertex(2))
+g.add_edge((Vertex(1), Vertex(2)))
+
+print(find_vertex(1))
