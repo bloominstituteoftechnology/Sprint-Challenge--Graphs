@@ -51,7 +51,7 @@ class BokehGraph:
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
         # Attach the prepared renderer to the plot so it can be shown
-        self.plot.renderers.append(graph_renderer)
+        self.plot.renderers.add_vertex(graph_renderer)
 
     def _get_random_colors(self, num_colors=None):
         colors = []
