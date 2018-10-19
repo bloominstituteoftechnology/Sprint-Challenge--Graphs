@@ -2,12 +2,13 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
-        self.label = str(label)
+    def __init__(self, vert_label, component=-1):
+        self.vert_label = vert_label
         self.component = component
+        self.edges = set()
 
     def __repr__(self):
-        return 'Vertex: ' + self.label
+        return ' {}'.format(self.edges)
 
     """Trying to make this Graph class work..."""
 class Graph:
@@ -15,13 +16,14 @@ class Graph:
         self.vertices = {}
         self.components = 0
 
-    def add_vertex(self, vertex, edges=()):
-        self.vertices[vertex] = set(edges)
+    def add_vertex(self, vertex_label):
+        self.vertices[vertex_label] = Vertex(vertex_label)
 
-    def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+    def add_edge(self, vert1, vert2, bidirectional=True):
+        if vert1 in self.vertices and vert2 in self.vertices:
+            self.vertices[vert1].edges.add(vert2)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[vert2].edges.add(vert1)
 
     def dfs(self, start, target=None):
         x = []
@@ -61,6 +63,6 @@ graph.add_vertex('0')
 graph.add_vertex('1')
 graph.add_vertex('2')
 graph.add_vertex('3')
-graph.add_edge('0', '1')
-graph.add_edge('0', '3')
+graph.add_edge('0', '1', True)
+graph.add_edge('0', '3', True)
 print(graph.vertices)
