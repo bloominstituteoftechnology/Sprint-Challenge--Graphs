@@ -46,7 +46,7 @@ class BokehGraph:
                                                     fill_color='color')
 
         # Add the edge [start, end] indices as instructions for drawing edges
-        graph_renderer.edge_renderer.data_source.data = self._get_edge_indexes()
+        graph_renderer.edge_renderer.data_source.data = self._get_edge_indices()
         self.randomize()  # Randomize vertex coordinates, and set as layout
         graph_renderer.layout_provider = StaticLayoutProvider(
             graph_layout=self.pos)
@@ -61,7 +61,7 @@ class BokehGraph:
             colors.append(color)
         return colors
 
-    def _get_edge_indexes(self):
+    def _get_edge_indices(self):
         start_indices = []
         end_indices = []
         checked = set()
