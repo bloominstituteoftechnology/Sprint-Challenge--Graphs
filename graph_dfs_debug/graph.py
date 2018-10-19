@@ -2,7 +2,7 @@
 Simple graph implementation compatible with BokehGraph class.
 """
 class Vertex:
-    def __init__(self, label, component=-1):
+    def __init__(self, label, component=-1): #idk what component =-1 is doing but seems fishy
         self.label = str(label)
         self.component = component
 
@@ -52,15 +52,21 @@ class Graph:
             self.graph_rec(v)
         return x
 
-    def find_components(self):
+    def find_components(self): # Bet there are problems here
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
+            #added the vertex's into visited. idk if that's 
+            # what I need to do. if not I don't believe the loop
+            # runs.
+            visited.add(vertex)
             if vertex in visited:
-                reachable = self.dfs(vertex)
+                reachable = self.dfs(vertex)   
                 for other_vertex in reachable:
-                    other_vertex.component = current_component
+                    other_vertex.component = visited
                 current_component += 1
                 visited.update(reachable)
+        print(current_component)
+        # print(reachable)
         self.components = current_component
