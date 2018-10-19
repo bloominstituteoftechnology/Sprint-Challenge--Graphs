@@ -28,7 +28,6 @@ class BokehGraph:
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
 
-
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
