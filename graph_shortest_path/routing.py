@@ -55,7 +55,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = []
+        visited = set()
+        q.append(start)
+        while q:
+            dequeued = q.pop(0)
+            visited.add(dequeued)
+            for edge in dequeued.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = dequeued
+                    q.append(edge)
+
 
     def output_route(self, start):
         """
