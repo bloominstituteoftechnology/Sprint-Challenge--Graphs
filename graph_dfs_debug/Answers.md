@@ -7,3 +7,5 @@ Describe the fixes/improvements you made to the Graph implementation here.
 * I also implemented a conditional to check and see if the random vertices that were being called already existed.
 
 * If you want to make your code faster, you may want to implement a stack and/or queue instead of recursion for your graph.
+
+* I also imported the color palette from bokeh.
