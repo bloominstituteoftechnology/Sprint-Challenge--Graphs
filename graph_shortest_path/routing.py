@@ -1,7 +1,7 @@
 #/usr/bin/env python
 
 import sys
-
+from collections import defaultdict
 
 # Edge class
 class Edge:
@@ -56,7 +56,19 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-       
+        visited = [False] * (len(self.vertices))
+
+        queue = []
+
+        queue.append(start)
+        visited[start] = True
+
+        while queue:
+            s=queue.pop(0)
+            for i in self.vertices[start]:
+                if visited[i] == False:
+                    queue.append(i)
+                    visited[i] = True
 
 
     def output_route(self, start):
@@ -66,11 +78,12 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        while start.parent:
-            current = start.parent
+        current = start
+        while current.parent:
+            current = current.parent
             print(current.value)
-        pass
+        # !!!! IMPLEMENT ME
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
