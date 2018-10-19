@@ -2,6 +2,19 @@
 
 import sys
 
+# Creating a Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 # Edge class
 class Edge:
@@ -43,7 +56,7 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for vert in self.vertices:
-            if vert == value:
+            if vert.value == value:
                 return self.vertices[vert]
             else:
                 return None
@@ -56,7 +69,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue(start)
+        visited = [start]
+        while q.size() > 0:
+            curr = q.dequeue()
+            for edge in curr.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = curr
+                    q.enqueue(edge.destination)
+                    visited.append(edge.destination)
+
 
     def output_route(self, start):
         """
