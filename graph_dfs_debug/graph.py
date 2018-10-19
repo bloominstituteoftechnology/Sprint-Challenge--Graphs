@@ -28,7 +28,7 @@ class Graph:
         x.append(start)
         y = set(x)
 
-        while x:
+        while x.size() > 0:
             z = x.pop()
             if x == target:
                 break
