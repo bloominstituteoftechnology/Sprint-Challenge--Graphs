@@ -24,17 +24,29 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        visited = []
+        stack = Stack()
+        stack.place(start)
+        while stack.size() > 0:
+            current = stack.unstack()
+            if current not in visited:
+                if current == target:
+                    break
+                visited.append(current)
+                for next_vert in self.vertices[current]:
+                    stack.place(next_vert)
+        return visited
+        #x = []
+        #x.append(start)
+        #y = set(x)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        #while x:
+        #    z = x.pop()
+        #    if x == target:
+        #        break
+        #    x.extend(self.vertices[z])
 
-        return x
+        #return x
 
     def graph_rec(self, start, target=None):
         visited = []
@@ -50,10 +62,26 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)
         self.components = current_component
+
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return self.items == []
+
+    def place(self, item):
+        self.items.append(item)
+
+    def unstack(self):
+        return self.items.pop()
+
+    def size(self):
+        return len(self.items) 

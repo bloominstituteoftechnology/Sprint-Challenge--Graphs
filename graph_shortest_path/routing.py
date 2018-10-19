@@ -57,23 +57,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        visited = []
-        # create an empty queue
-        q = Queue()
-        # Put starting vert in the queue
-        q.enqueue(self.vertices[0])
-        while q.size() > 0:
-            dequeued = q.dequeue()
-            visited.append(dequeued)
-            if dequeued == value:
-                print(f'bfs:{visited}')
-                return True
-            for edge in self.vertices[dequeued].edges:
-                if edge not in visited:
-                    q.enqueue(edge)
-        print(f'bfs:{visited}')
-        return False
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
+        
 
 
     def bfs(self, start):
@@ -84,7 +72,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        start.color = "black"
+        q.enqueue(start)
+        while q.size() > 0:
+            vertex = q.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    q.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -94,7 +92,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_str = ""
+
+        while current is not None:
+            output_str += current.value
+            if current.parent is not None:
+                output_str += " --> "
+            current = current.parent
+        print(output_str)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
