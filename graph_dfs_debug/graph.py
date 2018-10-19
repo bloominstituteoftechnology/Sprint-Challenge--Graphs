@@ -34,19 +34,19 @@ class Graph:
     # so I think I need to swtich to a stack like it was before.
     def dfs(self, start, target=None, visited=None):
         # stack
-        x = []
-        x. append(start)
+        stack = []
+        stack. append(start)
         # queue
-        y = set()
-        while x:
-            z = x.pop(0)
-            if z == target:
+        visited = set(stack)
+        while stack:
+            dequeued = stack.pop(0)
+            if dequeued == target:
                 break
             # add iterabile verts to stack if they aren't in the queue
-            x.extend(vert for vert in self.vertices[z] if vert not in y)
+            stack.extend(vert for vert in self.vertices[dequeued] if vert not in visited)
             # put into back of queue of visited verts
-            y.add(z)
-        return y
+            visited.add(dequeued)
+        return visited
 
     def graph_rec(self, start, target=None):
         visited = set()
