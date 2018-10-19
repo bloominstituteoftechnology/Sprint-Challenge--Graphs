@@ -59,7 +59,8 @@ class Graph:
         for vertex in self.vertices:
             #added the vertex's into visited. idk if that's 
             # what I need to do. if not I don't believe the loop
-            # runs.
+            # runs. Most likely not the right idea but something is up 
+            # in this loop not making the right connections
             visited.add(vertex)
             if vertex in visited:
                 reachable = self.dfs(vertex)   
