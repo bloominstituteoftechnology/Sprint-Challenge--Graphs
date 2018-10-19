@@ -97,7 +97,8 @@ class Graph:
             curr = v.pop()
             parent = curr.parent
             path.append(curr)
-            v.append(parent)
+            if parent is not None:
+                v.append(parent)
         return path
 
     def route(self, start, end):
