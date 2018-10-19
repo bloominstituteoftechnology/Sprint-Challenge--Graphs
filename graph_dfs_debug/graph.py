@@ -16,19 +16,13 @@ class Graph:
         self.components = 0
 
     def add_vertex(self, vertex, edges=()):
-        if vertex not in self.vertices:
-            self.vertices[vertex] = set(edges)
-        else:
-            IndexError('This vertex already exists')
-        # self.vertices[vertex] = set(edges)
+     self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-       if start in self.vertices and end in self.vertices:
           self.vertices[start].add(end)
           if bidirectional:
-            self.vertices[end].add(start)
-        else:
-            IndexError('Both ends of an edge must be in the list of vertices')
+              self.vertices[end].add(start)
+       
 
     def dfs(self, start, target=None):
         visited = []
@@ -39,7 +33,10 @@ class Graph:
                 if current == target:
                     break
                 visited.append(current)
-                
+                for next_vert in self.vertices[current]:
+                    stack.append(next_vert)
+            return visited
+
         # x = []
         # x.append(start)
         # y = set(x)
@@ -52,11 +49,11 @@ class Graph:
 
         # return x
 
-    def graph_rec(self, start, target=None):
+    def graph_rec(self, start, target=None, visited=[]):
         x = set()
-        x.append(start)
+        x.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+           se;f.graph_rec(v)
         return x
 
     def find_components(self):
@@ -64,7 +61,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
