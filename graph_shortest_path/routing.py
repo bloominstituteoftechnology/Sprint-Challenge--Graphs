@@ -22,6 +22,22 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+# Queue Class
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def dequeue(self):
+        return self.items.pop(0)
+
+    def size(self):
+        return len(self.items) 
 
 # Graph class
 class Graph:
@@ -42,7 +58,23 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        visited = []
+        # create an empty queue
+        q = Queue()
+        # Put starting vert in the queue
+        q.enqueue(self.vertices[0])
+        while q.size() > 0:
+            dequeued = q.dequeue()
+            visited.append(dequeued)
+            if dequeued == value:
+                print(f'bfs:{visited}')
+                return True
+            for edge in self.vertices[dequeued].edges:
+                if edge not in visited:
+                    q.enqueue(edge)
+        print(f'bfs:{visited}')
+        return False
+
 
     def bfs(self, start):
         """
