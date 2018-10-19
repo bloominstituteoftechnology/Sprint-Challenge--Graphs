@@ -20,9 +20,9 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
     # Add random edges between vertices
     for _ in range(num_edges):
         vertices = sample(graph.vertices.keys(), 2)
-        print('vertices -> ', vertices)
+        # print('vertices -> ', vertices)
         # TODO check if edge already exists
-        print(graph.components)
+        # print(graph.components)
         if not graph.components:
             graph.add_edge(vertices[0], vertices[1])
 

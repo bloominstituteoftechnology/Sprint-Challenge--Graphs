@@ -9,3 +9,5 @@ problem is to get edges working
 changed line 16 in bokeh graph to True for axis and grid
 
 add check to line 17 in graph demo to ensure no duplicates
+
+make bounds and random less hacky 
