@@ -112,12 +112,12 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         for _ in graph.vertices:
+            route_array = []
             end = graph.vertices[-1]
-            all_parents.append(end)
+            route_array.append(end)
             if end.parent is not None:
-                all_parents = []
-                all_parents.append(end.parent)
-                print(f"{end}=>{end.parent}")
+                route_array.append(end.parent)
+        return route_array
 
 
     def route(self, start, end):
