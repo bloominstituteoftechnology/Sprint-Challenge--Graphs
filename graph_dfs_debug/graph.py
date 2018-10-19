@@ -10,6 +10,7 @@ class Vertex:
         return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
+
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -22,6 +23,7 @@ class Graph:
         self.vertices[start].add(start)
         if bidirectional:
             self.vertices[end].add(end)
+
     # address issues in dfs
     def dfs(self, start, target=None):
         x = []
@@ -33,7 +35,6 @@ class Graph:
             if x == target:
                 break
             x.extend(self.vertices[z])
-
         return x
 
     def graph_rec(self, start, target=None):
