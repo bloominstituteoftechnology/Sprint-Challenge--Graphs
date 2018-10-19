@@ -5,6 +5,10 @@ class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
         self.component = component
+        self.edges = set()
+
+    def add(self, edge):
+        self.edges.update(edge)
 
     def __repr__(self):
         return 'Vertex: ' + self.label
@@ -32,9 +36,10 @@ class Graph:
             z = x.pop()
             if z == target:
                 return True
-            x.extend(self.vertices[z])
+            x.extend(*self.vertices[z])
+            y = y.union([z])
 
-        return x
+        return y
 
     def graph_rec(self, start, target=None):
         x = set()
