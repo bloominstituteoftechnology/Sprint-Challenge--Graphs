@@ -42,7 +42,13 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        print(self.vertices)
+        print(value)
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+            return None
+        
 
     def bfs(self, start):
         """
@@ -52,7 +58,50 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        """
+        BFS(graph, startVert):
+        for v of graph.vertices:
+            v.color = white
+            v.parent = null   // <-- Add parent initialization
+
+        startVert.color = gray
+        queue.enqueue(startVert)
+
+        while !queue.isEmpty():
+            u = queue[0]
+
+            for v of u.neighbors:
+            if v.color == white:
+                v.color = gray
+                v.parent = u     // <-- Keep a parent link
+                queue.enqueue(v)
+            
+            queue.dequeue()
+            u.color = black
+        """
+        q = [start]
+        visited = set()
+        relation = [] 
+        
+        for vertex in graph.vertices:
+            vertex.color = "white" 
+            vertex.parent = None
+        
+        start.color = "gray"
+        
+        while q:
+            for vertex in graph.vertices:
+                if len(relation) < 1:
+                    relation.append(vertex)
+                    visited.add(vertex)
+                else:
+                    vertex.parent = relation.pop(0)
+                    graph.vertices[vertex.parent].color = "black"
+                    relation.append(vertex) 
+                    visited.add(vertex)
+                    
+
+        
 
     def output_route(self, start):
         """
@@ -62,7 +111,14 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        for _ in graph.vertices:
+            end = graph.vertices[-1]
+            all_parents.append(end)
+            if end.parent is not None:
+                all_parents = []
+                all_parents.append(end.parent)
+                print(f"{end}=>{end.parent}")
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
