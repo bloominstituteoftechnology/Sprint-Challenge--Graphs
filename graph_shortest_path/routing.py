@@ -77,7 +77,6 @@ class Graph:
         visited = []
         # create a queue for BFS
         queue = Queue()
-        # mark the source node as visited and enqueue
         start.color = 'green' # give the starting vertext a color
         queue.enqueue(start) # place the starting node in the queue
         while queue.size() > 0: # when the queue is not empty
@@ -95,8 +94,9 @@ class Graph:
                     vertex.destination.parent = current
                     queue.push(vertex.destination)
             queue.dequeue()
-
             current.color = 'grey'
+
+        return False
 
     def output_route(self, start):
         """
@@ -177,4 +177,8 @@ if __name__ == '__main__':
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
     graph.route(hostAVert, hostDVert)
+
+main()
+
+
 
