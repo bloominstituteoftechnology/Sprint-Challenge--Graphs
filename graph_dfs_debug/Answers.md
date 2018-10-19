@@ -6,3 +6,10 @@ Imported Graph class from graph into draw.py
 
 In Draw.py file, in the setup_graph_renderer method, replaced [vertex.label for vertex in self.vertex_list] with self.vertex_list.
 
+For the recursive search graph_rec, removed =None from target parameter and added and added a visited parameter set to =None.  Made a few more fixes to graph_rec, should now be working correctly
+
+1. Vertices / edges are now setup correctly.
+2. 
+3. 
+4. 
+5. I've renamed several variable to make the code more clear.

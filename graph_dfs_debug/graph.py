@@ -38,12 +38,19 @@ class Graph:
 
         return x
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def graph_rec(self, start, target, visited=None):
+        if visited is None:
+            visited = []
+        # x = set()
+        visited.append(start)
+        if start == target:
+            return True
+
+        for vert in self.vertices[start].edges:
+            if vert not in visited:
+                if self.graph_rec(vert, target, visited):
+                    return True
+        return False
 
     def find_components(self):
         visited = set()
