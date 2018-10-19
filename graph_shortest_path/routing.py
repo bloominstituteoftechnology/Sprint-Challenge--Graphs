@@ -43,8 +43,8 @@ class Graph:
         """
         # iterate through vetices;
         for vert in self.vertices:
-            # if it equals the parameter
-            if vert == value:
+            # if it's value the parameter
+            if vert.value == value:
                 # return the vert
                 return vert
         # if we don't find it dream is dead
