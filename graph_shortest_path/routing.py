@@ -55,10 +55,10 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        if value not in self.vertices:
-            return None
-        else:
-            return self.vertices[value]
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start, target_vertex=None):
         """
@@ -67,27 +67,18 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        q = Queue()
-        q.enqueue([start])
-        visited = []
-
-        verticies = list(self.vertices.keys())
-        last_vertex = verticies[-1]
-            
-        while q.size() > 0:
-            path = q.dequeue()
-            v = path[-1]
-            if v not in visited:
-                if v == target_vertex: 
-                    return path
-                elif v == last_vertex:
-                    return path
-                visited.append(v) 
-                for next_vert in self.vertices[v].edges:  
-                    new_path = list(path)
-                    new_path.append(next_vert) 
-                    q.enqueue(new_path)
-        return None
+        queue = Queue()
+        start.color = "black"
+        queue.enqueue(start)
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                print('destination', destination.parent)
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    queue.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -96,25 +87,15 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        q = Queue()
-        q.enqueue([start])
-        visited = []
+        current = start
+        output_str = ""
 
-        verticies = list(self.vertices.keys())
-        last_vertex = verticies[-1]
-            
-        while q.size() > 0:
-            path = q.dequeue()
-            v = path[-1]
-            if v not in visited:
-                elif v == last_vertex:
-                    return path
-                visited.append(v) 
-                for next_vert in self.vertices[v].edges:  
-                    new_path = list(path)
-                    new_path.append(next_vert) 
-                    q.enqueue(new_path)
-        return None
+        while current is not None:
+            output_str += current.value
+            if current.parent is not None:
+                output_str += " --> "
+            current = current.parent
+        print(output_str)
 
     def route(self, start, end):
         # BFS to build the parent reference tree

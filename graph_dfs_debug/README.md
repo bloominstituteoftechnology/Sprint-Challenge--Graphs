@@ -48,7 +48,8 @@ this part didn't really work.
     a. I am assuming you are talking about your dfs? Please be more specific with your references as I'm not sure what "it" is. 
     b. Assuming you are referencing your dfs funciton, I have commented yours out and replaced it with a functional version. You were on the right track, but a couple things:
         - Unless you are creating a path, I would stay away from using sets, and even then, you are better off with lists. 
-        - 
+        - You should return True when you find your Target Node. 
+        - If you choose to do it iteratively like this, then you need to x.pop(-1) to pull the last one in your x list off. A DFT is FILO. 
 
 5. My editor sure is complaining a lot about something called "lint."
     a. You need to install linter and a linting software, like flake8. 
