@@ -55,7 +55,16 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        storage = []
+        storage.append(start)
+        visited = set()
+        while storage:
+            current = storage.pop(0)
+            visited.add(current)
+            for edge in current.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = current
+                    storage.append(edge.destination)
 
     def output_route(self, start):
         """
