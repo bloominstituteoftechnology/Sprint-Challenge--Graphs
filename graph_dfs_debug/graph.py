@@ -15,13 +15,15 @@ class Stack:
         return len(self.stack)
 
 class Vertex:
-    def __init__(self, vert_label, component=-1):
-        self.vert_label = vert_label
+    def __init__(self, label, component=-1):
+        # self.vert_label = vert_label
+        self.label = str(label)
         self.component = component
-        self.edges = set()
+        # self.edges = set()
 
     def __repr__(self):
-        return ' {}'.format(self.edges)
+        # return ' {}'.format(self.edges)
+        return 'Vertex: ' + self.label
 
     """Trying to make this Graph class work..."""
 class Graph:
@@ -29,14 +31,18 @@ class Graph:
         self.vertices = {}
         self.components = 0
 
-    def add_vertex(self, vertex_label):
-        self.vertices[vertex_label] = Vertex(vertex_label)
+    def add_vertex(self, label, edges=()):
+        # self.vertices[vertex_label] = Vertex(vertex_label)
+        self.vertices[label] = set(edges)
 
-    def add_edge(self, vert1, vert2, bidirectional=True):
-        if vert1 in self.vertices and vert2 in self.vertices:
-            self.vertices[vert1].edges.add(vert2)
-        if bidirectional:
-            self.vertices[vert2].edges.add(vert1)
+    def add_edge(self, start, end, bidirectional=True):
+        if start in self.vertices and end in self.vertices:
+            self.vertices[start].add(end)
+            if bidirectional:
+                self.vertices[end].add(start)
+        #     self.vertices[vert1].edges.add(vert2)
+        # if bidirectional:
+        #     self.vertices[vert2].edges.add(vert1)
 
     def dfs(self, start, target=None):
         s = Stack()
@@ -57,7 +63,7 @@ class Graph:
 
         return False
 
-    def graph_rec(self, start, target, visited=None):
+    def graph_rec(self, start, target=None, visited=None):
         if visited is None:
             visited = []
         # x = set()
