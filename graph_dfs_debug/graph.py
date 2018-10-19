@@ -45,44 +45,66 @@ class Graph:
         #     self.vertices[vert2].edges.add(vert1)
 
     def dfs(self, start, target=None):
-        s = Stack()
         visited = []
-        s.push(start)
-        # x.append(start)
-        # y = set(x)
+        stack = Stack()
+        stack.push(start)
+        while stack.size() > 0:
+            current = stack.pop()
+            if current not in visited:
+                if current == target:
+                    break
+                visited.append(current)
+                for next_vert in self.vertices[current]:
+                    stack.push(next_vert)
+        return visited
 
-        while s.size() > 0:
-            curr_vert = s.pop()
-            if curr_vert == target:
-                return True
-            visited.append(curr_vert)
-            # x.extend(self.vertices[z])
-            for vert in self.vertices[curr_vert].edges:
-                if vert not in visited:
-                    s.push(vert)
+        # s = Stack()
+        # visited = []
+        # s.push(start)
+        # # x.append(start)
+        # # y = set(x)
 
-        return False
+        # while s.size() > 0:
+        #     curr_vert = s.pop()
+        #     if curr_vert == target:
+        #         break
+        #     visited.append(curr_vert)
+        #     # x.extend(self.vertices[z])
+        #     # s.stack.extend(self.vertices[curr_vert])
+        #     for vert in self.vertices[curr_vert].edges:
+        #         if vert not in visited:
+        #             s.push(vert)
 
-    def graph_rec(self, start, target=None, visited=None):
+        # return visited
+
+    def graph_rec(self, start, visited=None):
         if visited is None:
-            visited = []
-        # x = set()
-        visited.append(start)
-        if start == target:
-            return True
+            visited = set()
+        visited.add(start)
+        for other_vertex in self.vertices[start]:
+            if other_vertex not in visited:
+                self.dfs_rec(other_vertex, visited)
+        return visited
 
-        for vert in self.vertices[start].edges:
-            if vert not in visited:
-                if self.graph_rec(vert, target, visited):
-                    return True
-        return False
+        # if visited is None:
+        #     visited = []
+        # # x = set()
+        # visited.append(start)
+        # if start == target:
+        #     return True
+
+        # for vert in self.vertices[start].edges:
+        #     if vert not in visited:
+        #         if self.graph_rec(vert, target, visited):
+        #             return True
+        # return False
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
