@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 
 """
 Demonstration of Graph and BokehGraph functionality.
