@@ -1,6 +1,9 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+
+#https://www.programiz.com/python-programming/set
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -25,17 +28,22 @@ class Graph:
             self.vertices[end].add(end)
 
     # address issues in dfs
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+    def dfs(self, start, target):
+        stack = []
+        stack.append(start)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-        return x
+        visited = set(stack)
+
+        while len(stack) > 0:
+            removed = stack.pop()
+            print("removed vertex: ", removed)
+            if removed == target:
+                return True
+            visited.add(removed)
+            for vertex in self.vertices[removed].edges:
+                if vertex not in visited:
+                    stack.append(vertex)
+        return False
 
     def graph_rec(self, start, target=None):
         x = set()

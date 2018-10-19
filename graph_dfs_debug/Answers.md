@@ -1,7 +1,7 @@
 Describe the fixes/improvements you made to the Graph implementation here.
 
 1. Edges aren't showing up: 
-    access vertices using "self.vertices[start].edges"
+    access edges using "self.vertices[start].edges"
     
 2. I noticed that, in find_components, it says:
      
