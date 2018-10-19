@@ -42,13 +42,15 @@ class Graph:
 
         return seen
 
-    def graph_rec(self, start, seen=None):
+    def graph_rec(self, start, target=None, seen=None):
         if seen is None:
             seen = set()
         seen.add(start)
         for v in self.vertices[start]:
+            if v == target:
+                break
             if v not in seen:
-                self.graph_rec(v, seen)
+                self.graph_rec(v, target, seen)
         return seen
 
     def find_components(self):
