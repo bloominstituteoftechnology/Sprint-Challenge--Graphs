@@ -26,18 +26,17 @@ class Graph:
             if bidirectional:
                 self.vertices[end].add(start)
 
-    def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
-
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
+    def dfs(self, start, target=None, visited=None):
+        if visited is None:
+            visited = []
+        visited.append(start)
+        if start == target:
+            return True
+        for node in self.vertices[start].edges:
+            if node not in visited:
+                if self.dfs(node, target, visited):
+                    return True
+        return False
 
     def graph_rec(self, start, target=None):
         x = set()
