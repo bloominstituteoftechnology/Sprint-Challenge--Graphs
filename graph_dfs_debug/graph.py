@@ -5,6 +5,10 @@ class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
         self.component = component
+        self.edges = set()
+
+    def add(self, edge):
+        self.edges.update(edge)
 
     def __repr__(self):
         return 'Vertex: ' + self.label
@@ -19,22 +23,23 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
-        if bidirectional:
-            self.vertices[end].add(end)
+        self.vertices[start].add(end)
+        if bidirectional is True:
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
         x = []
         x.append(start)
         y = set(x)
 
-        while x:
+        while len(x) > 0:
             z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+            if z == target:
+                return True
+            x.extend(*self.vertices[z])
+            y = y.union([z])
 
-        return x
+        return y
 
     def graph_rec(self, start, target=None):
         x = set()
