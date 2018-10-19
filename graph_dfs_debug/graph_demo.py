@@ -20,12 +20,12 @@ def main(num_vertices=8, num_edges=8, draw_components=True):
     # Add random edges between vertices
     for _ in range(num_edges):
         vertices = sample(graph.vertices.keys(), 2)
+        print('vertices -> ', vertices)
         # TODO check if edge already exists
         graph.add_edge(vertices[0], vertices[1])
 
     bokeh_graph = BokehGraph(graph, draw_components=draw_components)
     bokeh_graph.show()
-
 
 if __name__ == '__main__':
     if len(argv) == 4:
