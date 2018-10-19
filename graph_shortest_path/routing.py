@@ -105,7 +105,7 @@ class Graph:
         while curr:
             path.append(curr.value)
             curr = curr.parent
-        print(path)
+        print(" --> ".join(path))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
