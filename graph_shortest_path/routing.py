@@ -41,12 +41,13 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-
-        for i in range(len(self.vertices)):
-            if self.vertices[i].value == value:
-                return self.vertices[i]
-            else:
-                return None
+        sought = value
+        for i in self.vertices:
+            if i.value == sought:
+                return i
+            #     return i
+            # else:
+            #     return None
 
 
     def bfs(self, start):
@@ -59,18 +60,14 @@ class Graph:
         # applying first edge vertex as parent to vertex "v"
         # for v in self.vertices:
         #     v.parent = v.edges[0].destination
-        start = self.find_vertex(start)
-        start.color = 'black'
-        print(start.color)
-        visited = []
+        zero = self.find_vertex(start)
+        zero.color = 'black'
         queue = []
-        queue.append(start)
+        queue.append(zero)
         while len(queue) > 0:
             curr_node = queue.pop(0)
-            print(f"parent>>>>>>>>>{curr_node.value}")
             for kid in curr_node.edges:
                 dest = kid.destination
-                print(f"kid>>>>>>>>>{dest.value}")
                 if dest.color == 'white':
                     dest.color = 'black'
                     dest.parent = curr_node
@@ -83,29 +80,31 @@ class Graph:
         route = []
         queue = []
 
-        if start:
-            route.append(start)
-            queue.append(start)
+        zero_node = self.find_vertex(start)
 
-            while len(queue) > 0:
-                curr_node = queue.pop(0)
-                if curr_node.parent:
-                    if curr_node.parent not in route:
-                        parent_node = curr_node.parent
-                        route.append(parent_node)
-                        queue.append(parent_node)
+        route.append(zero_node)
+        queue.append(zero_node)
+
+        while len(queue) > 0:
+            curr_node = queue.pop(0)
+
+            if curr_node.parent:
+                if curr_node.parent not in route:
+                    parent_node = curr_node.parent
+                    route.append(parent_node)
+                    queue.append(parent_node)
         r = ""
-        route.reverse()
         for v in range(len(route)):
             if v == 0:
                 r += route[v].value
             else:
                 r += " --> " + route[v].value
         print(r)
+        return r
 
     def route(self, start, end):
         self.bfs(end)
-        # self.output_route(start)
+        self.output_route(start)
 
 
 # Helper function to add bidirectional edges
@@ -114,10 +113,10 @@ def add_edge(start, end):
     end.edges.append(Edge(start))
 
 
-# if __name__ == '__main__':
-#     if len(sys.argv) != 3:
-#         print('Usage: routing.py hostA hostB')
-#         sys.exit()
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        print('Usage: routing.py hostA hostB')
+        sys.exit()
 
 graph = Graph()
 vertA = Vertex('HostA')
@@ -148,25 +147,24 @@ graph.vertices.append(vertF)
 graph.vertices.append(vertG)
 graph.vertices.append(vertH)
 #
-print(f"F, A  {graph.route('HostB', 'HostA')}")
-# print(f"E, B  {graph.route(vertE, vertB)}")
-# print(f"D, F  {graph.route(vertD, vertF)}")
-# print(f"C, H  {graph.route(vertC, vertH)}")
+# print(f"A D >>>> {graph.route('HostA', 'HostD')}")
+# print(f"A H >>>> {graph.route('HostA', 'HostH')}")
+# print(f"A A >>>> {graph.route('HostA', 'HostA')}")
 
 
 # Look up the hosts passed in from the command line by
 # name to see if we can find them.
-# hostAVert = graph.find_vertex(sys.argv[1])
-#
-# if hostAVert is None:
-#     print('routing.py: could not find host: ', sys.argv[1])
-# sys.exit()
-#
-# hostBVert = graph.find_vertex(sys.argv[2])
-#
-# if hostBVert is None:
-#     print('routing.py: could not find host: ', sys.argv[2])
-# sys.exit()
-#
-# # Show the route from one Vertex to the other
-# graph.route(hostAVert, hostBVert)
+hostAVert = graph.find_vertex(sys.argv[1])
+
+if hostAVert is None:
+    print('routing.py: could not find host: ', sys.argv[1])
+    sys.exit()
+
+hostBVert = graph.find_vertex(sys.argv[2])
+
+if hostBVert is None:
+    print('routing.py: could not find host: ', sys.argv[2])
+    sys.exit()
+
+# Show the route from one Vertex to the other
+graph.route(hostAVert, hostBVert)
