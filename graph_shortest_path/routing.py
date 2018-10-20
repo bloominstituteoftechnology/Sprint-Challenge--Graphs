@@ -2,13 +2,11 @@
 
 import sys
 
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-
 
 # Vertex class
 class Vertex:
@@ -22,47 +20,42 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
-
 # Graph class
 class Graph:
     def __init__(self):
         self.vertices = []
 
-    def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
-
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
-
-        @param {*} value: The value of the Vertex to find
-
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
+    def find_vertex(self, name):
+        for obj in self.vertices:
+            if obj.value == name:
+                return obj
+        else:
+            return None
 
     def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
+        start.color = "pink"
+        queue = []
+        queue.append(start)
+        while len(queue) > 0:
+            current = queue[0]
+            for node in current.edges:
+                if node.destination.color == "white":
+                    node.destination.color = "pink"
+                    node.destination.parent = current
+                    queue.append(node.destination)
+            del queue[0]
+            current.color = "black"
 
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
-
+      
     def output_route(self, start):
-        """
-        Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
+        parent = start.parent
+        path = [start.value]
+        while parent != None:
+            path.append(parent.value)
+            parent = parent.parent
+        print(path)
+        return path
 
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
-        # !!!! IMPLEMENT ME
-        pass
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -75,7 +68,6 @@ class Graph:
 def add_edge(start, end):
     start.edges.append(Edge(end))
     end.edges.append(Edge(start))
-
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
@@ -111,8 +103,8 @@ if __name__ == '__main__':
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
 
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
+    #Look up the hosts passed in from the command line by
+    #name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
 
     if hostAVert is None:
@@ -125,5 +117,6 @@ if __name__ == '__main__':
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
 
-    # Show the route from one Vertex to the other
+    #Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
