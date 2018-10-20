@@ -59,25 +59,22 @@ class Graph:
         # applying first edge vertex as parent to vertex "v"
         # for v in self.vertices:
         #     v.parent = v.edges[0].destination
-        start = start
-        # print(start.edges)
+        start = self.find_vertex(start)
+        start.color = 'black'
+        print(start.color)
         visited = []
         queue = []
         queue.append(start)
         while len(queue) > 0:
             curr_node = queue.pop(0)
-            if curr_node not in visited:
-                visited.append(curr_node)
-                # if curr_node.parent is not None:
-                #     parents.append(curr_node.parent)
-                if curr_node.color == 'white':
-                    curr_node.color = 'gray'
-                for kid in curr_node.edges:
-                    if kid.destination not in visited:
-                        visited.append(kid)
-                        queue.append(kid)
-                        kid.destination.parent = curr_node
-        # print(f"check for parent {self.vertices[2].parent}")
+            print(f"parent>>>>>>>>>{curr_node.value}")
+            for kid in curr_node.edges:
+                dest = kid.destination
+                print(f"kid>>>>>>>>>{dest.value}")
+                if dest.color == 'white':
+                    dest.color = 'black'
+                    dest.parent = curr_node
+                    queue.append(dest)
         queue.clear()
 
 
@@ -108,7 +105,7 @@ class Graph:
 
     def route(self, start, end):
         self.bfs(end)
-        self.output_route(start)
+        # self.output_route(start)
 
 
 # Helper function to add bidirectional edges
@@ -151,10 +148,10 @@ graph.vertices.append(vertF)
 graph.vertices.append(vertG)
 graph.vertices.append(vertH)
 #
-print(f"F, A  {graph.route(vertF, vertA)}")
-print(f"E, B  {graph.route(vertE, vertB)}")
-print(f"D, F  {graph.route(vertD, vertF)}")
-print(f"C, H  {graph.route(vertC, vertH)}")
+print(f"F, A  {graph.route('HostB', 'HostA')}")
+# print(f"E, B  {graph.route(vertE, vertB)}")
+# print(f"D, F  {graph.route(vertD, vertF)}")
+# print(f"C, H  {graph.route(vertC, vertH)}")
 
 
 # Look up the hosts passed in from the command line by
