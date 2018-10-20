@@ -27,23 +27,37 @@ class Graph:
                 self.vertices[end].edges.add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        while x:
-            z = x.pop()
-            if x == target:
+        visited = []
+        stack = []
+        stack.append(start)
+        while len(stack) > 0:
+            current = stack[-1]
+            print(current.label, target)
+            if str(current.label) == str(target):
+                visited.append(current.label)
                 break
-            x.extend(self.vertices[z])
-        return x
+            else:
+                visited.append(current.label)
+                stack.pop()
+                if current.edges:
+                    for edge in current.edges:
+                        if str(edge) not in visited:
+                            stack.append(self.vertices[edge])
+        return visited
 
-    def graph_rec(self, start, x=[]):
-        x = x
-        x.append(start.label)
+    def graph_rec(self, start, target=None, visited=None):
+        if visited == None:
+            visited = []
+        visited = visited
+        visited.append(start.label)
         if start.edges:
             for edge in start.edges:
-                if str(edge) not in x:
-                    self.graph_rec(self.vertices[edge], x)
-            return x
+                if edge == target:
+                    visited.append(target)
+                    return visited
+                elif str(edge) not in visited:
+                    self.graph_rec(self.vertices[edge], target, visited)
+            return visited
 
     def find_components(self):
         visited = set()
@@ -64,4 +78,4 @@ test.add_vertex(2)
 test.add_edge(0, 1)
 test.add_edge(1, 2, False)
 test.add_edge(2, 0, False)
-print(test.graph_rec(test.vertices[2]))
+print(test.dfs(test.vertices[2], 0))
