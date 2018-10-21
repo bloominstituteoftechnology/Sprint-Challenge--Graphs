@@ -44,12 +44,14 @@ class Graph:
         # return all visted nodes
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_rec(self, start, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for other_vertex in self.vertices[start]:
+            if other_vertex not in visited:
+                self.dfs_rec(other_vertex, visited)
+        return visited
 
     def find_components(self):
         visited = set()

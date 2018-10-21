@@ -17,3 +17,23 @@ as from class.
 
 This is because the dfs is running an infinite while loop and must be refactored. We use queues for breadth first searches and stacks for depth first, so we append all of our starting nodes to an empty stack. we then have to pop() a node from the stack and add it to the list of visited nodes. If the current node however has not been visited, we move on to the next node and append to the stack. The unvisited node is given a different color (pointing to find_components function)
 
+* 4. I wanted to let it find a target vertex, but even back when it did kinda run
+this part didn't really work.
+
+in the dfs_rec function, we run dfs until we find the target, then run dfs from the target vertex and add all visited vertices to the empty set.  We then return the visited target vertex and it's children
+
+
+* 5. My editor sure is complaining a lot about something called "lint."
+
+Linting highlights syntactical and stylistic errors in your python code. Variable naming and spacing has been changed to make sure these errors no longer appear when we run our code.
+
+6. I keep losing track of my variables, I guess I should name them better?
+
+To name them better, instead of x, y, v, and z we can use names like visited, stack, and other_vertex for vertices not visited.
+
+7. I also tried to do it with recursion instead of a stack, in `graph_rec`, but I
+got even more stuck. It was running forever so I tried adding a thing to keep
+track of vertices, and now I just get an error message. Please try to fix this
+too if you can, or at least give me some pointers on what I should be doing.
+
+Instead of using a stack we can just add all visited vertices to an empty set. then running dfs on all of the other vertices not visited.
