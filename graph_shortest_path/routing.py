@@ -6,6 +6,9 @@ import sys
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
+        # storest list of edges and vertices, adjacency list
+        # not stored as set.
+        # list do a lot of magic, storing metadata and memory stuff.
         self.destination = destination
         self.weight = weight
 
@@ -33,6 +36,8 @@ class Graph:
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
 
+        Since we aren't using a hash table (dict) we don't have O(1) access
+
         Used in the `main` function to look up the vertices passed in
         from the command line.
 
@@ -41,8 +46,14 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # iterate through vetices;
+        for vert in self.vertices:
+            # if it's value the parameters
+            if vert.value == value:
+                # return the vert
+                return vert
+        # if we don't find it dream is dead
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +62,41 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # create an empty list to use as queue:
+        # you don't need a queue class for this
+        q = []
+        start.color = "black"
+        q.append(start)
+        while q:
+            vert = q.pop(0)
+            for edge in vert.edges:
+                destination = edge.destination
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vert
+                    q.append(destination)
+
+        # # create a visited stack, no class to refer to,  so initliaze as set:
+        # visited = set(queue)
+        # # put the first vertex into the queue
+        # queue.append(start)
+        # # while loop
+        # while q.size() > 0:
+        #     # create current test node
+        #     current_node = queue.pop(0)
+        #     # add the dequeued node to the stack since it's a set
+        #     visited.add()
+        #     # now iterate through self.vertices.edges:
+        #     for edge in self.vertices[crurent_node].edges:
+        #         # if the node is not in visited
+        #         if edge not in visited:
+        #             # set it to current
+        #             edge = current_node
+        #             # add to back of queue
+        #             queue.append(edge)
+        #             # add to visited stack
+        #             visited.add(edge)
+        #             # not sure what to return or how to test tbh or what parent referecnes are
 
     def output_route(self, start):
         """
@@ -61,8 +105,15 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_string = ""
+
+        while current is not None:
+            output_string += current.value
+            if current.parent is not None:
+                output_string += "-->"
+            current = current.parent
+        print(output_string)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
