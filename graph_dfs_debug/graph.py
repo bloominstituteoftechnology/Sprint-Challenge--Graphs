@@ -30,17 +30,30 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        visited = []
+        stack = Stack()
+        stack.push(start)
+        while stack.size() > 0:
+            current = stack.pop()
+            if current not in visited:
+                if current == target:
+                    break
+                visited.append(current)
+                for next_vert in self.vertices[current]:
+                    sstack.push(next_vert)
+        return visited
+        
+        # stack = []
+        # stack.append(start)
+        # visited = set(stack)
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
+        # while stack:
+        #     current = stack.pop()
+        #     if stack == target:
+        #         break
+        #     stack.extend(self.vertices[current])
 
-        return x
+        # return visited
 
     def graph_rec(self, start, target=None):
         x = set()
