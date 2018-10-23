@@ -55,7 +55,7 @@ class Graph:
                     stack.push(next_vert)
         return visited
 
-    def dfs_rec(self, start, target=None):
+    def dfs_rec(self, start, visited=None):
         if visited is None:
             visited = set()
         visited.add(start)
