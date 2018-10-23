@@ -1,6 +1,24 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+class Stack:
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if (self.size()) > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
+
+
+
+
+
 class Vertex:
     def __init__(self, label, component=-1):
         self.label = str(label)
@@ -19,29 +37,32 @@ class Graph:
         self.vertices[vertex] = set(edges)
 
     def add_edge(self, start, end, bidirectional=True):
-        self.vertices[start].add(start)
+        self.vertices[start].add(end)
         if bidirectional:
-            self.vertices[end].add(end)
+            self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x = []
-        x.append(start)
-        y = set(x)
+        visited = []
+        stack = Stack()
+        stack.push(start)
+        while stack.size() > 0:
+            current = stack.pop()
+            if current not in visited:
+                if current == target:
+                    break
+                visited.append(current)
+                for next_vert in self.vertices[current]:
+                    stack.push(next_vert)
+        return visited
 
-        while x:
-            z = x.pop()
-            if x == target:
-                break
-            x.extend(self.vertices[z])
-
-        return x
-
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_rec(self, start, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for child in self.vertices[start]:
+            if child not in visited:
+                self.dfs_rec(child, visited)
+        return visited
 
     def find_components(self):
         visited = set()
