@@ -55,12 +55,14 @@ class Graph:
                     stack.push(next_vert)
         return visited
 
-    def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+    def dfs_rec(self, start, target=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for child in self.vertices[start]:
+            if child not in visited:
+                self.dfs_rec(child, visited)
+        return visited
 
     def find_components(self):
         visited = set()
