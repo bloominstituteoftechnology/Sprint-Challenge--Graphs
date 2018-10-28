@@ -12,6 +12,7 @@ from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
 
 class BokehGraph:
     """Class that takes a graph and exposes drawing methods."""
+
     def __init__(self, graph, title='Graph', width=100, height=100,
                  show_axis=False, show_grid=False, circle_size=35,
                  draw_components=False):
@@ -22,12 +23,12 @@ class BokehGraph:
         self.height = height
         self.pos = {}  # dict to map vertices to x, y positions
         # Set up plot, the canvas/space to draw on
-        self.plot = figure(title=title, x_range=(0, width), y_range=(0, height))
+        self.plot = figure(title=title, x_range=(
+            0, width), y_range=(0, height))
         self.plot.axis.visible = show_axis
         self.plot.grid.visible = show_grid
         self._setup_graph_renderer(circle_size, draw_components)
         self._setup_labels()
-
 
     def _setup_graph_renderer(self, circle_size, draw_components):
         # The renderer will have the actual logic for drawing
@@ -38,8 +39,12 @@ class BokehGraph:
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(
             [vertex.label for vertex in self.vertex_list], 'index')
+
+        print("\nRandom Colors")
+        print(self._get_random_colors(len(self.vertex_list)))
+
         colors = (self._get_connected_component_colors() if draw_components
-                  else self._get_random_colors())
+                  else self._get_random_colors(len(self.vertex_list)))
         graph_renderer.node_renderer.data_source.add(colors, 'color')
         # And circles
         graph_renderer.node_renderer.glyph = Circle(size=circle_size,
