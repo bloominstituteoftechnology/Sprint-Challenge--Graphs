@@ -2,10 +2,6 @@ Describe the fixes/improvements you made to the Graph implementation here.
 
 1. Nothing seems to connect, my edges aren't showing up.
 
-#Line 5
-- Removed        
-`, component=-1`
-Not necessary for a graph to work
 
 #Line 7
 - Removed 

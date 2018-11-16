@@ -2,8 +2,21 @@
 """
 Simple graph implementation compatible with BokehGraph class.
 """
+class Stack:
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if (self.size()) > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
 class Vertex:
-    def __init__(self, label, component):
+    def __init__(self, label, component=-1):
         self.label = str(label)
         self.edges = set()
         self.component = component
@@ -40,7 +53,7 @@ class Graph:
                     break
                 visited.append(current)
                 for next_vert in self.vertices[current]:
-                    sstack.push(next_vert)
+                    stack.push(next_vert)
         return visited
         
         # stack = []
@@ -56,18 +69,21 @@ class Graph:
         # return visited
 
     def graph_rec(self, start, target=None):
-        x = set()
-        x.append(start)
-        for v in self.vertices[start]:
-            graph_rec(v)
-        return x
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        for other_vertex in self.vertices[start]:
+            if other_vertex not in visited:
+                self.graph_rec(other_vertex, target, visited)
+        return visited
+
 
     def find_components(self):
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex in visited:
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
