@@ -60,7 +60,7 @@ Same as Line 23
 `from graph import Graph`
 Need to import the graph you want to draw
 
-Dear friend, you graph isn't showing at all, there are errors from outside of this file, so currently unable to check the current output to either confirm or correct issues.
+Dear friend, your graph isn't showing at all, there are errors from outside of this file, so currently unable to check the current output to either confirm or correct issues.
 
 
 3. Sometimes I do something and when I run python graph_demo.py it just takes forever, even though my draw.py and graph_demo.py are totally just the same as from class.
