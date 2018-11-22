@@ -135,15 +135,15 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        q = Queue()
-        q.enqueue(start)
+        queue = Queue()
+        queue.enqueue(start)
         visited = []
-        while q.size > 0:
-            current_node = q.dequeue()
+        while queue.size > 0:
+            current_node = queue.dequeue()
             visited.append(current_node)
             for edge in self.vertices[current_node].edges:
                 if edge not in visited:
-                    q.enqueue(edge)
+                    queue.enqueue(edge)
         return visited
 
     def output_route(self, start):
@@ -154,7 +154,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current_node = start
+        while current_node is not None:
+            output = current_node
+            print(output + "--")
+            if current_node.parent is not None:
+                current_node = current_node.parent
+            else:
+                current_node = current_node.parent
+                print("Done")
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree

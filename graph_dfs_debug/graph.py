@@ -35,7 +35,7 @@ class Graph:
     def add_vertex(self, vertex, edges=()):
         self.vertices[vertex] = set(edges)
 
-    def add_edge(self, start, end, bidirectional=True): # Opposites?
+    def add_edge(self, start, end, bidirectional=True):
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
@@ -54,7 +54,7 @@ class Graph:
                     stack.last_in(edge)
         return False
 
-    def graph_rec(self, start, visited=None): # Just trying to keep track of vertices or find target?
+    def graph_rec(self, start, visited=None):
         if visited is None:
             visited = set()
         visited.add(start)
@@ -68,7 +68,7 @@ class Graph:
         current_component = 0
 
         for vertex in self.vertices:
-            if vertex not in visited: # not to run dfs
+            if vertex not in visited:
                 reachable = self.dfs(vertex)
                 for other_vertex in reachable:
                     other_vertex.component = current_component
