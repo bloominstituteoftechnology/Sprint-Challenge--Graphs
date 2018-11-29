@@ -10,7 +10,7 @@ Good luck and have fun! :smile:
 
 Note: The `legacy` directory contains an old exercise for archival purposes. You do not need to work on this and it will not be graded.
 
-# Sprint Challenge: GRAPHS
+# Sprint Challenge: Graphs
 
 This challenge allows you to practice the concepts and techniques learned over the past week and apply them in a concrete project. This Sprint explored Graphs. During this Sprint, you studied breadth and depth first traversals and searches along with random graphs. There are two parts to this sprint challenge:
 
