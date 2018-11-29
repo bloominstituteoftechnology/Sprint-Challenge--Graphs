@@ -53,7 +53,7 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 
 ## 4. Stretch Goal
 
-1. You might have found the results to the above question #2 to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results?
+1. You might have found the results from question #2 above to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results?
 
 2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation?
 
