@@ -27,23 +27,19 @@ parent:
 ```pseudocode
 BFS(graph, startVert):
   for v of graph.vertices:
-    v.color = white
     v.parent = null   // <-- Add parent initialization
 
-  startVert.color = gray
+  startVert.visited = true
   queue.enqueue(startVert)
 
   while !queue.isEmpty():
-    u = queue[0]
+    u = queue.dequeue()
 
     for v of u.neighbors:
-      if v.color == white:
-        v.color = gray
+      if not v.visited:
+        v.visited = true
         v.parent = u     // <-- Keep a parent link
         queue.enqueue(v)
-    
-    queue.dequeue()
-    u.color = black
 ```
 
 ## Procedure
