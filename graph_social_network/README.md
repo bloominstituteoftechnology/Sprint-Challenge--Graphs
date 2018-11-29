@@ -2,9 +2,9 @@
 
 You have been assigned the task of building a new friend-based social network. In this network, users are able to view their own friends, friends of their friends, friends of their friends' friends, and so on. People connected to you through any number of friendship connections are considered a part of your extended social network.
 
-The functionality behind creating users and friendships has been completed already. Your job is to implement a function that shows all the friends in a user's extended social network and the friends that link them. The number of connections between one user and and another are called the degrees of separation.
+The functionality behind creating users and friendships has been completed already. Your job is to implement a function that shows all the friends in a user's extended social network and chain of friendships that link them. The number of connections between one user and another are called the degrees of separation.
 
-Your boss is also interested in how the performance will scale as more users join so she has asked you to implement a feature that adds large numbers of users to the network and assigns them random friends.
+Your client is also interested in how the performance will scale as more users join so she has asked you to implement a feature that creates large numbers of users to the network and assigns them a random distribution of friends.
 
 ## 1. Generating Users and Friendships
 
@@ -24,11 +24,11 @@ It will be easier to build your extended social network if you have users to tes
 Note that in the above example, the average number of friendships is exactly 2 but the actual number of friends per user ranges anywhere from 0 to 4.
 
 * Hint 1: To create N random friendships, you could create a list with all possible friendship combinations, shuffle the list, then grab the first N elements from the list. You will need to `import random` to get shuffle.
-* Hint 2: `addFriendship(1, 2)` is the same as `addFriendship(2, 1)`. You want to avoid calling one after the other since it will do nothing but print a warning. You can avoid this by only creating friendships where user1 < user2.
+* Hint 2: `addFriendship(1, 2)` is the same as `addFriendship(2, 1)`. You should avoid calling one after the other since it will do nothing but print a warning. You can avoid this by only creating friendships where user1 < user2.
 
 ## 2. Degrees of Separation
 
-Now that you have a graph full of users and friendships, you can search through their social graphs. `getAllSocialPaths()` takes a userID and returns a dictionary containing every user in that user's extended network along with the shortest friendship path between them.
+Now that you have a graph full of users and friendships, you can crawl through their social graphs. `getAllSocialPaths()` takes a userID and returns a dictionary containing every user in that user's extended network along with the shortest friendship path between each.
 
 ```
 >>> sg = SocialGraph()
@@ -42,7 +42,7 @@ Now that you have a graph full of users and friendships, you can search through 
 Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social network.
 
 * Hint 1: What kind of graph search guarantees you a shortest path?
-* Hint 2: Instead of using a `set` to mark users as visited, you could use a `dictionary`. Similar to sets, checking if something is `in` a dictionary runs in O(1) time.
+* Hint 2: Instead of using a `set` to mark users as visited, you could use a `dictionary`. Similar to sets, checking if something is in a dictionary runs in O(1) time. If the visited user is the key, what would the value be?
 
 ## 3. Questions
 
@@ -53,5 +53,7 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 
 ## 4. Stretch Goal
 
-1. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation?
+1. You might have found the results to the above question #2 to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results?
+
+2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation?
 
