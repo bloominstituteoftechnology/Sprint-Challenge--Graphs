@@ -62,3 +62,10 @@ HostA
 $ python routing.py HostE HostB
 HostE --> HostF --> HostC --> HostA --> HostB
 ```
+
+## Grading Rubric
+You can earn 10 possible points from this exercise. Partial credit can be awarded for close solutions.
+
+2 points - `find_vertex` correctly returns a vertex with a matching value
+4 points - `bfs` searches correctly and tracks each vertex's parent
+4 points -  `output_route` returns the shortest path from nodeA to nodeB
