@@ -6,7 +6,7 @@ The functionality behind creating users and friendships has been completed alrea
 
 Your client is also interested in how the performance will scale as more users join so she has asked you to implement a feature that creates large numbers of users to the network and assigns them a random distribution of friends.
 
-## 1. Generating Users and Friendships
+## 1. Generating Users and Friendships (3pts)
 
 It will be easier to build your extended social network if you have users to test it with. `populateGraph()` takes in a number of users to create and the average number of friends each user should have and creates them.
 
@@ -26,7 +26,7 @@ Note that in the above example, the average number of friendships is exactly 2 b
 * Hint 1: To create N random friendships, you could create a list with all possible friendship combinations, shuffle the list, then grab the first N elements from the list. You will need to `import random` to get shuffle.
 * Hint 2: `addFriendship(1, 2)` is the same as `addFriendship(2, 1)`. You should avoid calling one after the other since it will do nothing but print a warning. You can avoid this by only creating friendships where user1 < user2.
 
-## 2. Degrees of Separation
+## 2. Degrees of Separation (4pts)
 
 Now that you have a graph full of users and friendships, you can crawl through their social graphs. `getAllSocialPaths()` takes a userID and returns a dictionary containing every user in that user's extended network along with the shortest friendship path between each.
 
@@ -46,14 +46,14 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 
 ## 3. Questions
 
-1. To create 100 users with an average of 10 friends each, how many times would you need to call `addFriendship()`? Why?
+1. To create 100 users with an average of 10 friends each, how many times would you need to call `addFriendship()`? Why? (1pt)
 
-2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network?
+2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
 
 
 ## 4. Stretch Goal
 
-1. You might have found the results from question #2 above to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results?
+1. You might have found the results from question #2 above to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results? (2pts)
 
-2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation?
+2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation? (2pts)
 
