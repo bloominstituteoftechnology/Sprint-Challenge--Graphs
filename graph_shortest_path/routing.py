@@ -41,18 +41,35 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
-    def bfs(self, start):
+    def bfs(self, start_vertex):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = []
+        visited = set(start_vertex.value)
+
+        for vertex in self.vertices:
+            vertex.parent = None 
+
+        queue.append(start_vertex)
+
+        while len(queue) > 0:
+            removed_vertex = queue.pop(0)
+            for edge in removed_vertex.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = removed_vertex
+                    print(edge.destination.value, edge.destination.parent.value)
+                    queue.append(edge.destination)
+                    visited.add(edge.destination) 
+        
 
     def output_route(self, start):
         """
@@ -61,15 +78,22 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        start_vertex = start
+        output_str = ""
+
+        while start_vertex is not None:
+            output_str += start_vertex.value
+            if start_vertex.parent is not None:
+                output_str += "-->"
+            start_vertex = start_vertex.parent
+        
+        print(output_str)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
         self.output_route(start)
-
 
 # Helper function to add bidirectional edges
 def add_edge(start, end):
