@@ -21,6 +21,8 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+    def __repr__(self):
+        return f'{self.value}'
 
 
 # Graph class
@@ -42,7 +44,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +57,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for n in self.vertices:
+            n.parent = None
+        start.color = 'black'
+        queue = [start]
+        while len(queue) > 0:
+            v = queue.pop(0)
+            for i in v.edges:
+                if i.destination.color == 'red':
+                    i.destination.color = 'black'
+                    i.destination.parent = v
+                    queue.append(w.destination)
 
     def output_route(self, start):
         """
@@ -62,7 +77,20 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        answer = ''
+        present = start
+        stack = []
+        while not current==None:
+            stack.append(present)
+            present = present.parent
+        for n in stack:
+            if len(answer) == 0:
+                answer += n.value
+            else:
+                answer += ' --> '
+                answer += n.value
+        print (answer) 
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
