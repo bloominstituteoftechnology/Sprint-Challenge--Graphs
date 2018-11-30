@@ -9,6 +9,8 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
+    def __repr__(self):
+        return self.destination.value
 
 # Vertex class
 class Vertex:
@@ -22,6 +24,8 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __repr__(self):
+        return self.value
 
 # Graph class
 class Graph:
@@ -41,18 +45,34 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            if v.value == value:
+                return v
+        return None
 
-    def bfs(self, start):
+    def bfs(self, start_v):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            v.parent = None
+            v.visited = False
+
+        start_v.visited = True
+        queue = [start_v]
+
+        while queue:
+            u = queue.pop(0)
+
+            for v in u.edges:
+                if not v.destination.visited:
+                    v.destination.visited = True
+                    v.destination.parent = u     # <-- Keep a parent link
+                    queue.append(v.destination)
+        
 
     def output_route(self, start):
         """
@@ -61,8 +81,12 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        string = start.value
+        while start.parent:
+            string += f' --> {start.parent}'  
+            start = start.parent
+        print (string)
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -111,8 +135,6 @@ if __name__ == '__main__':
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
 
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
 
     if hostAVert is None:
@@ -125,5 +147,5 @@ if __name__ == '__main__':
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
 
-    # Show the route from one Vertex to the other
+    # # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
