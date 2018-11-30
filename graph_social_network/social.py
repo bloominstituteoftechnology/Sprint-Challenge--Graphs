@@ -4,6 +4,14 @@ class User:
     def __init__(self, name):
         self.name = name
 
+class Friends:
+    def __init__(self, name):
+        self.name = name
+        self.parent_to = None
+        self.childern_to = None
+        self.items = []
+        self.xy = [0,0]
+
 class SocialGraph:
     def __init__(self):
         self.lastID = 0
@@ -31,6 +39,7 @@ class SocialGraph:
         self.friendships[self.lastID] = set()
 
     def populateGraph(self, numUsers, avgFriendships):
+        #(numUsers = room, avgfr = coords)
         """
         Takes a number of users and an average number of friendships
         as arguments
@@ -49,6 +58,20 @@ class SocialGraph:
         # Add users
 
         # Create friendships
+        if numUsers.parent_to is None and self.check_friendship(avgFriendships, "parent")
+            friendships.append("parent")
+        if numUsers.children_to is None and self.check_friendship(avgFriendships, "children")
+            friendships.append("children")
+        random.shuffle(friendships)
+        if len(friendships) > 0:
+            return friendships[0]
+        else:
+            return None
+    
+    def update_friendships(self)
+
+    def check_friendship(self, numUsers, avgFriendships):
+        return str(self.update_friendships(numUsers,avgFriendships)) not if self.friendships
 
     def getAllSocialPaths(self, userID):
         """

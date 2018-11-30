@@ -44,7 +44,7 @@ BFS(graph, startVert):
 
 ## Procedure
 
-1. Perform a BFS from the _ending vert_ (host). This will set up all the
+1. Perform a BFS/BFT? from the _ending vert_ (host). This will set up all the
    `parent` pointers across the graph.
 
 2. Output the route by following the parent pointers from the _starting_ vert

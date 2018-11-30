@@ -2,6 +2,39 @@
 
 import sys
 
+# Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self,value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    
+    def size(self):
+        return len(self.queue)
+
+# Stack class
+class Stack:
+    def __init__(self):
+        self.stack = []
+
+    def pop(self, value):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    
+    def push(self, value):
+        self.stack.append(value)
+
+    def size(self):
+        return len(self.stack)
 
 # Edge class
 class Edge:
@@ -9,8 +42,7 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
-
-# Vertex class
+#Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
         self.value = value
@@ -41,16 +73,41 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
+        #DFT
+        s = Stack()
+        visited = set()
+        s.push(value)
+        while s.size() > 0:
+            node = s.pop()
+            if node not in visited:
+                print(node)
+                visited.add(node)
+                for child in self.vertices[node].edges:
+                    s.push(child)
+
         # !!!! IMPLEMENT ME
         pass
 
-    def bfs(self, start):
+    def bfs(self, start, end):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
+        q = Queue()
+        visited = set()
+        q.enqueue([start])
+        while q.size() > 0:
+            node = q.dequeue()
+            if node not in visited:
+                print(node)
+                if end == node:
+                    return True
+                visited.add(node)
+                for child in self.vertices[node].edges:
+                    q.enqueue(child)
+        return None
         # !!!! IMPLEMENT ME
         pass
 
@@ -62,6 +119,20 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
+        q = Queue()
+        visited = set()
+        q.enqueue([start])
+        while q.size() > 0:
+            node = q.dequeue()
+            if node[-1] not in visited:
+                if end == node[-1]:
+                    return node
+                visited.add(node[-1])
+                for child in self.vertices[node[-1]].edges:
+                    new_path = list(node)
+                    new_path.append(child)
+                    q.enqueue(new_path)
+        return None
         pass
 
     def route(self, start, end):
