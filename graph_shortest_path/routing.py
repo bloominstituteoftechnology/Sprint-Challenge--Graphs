@@ -79,7 +79,32 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # bfs needs a rework
+        # rework idea using my new Queue() class updates
 
+        # create an empty queue
+        queue = Queue()
+
+        # # loop over the vertices setting them to while like in bokeh grids
+        ## and clear the parents
+        for vert in self.vertices:
+            vert.color = "white"
+            vert.parent = None
+        
+        ## set the starting vert color to gray
+        ## and add it to the queue
+        start.color = "gray"
+        queue.enqueue(start)
+
+        ## while the queue has some items grab the first item off it and set it to the current one
+        while queue.size() > 0:
+            current = queue[0] # this made me have to make some new methods in my queue class
+
+            ## loop over thr edges and if the edge destination is white then 
+            ## set the edge destination to gray and set the edge destination pareent to the current
+            ## and add the edge.destination to the queue
+        
+        ## set the current color to black and and deque the front off
+        
 
 
 
