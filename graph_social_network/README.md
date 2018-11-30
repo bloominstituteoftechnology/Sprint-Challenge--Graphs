@@ -47,13 +47,17 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 ## 3. Questions
 
 1. To create 100 users with an average of 10 friends each, how many times would you need to call `addFriendship()`? Why? (1pt)
+	*	`500` times. In general, it would be `(numUsers * avgFriendships) / 2` times. This is because a friendship is defined as existing between 2 users. So if you have 100 users with 10 friends each, you would have `1,000` friendships. Because `addFriendship()` creates 2 friends every time it is called, it needs to be called `1,000 / 2 = 500` times.
 
 2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
+	*	Unless there exists a user with no friends, `100%` of all users will be in any given user's extended social network. If there exist friend-less users, the less friend-less users that exist, the more that percentage creeps closer asymptotically towards that limit. Given a marginal amount of users with no friends and a large enough user base, it can be said that the percentage is `~99%`.
+	The avg degree of separation in the example given would be `4.5` users.
 
 
 ## 4. Stretch Goal
 
 1. You might have found the results from question #2 above to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results? (2pts)
+	*	In real life, a far lesser percentage of users will be in a particular user's extended network. One way to mirror the real world a bit better would be by creating friendship-loops. These would be loops wherein the friends existing inside the loops would be friends with **and only with** the other friends inside that same loop. That is to say, they would have their own smaller network and would not be connected to the greater global network of users.
 
 2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation? (2pts)
-
+	*	A memory-time trade off would need to occur. The more you lower your time complexity, the more you will increase your space complexity as a result.
