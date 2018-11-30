@@ -32,15 +32,16 @@ class Graph:
             z = x.pop()
             if x == target:
                 break
+            y.add(z)
             x.extend(self.vertices[z])
 
         return x
 
     def graph_rec(self, start, target=None):
         x = set()
-        x.append(start)
+        x.add(start)
         for v in self.vertices[start]:
-            graph_rec(v)
+            self.graph_rec(v)
         return x
 
     def find_components(self):

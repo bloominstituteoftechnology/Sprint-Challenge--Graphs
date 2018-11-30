@@ -1,0 +1,8 @@
+## 3. Questions
+
+1. To create 100 users with an average of 10 friends each, how many times would you need to call `addFriendship()`? Why? (1pt)
+100 times because we first create the permutations and sort the array randomly so that we only call add friends on the first 100 spots.
+
+2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
+Playwrights , poets ( like the great Hungarian writer and poet, Frigyes Karinthy), and scientists have proposed that everyone on the planet is connected to everyone else by six other people.(Estimated average degrees of separation between all people on Facebook: the average person is connected to every other person by an average of 3.57 steps. The majority of people have an average between 3 and 4 steps.)
+Robert Dunbar, the pshichologist came up with the magic number of 150:he found that many businesses and military groups organize their people into cliques of about 150. Through the social network we can maintain a much broader number, which is the second and third degree connections...Milgram’s and Watts’s research shows planet Earth as one massive social network, with every human being connected to every other via no more than about six intermediary people--- so we are back to our number 6.but when it comes to meeting people who can help you professionally, three degrees of separation is what matters. Three degrees is the magic number because when you’re introduced to a second- or third-degree connection, at least one person in an introduction chain personally knows the origin or target person.
