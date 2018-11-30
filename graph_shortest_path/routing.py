@@ -3,6 +3,29 @@
 import sys
 
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
+
+    def first_item(self):
+        if len(self.queue) > 0:
+            return self.queue[0]
+
+        return None
+
+
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
@@ -21,6 +44,10 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+        self.visited = False
+
+    def __repr__(self):
+        return f'{self.value}'
 
 
 # Graph class
@@ -42,9 +69,15 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for item in self.vertices:
+            # If item matches the value, return the item
+            if item.value == value:
+                return item
 
-    def bfs(self, start):
+        # Return None if no items match
+        return None
+
+    def bfs(self, start_vert):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -52,7 +85,25 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        # Setup a visited list and a queue
+        visited = []
+        q = Queue()
+
+        # Add the starting vertex
+        q.enqueue(start_vert)
+
+        # While vertex's are in the queue, setup each parent starting from the starting vertex to the top of the graph
+        while q.size() > 0:
+            vert = q.dequeue()
+
+            if vert not in visited:
+                visited.append(vert)
+
+                for next_vert in vert.edges:
+                    if next_vert.destination not in visited:
+                        next_vert.destination.parent = vert
+                        q.enqueue(next_vert.destination)
 
     def output_route(self, start):
         """
@@ -62,7 +113,20 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        # Set the string method
+        result = f'{start.value}'
+
+        # While there are parents -> setup in the BFS
+        while start.parent is not None:
+            # Set start to the it's parent
+            start = start.parent
+
+            # Set string
+            result = f'{start.value} --> {result}'
+
+        print(result)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
