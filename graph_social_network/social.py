@@ -79,7 +79,18 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        return visited
+
+        visited[userID]=[userID]
+        visited = self.exploreNode(self.friendships, userID, self.friendships[userID],visited)
+        visitedCopy = sorted(visited, key=lambda k: len(visited[k]), reverse=False)
+        visitedDictionary ={}
+
+        for visitedID in visitedCopy:
+            visitedDictionary[visitedID] = visited[visitedID]
+
+        return visited Dictionary
+        
+    
 
 
 if __name__ == '__main__':
