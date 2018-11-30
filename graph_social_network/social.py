@@ -107,6 +107,27 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        for user in self.users:
+            self.users[user].parent = None
+            self.users[user].visited = False
+
+        self.users[userID].visited = True
+        queue = [userID]
+
+        while queue:
+            u = queue.pop(0)
+
+            for friend in self.friendships[userID]:
+                if not self.users[friend].visited:
+                    self.users[friend].visited = True
+                    self.users[friend].parent = u
+                    queue.append(friend)
+
+        for friend in self.friendships[userID]:
+            visited[friend] = [friend]
+            while self.users[friend].parent:
+                visited[friend].append(self.users[friend].parent)
+                friend = self.users[friend].parent
         return visited
 
 
@@ -119,4 +140,4 @@ if __name__ == '__main__':
 
 
 # sg = SocialGraph()
-# sg.populateGraph(15, 4)
+# sg.populateGraph(15, 4)ga
