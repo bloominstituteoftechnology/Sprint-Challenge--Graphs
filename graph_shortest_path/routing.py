@@ -57,12 +57,12 @@ class Graph:
         """
         queue = Queue()
         start_vert = self.find_vertex(start.value)
-        print(f"start_vert: {start_vert}")
+        # print(f"start_vert: {start_vert}")
         queue.add(start_vert)
 
         while queue.size() > 0:
             current_node = queue.pop()
-            print(f"current_node: {current_node.value}")
+            # print(f"current_node: {current_node.value}")
             if current_node.color != "black":
                 current_node.color = "black"
                 index = self.vertices.index(current_node)
@@ -90,8 +90,23 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        route = []
+        queue = Queue()
+        # add start vertex.value
+        route.append(start.value)
+        queue.add(start)
+        # for each item in that vertex.parent, add parent.value
+        while queue.size() > 0:
+            current_node = queue.pop()
+            for item in current_node.parent:
+                if item.value not in route:
+                    queue.add(item)
+                    route.append(item.value)
+
+        joiner = " --> "
+        print(joiner.join(route))
+        # remove that item and look at the next parent's parents
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
