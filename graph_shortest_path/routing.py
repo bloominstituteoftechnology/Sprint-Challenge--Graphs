@@ -2,7 +2,7 @@
 
 import sys
 
-
+print('\n --- NEW FILE RUN ---')
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
@@ -20,8 +20,28 @@ class Vertex:
         self.color = color
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
-        self.parent = parent
+        self.parent = parent # *** this is what gets changed during BFT ***
 
+# class Queue:
+#   def __init__(self):
+#     self.size = 0         # not sure if I need this
+#     self.storage = []
+
+#   def enqueue(self, item):
+#     self.storage.append(item)
+#     print(f'{item} added to q')
+  
+#   def dequeue(self):
+#     if len(self.storage) == 0:
+#       return None
+#     else:
+#       return self.storage.pop(0)
+
+#   def len(self):
+#     if len(self.storage) == 0:
+#       return 0
+#     else:
+#       return len(self.storage)
 
 # Graph class
 class Graph:
@@ -41,28 +61,75 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        vertex_found = False
 
-    def bfs(self, start):
+        for vertex in self.vertices:
+            if vertex.value == value:
+                vertex_found = True
+                return vertex
+
+        if vertex_found is False:
+            return None
+
+    def bfs(self, start): # start could be end
         """
+        this is basically changing self.parent of each vertex
+
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        print('\n--- New BFS ---\n')
+        q = []
+        visited = set()
+        q.append(start)
+        print(f'starting q = ', q[0].value)
+
+        while len(q) > 0:
+            vertex = q.pop()
+            
+            print(f'Visiting {vertex.value}')
+            if vertex not in visited:
+                visited.add(vertex)
+                print(f'Vertex {vertex.value} has been visited')
+                
+                if vertex.edges is None:
+                    print('no edges')
+                    return None
+
+                else: # if it has edges
+                    for child in vertex.edges:
+                        if child.destination not in visited:
+                            q.append(child.destination)
+                            if child.destination != vertex:
+                                child.destination.parent = vertex
+                            print('child added to q')
+                            print('parent is ', vertex.value)
+                    # for edge in range(0, len(vertex.edges - 1)):
+                    #     print(vertex.edges[edge])
+                    # if vertex.parent is None: # and if it doesn't have a parent
+                    #     vertex.parent = vertex.edges[0]
+                    
+        start.parent = None
 
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
+        references (these were set in the `bft` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        route = []
+        vertex = start
+        
+        print(vertex.parent.value)
+        while vertex.parent is not None:
+
+            route.append(vertex.parent.value)
+            vertex = vertex.parent
+
+        print(route)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -118,12 +185,17 @@ if __name__ == '__main__':
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
         sys.exit()
+    else:
+        print('hostAVert is: ', hostAVert.value)
 
     hostBVert = graph.find_vertex(sys.argv[2])
 
     if hostBVert is None:
         print('routing.py: could not find host: ', sys.argv[2])
         sys.exit()
+    else:
+        print('hostBVert is: ', hostBVert.value)  
 
     # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+    # ************ I SWITCHED start and end here *****************
+    graph.route(hostAVert, hostBVert) 
