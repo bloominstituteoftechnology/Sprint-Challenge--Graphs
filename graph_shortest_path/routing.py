@@ -55,7 +55,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            if v.value == value:
+                return v
+        return None
 
     def bfs(self, start):
         """
@@ -64,6 +67,7 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+        # Mark all vertices as not visited
         visited = [False] * (len(self.vertices))
         queue = Queue()
         queue.enqueue(start)
@@ -73,12 +77,14 @@ class Graph:
             print(s)
             # visit edges
             for i in s.edges:
+                print("S.EDGES " + str(i))
                 # if edge not visited
                 if visited[i] == False:
                     # add edge to queue
                     queue.enqueue(i)
                     # set edge to visited
                     visited[i] = True
+                    print("VISITED: " + str(visited[i]))
         
 
 
