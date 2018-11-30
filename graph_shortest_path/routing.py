@@ -15,12 +15,6 @@ class Queue:
     def isEmpty(self):
         return len(self.queue) == 0
 
-    def size(self):
-        return len(self.queue)
-    
-    def print(self):
-        print(self.queue)
-
 
 # Edge class
 class Edge:
@@ -70,12 +64,23 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+        visited = [False] * (len(self.vertices))
         queue = Queue()
+        queue.enqueue(start)
+        visited[0] = True
+        while queue.isEmpty() != True:
+            s = queue.dequeue()
+            print(s)
+            # visit edges
+            for i in s.edges:
+                # if edge not visited
+                if visited[i] == False:
+                    # add edge to queue
+                    queue.enqueue(i)
+                    # set edge to visited
+                    visited[i] = True
+        
 
-        for v in self.vertices:
-            v.parent = None
-        start.visited = true
-        queue.enqueue(startVert)
 
     def output_route(self, start):
         """
