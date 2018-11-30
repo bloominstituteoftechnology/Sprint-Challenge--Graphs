@@ -56,8 +56,35 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = []
+        visited = []
+
+        for edge in start.edges:
+            edge.destination.parent = None
+
+        queue.append(start)
+
+        while len(queue) > 0:
+            found = queue.pop(0)
+            # print(found.edges)
+            for (
+                edge
+            ) in found.edges:  # edge is Edge class, edge.destination is Vertex class
+                edge.destination.parent = found
+                if edge.destination not in visited:
+                    queue.append(edge.destination)
+
+            if found not in visited:
+                visited.append(found)
+
+            if len(queue) == 0:
+                for i in visited:
+                    queue.append(i.value)
+                break
+
+        joined = " --> ".join(queue)
+        print(joined)
+        return joined
 
     def output_route(self, start):
         """
