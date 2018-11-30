@@ -99,11 +99,10 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        curr = start
         output = []
-        while curr is not None:
-            output.append(curr.value)
-            curr = curr.parent
+        while start is not None:
+            output.append(start.value)
+            start = start.parent
         print(" --> ".join(output))
 
     def route(self, start, end):
