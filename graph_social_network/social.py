@@ -86,13 +86,14 @@ class SocialGraph:
 
         while not storage.empty():
             currentID = storage.get()
+            # this will contain a list of all connected friends
             visited[currentID] = []
             if self.friendships[currentID]:
                 for friend in self.friendships[currentID]:
                     visited[currentID].append(friend)
                     if friend not in visited:
                         storage.put(friend)
-            print(currentID, "CURRENT ID")
+            # print(currentID, "CURRENT ID")
 
         
 
@@ -101,7 +102,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 6)
-    print(sg.friendships)
+    sg.populateGraph(20, 19)
+    print(f'Friendships: \n {sg.friendships} \n')
     connections = sg.getAllSocialPaths(1)
-    print(connections)
+    print(f'Connections: \n{connections}\n')
