@@ -50,7 +50,7 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 	*	`500` times. In general, it would be `(numUsers * avgFriendships) / 2` times. This is because a friendship is defined as existing between 2 users. So if you have 100 users with 10 friends each, you would have `1,000` friendships. Because `addFriendship()` creates 2 friends every time it is called, it needs to be called `1,000 / 2 = 500` times.
 
 2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
-
+	*	Unless there exists a user with no friends, `100%` of all users will be in any given user's extended social network. If there exist friend-less users, the less friend-less users that exist, the more that percentage creeps closer asymptotically towards that limit. Given a marginal amount of users with no friends and a large enough user base, it can be said that the percentage is `~99%`.
 
 
 ## 4. Stretch Goal
