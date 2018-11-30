@@ -48,7 +48,12 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 
 1. To create 100 users with an average of 10 friends each, how many times would you need to call `addFriendship()`? Why? (1pt)
 
+Answer: 500 times. A friendship pair only needs to be added one time since it's a bidirectional graph. So it would 100 * 10/2 = 500
+
+
 2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
+
+It would be an average of 4 since the base 5 logarithm of 1000 is 4.29202, i.e. log(5,1000). It's essentially a BST but with 5 children instead of 2 so it's even better than logN where log is in base 2 or log(2,1000).
 
 
 ## 4. Stretch Goal

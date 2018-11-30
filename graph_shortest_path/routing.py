@@ -1,5 +1,5 @@
 #/usr/bin/env python
-
+from collections import deque
 import sys
 
 
@@ -41,8 +41,19 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        
+        visited = set([self.vertices[0]])
+        stack = [self.vertices[0]]
+        while len(stack) > 0:
+            vertex = stack.pop()
+            if vertex.value == value:
+                return vertex
+            visited.add(vertex)
+            # add neighbors to stack
+            for edge in vertex.edges:
+                if edge.destination not in visited:
+                    stack.append(edge.destination)
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +62,21 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            v.parent = None
+
+        visited = set([start])
+        queue = deque([start])
+
+        while len(queue) > 0:
+            vertex = queue.popleft()
+            visited.add(vertex)
+            # add neighbors to queue
+            for edge in vertex.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = vertex
+                    queue.append(edge.destination)
+        return None        
 
     def output_route(self, start):
         """
@@ -61,8 +85,14 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        
+        path = [start.value]
+        vertex = start
+
+        while(vertex.parent):
+            path.append(vertex.parent.value)
+            vertex = vertex.parent
+        print(" --> ".join(path))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -115,6 +145,7 @@ if __name__ == '__main__':
     # name to see if we can find them.
     hostAVert = graph.find_vertex(sys.argv[1])
 
+
     if hostAVert is None:
         print('routing.py: could not find host: ', sys.argv[1])
         sys.exit()
@@ -127,3 +158,6 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
+
+
