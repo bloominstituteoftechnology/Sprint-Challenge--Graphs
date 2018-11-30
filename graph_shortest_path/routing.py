@@ -5,9 +5,12 @@ import sys
 
 # Edge class
 class Edge:
-    def __init__(self, destination, weight=1):
+    def __init__(self, destination, weight=1,):
         self.destination = destination
         self.weight = weight
+    def __str__(self):
+        return str(f"destination {self.destination}")
+
 
 
 # Vertex class
@@ -21,6 +24,9 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
+        self.visited = False
+    def __str__(self):
+        return str(f"value: {self.value}, edges {self.edges}")
 
 
 # Graph class
@@ -42,7 +48,34 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        print
+        q = []
+        q.append([self.vertices[0].value])
+        checked = []
+        counter = 0
+
+        while len(q) > 0:
+
+            if len(q) > 0:
+                path = q.pop(0)
+
+            n = path[-1]
+
+            if n not in checked:
+
+                if n == value:
+                    return self.vertices[counter].value
+                counter += 1
+
+                checked.append(n)
+                for i in self.vertices:
+                    next_path = list(path)
+                    next_path.append(i.value)
+                    q.append(next_path)
+                    
+        return False
+
 
     def bfs(self, start):
         """
@@ -52,8 +85,39 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        counter = 0
 
+        for idx, i in enumerate(self.vertices):
+            if self.vertices[idx].value == start:
+                counter = idx
+                break
+        q = []
+
+        self.vertices[counter].visited = True
+
+        q.append(self.vertices[counter])
+        # print(q[0])
+
+
+        while len(q) > 0:
+
+            if counter == 0:
+                break
+
+            if len(q) > 0:
+                u = q[0]
+                q.pop(0)
+                # print(u.edges)
+
+
+            for v in u.edges:
+                if not v.destination.visited:
+                    v.destination.parent = u.value
+                    q.append(v.destination)
+
+            counter -= 1
+
+  
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -62,7 +126,17 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        j = 0
+
+
+        for idx, i in enumerate(self.vertices):
+            if i.value == start:
+                j = idx
+
+        for idx, i in enumerate(self.vertices):
+            if idx >= j:
+                print(f' value: {i.value} parent {i.parent}')
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -77,53 +151,64 @@ def add_edge(start, end):
     end.edges.append(Edge(start))
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print('Usage: routing.py hostA hostB')
-        sys.exit()
+# if __name__ == '__main__':
+#     if len(sys.argv) != 3:
+#         print('Usage: routing.py hostA hostB')
+#         sys.exit()
 
-    graph = Graph()
-    vertA = Vertex('HostA')
-    vertB = Vertex('HostB')
-    vertC = Vertex('HostC')
-    vertD = Vertex('HostD')
-    vertE = Vertex('HostE')
-    vertF = Vertex('HostF')
-    vertG = Vertex('HostG')
-    vertH = Vertex('HostH')
+graph = Graph()
+vertA = Vertex('HostA')
+vertB = Vertex('HostB')
+vertC = Vertex('HostC')
+vertD = Vertex('HostD')
+vertE = Vertex('HostE')
+vertF = Vertex('HostF')
+vertG = Vertex('HostG')
+vertH = Vertex('HostH')
 
-    add_edge(vertA, vertB)
-    add_edge(vertB, vertD)
-    add_edge(vertA, vertC)
-    add_edge(vertC, vertD)
-    add_edge(vertC, vertF)
-    add_edge(vertG, vertF)
-    add_edge(vertE, vertF)
-    add_edge(vertH, vertF)
-    add_edge(vertH, vertE)
+add_edge(vertA, vertB)
+add_edge(vertB, vertD)
+add_edge(vertA, vertC)
+add_edge(vertC, vertD)
+add_edge(vertC, vertF)
+add_edge(vertG, vertF)
+add_edge(vertE, vertF)
+add_edge(vertH, vertF)
+add_edge(vertH, vertE)
 
-    graph.vertices.append(vertA)
-    graph.vertices.append(vertB)
-    graph.vertices.append(vertC)
-    graph.vertices.append(vertD)
-    graph.vertices.append(vertE)
-    graph.vertices.append(vertF)
-    graph.vertices.append(vertG)
-    graph.vertices.append(vertH)
+graph.vertices.append(vertA)
+graph.vertices.append(vertB)
+graph.vertices.append(vertC)
+graph.vertices.append(vertD)
+graph.vertices.append(vertE)
+graph.vertices.append(vertF)
+graph.vertices.append(vertG)
+graph.vertices.append(vertH)
 
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
-    hostAVert = graph.find_vertex(sys.argv[1])
+print(graph.find_vertex('HostA'))
+print(graph.find_vertex('HostB'))
+graph.bfs('HostD')
+graph.output_route('HostA')
 
-    if hostAVert is None:
-        print('routing.py: could not find host: ', sys.argv[1])
-        sys.exit()
 
-    hostBVert = graph.find_vertex(sys.argv[2])
 
-    if hostBVert is None:
-        print('routing.py: could not find host: ', sys.argv[2])
-        sys.exit()
 
-    # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+    # # Look up the hosts passed in from the command line by
+    # # name to see if we can find them.
+    # hostAVert = graph.find_vertex(sys.argv[1])
+
+    # if hostAVert is None:
+    #     print('routing.py: could not find host: ', sys.argv[1])
+    #     sys.exit()
+
+    # hostBVert = graph.find_vertex(sys.argv[2])
+
+    # if hostBVert is None:
+    #     print('routing.py: could not find host: ', sys.argv[2])
+    #     sys.exit()
+
+    # print(hostAVert)
+    # prion(hostBVert)
+
+    # # Show the route from one Vertex to the other
+    # graph.route(hostAVert, hostBVert)

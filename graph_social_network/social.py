@@ -1,4 +1,4 @@
-
+import random
 
 class User:
     def __init__(self, name):
@@ -9,6 +9,8 @@ class SocialGraph:
         self.lastID = 0
         self.users = {}
         self.friendships = {}
+    def __str__(self):
+        return str(f"users: {self.users}")
 
     def addFriendship(self, userID, friendID):
         """
@@ -17,7 +19,7 @@ class SocialGraph:
         if userID == friendID:
             print("WARNING: You cannot be friends with yourself")
         elif friendID in self.friendships[userID] or userID in self.friendships[friendID]:
-            print("WARNING: Friendship already exists")
+            print(f"WARNING: Friendship already exists at firendId{friendID}, userId {userID}")
         else:
             self.friendships[userID].add(friendID)
             self.friendships[friendID].add(userID)
@@ -46,9 +48,30 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
-        # Add users
+        possible_friends = []
 
-        # Create friendships
+        #here I looped through and got a random of users from 1 to 10
+        for i in range(1, numUsers + 1):
+            possible_friends.append(i)
+
+        #here I will make my list of users
+        for i in range(1, numUsers + 1):
+            self.addUser('test-name')
+
+        #now that my users list is populated and I have random friendships to append
+        #I will make a loop and asign my random friendships for each user
+
+        for i in range(1, numUsers + 1):
+            random_num = random.randint(0, 2 * avgFriendships)
+            random.shuffle(possible_friends)
+            for j in range(0, random_num):
+
+                #so I'm not friends with myself or a repeate a friendship
+                if i != possible_friends[j] and i < possible_friends[j]:
+                
+                    self.addFriendship(i, possible_friends[j])
+
+
 
     def getAllSocialPaths(self, userID):
         """
@@ -59,14 +82,39 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+
+        visited = {}
+
+        q = []
+        q.append([userID])
+        checked = []
+        visited.update({userID: [userID]})
+
+        while len(q) > 0:
+
+            if len(q) > 0:
+                path = q.pop(0)
+
+            n = path[-1]
+
+            if n not in checked:
+                checked.append(n)
+                for i in self.friendships[n]:
+
+                    if n > 1:
+                        visited.update({n: list(path)})
+
+                    next_path = list(path)
+                    next_path.append(i)
+                    q.append(next_path)
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populateGraph(10, 2)
-    print(sg.friendships)
+    print(f'\nfriendships: {sg.friendships}')
+    print()
     connections = sg.getAllSocialPaths(1)
-    print(connections)
+    print(f'connections {connections}\n')
