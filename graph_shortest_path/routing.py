@@ -102,6 +102,14 @@ class Graph:
         current = start
         output_str = ""
 
+        while current is not None:
+            output_str += current.value
+            if current.parent is not None:
+                output_str += '-->'
+            current = current.parent
+        print(output_str)
+
+
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
