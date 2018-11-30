@@ -85,3 +85,8 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.getAllSocialPaths(3)
     # print(connections)
+
+    # Questions...
+    # 1. Using the algorithm that I used I think it would be linear * avgFriends timed, so O(n*e), so I would need my for-loop to iterate 100 times for the users and then 10 times per user to generate them 10 friends.
+
+    # 2. I think it would be 2.5%. If you have 1000 users and 5 friends each and each friend also has 5 friends, you would have 5^2 which is 25 and 25 is 2.5% of 1000. I could be wrong, but that is my best guess. This is based on Faceboo's friends-of-friends model. I'm not sure about the average degree of seperation, but I'm going to blindly guess that it is 40.
