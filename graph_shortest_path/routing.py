@@ -46,7 +46,7 @@ class Graph:
             # 1a. if vertex.value = value --> return the value
 
         for vert in self.vertices: # --> Look through all vertices
-            if vert.value is value: # --> that matches the `value` param
+            if vert.value == value: # --> that matches the `value` param
                 return vert # --> @return {vertex}
         return None
 
@@ -68,6 +68,7 @@ class Graph:
             for edge in vert.edges: # --> Loop through each edge in the held node
                 # --> The edge class has a destination attribute
                 destination = edge.destination
+                print('destination', destination)
                 if destination.color == 'white':
                     destination.color = 'black'
                     destination.parent = vert # --> Reference back to parent
@@ -94,6 +95,7 @@ class Graph:
             hold_start = hold_start.parent
 
         print(output)
+        return 'hello'
 
     def route(self, start, end):
         # BFS to build the parent reference tree
