@@ -1,4 +1,5 @@
-
+import random
+import math
 
 class User:
     def __init__(self, name):
@@ -44,16 +45,33 @@ class SocialGraph:
         self.lastID = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
-        # Add users
 
+        # Add users
         # range based for loop from zero to numUsers
         for index in range(0, numUsers):
             #call self.add user and do a format string to create the username
             self.addUser("User %i".format(index))
 
-
         # Create friendships
+        # creat a list of friendships
+        friendships_list = []
+
+        # make a for in loop extracting userID from the objects users
+        for userID in self.users:
+        # make a nested range based loop using the userid and the last id of the current object
+        # add the user id and the friend id to the friendship list
+        # and shuffle them to randomize
+            for friendID in range(userID + 1, self.lastID +1):
+                friendships_list.append((userID, friendID))
+        random.shuffle(friendships_list)
+
+        # create a second range based loop using the algorithim i said in the answer to the first question in the readme
+        # and set the friendship to the current index , invoke the addfriendship method on the current object
+        # linking friendship at index of 0 to friendship at index of 1
+        for index in range(0, math.floor(numUsers * avgFriendships / 2)):
+            friendship = friendships_list[index]
+            self.addFriendship(friendship[0], friendship[1])
+
 
     def getAllSocialPaths(self, userID):
         """
