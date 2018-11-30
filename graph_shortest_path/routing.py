@@ -71,7 +71,7 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! set a queue then enqueue start and create a list of visited verts. while the queue has items dequeue to vert 
+        # set a queue then enqueue start and create a list of visited verts. while the queue has items dequeue to vert 
         # test if vert is not already ib visited and append it to visited if true
         # loop over the edges set the next vert to the edge.destination and test if next vert has a parent if false add vert as next verts parent
         # enqueue the next vert
@@ -96,8 +96,15 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # !!!! for loop with self init syntax ref : https://hackernoon.com/understanding-the-underscore-of-python-309d1a029edc
+        for _ in graph.vertices:
+            route_list = []
+            end = graph.vertices[-1]
+            route_list.append(end)
+            if end.parent is not None:
+                route_list.append(end.parent)
+        print(route_list)
+        return route_list
 
     def route(self, start, end):
         # BFS to build the parent reference tree
