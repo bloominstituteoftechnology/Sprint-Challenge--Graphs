@@ -85,8 +85,14 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        
+        path = [start.value]
+        vertex = start
+
+        while(vertex.parent):
+            path.append(vertex.parent.value)
+            vertex = vertex.parent
+        print(" --> ".join(path))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -154,12 +160,14 @@ graph.vertices.append(vertH)
     # graph.route(hostAVert, hostBVert)
 
 
+# for v in graph.vertices:
+#     if v.parent:
+#         value = v.parent.value
+#     print(v.value, value)
 
-graph.bfs(vertD)
-
-for v in graph.vertices:
-    if v.parent:
-        value = v.parent.value
-    print(v.value, value)
+graph.route(vertA, vertD)
+graph.route(vertA, vertH)
+graph.route(vertA, vertA)
+graph.route(vertE, vertB)
 
 
