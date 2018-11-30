@@ -2,6 +2,19 @@
 
 import sys
 
+# Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, element):
+        return self.queue.append(element)
+    def dequeue(self):
+        return self.queue.pop(0)
+    def size(self):
+        return len(self.queue)
+    def isEmpty(self):
+        if len(self.queue) <= 0:
+            return True
 
 # Edge class
 class Edge:
@@ -42,7 +55,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +68,26 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue(start)
+        # Check starting points neighboring nodes
+        # Go into self.vertices and match string to target
+        # Then loop through the edges
+        # While queue is not empty
+        while not q.isEmpty():
+            dq = q.dequeue()
+            # Already visited
+            if dq.color == "black":
+                return None
+            else:
+                dq.color = "black"
+                for neighbor in self.vertices[dq].edges:
+                    print(neighbor)
+                    neighbor.parent = dq
+                    q.enqueue(neighbor)
+
+
+
 
     def output_route(self, start):
         """
@@ -62,7 +97,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        # String
+        q = Queue()
+        start_node = start
+        q.enqueue(starting_node)
+        while not q.isEmpty():
+            dq = q.dequeue()
+            for parent in self.vertices[dq].parents:
+                print(parent)
+                q.enqueue(parent)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
