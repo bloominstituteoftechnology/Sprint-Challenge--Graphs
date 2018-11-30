@@ -48,7 +48,9 @@ class SocialGraph:
         # Add users
 
         # range based for loop from zero to numUsers
-             #call self.add user and do a format string to create the username
+        for index in range(0, numUsers):
+            #call self.add user and do a format string to create the username
+            self.addUser("User %i".format(index))
 
 
         # Create friendships
