@@ -86,12 +86,15 @@ class SocialGraph:
 
         while not storage.empty():
             currentID = storage.get()
-            visited[currentID] = currentID
+            visited[currentID] = []
             if self.friendships[currentID]:
                 for friend in self.friendships[currentID]:
+                    visited[currentID].append(friend)
                     if friend not in visited:
                         storage.put(friend)
             print(currentID, "CURRENT ID")
+
+        
 
         return visited
 
