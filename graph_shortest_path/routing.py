@@ -71,8 +71,23 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # !!!! set a queue then enqueue start and create a list of visited verts. while the queue has items dequeue to vert 
+        # test if vert is not already ib visited and append it to visited if true
+        # loop over the edges set the next vert to the edge.destination and test if next vert has a parent if false add vert as next verts parent
+        # enqueue the next vert
+        queue = Queue()
+        queue.enqueue(start)
+        visited = []
+        while queue.size() > 0:
+            vert = queue.dequeue()
+            if vert not in visited:
+                visited.append(vert)
+                for edge in vert.edges:
+                    next_vert = edge.destination
+                    if not next_vert.parent:
+                        next_vert.parent = vert
+                    queue.enqueue(next_vert)
+
 
     def output_route(self, start):
         """
@@ -97,48 +112,48 @@ def add_edge(start, end):
     end.edges.append(Edge(start))
 
 
-    graph = Graph()
-    vertA = Vertex('HostA')
-    vertB = Vertex('HostB')
-    vertC = Vertex('HostC')
-    vertD = Vertex('HostD')
-    vertE = Vertex('HostE')
-    vertF = Vertex('HostF')
-    vertG = Vertex('HostG')
-    vertH = Vertex('HostH')
+graph = Graph()
+vertA = Vertex('HostA')
+vertB = Vertex('HostB')
+vertC = Vertex('HostC')
+vertD = Vertex('HostD')
+vertE = Vertex('HostE')
+vertF = Vertex('HostF')
+vertG = Vertex('HostG')
+vertH = Vertex('HostH')
 
-    add_edge(vertA, vertB)
-    add_edge(vertB, vertD)
-    add_edge(vertA, vertC)
-    add_edge(vertC, vertD)
-    add_edge(vertC, vertF)
-    add_edge(vertG, vertF)
-    add_edge(vertE, vertF)
-    add_edge(vertH, vertF)
-    add_edge(vertH, vertE)
+add_edge(vertA, vertB)
+add_edge(vertB, vertD)
+add_edge(vertA, vertC)
+add_edge(vertC, vertD)
+add_edge(vertC, vertF)
+add_edge(vertG, vertF)
+add_edge(vertE, vertF)
+add_edge(vertH, vertF)
+add_edge(vertH, vertE)
 
-    graph.vertices.append(vertA)
-    graph.vertices.append(vertB)
-    graph.vertices.append(vertC)
-    graph.vertices.append(vertD)
-    graph.vertices.append(vertE)
-    graph.vertices.append(vertF)
-    graph.vertices.append(vertG)
-    graph.vertices.append(vertH)
+graph.vertices.append(vertA)
+graph.vertices.append(vertB)
+graph.vertices.append(vertC)
+graph.vertices.append(vertD)
+graph.vertices.append(vertE)
+graph.vertices.append(vertF)
+graph.vertices.append(vertG)
+graph.vertices.append(vertH)
 
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
-    hostAVert = graph.find_vertex(sys.argv[1])
+# Look up the hosts passed in from the command line by
+# name to see if we can find them.
+hostAVert = graph.find_vertex(sys.argv[1])
+print(hostAVert)
+if hostAVert is None:
+    print('routing.py: could not find host: ', sys.argv[1])
+    sys.exit()
 
-    if hostAVert is None:
-        print('routing.py: could not find host: ', sys.argv[1])
-        sys.exit()
+hostBVert = graph.find_vertex(sys.argv[2])
 
-    hostBVert = graph.find_vertex(sys.argv[2])
+if hostBVert is None:
+    print('routing.py: could not find host: ', sys.argv[2])
+    sys.exit()
 
-    if hostBVert is None:
-        print('routing.py: could not find host: ', sys.argv[2])
-        sys.exit()
-
-    # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+# Show the route from one Vertex to the other
+graph.route(hostAVert, hostBVert)
