@@ -47,18 +47,20 @@ class Graph:
         visited = []
 
         while len(stack) > 0:
+            
             current = stack.pop()
             visited.append(current)
+            print(current.value)
 
-            if current.value == value:
-                print(current, 'value found')
+            if current.value.upper() == value.upper():
+                print(current, 'Value found')
                 return current
 
             for edge in current.edges:
-                if self.vertices[edge] not in visited:
-                    stack.append(self.vertices[edge])
+                if edge.destination not in visited:
+                    stack.append(edge.destination)
 
-        print('value not found.')
+        print('Value not found.')
         return None
 
         # !!!! IMPLEMENT ME
@@ -75,7 +77,7 @@ class Graph:
 
         visited = []
         storage = queue.Queue()
-        storage.put(self.vertices[start])
+        storage.put(start)
 
         while not storage.empty():
             current = storage.get()
@@ -83,13 +85,13 @@ class Graph:
             if current not in visited:
                 visited.append(current)
             for edge in current.edges:
-                if self.vertices[edge] not in visited:
-                    storage.put(self.vertices[edge])
+                if edge not in visited:
+                    storage.put(edge.destination)
 
         print(f'bfs: {visited}')
         return visited
         # !!!! IMPLEMENT ME
-        pass
+        
 
     def output_route(self, start):
         """
@@ -99,7 +101,13 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        visited_routes = bfs(start)
+        
+        print('Route path: \n')
+        for v in visited_routes:
+            print(f'{v} => ', end='')
+        return visited_routes
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
