@@ -47,6 +47,9 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
         # Add users
 
+        # range based for loop from zero to numUsers
+             #call self.add user and do a format string to create the username
+
 
         # Create friendships
 
