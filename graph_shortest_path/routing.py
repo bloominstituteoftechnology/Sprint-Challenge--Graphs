@@ -2,6 +2,23 @@
 
 import sys
 
+# Queue for BFS
+class Queue:
+    def __init__(self):
+        self.storage = []
+    
+    # enqueue method
+    def enqueue(self, value):
+        self.storage.append(value)
+
+    # dequeue method
+    def dequeue(self):
+        return self.storage.pop(0) if self.size() > 0 else None
+
+
+    # size method
+    def size(self):
+        return len(self.storage)
 
 # Edge class
 class Edge:
