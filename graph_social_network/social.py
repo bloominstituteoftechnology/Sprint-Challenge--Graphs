@@ -81,13 +81,9 @@ class SocialGraph:
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
         
-        
         ### NEW SOLUTION ###
-
         # store shortest path as UserID:UserID in first element
-
         # collect all of the friends in the extended network
-
         # find the shortest path to all of those friends
         
         storage = queue.Queue()
@@ -97,25 +93,20 @@ class SocialGraph:
         for friend in self.friendships[userID]:
             storage.put(friend)
 
-        # put all the initial friends into the visited dict
-
         while not storage.empty():
             # traverse the shortest path to this current ID from the start ID
             currentID = storage.get()
             # this will contain the shortest path to the friend
             visited[currentID] = []
 
-            # traverse to the current id from the start
-
             # we can immediately solve for shortest path for friends from userID
             if userID in self.friendships[currentID]:
                 visited[currentID] = [userID]
-            else:
             # otherwise we add those friends to the queue and do something else
-                for friend in self.friendships[currentID]:
+            for friend in self.friendships[currentID]:
+                if friend not in visited:
                     storage.put(friend)
                     print(friend, "FRIEND")
-                    visited[currentID].append(friend)
 
 
             # if self.friendships[currentID]:
@@ -132,7 +123,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 3)
+    sg.populateGraph(10, 2)
     print(f'\nFriendships:\n{sg.friendships}\n')
     connections = sg.getAllSocialPaths(1)
     print(f'Connections:\n{connections}\n')
