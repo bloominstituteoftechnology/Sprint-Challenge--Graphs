@@ -81,12 +81,14 @@ class Graph:
                 return None
             else:
                 dq.color = "black"
-                for neighbor in self.vertices[dq].edges:
-                    print(neighbor)
-                    neighbor.parent = dq
-                    q.enqueue(neighbor)
-
-
+                for vertex in self.vertices:
+                    if vertex.value != dq:
+                        return None
+                    else:
+                        for neighbor in vertex.edges:
+                            print(neighbor)
+                            neighbor.parent = dq
+                            q.enqueue(neighbor)
 
 
     def output_route(self, start):
@@ -99,13 +101,18 @@ class Graph:
         # !!!! IMPLEMENT ME
         # String
         q = Queue()
-        start_node = start
+        starting_node = start
         q.enqueue(starting_node)
         while not q.isEmpty():
             dq = q.dequeue()
-            for parent in self.vertices[dq].parents:
-                print(parent)
-                q.enqueue(parent)
+            for vertex in self.vertices:
+                    if vertex.value != dq:
+                        return None
+                    else:
+                        for neighbor in vertex.edges:
+                            print(neighbor)
+                            neighbor.parent = dq
+                            q.enqueue(neighbor)
 
 
     def route(self, start, end):
