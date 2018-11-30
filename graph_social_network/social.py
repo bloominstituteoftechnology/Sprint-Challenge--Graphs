@@ -1,4 +1,4 @@
-
+import random
 
 class User:
     def __init__(self, name):
@@ -45,6 +45,12 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
+        for x in range(0, numUsers):
+            self.addUser('abcd' + str(x))
+
+        for x in range(0, avgFriendships):
+            for y in self.users:
+                self.friendships[y].add(random.choice([user for user in self.users]))
 
         # Add users
 
@@ -61,6 +67,13 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+
+        for user in self.users:
+            self.users[user].parent = None
+            self.users[user].visited = False
+        self.users[userID].visited = True
+        q = [userID]
+        
         return visited
 
 
