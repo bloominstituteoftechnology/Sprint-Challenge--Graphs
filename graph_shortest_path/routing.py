@@ -1,9 +1,11 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
-
+from collections import deque
 
 # Edge class
+
+
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
