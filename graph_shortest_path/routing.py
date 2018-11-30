@@ -1,5 +1,5 @@
 #/usr/bin/env python
-
+from collections import deque
 import sys
 
 
@@ -42,7 +42,7 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         
-        visited = set()
+        visited = set([self.vertices[0]])
         stack = [self.vertices[0]]
         while len(stack) > 0:
             vertex = stack.pop()
@@ -62,8 +62,21 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for v in self.vertices:
+            v.parent = None
+
+        visited = set([start])
+        queue = deque([start])
+
+        while len(queue) > 0:
+            vertex = queue.popleft()
+            visited.add(vertex)
+            # add neighbors to queue
+            for edge in vertex.edges:
+                if edge.destination not in visited:
+                    edge.destination.parent = vertex
+                    queue.append(edge.destination)
+        return None        
 
     def output_route(self, start):
         """
@@ -140,4 +153,13 @@ graph.vertices.append(vertH)
     # # Show the route from one Vertex to the other
     # graph.route(hostAVert, hostBVert)
 
-print(graph.find_vertex("HostG").value)       
+
+
+graph.bfs(vertD)
+
+for v in graph.vertices:
+    if v.parent:
+        value = v.parent.value
+    print(v.value, value)
+
+
