@@ -102,9 +102,16 @@ class Graph:
             ## loop over thr edges and if the edge destination is white then 
             ## set the edge destination to gray and set the edge destination pareent to the current
             ## and add the edge.destination to the queue
-        
-        ## set the current color to black and and deque the front off
-        
+            for edge in current.edges:
+                if edge.destination.color == "white":
+                    edge.destination.color = "gray"
+                    edge.destination.parent = current
+                    queue.enqueue(edge.destination)
+
+            ## set the current color to black and and deque the front off
+            current.color = "black"
+            queue.dequeue()
+
 
 
 
