@@ -56,6 +56,7 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 ## 4. Stretch Goal
 
 1. You might have found the results from question #2 above to be surprising. Would you expect results like this in real life? If not, what are some ways you could improve your friendship distribution model for more realistic results? (2pts)
+	*	In real life, a far lesser percentage of users will be in a particular user's extended network. One way to mirror the real world a bit better would be by creating friendship-loops. These would be loops wherein the friends existing inside the loops would be friends with **and only with** the other friends inside that same loop. That is to say, they would have their own smaller network and would not be connected to the greater global network of users.
 
 2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation? (2pts)
-
+	*	A memory-time trade off would need to occur. The more you lower your time complexity, the more you will increase your space complexity as a result.
