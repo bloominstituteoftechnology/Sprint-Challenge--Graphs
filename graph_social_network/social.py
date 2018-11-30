@@ -80,15 +80,29 @@ class SocialGraph:
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
 
-        visited[userID]=[userID]
-        visited = self.exploreNode(self.friendships, userID, self.friendships[userID],visited)
-        visitedCopy = sorted(visited, key=lambda k: len(visited[k]), reverse=False)
-        visitedDictionary ={}
+        visited[userID] = [userID]
+        visited = self.exploreNode(
+            self.friendships, userID, self.friendships[userID], visited)
+        visitedCopy = sorted(
+            visited, key=lambda k: len(visited[k]), reverse=False)
+        visitedDictionary = {}
 
         for visitedID in visitedCopy:
             visitedDictionary[visitedID] = visited[visitedID]
 
-        return visited Dictionary
+        return visitedDictionary
+
+    def exploreNode(self, graph, start, node, visited):
+        for friend in node:
+            if(friend not in visited):
+                visited[friend] = list(
+                    self.shortest_path(graph, start, friend))
+                visited = self.exploreNode(
+                    graph, start, graph[friend], visited)
+        return visited
+
+    
+
         
     
 
