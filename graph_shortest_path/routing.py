@@ -26,6 +26,8 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
+    def __str__(self):
+        return f"DESTINATION: {self.destination} WEIGHT: {self.weight}"
 
 # Vertex class
 class Vertex:
@@ -39,6 +41,8 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __str__(self):
+        return f"VALUE: {self.value} EDGES: {self.edges}"
 
 # Graph class
 class Graph:
@@ -59,7 +63,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
