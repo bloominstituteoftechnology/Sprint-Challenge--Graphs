@@ -63,7 +63,8 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 
 - or take in to consideration added attributes such as `interests / hobbies` and weight the friends toward `like minded people`
 (see the user class for my added attribs)
-- or a mixture of those and some `behavoiral algorithms`
+- or a mixture of those and some `behavoiral algorithms` :
+some ref article: https://www.forbes.com/sites/quora/2017/05/15/your-social-media-news-feed-and-the-algorithms-that-drive-it/#72ddf5804eb8
 
 2. If you followed the hints for part 1, your `populateGraph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation? (2pts)
 
