@@ -77,6 +77,7 @@ class Graph:
             raise IndexError('Starting value does not exist.')
 
         visited = []
+        parents = []
         storage = queue.Queue()
         storage.put(start)
 
@@ -88,7 +89,7 @@ class Graph:
             for edge in current.edges:
                 if edge.destination not in visited:
                     storage.put(edge.destination)
-
+                    edge.destination.parent = current
         # print(f'bfs: {visited}')
         return visited
         # !!!! IMPLEMENT ME
