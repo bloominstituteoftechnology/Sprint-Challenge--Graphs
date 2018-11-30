@@ -77,7 +77,6 @@ class Graph:
             raise IndexError('Starting value does not exist.')
 
         visited = []
-        parents = []
         storage = queue.Queue()
         storage.put(start)
 
@@ -103,13 +102,27 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        visited_routes = self.bfs(start)
-        
-        print('Route path: \n')
-        for v in visited_routes:
-            print(f'{v.value} => ', end='')
+        # visited_routes = self.bfs(start)
+
+        parents = [start.value]
+        stack = [start]
+
+        while len(stack) > 0:
+            current = stack.pop()
+            if current.parent:
+                parents.append(current.parent.value)
+                stack.append(current.parent)
+
+        print('Shortest Route: \n')
+        for p in parents:
+            print(f'{p} => ', end='')
         print('\n')
-        return visited_routes
+        
+        # print('Route path: \n')
+        # for v in visited_routes:
+        #     print(f'{v.value} => ', end='')
+        # print('\n')
+        # return visited_routes
         
 
     def route(self, start, end):
