@@ -178,7 +178,6 @@ graph.vertices.append(vertH)
 # Look up the hosts passed in from the command line by
 # name to see if we can find them.
 hostAVert = graph.find_vertex(sys.argv[1])
-print(hostAVert)
 if hostAVert is None:
     print('routing.py: could not find host: ', sys.argv[1])
     sys.exit()
