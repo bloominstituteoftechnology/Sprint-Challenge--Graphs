@@ -1,7 +1,6 @@
 #/usr/bin/env python
 
 import sys
-from collections import deque
 
 # Queue for BFS
 class Queue:
@@ -20,6 +19,13 @@ class Queue:
     # size method
     def size(self):
         return len(self.storage)
+
+    # for indexing
+    def __getitem__(self, index):
+        return self.storage[index]
+
+    def __setitem__(self, index):
+        return self.storage[index]
 
 # Edge class
 class Edge:
@@ -77,7 +83,6 @@ class Graph:
 
 
 
-
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -87,15 +92,14 @@ class Graph:
         """
         # going back to basics to get a simplified version with a list comprehension
         route_list = []
-        current_vert = start
+        vert = start
 
-        while current_vert:
-            route_list.append(current_vert)
-            current_vert = current_vert.parent
+        while vert:
+            route_list.append(vert)
+            vert = vert.parent
 
-        ret_val = [F"{x.value}" for x in route_list]
-        print(" --> ".join(ret_val))
-        return " --> ".join(ret_val) # this breaks bfs
+        print(" --> ".join([F"{v.value}" for v in route_list]))
+        return " --> ".join([F"{v.value}" for v in route_list]) # this breaks bfs
 
     def route(self, start, end):
         # BFS to build the parent reference tree
