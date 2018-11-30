@@ -17,11 +17,11 @@ class Vertex:
         self.edges = []
         # Color of this vertex
         # Used to mark vertices for the traversal algorithm (BFS or DFS)
+        # - grey: visited
         self.color = color
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
 
 # Graph class
 class Graph:
@@ -42,7 +42,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,9 +55,29 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
 
-    def output_route(self, start):
+        # reset color of all vertices to white (i.e. not visited)
+        for vertex in self.vertices:
+            vertex.color = 'white'
+        queue = [[start]]
+        while len(queue) > 0:
+            current_path = queue.pop(0)
+            current_vertex = current_path[-1]
+            # if vertex has not been visit (i.e. colore = white):
+            if current_vertex.color == 'white':
+                for edge in current_vertex.edges:
+                    child = edge.destination
+                    child.parent = current_vertex
+                    new_path = list(current_path)
+                    new_path.append(child)
+                    queue.append(new_path)
+                    current_vertex.color = 'grey'
+            output = []
+            for vertex in current_path:
+                output.append(vertex.value)
+            print(output)
+                
+    def output_route(self, start, end):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
@@ -62,13 +85,30 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+
+        # reset all vertices colors
+        for vertex in self.vertices:
+            vertex.color = 'white'
+        current_vertex = start
+        # path = [current_vertex]
+        # initiate the output variable
+        output = current_vertex.value
+
+        while current_vertex.parent.color != 'grey':
+            # path.inse(current_vertex.parent)
+            output += ' --> ' + current_vertex.parent.value
+            current_vertex.color = 'grey'
+            current_vertex = current_vertex.parent   
+        print(output)
+
+        # vertexE = self.find_vertex('HostE')
+        # print("parent of HostE: ", vertexE.parent.value)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        self.bfs(start)
         # print the route from the start Vertex
-        self.output_route(start)
+        self.output_route(start, end)
 
 
 # Helper function to add bidirectional edges

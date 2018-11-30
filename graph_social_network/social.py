@@ -1,4 +1,4 @@
-
+import random
 
 class User:
     def __init__(self, name):
@@ -47,6 +47,44 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+
+        # print error if trying to create less than 1 user
+        if numUsers < 1:
+            print("Must create at least one user")
+            return None
+        
+        # create users
+        for id in range(0, numUsers):
+            self.users[id] = User("User" + str(id))
+        
+        # establish number of friendship per user
+        user_list = self.users.values()
+
+        # for user in user_list:
+        #     print(user.name)
+        
+        for id in range(1, int(len(user_list)/2)+1 ):
+            max_num_friendship = avgFriendships*2
+            num_friendship = random.randint(0, max_num_friendship)
+            self.friendships[id*2-1] = num_friendship
+            self.friendships[id*2] = max_num_friendship - num_friendship
+        #     print((self.friendships[id*2-1], self.friendships[id*2]))
+        # print(self.friendships)
+
+        establish frienship between users
+        for friendship in self.friendships:
+            print(friendship)
+
+
+            # if user not in visited:
+            #     rest_of_users = del dict(self.users)[user]
+            #     max_num_friendship+1)
+            #     self.friendships[id]
+
+            # visited.append(user)
+
+        
+
 
         # Create friendships
 
