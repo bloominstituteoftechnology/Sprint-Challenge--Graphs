@@ -59,6 +59,8 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # looping over all vertices and if the value matches return the vert otherwise return none
+        print(self.vertices)
+        print(value)
         for vert in self.vertices:
             if vert.value == value:
                 return vert
@@ -103,7 +105,7 @@ class Graph:
             route_list.append(end)
             if end.parent is not None:
                 route_list.append(end.parent)
-        print(route_list)
+        #print(route_list)
         return route_list
 
     def route(self, start, end):
