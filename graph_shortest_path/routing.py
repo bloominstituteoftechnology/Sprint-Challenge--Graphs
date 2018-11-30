@@ -1,9 +1,27 @@
-#/usr/bin/env python
-
+# /usr/bin/env python
+# init commit for pull --
 import sys
 
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, start):
+        return self.queue.append(start)
+
+    def dequeue(self):
+        return self.queue.pop()
+
+    def size(self):
+        return len(self.queue)
+
+    def isEmpty(self):
+        return len(self.queue) == 0
+
 # Edge class
+
+
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
@@ -42,7 +60,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +73,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        start.color = "black"
+        q = Queue()
+        q.enqueue(start)
+        while not q.isEmpty():
+            u = q.dequeue()
+            for edge in u.edges:
+                d = edge.destination
+                if d.color == "white":
+                    d.color = "black"
+                    d.parent = u
+                    q.enqueue(d)
 
     def output_route(self, start):
         """
@@ -62,7 +93,15 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        r = ""
+        while current is not None:
+            r += current.value
+            if current.parent is not None:
+                r += ' - '
+            current = current.parent
+
+        print(r)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
