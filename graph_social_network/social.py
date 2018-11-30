@@ -1,4 +1,5 @@
-
+import random
+from random import randint
 
 class User:
     def __init__(self, name):
@@ -47,8 +48,17 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        for i in range(numUsers):
+            self.addUser(i)        
         # Create friendships
+        user_list = [i + 1 for i in range(numUsers)]        
+        for user in user_list:                       
+            random.shuffle(user_list)            
+            friends = user_list[:randint(0,4)]
+            for friend in friends:
+                if friend > user:
+                    self.addFriendship(user, friend)
+
 
     def getAllSocialPaths(self, userID):
         """
