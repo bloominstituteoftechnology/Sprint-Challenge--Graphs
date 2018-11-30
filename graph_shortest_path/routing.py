@@ -13,7 +13,7 @@ class Queue:
         return self.queue.pop(0)
     
     def isEmpty(self):
-        return len(self.queue) == 0
+        return len(self.queue) <= 0
 
 
 # Edge class
@@ -30,8 +30,9 @@ class Vertex:
         self.edges = []
         # Color of this vertex
         # Used to mark vertices for the traversal algorithm (BFS or DFS)
+        # white, black = False, True
         self.color = color
-        # Parent reference to keep track of the previous node in the
+        # Parent reference to keep track of the previous node(vertex) in the
         # graph when traversing through the graph
         self.parent = parent
 
@@ -54,7 +55,6 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
         for v in self.vertices:
             if v.value == value:
                 return v
@@ -68,23 +68,27 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # Mark all vertices as not visited
-        visited = [False] * (len(self.vertices))
-        queue = Queue()
-        queue.enqueue(start)
-        visited[0] = True
-        while queue.isEmpty() != True:
-            s = queue.dequeue()
-            print(s)
-            # visit edges
-            for i in s.edges:
-                print("S.EDGES " + str(i))
-                # if edge not visited
-                if visited[i] == False:
-                    # add edge to queue
-                    queue.enqueue(i)
-                    # set edge to visited
-                    visited[i] = True
-                    print("VISITED: " + str(visited[i]))
+        # init a new queue
+        q = Queue()
+        # mark first node as visited by making the color black
+        start.color = "black"
+        # enqueue first node
+        q.enqueue(start)
+        # while the queue is not empty
+        while q.isEmpty() is not True:
+            # set the current vertex to the first item in the queue
+            v = q.dequeue()
+            # iterate through all edges of current vertex
+            for e in v.edges:
+                # init the current destination to the current edges destination
+                d = e.destination
+                if d.color == "white":
+                    # mark destination color to black if white to indicate it has been visited
+                    d.color = "black"
+                    # set destination parent to current vertex
+                    d.parent = v
+                    # enqueue destination to queue
+                    q.enqueue(d)
         
 
 
@@ -95,8 +99,12 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        curr = start
+        output = []
+        while curr is not None:
+            output.append(curr.value)
+            curr = curr.parent
+        print(" --> ".join(output))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
