@@ -41,8 +41,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # looping over all vertices and if the value matches return the vert otherwise return none
+        for vert in self.vertices:
+            if vert.value == value:
+                return vert
+        return None
 
     def bfs(self, start):
         """
@@ -76,11 +79,6 @@ def add_edge(start, end):
     start.edges.append(Edge(end))
     end.edges.append(Edge(start))
 
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print('Usage: routing.py hostA hostB')
-        sys.exit()
 
     graph = Graph()
     vertA = Vertex('HostA')
