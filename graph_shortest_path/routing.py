@@ -41,8 +41,12 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+
+        for item in self.vertices:
+            # print(f"{value} found: {item.value}")
+            if item.value == value:
+                return item
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +55,33 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()
+        start_vert = self.find_vertex(start.value)
+        # print(f"start_vert: {start_vert}")
+        queue.add(start_vert)
+
+        while queue.size() > 0:
+            current_node = queue.pop()
+            # print(f"current_node: {current_node.value}")
+            if current_node.color != "black":
+                current_node.color = "black"
+                index = self.vertices.index(current_node)
+                for item in self.vertices[index].edges:
+                    # set the parent property of the edge's destination vertex
+                    # to the vertex at self.vertices[index]
+                    if item.destination.parent == None:
+                        item.destination.parent = set()
+                        item.destination.parent.add(self.vertices[index])
+                    else:
+                        item.destination.parent.add(self.vertices[index])
+
+                    queue.add(item.destination)
+
+        # for item in self.vertices:
+        #     print(f"{item.value}'s parent is")
+        #     for item in item.parent:
+        #         print(f"{item.value}")
+
 
     def output_route(self, start):
         """
@@ -61,14 +90,46 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        route = []
+        queue = Queue()
+        # add start vertex.value
+        route.append(start.value)
+        queue.add(start)
+        # for each item in that vertex.parent, add parent.value
+        while queue.size() > 0:
+            current_node = queue.pop()
+            for item in current_node.parent:
+                if item.value not in route:
+                    queue.add(item)
+                    route.append(item.value)
+
+        joiner = " --> "
+        print(joiner.join(route))
+        # remove that item and look at the next parent's parents
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
         self.output_route(start)
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def add(self, item):
+        self.queue.append(item)
+
+    def pop(self):
+        return self.queue.pop(0)
+
+    def size(self):
+        return len(self.queue)
+
+    def __repr__(self):
+        pretty_print = "" # actually conventionally a separator character
+        return pretty_print.join(str(self.queue))
 
 
 # Helper function to add bidirectional edges

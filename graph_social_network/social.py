@@ -1,4 +1,4 @@
-
+import random
 
 class User:
     def __init__(self, name):
@@ -46,9 +46,23 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
+        if avgFriendships > numUsers:
+            print("Error: must enter a lower number of average friendships than users.")
+            return
+
         # Add users
+        for i in range(1, numUsers):
+            self.addUser(i)
 
         # Create friendships
+        for i in range(1, len(self.users)):
+            possible_friendships = list(self.users.values())
+            random.shuffle(possible_friendships)
+            # print(possible_friendships)
+            for j in range(avgFriendships):
+                if i < possible_friendships[j].name:
+                    self.addFriendship(i, possible_friendships[j].name)
+                # self.friendships[i].add(possible_friendships[j])
 
     def getAllSocialPaths(self, userID):
         """
@@ -60,8 +74,52 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+
+        # the userID passed in retrns a search-style traversal output, starting with itself and outputting additional connections until it reaches each UserID
+
+        for i in range(1, len(self.users)):
+            # run a bfs and append to dictionary in format: visited[i] = bfs_results
+
+            queue = Queue()
+            queue.add([self.users[userID].name])
+            # print(self.users[userID].name)
+            # print(userID)
+
+            while queue.size() > 0:
+                current_node = queue.pop()
+                if len(current_node) > len(self.users):
+                    queue = Queue()
+                    break
+                elif current_node[-1] == i:
+                    visited[i] = current_node
+                    queue = Queue()
+                    queue.add([self.users[userID].name])
+                    break
+                # traversal_path.append(current_node[-1])
+                for item in self.friendships[current_node[-1]]:
+                    new_path = list(current_node)
+                    new_path.append(item)
+                    queue.add(new_path)
+
         return visited
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def add(self, item):
+        self.queue.append(item)
+
+    def pop(self):
+        return self.queue.pop(0)
+
+    def size(self):
+        return len(self.queue)
+
+    def __repr__(self):
+        pretty_print = "" # actually conventionally a separator character
+        return pretty_print.join(str(self.queue))
+
 
 
 if __name__ == '__main__':
