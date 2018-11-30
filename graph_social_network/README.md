@@ -47,8 +47,10 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 ## 3. Questions
 
 1. To create 100 users with an average of 10 friends each, how many times would you need to call `addFriendship()`? Why? (1pt)
+	*	`500` times. In general, it would be `(numUsers * avgFriendships) / 2` times. This is because a friendship is defined as existing between 2 users. So if you have 100 users with 10 friends each, you would have `1,000` friendships. Because `addFriendship()` creates 2 friends every time it is called, it needs to be called `1,000 / 2 = 500` times.
 
 2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
+
 
 
 ## 4. Stretch Goal

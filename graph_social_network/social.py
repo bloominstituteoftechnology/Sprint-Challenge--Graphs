@@ -108,3 +108,6 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
+
+
+# Questions from the README answered in the README file itself.
