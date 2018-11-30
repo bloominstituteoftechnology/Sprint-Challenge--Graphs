@@ -59,14 +59,12 @@ class SocialGraph:
 				friendNums.append(num+avgFriendships)
 			i = i + 1
 		length = len(self.users)
-		print(friendNums)
-		for j in range(1,length):
-			already_added = set()
+		for j in range(1,length+1):
+			already_added = self.friendships[j]
 			for k in range(0,friendNums.pop(0)):
 				f = random.randint(1,length)
 				while f == j or f in already_added:
 						f = random.randint(1,length)
-				print("{}, {}".format(j,f))
 				self.addFriendship(j,f)
 				already_added.add(f)
 			
