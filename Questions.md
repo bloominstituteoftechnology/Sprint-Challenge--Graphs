@@ -14,12 +14,8 @@
 
     With 1000 users and 5 random friends each, we're looking at .005% chance of any given friend arriving in the given user's friend list.
 
-    Take 1000 * .005 and we arrive at 5%. So, a 5% chance of any given friend in any given user's friends list.
-
-    1 - .05 = .95
-    
-    So we're looking at 95% of all users in their complete extended network.
+    99.5% of all users should be in the extended social network.
 
     I cannot explain this mathematically, or even ensure that it is correct. It's just what sounds reasonable, and what I can see from running my algorithm (which, again, may be faulty).
 
-    The average degree of separation: 1000 * .05 = 50 degrees of separation. I cannot explain how this works, only that I think it is correct.
+    The average degree of separation: 1000 * .005 = 5 degrees of separation. I cannot explain how this works, only that I think it is correct.
