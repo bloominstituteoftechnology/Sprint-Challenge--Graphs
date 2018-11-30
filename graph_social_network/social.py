@@ -68,6 +68,7 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        # without Queue
         for user in self.users:
             self.users[user].parent = None
             self.users[user].visited = False
