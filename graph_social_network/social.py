@@ -28,8 +28,9 @@ class Queue:
 
 
 class User:
-    def __init__(self, name):
+    def __init__(self, name, interests):
         self.name = name
+        self.interests = []
 
 class SocialGraph:
     def __init__(self):
@@ -144,3 +145,29 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
+#####################################
+## reference for weighted graphing stretch
+class UserGraph:
+    def __init__(self, width, height, hasCommonInterests):
+        self.width = width
+        self.height = height
+        self.users = {}
+        self.common_interests = hasCommonInterests
+    
+    def common(self, id):
+        (x, y) = id
+        results = [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1)]
+        if (x + y) % 2 == 0: results.reverse()
+        results = filter(self.common_interests, results)
+        return results
+
+
+### the startings of a weighted user graph
+class WeightedUserGraph(UserGraph):
+    def __init__(self, width, height):
+        super().__init__(width, height)
+        self.weights = {}
+    ## added a costings
+    def cost(self, from_node, to_node):
+        return self.weights.get(to_node, 1)
+#######################################################
