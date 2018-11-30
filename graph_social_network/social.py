@@ -1,8 +1,36 @@
+from random import *
+
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
+
+    def first_item(self):
+        if len(self.queue) > 0:
+            return self.queue[0]
+
+        return None
 
 
 class User:
     def __init__(self, name):
         self.name = name
+
+    def __repr__(self):
+        return f'{self.name}'
+
 
 class SocialGraph:
     def __init__(self):
@@ -45,10 +73,23 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
+        friends = []
 
         # Add users
+        # Create a new user
+        for usr in range(1, numUsers + 1):
+            self.addUser(usr)
+
+            # Append user to friends list
+            friends.append(usr)
 
         # Create friendships
+        for usr in self.users:
+            # Randomly re-order the friends list
+            shuffle(friends)
+
+            if usr != friends[0]:
+                self.addFriendship(usr, friends[0])
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,6 +102,44 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+
+        # Implement parent and visited properties
+        for user in self.users:
+            self.users[user].parent = None
+            self.users[user].visited = False
+
+        # Set the current user to visited
+        self.users[userID].visited = True
+
+        # Add user to queue
+        queue = [userID]
+
+        while queue:
+            # Set user to u
+            u = queue.pop(0)
+
+            # And for each friend in the friendships of the current user
+            for friend in self.friendships[userID]:
+                # If the friend isn't visited, set visited to true
+                if not self.users[friend].visited:
+                    self.users[friend].visited = True
+                    # Set the parent of that friend to the current user
+                    self.users[friend].parent = u
+                    # Append to queue
+                    queue.append(friend)
+
+            # For each friend of the user
+            for friend in self.friendships[userID]:
+                # Add friend to the visited dict
+                visited[friend] = [friend]
+
+                # While the user's friends have a parent
+                while self.users[friend].parent:
+                    # Add then to the visited dict
+                    visited[friend].append(self.users[friend].parent)
+                    # Set friend to the parent and loop again
+                    friend = self.users[friend].parent
+
         return visited
 
 
@@ -70,3 +149,4 @@ if __name__ == '__main__':
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
+
