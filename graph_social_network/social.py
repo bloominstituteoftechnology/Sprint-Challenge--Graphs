@@ -4,6 +4,7 @@ class User:
     def __init__(self, name):
         self.name = name
         self.color = ''
+        self.parent = None
 
 class SocialGraph:
     def __init__(self):
@@ -81,19 +82,26 @@ class SocialGraph:
             self.users[user].color = 'white'
         self.users[userID].color = 'grey'
         queue = [userID]
-        path = []
         while len(queue) > 0:
             current = queue[0]
-            path.append(current)
-            visited[current] = path[:]
+            visited[current] = self.get_path(current)
             for friend in self.friendships[current]:
                 if self.users[friend].color == 'white':
-                    self.users[friend].color == 'grey'
+                    self.users[friend].color = 'grey'
                     queue.append(friend)
+                    self.users[friend].parent = current
             queue.pop(0)
             self.users[current].color = 'black'
         return visited
 
+    def get_path(self, start):
+        path = []
+        current = start
+        while not current == None:
+            path.append(current)
+            current = self.users[current].parent
+        path.reverse()
+        return path
 
 if __name__ == '__main__':
     sg = SocialGraph()
