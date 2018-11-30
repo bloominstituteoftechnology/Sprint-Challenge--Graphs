@@ -48,21 +48,6 @@ class Graph:
                 return item
         return None
 
-        # queue = Queue()
-        # traversal_path = [value]
-        # queue.add(self.vertices[value])
-        #
-        # while queue.size() > 0:
-        #     for item in queue.pop():
-        #         if item in traversal_path:
-        #             pass
-        #         else:
-        #             traversal_path.append(item)
-        #             queue.add(self.vertices[item])
-        #     # queue.pop()
-        #
-        # print(f"traversal_path: {traversal_path}")
-
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
@@ -71,19 +56,31 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         queue = Queue()
-        traversal_path = []
-        queue.add([start])
+        start_vert = self.find_vertex(start.value)
+        print(f"start_vert: {start_vert}")
+        queue.add(start_vert)
 
         while queue.size() > 0:
             current_node = queue.pop()
-            current_node[-1].color = "black"
-            for item in self.vertices[current_node[-1].value]:
-                new_path = list(current_node)
-                new_path.append(item)
-                queue.add(new_path)
-            # queue.pop()
+            print(f"current_node: {current_node.value}")
+            if current_node.color != "black":
+                current_node.color = "black"
+                index = self.vertices.index(current_node)
+                for item in self.vertices[index].edges:
+                    # set the parent property of the edge's destination vertex
+                    # to the vertex at self.vertices[index]
+                    if item.destination.parent == None:
+                        item.destination.parent = set()
+                        item.destination.parent.add(self.vertices[index])
+                    else:
+                        item.destination.parent.add(self.vertices[index])
 
-        print(f"traversal_path: {traversal_path}")
+                    queue.add(item.destination)
+
+        # for item in self.vertices:
+        #     print(f"{item.value}'s parent is")
+        #     for item in item.parent:
+        #         print(f"{item.value}")
 
 
     def output_route(self, start):
