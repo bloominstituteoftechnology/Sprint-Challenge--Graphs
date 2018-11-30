@@ -16,7 +16,7 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if userID == friendID:
-            print("WARNING You cannot be friends with yourself")
+            print("WARNING: You cannot be friends with yourself")
         elif friendID in self.friendships[userID] or userID in self.friendships[friendID]:
             print("WARNING: Friendship already exists")
         else:
@@ -76,15 +76,45 @@ class SocialGraph:
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
 
-        visited[userID]=[userID]
-        visited = self.exploreNode(self.friendships, userID, self.friendships[userID],visited)
-        visitedCopy = sorted(visited, key=lambda k: len(visited[k]), reverse=False)
-        visitedDictionary ={}
+        visited[userID] = [userID]
+        visited = self.exploreNode(
+            self.friendships, userID, self.friendships[userID], visited)
+        visitedCopy = sorted(
+            visited, key=lambda k: len(visited[k]), reverse=False)
+        visitedDictionary = {}
 
         for visitedID in visitedCopy:
             visitedDictionary[visitedID] = visited[visitedID]
 
-        return visited Dictionary
+        return visitedDictionary
+
+    def exploreNode(self, graph, start, node, visited):
+        for friend in node:
+            if(friend not in visited):
+                visited[friend] = list(
+                    self.shortest_path(graph, start, friend))
+                visited = self.exploreNode(
+                    graph, start, graph[friend], visited)
+        return visited
+
+    def bfs_paths(self, graph, start, goal):
+        queue = [(start, [start])]
+        while queue:
+            (vertex, path) = queue.pop(0)
+            for next in graph[vertex] - set(path):
+                if next == goal:
+                    yield path + [next]
+                else:
+                    queue.append((next, path +[next]))
+
+    def shortest_path(self, graph, start, goal):
+        if(start == goal):
+            return [start]
+        try:
+            return next(self.bfs_paths(graph, start, goal))
+        except StopIteration:
+            return None
+
 
 
 
