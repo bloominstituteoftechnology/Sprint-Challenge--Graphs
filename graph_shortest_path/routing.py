@@ -2,6 +2,21 @@
 
 import sys
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
 
 # Edge class
 class Edge:
@@ -41,8 +56,11 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
+        
 
     def bfs(self, start):
         """
@@ -51,8 +69,7 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        
 
     def output_route(self, start):
         """
@@ -61,8 +78,7 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -110,6 +126,7 @@ if __name__ == '__main__':
     graph.vertices.append(vertF)
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
+
 
     # Look up the hosts passed in from the command line by
     # name to see if we can find them.
