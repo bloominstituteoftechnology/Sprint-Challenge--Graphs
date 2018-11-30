@@ -1,8 +1,10 @@
+import random
 
 
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -30,6 +32,13 @@ class SocialGraph:
         self.users[self.lastID] = User(name)
         self.friendships[self.lastID] = set()
 
+    def random_friend_id(self, user_id, numUsers):
+        friend_id = random.randint(0, numUsers)
+        if user_id == friend_id:
+            return self.random_friend_id(user_id, numUsers)
+        else:
+            return friend_id
+
     def populateGraph(self, numUsers, avgFriendships):
         """
         Takes a number of users and an average number of friendships
@@ -47,8 +56,16 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        for user in range(0, numUsers):
+            self.addUser('User: ' + str(user))
         # Create friendships
+
+        for user in self.users:
+            for friend in range(avgFriendships):
+                friend_id = self.random_friend_id(user, numUsers)
+                if friend_id in self.friendships[user]:
+                    continue
+                self.addFriendship(user, friend_id)
 
     def getAllSocialPaths(self, userID):
         """
