@@ -46,14 +46,27 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
-        userList[]
+
+        userList=[]
+
         for user in range(0, numUsers):
             self.addUser(user)
             userList.append(user)
-        
-        # Add users
 
-        # Create friendships
+        friendSpread = []
+        for userID in userList:
+            for friendID in userList:
+                if(userID < friendID):
+                    friendSpread.append([userID, friendID])
+        
+        shuffle(friendSpread)
+        slicedFriends = friendSpread[0: numUsers]
+
+        for friend in slicedFriends:
+            self.addFriendship(friend[0] + 1, friend[1]+1)
+
+        
+        
 
     def getAllSocialPaths(self, userID):
         """
