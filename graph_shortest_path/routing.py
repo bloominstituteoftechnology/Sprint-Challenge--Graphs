@@ -67,8 +67,7 @@ class Graph:
 
             for edge in vert.edges: # --> Loop through each edge in the held node
                 # --> The edge class has a destination attribute
-                destination = edge.destination
-                print('destination', destination)
+                destination = edge.destination                
                 if destination.color == 'white':
                     destination.color = 'black'
                     destination.parent = vert # --> Reference back to parent
@@ -91,11 +90,10 @@ class Graph:
         while hold_start is not None:
             output += hold_start.value # --> Add the value of each vertex to string
             if hold_start.parent is not None: # --> Check if it has a parent to modify string correctly
-                output += '-->' # --> They want an arrow between each node
+                output += ' --> ' # --> They want an arrow between each node
             hold_start = hold_start.parent
 
-        print(output)
-        return 'hello'
+        print(output)        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
