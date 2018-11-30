@@ -41,8 +41,27 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+
+        for item in self.vertices:
+            # print(f"{value} found: {item.value}")
+            if item.value == value:
+                return item
+        return None
+
+        # queue = Queue()
+        # traversal_path = [value]
+        # queue.add(self.vertices[value])
+        #
+        # while queue.size() > 0:
+        #     for item in queue.pop():
+        #         if item in traversal_path:
+        #             pass
+        #         else:
+        #             traversal_path.append(item)
+        #             queue.add(self.vertices[item])
+        #     # queue.pop()
+        #
+        # print(f"traversal_path: {traversal_path}")
 
     def bfs(self, start):
         """
@@ -51,8 +70,21 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()
+        traversal_path = []
+        queue.add([start])
+
+        while queue.size() > 0:
+            current_node = queue.pop()
+            current_node[-1].color = "black"
+            for item in self.vertices[current_node[-1].value]:
+                new_path = list(current_node)
+                new_path.append(item)
+                queue.add(new_path)
+            # queue.pop()
+
+        print(f"traversal_path: {traversal_path}")
+
 
     def output_route(self, start):
         """
@@ -69,6 +101,23 @@ class Graph:
         self.bfs(end)
         # print the route from the start Vertex
         self.output_route(start)
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def add(self, item):
+        self.queue.append(item)
+
+    def pop(self):
+        return self.queue.pop(0)
+
+    def size(self):
+        return len(self.queue)
+
+    def __repr__(self):
+        pretty_print = "" # actually conventionally a separator character
+        return pretty_print.join(str(self.queue))
 
 
 # Helper function to add bidirectional edges
