@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -42,7 +42,13 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        # 1. Sounds like a for loop through self.vertices
+            # 1a. if vertex.value = value --> return the value
+
+        for vert in self.vertices: # --> Look through all vertices
+            if vert.value == value: # --> that matches the `value` param
+                return vert # --> @return {vertex}
+        return None
 
     def bfs(self, start):
         """
@@ -52,7 +58,23 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = [] # --> Create a queue
+        start.color = 'black' # --> Take advantage of the color attribute
+        queue.append(start) # --> Add start node to queue
+
+        while len(queue) > 0:
+            vert = queue.pop(0) # --> Hold node
+
+            for edge in vert.edges: # --> Loop through each edge in the held node
+                # --> The edge class has a destination attribute
+                destination = edge.destination                
+                if destination.color == 'white':
+                    destination.color = 'black'
+                    destination.parent = vert # --> Reference back to parent
+                    queue.append(destination)
+        
+
+
 
     def output_route(self, start):
         """
@@ -62,7 +84,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        hold_start = start
+        output = ''
+
+        while hold_start is not None:
+            output += hold_start.value # --> Add the value of each vertex to string
+            if hold_start.parent is not None: # --> Check if it has a parent to modify string correctly
+                output += ' --> ' # --> They want an arrow between each node
+            hold_start = hold_start.parent
+
+        print(output)        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
