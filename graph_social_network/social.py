@@ -1,4 +1,4 @@
-
+import random
 
 class User:
     def __init__(self, name):
@@ -46,9 +46,23 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
+        if avgFriendships > numUsers:
+            print("Error: must enter a lower number of average friendships than users.")
+            return
+
         # Add users
+        for i in range(numUsers):
+            self.addUser(i)
 
         # Create friendships
+        for i in range(1, len(self.users)):
+            possible_friendships = list(self.users.values())
+            random.shuffle(possible_friendships)
+            # print(possible_friendships)
+            for j in range(avgFriendships):
+                if i < possible_friendships[j].name:
+                    self.addFriendship(i, possible_friendships[j].name)
+                # self.friendships[i].add(possible_friendships[j])
 
     def getAllSocialPaths(self, userID):
         """
