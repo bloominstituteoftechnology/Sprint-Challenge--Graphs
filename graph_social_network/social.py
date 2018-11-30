@@ -1,4 +1,5 @@
-
+import random
+from random import randint
 
 class User:
     def __init__(self, name):
@@ -47,8 +48,24 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(numUsers):
+            self.addUser(i)        
 
         # Create friendships
+        list_of_users = [i + 1 for i in range(numUsers)] # --> List comprehension from 1 --> specified user amount given
+
+
+        for user in list_of_users:
+            random.shuffle(list_of_users) # --> Shuffle list as suggested 
+            # --> Need to find a way to incorporate the friendships
+                # --> Possibly pick a random index from list_of_users so we can add friendship                
+                       
+            
+            # PSEUDOCODE
+            for friend in friends:
+                if user < friend: # --> user1 < user 2 as suggested to avoid warnings
+                    self.addFriendship(user, friend)        
+
 
     def getAllSocialPaths(self, userID):
         """
