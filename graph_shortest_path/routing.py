@@ -70,14 +70,14 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         q = Queue()
-        start.color = "white"
+        start.color = "gray"
         q.enqueue(start)
         while q.size() > 0:
             vertex = q.dequeue()
             for edge in vertex.edges:
                 destination = edge.destination
-                if destination.color == "gray":
-                    destination.color = "white"
+                if destination.color == "white":
+                    destination.color = "gray"
                     destination.parent = vertex
                     q.enqueue(destination)
 
