@@ -2,6 +2,25 @@
 
 import sys
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, item):
+        self.queue.append(item)
+    
+    def dequeue(self):
+        return self.queue.pop(0)
+    
+    def isEmpty(self):
+        return len(self.queue) == 0
+
+    def size(self):
+        return len(self.queue)
+    
+    def print(self):
+        print(self.queue)
+
 
 # Edge class
 class Edge:
@@ -51,8 +70,12 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()
+
+        for v in self.vertices:
+            v.parent = None
+        start.visited = true
+        queue.enqueue(startVert)
 
     def output_route(self, start):
         """
