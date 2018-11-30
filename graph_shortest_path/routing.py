@@ -25,50 +25,51 @@ class Vertex:
 
 # Graph class
 class Graph:
-    def __init__(self):
-        self.vertices = []
+	def __init__(self):
+		self.vertices = []
 
-    def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
+	def find_vertex(self, value):
+		for i in self.vertices:
+			if i.value == value:
+				return i
+		return None
+		pass
+	
+	def bfs(self, start, end):
+		found = [start]
+		index = 0
+		current = start
+		while current != end:
+			for i in current.edges:
+				next_node = self.find_vertex(i.destination.value)
+				if next_node not in found:
+					next_node.parent = current
+					found.append(next_node)
+			index = index + 1
+			current = found[index]
+		print ("all nodes checked:\n")
+		for i in found:
+			if i.parent:
+				print("Node: {}, parent: {}".format(i.value,i.parent.value))
+			else:
+				print("Node: {}, parent: {}".format(i.value,i.parent))
+		self.output_route(end, found)
+		pass
 
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
+	def output_route(self, end, data):
+		path = ""
+		current = end
+		while current.parent:
+			path = path + "{} => ".format(current.value)
+			current = current.parent
+		path = path + "{}".format(current.value)
+		print ("\n{}\n".format(path))
+		for i in data:
+			i.parent = None
+		pass
 
-        @param {*} value: The value of the Vertex to find
-
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
-
-    def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
-
-        @param {Vertex} start: The starting vertex
-        """
-        # !!!! IMPLEMENT ME
-        pass
-
-    def output_route(self, start):
-        """
-        Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
-
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
-        # !!!! IMPLEMENT ME
-        pass
-
-    def route(self, start, end):
-        # BFS to build the parent reference tree
-        self.bfs(end)
-        # print the route from the start Vertex
-        self.output_route(start)
+	def route(self, start, end):
+		self.bfs(start, end)
 
 
 # Helper function to add bidirectional edges
