@@ -68,7 +68,7 @@ class Graph:
                 return vertex
         return None
 
-    def bfs(self, start):
+    def bfs(self, start, target_vertex=None):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -76,7 +76,20 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()      
+        start.color = "black"
+        queue.enqueue(start)
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                print('destination', destination.parent)
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    queue.enqueue(destination)
+
+        
 
     def output_route(self, start):
         """
@@ -86,7 +99,8 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_str = ""
 
     def route(self, start, end):
         # BFS to build the parent reference tree
