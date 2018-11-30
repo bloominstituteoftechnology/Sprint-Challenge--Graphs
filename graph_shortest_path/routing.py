@@ -1,7 +1,4 @@
-#/usr/bin/env python
-
 import sys
-
 
 # Edge class
 class Edge:
@@ -22,6 +19,19 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+# Stack class
+class Stack:
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
 
 # Graph class
 class Graph:
@@ -32,37 +42,67 @@ class Graph:
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
-
         Used in the `main` function to look up the vertices passed in
         from the command line.
-
         @param {*} value: The value of the Vertex to find
-
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
 
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
-
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        # set start value color to anything but white to check as visited
+        start.color = None
+        # make queue
+        queue = []
+        # add start to queue
+        queue.append(start)
+        # while queue is not empty
+        while queue:
+            # poped value = vertex
+            vertex = queue.pop(0)
+            # for every edge in the vertex
+            for edge in vertex.edges:
+                # if that edges color is set to white then add to queue
+                if edge.destination.color == 'white':
+                    edge.destination.color = None
+                    edge.destination.parent = vertex
+                    queue.append(edge.destination)
 
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
-
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        # create vertex list
+        vertex_list = []
+        # output
+        result = ''
+        # while start has value
+        while start:
+            # add start vertex to list
+            vertex_list.append(start)
+            # make start value the parent of previous vertex
+            start = start.parent
+        # iterate through vertex list
+        for vertex in vertex_list:
+            # add value to result
+                result += vertex.value
+                # if vertex is not last in list then print -->
+                if vertex != vertex_list[-1]: 
+                    result += "-->"
+        print(result)
 
     def route(self, start, end):
         # BFS to build the parent reference tree

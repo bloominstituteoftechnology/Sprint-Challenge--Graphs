@@ -47,8 +47,16 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        # for every user in numUsers you want to make a user
+        for i in range(numUsers):
+            self.addUser(i)
 
         # Create friendships
+        # for every user you want to create avgFriendships
+        for user in self.users:
+            for i in range(avgFriendships):
+                friend_id = random.randint(1,1000)
+                self.addFriendship(user, friend_id )
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,7 +69,10 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        return visited
+        visited.add(self.users[userID])
+        while visited:
+            
+        
 
 
 if __name__ == '__main__':
