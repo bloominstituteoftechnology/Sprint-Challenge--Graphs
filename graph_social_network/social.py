@@ -87,45 +87,34 @@ class SocialGraph:
         while(len(queue) > 0):
             personID = queue.popleft()
             friendIDs = self.friendships[personID]
-            # print(personID, friendIDs)
-            # print(f"person: {personID} {visited[personID]}")
-            # print(f"friends: {friendIDs}")
+            
             for friendID in friendIDs:
                 # add to queue 
                 
-                # print(f"friend: {friendID}")  
                 if friendID not in visited:
-                    # print("friend not in visited")
                     queue.append(friendID)  
                     if personID in visited:
-                        # print("person in visited")
-                        # print(f"p: {visited[personID]}")
+
                         path = []
                         path = visited[personID].copy()
                         path.append(friendID)
                 
                         visited[friendID] = path
-                        # print(f"f :{visited[friendID]}")
-                    else:
-                        visited[friendID] = [friendID]
-                #         print("person not in visited")
-                # print(f"v: {visited}")
-
 
         return visited
 
 
-# if __name__ == '__main__':
-#     sg = SocialGraph()
-#     sg.populateGraph(10, 2)
-#     print(sg.friendships)
-#     connections = sg.getAllSocialPaths(1)
-#     print(connections)
+if __name__ == '__main__':
+    sg = SocialGraph()
+    sg.populateGraph(10, 2)
+    print(sg.friendships)
+    connections = sg.getAllSocialPaths(1)
+    print(connections)
 
-sg = SocialGraph()
-sg.populateGraph(10,2)
+# sg = SocialGraph()
+# sg.populateGraph(10,2)
 
-print(sg.friendships)
-connections = sg.getAllSocialPaths(1)
-print(connections)
+# print(sg.friendships)
+# connections = sg.getAllSocialPaths(1)
+# print(connections)
 
