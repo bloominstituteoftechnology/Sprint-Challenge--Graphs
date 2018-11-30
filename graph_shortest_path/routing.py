@@ -42,7 +42,13 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        # 1. Sounds like a for loop through self.vertices
+            # 1a. if vertex.value = value --> return the value
+            
+        for vert in self.vertices: # --> Look through all vertices
+            if vert.value is value: # --> that matches the `value` param
+                return vert # --> @return {vertex}
+            return None
 
     def bfs(self, start):
         """
