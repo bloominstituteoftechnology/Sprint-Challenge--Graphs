@@ -61,7 +61,7 @@ class SocialGraph:
         # Create friendships
 
         for user in self.users:
-            for friend in range(avgFriendships):
+            for user in range(avgFriendships):
                 friend_id = self.random_friend_id(user, numUsers)
                 if friend_id in self.friendships[user]:
                     continue
