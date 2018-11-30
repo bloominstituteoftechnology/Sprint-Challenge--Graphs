@@ -56,12 +56,13 @@ class SocialGraph:
 
         # Create friendships
         for j in range(avgFriendships):
-            # userIDs start at index 1
-            userID = random.randint(1, numUsers)
-            friendID = random.randint(1, numUsers)
-            if userID != friendID:
-                self.addFriendship(userID, friendID)
-                # print('friend added', j)
+            for i in range(numUsers):
+                # userIDs start at index 1
+                userID = random.randint(1, numUsers)
+                friendID = random.randint(1, numUsers)
+                if userID != friendID and userID < friendID:
+                    self.addFriendship(userID, friendID)
+                    # print('friend added', j)
 
             # TODO: Find a way to step backwards if userID == friendID
 
@@ -102,7 +103,8 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(20, 19)
+    sg.populateGraph(1000, 5)
     print(f'Friendships: \n {sg.friendships} \n')
     connections = sg.getAllSocialPaths(1)
     print(f'Connections: \n{connections}\n')
+    print(len(connections))
