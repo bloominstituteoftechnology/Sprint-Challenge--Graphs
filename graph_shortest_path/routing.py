@@ -67,9 +67,9 @@ class Graph:
         while len(queue) > 0:
             found = queue.pop(0)
             # print(found.edges)
-            for (
-                edge
-            ) in found.edges:  # edge is Edge class, edge.destination is Vertex class
+
+            for edge in found.edges:
+                # edge is Edge class, edge.destination is Vertex class
                 edge.destination.parent = found
                 if edge.destination not in visited:
                     queue.append(edge.destination)
@@ -82,9 +82,7 @@ class Graph:
                     queue.append(i.value)
                 break
 
-        joined = " --> ".join(queue)
-        print(joined)
-        return joined
+        return queue
 
     def output_route(self, start):
         """
@@ -93,14 +91,30 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        searched = self.bfs(start)
+        return searched
 
     def route(self, start, end):
+        path = []
+        joined = None
+        # print(start.value, end.value)
+
         # BFS to build the parent reference tree
-        self.bfs(end)
+        # self.bfs(end)
+        # print(self.bfs(end))
+
         # print the route from the start Vertex
-        self.output_route(start)
+        # self.output_route(start)
+        print(self.output_route(start))
+        for node in self.output_route(start):
+            if node == end.value:
+                path.append(node)
+                joined = " --> ".join(path)
+                break
+            path.append(node)
+
+        print(joined)
+        return joined
 
 
 # Helper function to add bidirectional edges
