@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+import queue as queue
 
 
 # Edge class
@@ -41,8 +42,26 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
+        # DFS Traversal, Iterative
+        stack = [self.vertices[0]]
+        visited = []
+
+        while len(stack) > 0:
+            current = stack.pop()
+            visited.append(current)
+
+            if current.value == value:
+                print(current, 'value found')
+                return current
+
+            for edge in current.edges:
+                if self.vertices[edge] not in visited:
+                    stack.append(self.vertices[edge])
+
+        print('value not found.')
+        return None
+
         # !!!! IMPLEMENT ME
-        pass
 
     def bfs(self, start):
         """
@@ -51,6 +70,24 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+        if start not in self.vertices:
+            raise IndexError('Starting value does not exist.')
+
+        visited = []
+        storage = queue.Queue()
+        storage.put(self.vertices[start])
+
+        while not storage.empty():
+            current = storage.get()
+
+            if current not in visited:
+                visited.append(current)
+            for edge in current.edges:
+                if self.vertices[edge] not in visited:
+                    storage.put(self.vertices[edge])
+
+        print(f'bfs: {visited}')
+        return visited
         # !!!! IMPLEMENT ME
         pass
 
