@@ -1,3 +1,5 @@
+(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ✧ﾟ･: *ヽ(◕ヮ◕ヽ)
+
 # Sprint Challenge: Graphs
 
 There are two parts to this sprint challenge:
