@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+from collections import deque
 
 # Queue for BFS
 class Queue:
@@ -59,8 +60,6 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # looping over all vertices and if the value matches return the vert otherwise return none
-        print(self.vertices)
-        print(value)
         for vert in self.vertices:
             if vert.value == value:
                 return vert
@@ -73,22 +72,10 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # set a queue then enqueue start and create a list of visited verts. while the queue has items dequeue to vert 
-        # test if vert is not already ib visited and append it to visited if true
-        # loop over the edges set the next vert to the edge.destination and test if next vert has a parent if false add vert as next verts parent
-        # enqueue the next vert
-        queue = Queue()
-        queue.enqueue(start)
-        visited = []
-        while queue.size() > 0:
-            vert = queue.dequeue()
-            if vert not in visited:
-                visited.append(vert)
-                for edge in vert.edges:
-                    next_vert = edge.destination
-                    if not next_vert.parent:
-                        next_vert.parent = vert
-                    queue.enqueue(next_vert)
+        # bfs needs a rework
+
+
+
 
 
     def output_route(self, start):
@@ -98,15 +85,17 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! for loop with self init syntax ref : https://hackernoon.com/understanding-the-underscore-of-python-309d1a029edc
-        for _ in graph.vertices:
-            route_list = []
-            end = graph.vertices[-1]
-            route_list.append(end)
-            if end.parent is not None:
-                route_list.append(end.parent)
-        #print(route_list)
-        return route_list
+        # going back to basics to get a simplified version with a list comprehension
+        route_list = []
+        current_vert = start
+
+        while current_vert:
+            route_list.append(current_vert)
+            current_vert = current_vert.parent
+
+        ret_val = [F"{x.value}" for x in route_list]
+        print(" --> ".join(ret_val))
+        return " --> ".join(ret_val) # this breaks bfs
 
     def route(self, start, end):
         # BFS to build the parent reference tree
