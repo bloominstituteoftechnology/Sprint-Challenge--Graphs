@@ -3,7 +3,26 @@
 import sys
 
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, start):
+        return self.queue.append(start)
+
+    def dequeue(self):
+        return self.queue.pop()
+
+    def size(self):
+        return len(self.queue)
+
+    def isEmpty(self):
+        if len(self.queue) == 0:
+            return True
+
 # Edge class
+
+
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
