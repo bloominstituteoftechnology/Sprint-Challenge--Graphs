@@ -1,6 +1,32 @@
 import random
 import math
 
+## my helper class queue
+class Queue:
+    def __init__(self):
+        self.storage = []
+    
+    # enqueue method
+    def enqueue(self, value):
+        self.storage.append(value)
+
+    # dequeue method
+    def dequeue(self):
+        return self.storage.pop(0) if self.size() > 0 else None
+
+
+    # size method
+    def size(self):
+        return len(self.storage)
+
+    # for indexing
+    def __getitem__(self, index):
+        return self.storage[index]
+
+    def __setitem__(self, index):
+        return self.storage[index]
+
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -83,13 +109,38 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+       
+       # create a new Queue using my queue class from the routing.py
+        queue = Queue()
+
+        # add the userid in to a list and queue it up
+        queue.enqueue([userID])
+
+        ## while the queue size is larger than 0 (is not empty)
+        ## create a base path
+        # set a new user id using the end of the path
+        while queue.size() > 0:
+            path = queue.dequeue()
+            newUserID = path[-1]
+
+            # if visited does not conmtain the new user id then add the path at the index of the new user id
+            if newUserID not in visited:
+                visited[newUserID] = path
+                # do a for in loop over the friendships at the index of the new user id
+                for friendID in self.friendships[newUserID]:
+                    # if visited does not contain the friend id then create a new list from the path
+                    # and append the friend id to it and add the new path to the queue 
+                    if friendID not in visited:
+                        new_path = list(path)
+                        new_path.append(friendID)
+                        queue.enqueue(new_path)
+        # finally return the visited dictionary     
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(1000, 5)
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
