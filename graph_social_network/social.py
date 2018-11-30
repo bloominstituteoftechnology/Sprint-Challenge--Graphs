@@ -45,10 +45,10 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
-
+        for i in range(0, numUsers):
+            self.addUser(f"User_test {i}")
         # Add users
-        for friend in range(0, numUsers):
-            self.addUser("Michael Trevino"+str(friend + 1))
+         
         # Create friendships
         # working on this part
 

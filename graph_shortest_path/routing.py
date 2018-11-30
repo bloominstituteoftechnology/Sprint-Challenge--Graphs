@@ -4,19 +4,16 @@ import sys
 
 class Queue:
     def __init__(self):
-        self.q = []
-
+        self.queue = []
     def enqueue(self, value):
-        self.q.append(value)
-
+        self.queue.append(value)
     def dequeue(self):
-        if (self.size()) > 0:
-            return self.q.pop(0)
+        if self.size() > 0:
+            return self.queue.pop(0)
         else:
             return None
-
     def size(self):
-        return len(self.q)
+        return len(self.queue)
 
 
 # Edge class
@@ -45,59 +42,47 @@ class Graph:
         self.vertices = []
     # this is finding not adding 
     def find_vertex(self, value):
-
-        # !!!! IMPLEMENT ME
-        # pass
-
-        for v in self.vertices:
-            if v.value == value:
-                return v
+        # make a loop
+        for vertex in self.vertices: 
+            if vertex.value == value:
+                return vertex
             return  None
 
     def bfs(self, start):
-        """
-        Breadth-First search from an input starting Vertex
-        Should maintain parent references back from neighbors to their parent.
-
-        @param {Vertex} start: The starting vertex
-        change the color from white to black
-        """
-        #  all we are doing is recoloring a node (white which is default to black when 'visited')
-        # !!!! IMPLEMENT ME
-        # pass
-        q = Queue()
-        start.color = "w"
-        q.enqueue(start)
-        while q.size() > 0:
-            v = q.dequeue()
-            for edge in v.edges:
-                destination = edge.destination
-                if destination.color == "B":
-                    destination.color = "B"
-                    destination.parent = v
-                    q.enqueue(destination)  
-        # print(queue)     
-
-
+        # init our queue
+        queue = Queue()
+        # make first node
+        queue.enqueue(start)
+        # visit each node 
+        while queue.size() > 0:
+            # check to see if the node visited changing it black 
+            vertex = queue.dequeue()
+            # if not visited its white if visited make it black
+            if vertex.color == "White":
+                vertex.color = "Black"
+                for edge in vertex.edges:
+                    # this is a child node
+                    dest = edge.destination
+                    # make unvisited child white
+                    if dest.color == "white":
+                        dest.parent = vertex
+                        queue.enqueue(dest)
+# we visit each of our nodes and each node has its parents set, start from dest node print it out and see its parents
+        
     def output_route(self, start):
-        """
-        Print out the route from the start vertex back along its parent
-        references (these were set in the `bfs` method)
-
-        @param {Vertex} start: The starting Vertex to follow and print
-        """
-        # !!!! IMPLEMENT ME
-        # pass
-
-        s = start
-        output = "Testing if this is firing?"
-
-        while s is not None:
-            output += s.value
-            if s.parent is not None:
-                output += "==>"
-            s = s.parent
-        # print(output)
+        # start node
+        current = start
+        # build a string
+        output_str = ""
+        # this is list is the node we are looking at and its parents
+        while current is not None:
+            output_str += current.value
+            
+            if current.parent is not None:
+                output_str += "-->"
+                # this part build the string from the back to the front
+            current = current.parent
+        print(output_str)
         
 
     def route(self, start, end):
