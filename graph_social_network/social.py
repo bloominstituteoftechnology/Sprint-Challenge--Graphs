@@ -77,7 +77,6 @@ class SocialGraph:
                 if friendships[j] and friends_left:
                     friendships[j] -= 1
                     friends_left += 1
-        print ('friendships first:', friendships)
 
         for user in self.users:
             # current_person = friendships.pop(user-1)
@@ -90,9 +89,7 @@ class SocialGraph:
                             self.addFriendship(user, new_friend_index+1)
                             friendships[new_friend_index] -= 1
                             friendships[user-1] -= 1
-                            print ('here:', friendships)
         
-        print ('friendhips now:', friendships)
 
 
 
@@ -133,7 +130,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(15, 2)
+    sg.populateGraph(25, 4)
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
