@@ -2,6 +2,22 @@
 
 import sys
 
+class Queue:
+    def __init__(self):
+        self.q = []
+
+    def enqueue(self, value):
+        self.q.append(value)
+
+    def dequeue(self):
+        if (self.size()) > 0:
+            return self.q.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.q)
+
 
 # Edge class
 class Edge:
@@ -29,24 +45,13 @@ class Graph:
         self.vertices = []
     # this is finding not adding 
     def find_vertex(self, value):
-        """
-        Looks through all the vertices in the graph instance and returns
-        the first vertex it finds that matches the `value` parameter.
 
-        Used in the `main` function to look up the vertices passed in
-        from the command line.
-
-        @param {*} value: The value of the Vertex to find
-
-        @return None if no such Vertex exists in the Graph.
-        @return {Vertex} the found Vertex
-        """
         # !!!! IMPLEMENT ME
         # pass
 
-        for ver in self.vertices:
-            if ver.value == value:
-                return ver
+        for v in self.vertices:
+            if v.value == value:
+                return v
             return  None
 
     def bfs(self, start):
@@ -55,9 +60,24 @@ class Graph:
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
+        change the color from white to black
         """
+        #  all we are doing is recoloring a node (white which is default to black when 'visited')
         # !!!! IMPLEMENT ME
-        pass
+        # pass
+        q = Queue()
+        start.color = "w"
+        q.enqueue(start)
+        while q.size() > 0:
+            v = q.dequeue()
+            for edge in v.edges:
+                destination = edge.destination
+                if destination.color == "B":
+                    destination.color = "B"
+                    destination.parent = v
+                    q.enqueue(destination)  
+        # print(queue)     
+
 
     def output_route(self, start):
         """
@@ -67,7 +87,18 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        # pass
+
+        s = start
+        output = "Testing if this is firing?"
+
+        while s is not None:
+            output += s.value
+            if s.parent is not None:
+                output += "==>"
+            s = s.parent
+        # print(output)
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -121,18 +152,19 @@ if __name__ == '__main__':
     hostAVert = graph.find_vertex(sys.argv[1])
 
     if hostAVert is None:
-        print('routing.py: could not find host: ', sys.argv[1])
+        print('routing.py: could not find host1: ', sys.argv[1])
         sys.exit()
 
     hostBVert = graph.find_vertex(sys.argv[2])
 
     if hostBVert is None:
-        print('routing.py: could not find host: ', sys.argv[2])
+        print('routing.py: could not find host2: ', sys.argv[2])
         sys.exit()
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
 
+# going to add this 
 
 # class Queue:
 #     def __init__(self):
