@@ -59,14 +59,29 @@ class SocialGraph:
         
         # establish number of friendship per user
         user_list = self.users.values()
-        for user in self.users:
-            if user not in visited:
-                rest_of_users = del dict(self.users)[user]
-                max_num_friendship = avgFriendships*2
-                num_friendship = random.randint(0, max_num_friendship+1)
-                self.friendships[id]
 
-            visited.append(user)
+        # for user in user_list:
+        #     print(user.name)
+        
+        for id in range(1, int(len(user_list)/2)+1 ):
+            max_num_friendship = avgFriendships*2
+            num_friendship = random.randint(0, max_num_friendship)
+            self.friendships[id*2-1] = num_friendship
+            self.friendships[id*2] = max_num_friendship - num_friendship
+        #     print((self.friendships[id*2-1], self.friendships[id*2]))
+        # print(self.friendships)
+
+        establish frienship between users
+        for friendship in self.friendships:
+            print(friendship)
+
+
+            # if user not in visited:
+            #     rest_of_users = del dict(self.users)[user]
+            #     max_num_friendship+1)
+            #     self.friendships[id]
+
+            # visited.append(user)
 
         
 
