@@ -87,7 +87,10 @@ class SocialGraph:
 
             while queue.size() > 0:
                 current_node = queue.pop()
-                if current_node[-1] == i:
+                if len(current_node) > len(self.users):
+                    queue = Queue()
+                    break
+                elif current_node[-1] == i:
                     visited[i] = current_node
                     queue = Queue()
                     queue.add([self.users[userID].name])
