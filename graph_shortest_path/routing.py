@@ -4,6 +4,10 @@ import sys
 
 
 # Edge class
+import sys
+
+
+# Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
@@ -21,8 +25,6 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-    def __repr__(self):
-        return f'{self.value}'
 
 
 # Graph class
@@ -34,26 +36,21 @@ class Graph:
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
-
         Used in the `main` function to look up the vertices passed in
         from the command line.
-
         @param {*} value: The value of the Vertex to find
-
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        for vertex in self.vertices:
-            if vertex.value == value:
-                return vertex
-        return None
+        for v in self.vertices:
+            if v.value == value:
+                return v
 
     def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
-
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
@@ -62,34 +59,34 @@ class Graph:
         start.color = 'black'
         queue = [start]
         while len(queue) > 0:
-            v = queue.pop(0)
-            for i in v.edges:
-                if i.destination.color == 'red':
-                    i.destination.color = 'black'
-                    i.destination.parent = v
+            t = queue.pop(0)
+            for w in t.edges:
+                if w.destination.color == 'white':
+                    w.destination.color = 'black'
+                    w.destination.parent = t
                     queue.append(w.destination)
 
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
-
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
         answer = ''
         present = start
         stack = []
-        while not current==None:
+        while not present==None:
             stack.append(present)
             present = present.parent
-        for n in stack:
+       
+        for v in stack:
             if len(answer) == 0:
-                answer += n.value
+                answer += v.value
             else:
                 answer += ' --> '
-                answer += n.value
-        print (answer) 
+                answer += v.value
+        print (answer)
 
 
     def route(self, start, end):

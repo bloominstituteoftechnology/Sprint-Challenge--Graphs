@@ -1,8 +1,10 @@
-
+import random
 
 class User:
     def __init__(self, name):
         self.name = name
+        self.color = ''
+        self.parent = None
 
 class SocialGraph:
     def __init__(self):
@@ -47,8 +49,22 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for user in range(1,numUsers+1):
+            self.addUser(user)
 
         # Create friendships
+        for user in self.users:
+            for friend in range(avgFriendships):
+                friend_id = self.get_random_friend_id(user, numUsers)
+                if friend_id in self.friendships[user]:
+                    continue
+                self.addFriendship(user, friend_id)
+    def get_random_friend_id(self, user_id, numUsers):
+        friend_id = random.randint(1,numUsers)
+        if user_id == friend_id:
+            return self.get_random_friend_id(user_id, numUsers)
+        else:
+            return friend_id
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,7 +77,32 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        for user in self.users:
+            self.users[user].color = 'white'
+        self.users[userID].color = 'grey'
+        queue = [userID]
+        path = []
+        while len(queue) > 0:
+            current = queue[0]
+            visited[current] = self.get_path(current)
+            for friend in self.friendships[current]:
+                if self.users[friend].color == 'white':
+                    self.users[friend].color = 'grey'
+                    queue.append(friend)
+                    self.users[friend].parent = current
+            queue.pop(0)
+            self.users[current].color = 'black'
         return visited
+
+    def get_path(self, start):
+            path = []
+            current = start
+            while not current == None:
+                path.append(current)
+                current = self.users[current].parent
+            path.reverse()
+            return path   
+
 
 
 if __name__ == '__main__':
