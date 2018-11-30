@@ -50,10 +50,10 @@ class Graph:
             
             current = stack.pop()
             visited.append(current)
-            print(current.value)
+            # print(current.value)
 
             if current.value.upper() == value.upper():
-                print(current, 'Value found')
+                # print(current, 'Value found')
                 return current
 
             for edge in current.edges:
@@ -72,6 +72,7 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+
         if start not in self.vertices:
             raise IndexError('Starting value does not exist.')
 
@@ -85,10 +86,10 @@ class Graph:
             if current not in visited:
                 visited.append(current)
             for edge in current.edges:
-                if edge not in visited:
+                if edge.destination not in visited:
                     storage.put(edge.destination)
 
-        print(f'bfs: {visited}')
+        # print(f'bfs: {visited}')
         return visited
         # !!!! IMPLEMENT ME
         
@@ -101,11 +102,12 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        visited_routes = bfs(start)
+        visited_routes = self.bfs(start)
         
         print('Route path: \n')
         for v in visited_routes:
-            print(f'{v} => ', end='')
+            print(f'{v.value} => ', end='')
+        print('\n')
         return visited_routes
         
 
