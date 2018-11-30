@@ -1,4 +1,5 @@
-
+import random as random
+import queue as queue
 
 class User:
     def __init__(self, name):
@@ -46,9 +47,26 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
+        if numUsers <= avgFriendships:
+            raise ValueError('numUsers must be greater than avgFriendships!')
+            return
         # Add users
+        for i in range(numUsers):
+            self.addUser(f'User{i}')
 
         # Create friendships
+        for j in range(avgFriendships):
+            # userIDs start at index 1
+            userID = random.randint(1, numUsers)
+            friendID = random.randint(1, numUsers)
+            if userID != friendID:
+                self.addFriendship(userID, friendID)
+                # print('friend added', j)
+
+            # TODO: Find a way to step backwards if userID == friendID
+
+        # print(self.friendships, 'FRIENDSHIPS')
+
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,12 +79,26 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        storage = queue.Queue()
+        # put the user's friends into the queue
+        for friend in self.friendships[userID]:
+            storage.put(friend)
+
+        while not storage.empty():
+            currentID = storage.get()
+            visited[currentID] = currentID
+            if self.friendships[currentID]:
+                for friend in self.friendships[currentID]:
+                    if friend not in visited:
+                        storage.put(friend)
+            print(currentID, "CURRENT ID")
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(10, 6)
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
