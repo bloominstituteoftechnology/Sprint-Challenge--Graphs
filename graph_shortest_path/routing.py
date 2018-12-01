@@ -2,6 +2,19 @@
 
 import sys
 
+# Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, element):
+        return self.queue.append(element)
+    def dequeue(self):
+        return self.queue.pop(0)
+    def size(self):
+        return len(self.queue)
+    def isEmpty(self):
+        if len(self.queue) <= 0:
+            return True
 
 # Edge class
 class Edge:
@@ -42,7 +55,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -52,8 +68,56 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        q = Queue()
+        q.enqueue(start)
+        # Check starting points neighboring nodes
+        # Go into self.vertices and match string to target
+        # Then loop through the edges
+        # While queue is not empty
+        while not q.isEmpty():
+            dq = q.dequeue()
+            # Already visited
+            if dq.color == "white":
+                dq.color = "black"
+                for edge in dq.edges:
+                    vertex = edge.destination
+                    # If it wasn't visited
+                    if vertex.color == "white":
+                        vertex.parent = dq
+                        q.enqueue(vertex)
+            """
+            Original code
+            else:
+                dq.color = "black"
+                for vertex in self.vertices:
+                    if vertex.value != dq:
+                        return None
+                    else:
+                        for edge in vertex.edges:
+                            dest = edge.destintion
+                            
+                            print(neighbor)
+                            # Should have gone one more deep to grab destination
+                            # At this point we're just attributing .parent onto an edge, not the Vertex node held by destintion
+                            neighbor.parent = dq
+                            q.enqueue(neighbor)
+            """
+            # """
+            # Solution code
+            # queue = Qeueu()
+            # queue.enquque(start)
 
+            # while queue.size() > 0:
+            #     vertex = queue.dequeue()
+            #     if vertex.color == "white":
+            #         vertex.color = "black"
+            #         # Loop through edges for this vertex
+            #         for edge in vertex.edges:
+            #             dest = edge.destination:
+            #             if dest.color == "white":
+            #                 dest.parents = vertex 
+            #                 queue.enqueue(dest)
+            # """
     def output_route(self, start):
         """
         Print out the route from the start vertex back along its parent
@@ -61,8 +125,38 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # Initialize starting vertex
+        # !!! When we input the text 'HostA' the sys.argv regonizes the text as the Variable HostA = Vertex('HostA')
+        starting_node = start
+        print(start)
+        print(starting_node)
+        # Store collected string into a variable so we can contain it and present it all at once
+        output_string = ""
+        print(output_string)
+
+        # While there is a node to start
+        while starting_node is not None:
+            # Append to node
+            # starting_node.value because it is an Instance 
+            output_string += starting_node.value
+            if starting_node.parent is not None:
+                # We need this hedge to separate Vertex's and when there is a parent node to add to output_string
+                output_string += " --> "
+            # Since we're traversing bottom up/child to parent, we're checking if parent exists
+            # We want to keep the loop going therefore we reset the conditional variable to the parent
+            starting_node = starting_node.parent
+        print(output_string)
+        
+        # while not :
+        #     dq = q.dequeue()
+        #     for vertex in self.vertices:
+        #             if vertex.value != dq:
+        #                 return None
+        #             else:
+        #                 for neighbor in vertex.edges:
+        #                     print(neighbor)
+        #                     neighbor.parent = dq
+        #                     q.enqueue(neighbor)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
