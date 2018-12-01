@@ -19,22 +19,22 @@ class Queue:
     def size(self):
         return len(self.queue)
 
-# Stack class
-class Stack:
-    def __init__(self):
-        self.stack = []
+# # Stack class
+# class Stack:
+#     def __init__(self):
+#         self.stack = []
 
-    def pop(self, value):
-        if self.size() > 0:
-            return self.stack.pop()
-        else:
-            return None
+#     def pop(self, value):
+#         if self.size() > 0:
+#             return self.stack.pop()
+#         else:
+#             return None
     
-    def push(self, value):
-        self.stack.append(value)
+#     def push(self, value):
+#         self.stack.append(value)
 
-    def size(self):
-        return len(self.stack)
+#     def size(self):
+#         return len(self.stack)
 
 # Edge class
 class Edge:
@@ -73,20 +73,16 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        #DFT
-        s = Stack()
-        visited = set()
-        s.push(value)
-        while s.size() > 0:
-            node = s.pop()
-            if node not in visited:
-                print(node)
-                visited.add(node)
-                for child in self.vertices[node].edges:
-                    s.push(child)
-
         # !!!! IMPLEMENT ME
-        pass
+        # pass
+        #vertex = node
+
+        # looking through vertices
+        for vertex in self.vertices:
+            #if we have a matching value than return that vertex
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start, end):
         """
@@ -95,6 +91,8 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+        # using the queue class we keep track of nodes visited
+        # need to implement the colors as trackers
         q = Queue()
         visited = set()
         q.enqueue([start])
@@ -109,7 +107,7 @@ class Graph:
                     q.enqueue(child)
         return None
         # !!!! IMPLEMENT ME
-        pass
+        # pass
 
     def output_route(self, start):
         """
@@ -119,21 +117,15 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        q = Queue()
-        visited = set()
-        q.enqueue([start])
-        while q.size() > 0:
-            node = q.dequeue()
-            if node[-1] not in visited:
-                if end == node[-1]:
-                    return node
-                visited.add(node[-1])
-                for child in self.vertices[node[-1]].edges:
-                    new_path = list(node)
-                    new_path.append(child)
-                    q.enqueue(new_path)
-        return None
-        pass
+        path = []
+        vertex = start
+        while vertex:
+            # moving vertex to path list
+            path.append(vertex)
+            # moving down the line
+            vertex = vertex.parent
+            # print out the path with --> between each vertex in the path
+        print("-->".join([f"{vert.value}" for vert in path]))
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -142,10 +134,10 @@ class Graph:
         self.output_route(start)
 
 
-# Helper function to add bidirectional edges
-def add_edge(start, end):
-    start.edges.append(Edge(end))
-    end.edges.append(Edge(start))
+    # Helper function to add bidirectional edges
+    def add_edge(start, end):
+        start.edges.append(Edge(end))
+        end.edges.append(Edge(start))
 
 
 if __name__ == '__main__':
@@ -182,19 +174,21 @@ if __name__ == '__main__':
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
 
-    # Look up the hosts passed in from the command line by
-    # name to see if we can find them.
-    hostAVert = graph.find_vertex(sys.argv[1])
+    print(graph.output_route(vertA, vertF)
 
-    if hostAVert is None:
-        print('routing.py: could not find host: ', sys.argv[1])
-        sys.exit()
+    # # Look up the hosts passed in from the command line by
+    # # name to see if we can find them.
+    # hostAVert = graph.find_vertex(sys.argv[1])
 
-    hostBVert = graph.find_vertex(sys.argv[2])
+    # if hostAVert is None:
+    #     print('routing.py: could not find host: ', sys.argv[1])
+    #     sys.exit()
 
-    if hostBVert is None:
-        print('routing.py: could not find host: ', sys.argv[2])
-        sys.exit()
+    # hostBVert = graph.find_vertex(sys.argv[2])
 
-    # Show the route from one Vertex to the other
-    graph.route(hostAVert, hostBVert)
+    # if hostBVert is None:
+    #     print('routing.py: could not find host: ', sys.argv[2])
+    #     sys.exit()
+
+    # # Show the route from one Vertex to the other
+    # graph.route(hostAVert, hostBVert)
