@@ -65,7 +65,6 @@ class SocialGraph:
                     # print('friend added', j)
 
             # TODO: Find a way to step backwards if userID == friendID or if friendship exists
-
         # print(self.friendships, 'FRIENDSHIPS')
 
 
@@ -89,24 +88,44 @@ class SocialGraph:
         storage = queue.Queue()
         # shortest path to start is start
         visited[userID] = [userID]
-        # put the user's friends into the queue
+        # put the user's friends into the queue 
+
         for friend in self.friendships[userID]:
             storage.put(friend)
+
+        path = []
 
         while not storage.empty():
             # traverse the shortest path to this current ID from the start ID
             currentID = storage.get()
+            path.append(currentID)
+            lastID = currentID
             # this will contain the shortest path to the friend
-            visited[currentID] = []
 
             # we can immediately solve for shortest path for friends from userID
             if userID in self.friendships[currentID]:
                 visited[currentID] = [userID]
             # otherwise we add those friends to the queue and do something else
             for friend in self.friendships[currentID]:
+                # print(friend, 'friend')
+                # # print(visited)
                 if friend not in visited:
+                    visited[friend] = []
+                #     # visited[friend].append(currentID)
+                # else:
+                #     visited[friend] = [currentID]
+                    if userID not in visited[friend]:
+                        visited[friend].insert(0, userID)
+
+                    # if lastID not in visited[friend]:
+                    #     visited[friend].insert(1, lastID)
+                    
+                    if currentID not in visited[friend]:
+                        visited[friend].append(currentID)
+
                     storage.put(friend)
-                    print(friend, "FRIEND")
+                    
+        # Run a path traversal on the extended network for each empty visited array
 
 
             # if self.friendships[currentID]:
@@ -127,3 +146,4 @@ if __name__ == '__main__':
     print(f'\nFriendships:\n{sg.friendships}\n')
     connections = sg.getAllSocialPaths(1)
     print(f'Connections:\n{connections}\n')
+    print(len(sg.friendships), len(connections))

@@ -9,7 +9,6 @@
     The user number is our constant, and our complexity will increase exponentially with the amount of average friends we need to generate with each user.
 
 
-
 2. If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? What is the average degree of separation between a user and those in his/her extended network? (2pts)
 
     With 1000 users and 5 random friends each, we're looking at .005% chance of any given friend arriving in the given user's friend list.
