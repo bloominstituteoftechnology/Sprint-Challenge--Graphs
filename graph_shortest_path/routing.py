@@ -107,8 +107,27 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # start from the tail
+        # this is the vertex we are looking at
+        last_vertex = start
+        # build a string so that output will print a '-->' in between vertices
+        flowArrow_str = ''
+
+        # if there is a tail...
+        while last_vertex is not None:
+            # Add the tail to the string to print out
+            flowArrow_str = flowArrow_str + last_vertex.value
+
+            # if the tail has a parent
+            # there is an arrow before it
+            if last_vertex.parent is not None:
+                # add '-->' before the tail
+                flowArrow_str = flowArrow_str + '-->'
+                
+            # make the parent the new starting point
+            last_vertex = last_vertex.parent
+        print(flowArrow_str)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
