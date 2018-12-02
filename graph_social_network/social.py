@@ -1,4 +1,5 @@
-
+import random as random
+import queue as queue
 
 class User:
     def __init__(self, name):
@@ -46,9 +47,26 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
+        if numUsers <= avgFriendships:
+            raise ValueError('numUsers must be greater than avgFriendships!')
+            return
         # Add users
+        for i in range(numUsers):
+            self.addUser(f'User{i}')
 
         # Create friendships
+        for j in range(avgFriendships):
+            for i in range(numUsers):
+                # userIDs start at index 1
+                userID = random.randint(1, numUsers)
+                friendID = random.randint(1, numUsers)
+                if userID != friendID and userID < friendID:
+                    self.addFriendship(userID, friendID)
+                    # print('friend added', j)
+
+            # TODO: Find a way to step backwards if userID == friendID or if friendship exists
+        # print(self.friendships, 'FRIENDSHIPS')
+
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,12 +79,71 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        
+        ### NEW SOLUTION ###
+        # store shortest path as UserID:UserID in first element
+        # collect all of the friends in the extended network
+        # find the shortest path to all of those friends
+        
+        storage = queue.Queue()
+        # shortest path to start is start
+        visited[userID] = [userID]
+        # put the user's friends into the queue 
+
+        for friend in self.friendships[userID]:
+            storage.put(friend)
+
+        path = []
+
+        while not storage.empty():
+            # traverse the shortest path to this current ID from the start ID
+            currentID = storage.get()
+            path.append(currentID)
+            lastID = currentID
+            # this will contain the shortest path to the friend
+
+            # we can immediately solve for shortest path for friends from userID
+            if userID in self.friendships[currentID]:
+                visited[currentID] = [userID]
+            # otherwise we add those friends to the queue and do something else
+            for friend in self.friendships[currentID]:
+                # print(friend, 'friend')
+                # # print(visited)
+                if friend not in visited:
+                    visited[friend] = []
+                #     # visited[friend].append(currentID)
+                # else:
+                #     visited[friend] = [currentID]
+                    if userID not in visited[friend]:
+                        visited[friend].insert(0, userID)
+
+                    # if lastID not in visited[friend]:
+                    #     visited[friend].insert(1, lastID)
+                    
+                    if currentID not in visited[friend]:
+                        visited[friend].append(currentID)
+
+                    storage.put(friend)
+                    
+        # Run a path traversal on the extended network for each empty visited array
+
+
+            # if self.friendships[currentID]:
+            #     for friend in self.friendships[currentID]:
+            #         visited[currentID].append(friend)
+            #         if friend not in visited:
+            #             storage.put(friend)
+            # print(currentID, "CURRENT ID")
+
+        
+
         return visited
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populateGraph(10, 2)
-    print(sg.friendships)
+    print(f'\nFriendships:\n{sg.friendships}\n')
     connections = sg.getAllSocialPaths(1)
-    print(connections)
+    print(f'Connections:\n{connections}\n')
+    print(len(sg.friendships), len(connections))

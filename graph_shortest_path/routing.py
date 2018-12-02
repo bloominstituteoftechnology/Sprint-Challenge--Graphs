@@ -1,6 +1,7 @@
 #/usr/bin/env python
 
 import sys
+import queue as queue
 
 
 # Edge class
@@ -41,8 +42,28 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
+        # DFS Traversal, Iterative
+        stack = [self.vertices[0]]
+        visited = []
+
+        while len(stack) > 0:
+            
+            current = stack.pop()
+            visited.append(current)
+            # print(current.value)
+
+            if current.value.upper() == value.upper():
+                # print(current, 'Value found')
+                return current
+
+            for edge in current.edges:
+                if edge.destination not in visited:
+                    stack.append(edge.destination)
+
+        # print('Value not found.')
+        return None
+
         # !!!! IMPLEMENT ME
-        pass
 
     def bfs(self, start):
         """
@@ -51,8 +72,27 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+
+        if start not in self.vertices:
+            raise IndexError('Starting value does not exist.')
+
+        visited = []
+        storage = queue.Queue()
+        storage.put(start)
+
+        while not storage.empty():
+            current = storage.get()
+
+            if current not in visited:
+                visited.append(current)
+            for edge in current.edges:
+                if edge.destination not in visited:
+                    storage.put(edge.destination)
+                    edge.destination.parent = current
+        # print(f'bfs: {visited}')
+        return visited
         # !!!! IMPLEMENT ME
-        pass
+        
 
     def output_route(self, start):
         """
@@ -62,7 +102,28 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        # visited_routes = self.bfs(start)
+
+        parents = [start.value]
+        stack = [start]
+
+        while len(stack) > 0:
+            current = stack.pop()
+            if current.parent:
+                parents.append(current.parent.value)
+                stack.append(current.parent)
+
+        print('Shortest Route: \n')
+        for p in parents:
+            print(f'{p} => ', end='')
+        print('\n')
+        
+        # print('Route path: \n')
+        # for v in visited_routes:
+        #     print(f'{v.value} => ', end='')
+        # print('\n')
+        # return visited_routes
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
