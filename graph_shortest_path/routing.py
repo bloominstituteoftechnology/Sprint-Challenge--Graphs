@@ -85,7 +85,16 @@ class Graph:
             # check to see if it is visited
             # if unvisited
                 # change it to visited
-                
+                # Loop through each edge in vertex.edges
+                for edge in vertex.edges:
+                    # edge.destination is a child in the graph
+                    # rename it destination
+                    destination = edge.destination
+                    # if not visited
+                        # set previous node as parent to vertex
+                        destination.parent = vertex
+                        # put the vertex at the end of the queue
+                        q.enqueue(vertex)
 
     def output_route(self, start):
         """
