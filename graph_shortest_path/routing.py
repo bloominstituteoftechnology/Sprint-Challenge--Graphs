@@ -97,8 +97,8 @@ class Graph:
                     if destination.color == 'white':
                         # set previous node as parent to vertex
                         destination.parent = vertex
-                        # put the vertex at the end of the queue
-                        q.enqueue(vertex)
+                        # put the destination vertex at the end of the queue
+                        q.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -117,7 +117,7 @@ class Graph:
         while last_vertex is not None:
             # Add the tail to the string to print out
             flowArrow_str = flowArrow_str + last_vertex.value
-
+            print(flowArrow_str)
             # if the tail has a parent
             # there is an arrow before it
             if last_vertex.parent is not None:
