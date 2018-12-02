@@ -2,6 +2,20 @@
 
 import sys
 
+# Queue Class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # Edge class
 class Edge:
@@ -41,7 +55,7 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # Loop through self.vertices listand look for vertex
+        # Loop through self.vertices list and look for vertex
         for vertex in self.vertices:
             # if vertex.value is value, whose default value is 'vertex'
             if vertex.value == value:
@@ -57,8 +71,21 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # Create an empty queue
+        q = Queue()
+
+        # Add initial vertex to the queue
+        q.enqueue(start)
+
+        # while the queue is not empty...
+        while q.size() > 0:
+            # remove the first vertex from the queue
+            vertex = q.dequeue()
+
+            # check to see if it is visited
+            # if unvisited
+                # change it to visited
+                
 
     def output_route(self, start):
         """
