@@ -41,8 +41,14 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # Loop through self.vertices listand look for vertex
+        for vertex in self.vertices:
+            # if vertex.value is value, whose default value is 'vertex'
+            if vertex.value == value:
+                # return vertex
+                return vertex
+        # return None if no such Vertex exists in the Graph
+        return None
 
     def bfs(self, start):
         """
