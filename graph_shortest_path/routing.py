@@ -83,14 +83,18 @@ class Graph:
             vertex = q.dequeue()
 
             # check to see if it is visited
-            # if unvisited
-                # change it to visited
+            # if the vertex is color white, which is the default color
+            # and means that it is unvisited
+            if vertex.color == 'white':
+                # change the color to not_white, which means it has been visited
+                vertex.color = 'not_white'
                 # Loop through each edge in vertex.edges
                 for edge in vertex.edges:
                     # edge.destination is a child in the graph
                     # rename it destination
                     destination = edge.destination
-                    # if not visited
+                    # if the color of the child vertex is white, child has not been visited...
+                    if destination.color == 'white':
                         # set previous node as parent to vertex
                         destination.parent = vertex
                         # put the vertex at the end of the queue
