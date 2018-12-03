@@ -1,4 +1,16 @@
-
+# Queue Class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 class User:
     def __init__(self, name):
@@ -47,8 +59,15 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        # Loop through the range of users
+        for u in range(0, numUsers):
+            # use addUser function to 
+            # Create a new user with a sequential integer ID
+            self.addUser(f'User {u}')
+            
         # Create friendships
+
+
 
     def getAllSocialPaths(self, userID):
         """
@@ -59,6 +78,10 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        # use BFS or BFT
+        # create a new Queue
+        q = Queue()
+
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
         return visited

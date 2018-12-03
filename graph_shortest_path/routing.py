@@ -2,6 +2,20 @@
 
 import sys
 
+# Queue Class
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # Edge class
 class Edge:
@@ -41,8 +55,14 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # Loop through self.vertices list and look for vertex
+        for vertex in self.vertices:
+            # if vertex.value is value, whose default value is 'vertex'
+            if vertex.value == value:
+                # return vertex
+                return vertex
+        # return None if no such Vertex exists in the Graph
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +71,34 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # Create an empty queue
+        q = Queue()
+
+        # Add initial vertex to the queue
+        q.enqueue(start)
+
+        # while the queue is not empty...
+        while q.size() > 0:
+            # remove the first vertex from the queue
+            vertex = q.dequeue()
+
+            # check to see if it is visited
+            # if the vertex is color white, which is the default color
+            # and means that it is unvisited
+            if vertex.color == 'white':
+                # change the color to not_white, which means it has been visited
+                vertex.color = 'not_white'
+                # Loop through each edge in vertex.edges
+                for edge in vertex.edges:
+                    # edge.destination is a child in the graph
+                    # rename it destination
+                    destination = edge.destination
+                    # if the color of the child vertex is white, child has not been visited...
+                    if destination.color == 'white':
+                        # set previous node as parent to vertex
+                        destination.parent = vertex
+                        # put the destination vertex at the end of the queue
+                        q.enqueue(destination)
 
     def output_route(self, start):
         """
@@ -61,8 +107,27 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # start from the tail
+        # this is the vertex we are looking at
+        last_vertex = start
+        # build a string so that output will print a '-->' in between vertices
+        flowArrow_str = ''
+
+        # if there is a tail...
+        while last_vertex is not None:
+            # Add the tail to the string to print out
+            flowArrow_str = flowArrow_str + last_vertex.value
+            print(flowArrow_str)
+            # if the tail has a parent
+            # there is an arrow before it
+            if last_vertex.parent is not None:
+                # add '-->' before the tail
+                flowArrow_str = flowArrow_str + '-->'
+                
+            # make the parent the new starting point
+            last_vertex = last_vertex.parent
+        print(flowArrow_str)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
