@@ -2,11 +2,6 @@
 
 import sys
 
-
-# Edge class
-import sys
-
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
