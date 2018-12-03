@@ -47,8 +47,15 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
-
+        # Loop through the range of users
+        for u in range(0, numUsers):
+            # use addUser function to 
+            # Create a new user with a sequential integer ID
+            self.addUser(f'User {u}')
+            
         # Create friendships
+
+
 
     def getAllSocialPaths(self, userID):
         """
