@@ -1,4 +1,4 @@
-#/usr/bin/env python
+# /usr/bin/env python
 
 import sys
 
@@ -29,6 +29,10 @@ class Graph:
         self.vertices = []
 
     def find_vertex(self, value):
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
         """
         Looks through all the vertices in the graph instance and returns
         the first vertex it finds that matches the `value` parameter.
@@ -41,34 +45,51 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
 
     def bfs(self, start):
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+
+        def recurse(target):
+            target.color = 'gray'
+            for edge in target.edges:
+                if edge.destination.color == 'white':
+                    edge.destination.parent = target
+                    recurse(edge.destination)
+            target.color = 'black'
+        recurse(start)
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
 
     def output_route(self, start):
+        holdingArr = []
+        currentParent = start.parent
+        holdingArr.append(start.value)
+        while(currentParent):
+            holdingArr.append(currentParent.value)
+            currentParent = currentParent.parent
+        return holdingArr
         """
         Print out the route from the start vertex back along its parent
         references (these were set in the `bfs` method)
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
 
     def route(self, start, end):
+        outputString = ""
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
-        self.output_route(start)
+        arrInNeedofFormating = self.output_route(start)
+        for item in arrInNeedofFormating:
+            outputString += item + " --> "
+        print(outputString[:-5])
 
 
 # Helper function to add bidirectional edges
