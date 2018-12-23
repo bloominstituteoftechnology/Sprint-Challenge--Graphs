@@ -9,7 +9,6 @@ class Edge:
         self.destination = destination
         self.weight = weight
 
-
 # Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
@@ -41,8 +40,12 @@ class Graph:
         @return None if no such Vertex exists in the Graph.
         @return {Vertex} the found Vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        else:
+            return None
 
     def bfs(self, start):
         """
@@ -51,8 +54,47 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
-        # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+        
+        start.color= 'gray'
+        queue = [start]
+        # print(start.parent)
+        while len(queue)>0:
+            # print([vertex.value for vertex in queue])
+            currentVert = queue[0]
+            # print(currentVert.value)
+            for edge in currentVert.edges:
+                if edge.destination.color == 'white':
+                    edge.destination.color = 'gray'
+                    # print("edge.destination.parent = ", edge.destination.parent)
+                    # print("edge.destination = ", edge.destination)
+                    edge.destination.parent = currentVert
+                    # print(edge.destination.parent.value)
+                    queue.append(edge.destination)
+            queue.pop(0)
+            # print("queue length: ",len(queue))
+            currentVert.color = 'black'
+        
+        # queue = [start]
+        # while len(queue)>1:
+        #     print([vertex.value for vertex in queue])
+        #     print(len(queue))
+        #     currentVert = queue.pop(0)
+        #     if currentVert.color == 'white':
+        #         currentVert.color = 'gray'
+        #         for edge in currentVert.edges:
+        #             # currentVert.parent = edge.destination
+        #             # edge.destination.parent = currentVert
+        #             print(edge.destination.parent)
+        #             queue.append(edge.destination)
+        #             # print(edge.destination.value)
+        
+        
+
+
+
 
     def output_route(self, start):
         """
@@ -61,12 +103,21 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # !!!! IMPLEMENT ME
-        pass
+        # route = []
+        print(start.value)
+        while start.parent:
+            # print(start.value)
+            # route.append(start.value)
+            start = start.parent
+            print(start.value)
+
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
+        # for vertex in self.vertices:
+        #     print(vertex.parent.value)
         # print the route from the start Vertex
         self.output_route(start)
 
