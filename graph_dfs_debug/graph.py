@@ -20,16 +20,7 @@ class Graph:
         self.vertices[start].add(end)
         if bidirectional:
             self.vertices[end].add(start)
-    # def dfs(self, start, target=None):
-    #     x = []
-    #     x.append(start)
-    #     y = set(x)
-    #     while x:
-    #         z = x.pop()
-    #         if x == target:
-    #             break
-    #         x.extend(self.vertices[z])
-    #     return x
+
     def dfs(self, start, target=None):
         x_stack = [] # to act as our stack
         x_stack.append(start) # we append the start node to the stack
@@ -37,7 +28,8 @@ class Graph:
         while x_stack: # while x (the stack) is not empty
             currentVert = x_stack.pop() #we pop out the element at the end of x. z is set equal to x
             if currentVert == target:
-                return currentVert #serves to break the loop and return the target vertex. As set up before with the break, the return at the bottom would just return the last popped element in the stack.
+                # return currentVert #serves to break the loop and return the target vertex. As set up before with the break, the return at the bottom would just return the last popped element in the stack.
+                return visited #serves to break the loop and return all the vertices that were visited before finding the target vertex.
             if currentVert not in visited:
                 visited.add(currentVert)
                 x_stack.extend(self.vertices[currentVert])
@@ -48,12 +40,10 @@ class Graph:
     def graph_rec(self, start, target=None, visited = set()): # we set the value of visited here. otherwise, it will continuously be reset to empty for each recursive call and the recursive call will infinitely loop.
         # x.append(start) # changed x to visited for readability
         visited.add(start) #set object doesn't have an append method
+        print(start.label) 
         for vert in self.vertices[start]:
-            if vert in visited:
-                pass
-            else:
+            if vert not in visited:
                 self.graph_rec(vert)
-        return visited
 
     def find_components(self):
         visited = set()
@@ -102,5 +92,5 @@ class Graph:
 # graph.add_edge(v3,v6)
 # graph.add_edge(v7,v9)
 
-# # print(graph.dfs(v0,v8))
-# # print(graph.graph_rec(v0))
+# print(graph.dfs(v0,v7))
+# print(graph.graph_rec(v0,v7))
