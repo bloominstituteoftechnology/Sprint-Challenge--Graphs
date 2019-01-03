@@ -6,8 +6,7 @@ from math import ceil, floor, sqrt
 from random import choice, random
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
-from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,
-                          ColumnDataSource)
+from bokeh.models import (GraphRenderer, StaticLayoutProvider, Circle, LabelSet,ColumnDataSource)
 
 
 class BokehGraph:
@@ -36,7 +35,7 @@ class BokehGraph:
         self.vertex_list = list(self.graph.vertices.values()) 
         # .keys is getting the key from each key-value pair in self.graph.vertices
         # Therefore, we get a list of integers
-        print(f"self.vertex_list: {self.vertex_list}")
+        # print(f"self.vertex_list: {self.vertex_list}")
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(

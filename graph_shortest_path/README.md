@@ -21,7 +21,7 @@ This is what is in the boilerplate:
 
 ## Modified BFS
 
-Taske your BFS code and modify it so that each neighbor gets a link back to its parent:
+Take your BFS code and modify it so that each neighbor gets a link back to its parent:
 
 ```pseudocode
 BFS(graph, startVert):
@@ -43,7 +43,6 @@ BFS(graph, startVert):
     
     queue.dequeue()
     u.color = black
-```
 
 ## Procedure
 

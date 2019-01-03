@@ -12,7 +12,11 @@ class Vertex:
         return f"Component: {self.component}" 
     
     def __hash__(self):
+        """
+        This allows vertex objects to be used with sets
+        """
         return hash((self.label, ))
+
         
 
     """Trying to make this Graph class work..."""
@@ -42,7 +46,6 @@ class Graph:
 
         while x:
             current_vertex = x.pop()
-            print(f"current vertex: {current_vertex}")
             for edge in current_vertex.edges:
                 if self.vertices[edge] not in visited:
                     x.append(self.vertices[edge])
@@ -66,16 +69,14 @@ class Graph:
     #     return x
 
     def find_components(self):
-        print("find_components is being called")
+        # print("find_components is being called")
         visited = set()
         current_component = 0
 
         for vertex in self.vertices:
-            print(f"vertex {vertex}")
             if vertex not in visited:
                 reachable = self.dfs(self.vertices[vertex])
                 for other_vertex in reachable:
-                    print(f"other_vertex {other_vertex}")
                     other_vertex.component = current_component
                 current_component += 1
                 visited.update(reachable)

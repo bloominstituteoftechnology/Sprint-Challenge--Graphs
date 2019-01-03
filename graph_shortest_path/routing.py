@@ -49,6 +49,9 @@ class Vertex:
         # graph when traversing through the graph
         self.parent = parent
 
+    def __repr__(self):
+        return f"{self.value}"
+
 
 # Graph class
 class Graph:
@@ -69,6 +72,11 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None 
+        
         
 
 
@@ -79,27 +87,54 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+        """
+        PY
+        [vertex.label for vertex in self.vertex_list]
+        ===
+        JS
+        this.vertex_list.map(vertex => vertex.label)
+        """
+        
         # !!!! IMPLEMENT ME
         # visited = []
-        q = Queue()
-        for v in range(graph.vertices):
-            v.color = white
-            v.parent = null
+        # q = Queue()
+        # q.enqueue(start)
 
-        startVert.color = grey
+        # # result = []
+        # visited = {}
+        # visited[start] = True
+        # currentVertex = None
+
+        # while q.size:
+        #     currentVertex = q.dequeue()
+        #     # result.add(currentVertex)
+        #     for edge in currentVertex.edges:
+        #         if not visited[edge]:
+        #             visted[edge] = True
+        #             q.enqueue(vertex)
+
+        q = Queue()
+
+        for vertex in self.vertices:
+            vertex.color = 'white'
+            vertex.parent = None
+        
+        start.color = 'grey'
         q.enqueue(start)
 
-        while q.size() > 0:
-            u = q[0]
-            print(q)
+        while q.size():
+            currentVertex = q.queue[0]
 
-            for v in u.neighbors:
-                if v.color == white:
-                    v.color = gray
-                    v.parent = u
-                    q.enqueue(v)
+            for edge in currentVertex.edges:
+                vertex = edge.destination
+                if vertex.color == 'white':
+                    vertex.color = 'grey'
+                    vertex.parent = currentVertex
+                    q.enqueue(vertex)
+            
             q.dequeue()
-            u.color = black
+            currentVertex.color = 'black'
+
 
     def output_route(self, start):
         """
@@ -110,11 +145,17 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        currentVertex = start        
+        print(currentVertex) 
+
+        while currentVertex.parent:
+            currentVertex = currentVertex.parent 
+            print(currentVertex)
+
 
     def route(self, start, end):
         # BFS to build the parent reference tree
-        self.bfs(end)
+        self.bfs(end) # list of nodes
         # print the route from the start Vertex
         self.output_route(start)
 
