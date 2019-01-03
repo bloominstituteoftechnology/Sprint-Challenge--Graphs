@@ -2,13 +2,28 @@
 
 import sys
 
+# Queue class
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    
+    def size(self):
+        return len(self.queue)
 
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
-
 
 # Vertex class
 class Vertex:
@@ -21,7 +36,7 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
+        # this is the same as marking visited
 
 # Graph class
 class Graph:
@@ -42,7 +57,12 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        # pass
+        # vertex = node
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None
 
     def bfs(self, start):
         """
@@ -51,8 +71,22 @@ class Graph:
 
         @param {Vertex} start: The starting vertex
         """
+        # using the queue class we keep track of nodes visited
+        # need to implement the colors as trackers
+        queue = Queue()
+        queue.enqueue(start)
+        
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            if vertex.color == "white":
+                vertex.color == "black"
+            for edge in vertex.edges:
+                final = edge.destination
+                if final.color == "white":
+                    final.parent == vertex
+                    queue.enqueue(final)
         # !!!! IMPLEMENT ME
-        pass
+        # pass
 
     def output_route(self, start):
         """
@@ -62,7 +96,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        vertex = start
+        path = ""
+        
+        while vertex is not None:
+            # moving vertex to path list
+            path += vertex.value
+            if vertex.parent is not None:
+                path += " --> "
+            vertex = vertex.parent
+        print(path)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
