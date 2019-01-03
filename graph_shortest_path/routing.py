@@ -7,7 +7,7 @@ class Queue:
     def __init__(self):
         self.queue = []
 
-    def enqueue(self,value):
+    def enqueue(self, value):
         self.queue.append(value)
 
     def dequeue(self):
@@ -19,30 +19,13 @@ class Queue:
     def size(self):
         return len(self.queue)
 
-# # Stack class
-# class Stack:
-#     def __init__(self):
-#         self.stack = []
-
-#     def pop(self, value):
-#         if self.size() > 0:
-#             return self.stack.pop()
-#         else:
-#             return None
-    
-#     def push(self, value):
-#         self.stack.append(value)
-
-#     def size(self):
-#         return len(self.stack)
-
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
         self.destination = destination
         self.weight = weight
 
-#Vertex class
+# Vertex class
 class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
         self.value = value
@@ -53,7 +36,7 @@ class Vertex:
         # Parent reference to keep track of the previous node in the
         # graph when traversing through the graph
         self.parent = parent
-
+        # this is the same as marking visited
 
 # Graph class
 class Graph:
@@ -75,16 +58,13 @@ class Graph:
         """
         # !!!! IMPLEMENT ME
         # pass
-        #vertex = node
-
-        # looking through vertices
+        # vertex = node
         for vertex in self.vertices:
-            #if we have a matching value than return that vertex
             if vertex.value == value:
                 return vertex
         return None
 
-    def bfs(self, start, end):
+    def bfs(self, start):
         """
         Breadth-First search from an input starting Vertex
         Should maintain parent references back from neighbors to their parent.
@@ -93,19 +73,18 @@ class Graph:
         """
         # using the queue class we keep track of nodes visited
         # need to implement the colors as trackers
-        q = Queue()
-        visited = set()
-        q.enqueue([start])
-        while q.size() > 0:
-            node = q.dequeue()
-            if node not in visited:
-                print(node)
-                if end == node:
-                    return True
-                visited.add(node)
-                for child in self.vertices[node].edges:
-                    q.enqueue(child)
-        return None
+        queue = Queue()
+        queue.enqueue(start)
+        
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            if vertex.color == "white":
+                vertex.color == "black"
+            for edge in vertex.edges:
+                final = edge.destination
+                if final.color == "white":
+                    final.parent == vertex
+                    queue.enqueue(final)
         # !!!! IMPLEMENT ME
         # pass
 
@@ -117,15 +96,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        path = []
         vertex = start
-        while vertex:
+        path = ""
+        
+        while vertex is not None:
             # moving vertex to path list
-            path.append(vertex)
-            # moving down the line
+            path += vertex.value
+            if vertex.parent is not None:
+                path += " --> "
             vertex = vertex.parent
-            # print out the path with --> between each vertex in the path
-        print("-->".join([f"{vert.value}" for vert in path]))
+        print(path)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
@@ -134,10 +114,10 @@ class Graph:
         self.output_route(start)
 
 
-    # Helper function to add bidirectional edges
-    def add_edge(start, end):
-        start.edges.append(Edge(end))
-        end.edges.append(Edge(start))
+# Helper function to add bidirectional edges
+def add_edge(start, end):
+    start.edges.append(Edge(end))
+    end.edges.append(Edge(start))
 
 
 if __name__ == '__main__':
@@ -174,21 +154,19 @@ if __name__ == '__main__':
     graph.vertices.append(vertG)
     graph.vertices.append(vertH)
 
-    print(graph.output_route(vertA, vertF)
+    # Look up the hosts passed in from the command line by
+    # name to see if we can find them.
+    hostAVert = graph.find_vertex(sys.argv[1])
 
-    # # Look up the hosts passed in from the command line by
-    # # name to see if we can find them.
-    # hostAVert = graph.find_vertex(sys.argv[1])
+    if hostAVert is None:
+        print('routing.py: could not find host: ', sys.argv[1])
+        sys.exit()
 
-    # if hostAVert is None:
-    #     print('routing.py: could not find host: ', sys.argv[1])
-    #     sys.exit()
+    hostBVert = graph.find_vertex(sys.argv[2])
 
-    # hostBVert = graph.find_vertex(sys.argv[2])
+    if hostBVert is None:
+        print('routing.py: could not find host: ', sys.argv[2])
+        sys.exit()
 
-    # if hostBVert is None:
-    #     print('routing.py: could not find host: ', sys.argv[2])
-    #     sys.exit()
-
-    # # Show the route from one Vertex to the other
-    # graph.route(hostAVert, hostBVert)
+    # Show the route from one Vertex to the other
+    graph.route(hostAVert, hostBVert)
