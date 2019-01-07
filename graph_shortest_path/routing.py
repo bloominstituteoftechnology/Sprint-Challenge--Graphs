@@ -3,6 +3,20 @@
 import sys
 
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+
 # Edge class
 class Edge:
     def __init__(self, destination, weight=1):
@@ -42,7 +56,10 @@ class Graph:
         @return {Vertex} the found Vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        for vertex in self.vertices:
+            if vertex.value == value:
+                return vertex
+        return None 
 
     def bfs(self, start):
         """
@@ -52,7 +69,18 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()
+        queue.enqueue(start)
+        
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            if vertex.color == 'white':
+                vertex.color = 'black'
+                for edge in vertex.edges:
+                    dest = edge.destination
+                    if dest.color == 'white':
+                        dest.parent = vertex
+                        queue.enqueue(dest)
 
     def output_route(self, start):
         """
@@ -62,7 +90,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_str = ''
+
+        while current is not None:
+            output_str += current.value
+
+            if current.parent is not None:
+                output_str += ' --> '
+            current = current.parent
+        print(output_str)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
