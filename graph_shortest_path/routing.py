@@ -69,7 +69,18 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()
+        queue.enqueue(start)
+        
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            if vertex.color == 'white':
+                vertex.color = 'black'
+                for edge in vertex.edges:
+                    dest = edge.destination
+                    if dest.color == 'white':
+                        dest.parent = vertex
+                        queue.enqueue(dest)
 
     def output_route(self, start):
         """
@@ -79,7 +90,16 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        pass
+        current = start
+        output_str = ''
+
+        while current is not None:
+            output_str += current.value
+
+            if current.parent is not None:
+                output_str += ' --> '
+            current = current.parent
+        print(output_str)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
