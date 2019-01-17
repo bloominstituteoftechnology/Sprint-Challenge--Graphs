@@ -14,13 +14,10 @@ class Vertex:
     def __init__(self, value='vertex', color='white', parent=None):
         self.value = value
         self.edges = []
-        # Color of this vertex
-        # Used to mark vertices for the traversal algorithm (BFS or DFS)
+        # Vertex color used to mark vertices as visited or not in the traversal algorithm (BFS or DFS).
         self.color = color
-        # Parent reference to keep track of the previous node in the
-        # graph when traversing through the graph
+        # Parent reference to keep track of the previously visited node in the graph when traversing through the graph. 
         self.parent = parent
-
 
 # Graph class
 class Graph:
@@ -77,24 +74,23 @@ class Graph:
             # print("queue length: ",len(queue))
             currentVert.color = 'black'
         
+        # ## Not sure why this method isn't working. Will do more analysis at a later time. 
         # queue = [start]
-        # while len(queue)>1:
-        #     print([vertex.value for vertex in queue])
-        #     print(len(queue))
+        # while len(queue)>0:
+        #     # print([vertex.value for vertex in queue])
+        #     # print(len(queue))
         #     currentVert = queue.pop(0)
         #     if currentVert.color == 'white':
         #         currentVert.color = 'gray'
         #         for edge in currentVert.edges:
-        #             # currentVert.parent = edge.destination
+        #             currentVert.parent = edge.destination
         #             # edge.destination.parent = currentVert
-        #             print(edge.destination.parent)
+        #             # print(edge.destination.parent)
         #             queue.append(edge.destination)
         #             # print(edge.destination.value)
-        
-        
-
-
-
+        #     queue.pop(0)
+        #     # print("queue length: ",len(queue))
+        #     currentVert.color = 'black'
 
     def output_route(self, start):
         """
@@ -103,22 +99,19 @@ class Graph:
 
         @param {Vertex} start: The starting Vertex to follow and print
         """
-        # route = []
-        print(start.value)
+        route = [start.value]
+        route_string = start.value
         while start.parent:
-            # print(start.value)
-            # route.append(start.value)
             start = start.parent
-            print(start.value)
-
-
+            route.append(start.value)     
+        
+        for i in range (1, len(route)):
+            route_string = route_string + '-->' + route[i]
+        print(route_string)
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
-        # for vertex in self.vertices:
-        #     print(vertex.parent.value)
-        # print the route from the start Vertex
         self.output_route(start)
 
 
