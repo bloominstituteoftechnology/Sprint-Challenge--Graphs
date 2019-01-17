@@ -33,7 +33,7 @@ class BokehGraph:
         # The renderer will have the actual logic for drawing
         graph_renderer = GraphRenderer()
         # Saving vertices in an arbitrary but persistent order
-        self.vertex_list = list(self.graph.vertices.keys())
+        self.vertex_list = list(self.graph.vertices.keys()) #list storing vertex objects (b/c the keys in our data structure are vertex objects)
 
         # Add the vertex data as instructions for drawing nodes
         graph_renderer.node_renderer.data_source.add(

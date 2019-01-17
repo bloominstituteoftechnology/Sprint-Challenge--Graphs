@@ -4,6 +4,7 @@
 Demonstration of Graph and BokehGraph functionality.
 """
 
+# graph_demo can take longer to generate a graph because these imported files are bigger than those imported in draw.py. 
 from random import sample
 from sys import argv
 from draw import BokehGraph

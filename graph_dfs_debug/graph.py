@@ -22,45 +22,44 @@ class Graph:
             self.vertices[end].add(start)
 
     def dfs(self, start, target=None):
-        x_stack = [] # to act as our stack
-        x_stack.append(start) # we append the start node to the stack
-        # visited = set() # y will serve to hold all the visited vertices. we add visited nodes to visited in the while loop as they're popped from the stack
-        visited = [] #changed from set to array because a set is unordered. This is necessary if we want to see the path taken by the algorithm to reach the target. 
-        while x_stack: # while x (the stack) is not empty
-            currentVert = x_stack.pop() #we pop out the element at the end of x. z is set equal to x
+        x_stack = [] # To act as our stack (FIFO)
+        x_stack.append(start) # We append the start node to the stack
+        # visited = set() # Changed variable from y to visited for improved readability. This will serve to hold all the visited vertices. We add visited nodes to visited in the while loop as they're popped from the stack.
+        visited = [] #Changed from set to list because a set is unordered. This change is necessary if we want to see the path taken by the algorithm to reach the target, as the nodes that are popped from the stack and added to visited stay ordered in a list data structure.  
+        while x_stack: # While x_stack is not empty (Changed variable from x to x_stack for improved readability.)
+            currentVert = x_stack.pop() # We pop out the element at the end of the list x_stack which serves as our stack. Changed variable z to currentVert for improved readability.
             if currentVert not in visited:
                 visited.append(currentVert)
-                x_stack.extend(self.vertices[currentVert])
+                x_stack.extend(self.vertices[currentVert]) #We use extend here because we want to add all of the currentVert's children (i.e. it's edges list) to the stack. The most recently added child to the stack is then appended to visited, and the recently added child's children is added to the stack. That child is then appended to visited and the cycle repeats. This is how depth first search is achieved. 
             if currentVert == target:
-                # return currentVert #serves to break the loop and return the target vertex. As set up before with the break, the return at the bottom would just return the last popped element in the stack.
-                return visited #serves to break the loop and return all the vertices that were visited before finding the target vertex.
+                # return currentVert #Serves to break the loop and return the target vertex. As set up before with the break, the return at the bottom would just return the last popped element in the stack.
+                return visited #Serves to break the loop and return all the vertices that were visited before finding the target vertex was found.
             else:
                 pass
-        if target is None: #For cases when you want the full depth first traversal (i.e. when you don't input a target vertex)
+        if target is None: #For cases when you want the list of nodes visited in a full depth first traversal (i.e. when you don't input a target vertex).
             return visited
         else:
-            return None   #if the function loops through all the vertices and their edges without finding the target vertex, return None. 
+            return None #If the function loops through all the vertices and their edges without finding the target vertex, return None. 
 
-    def graph_rec(self, start, target=None, visited = []): #changed data type of visited from set to array to preserve order # we set the value of visited here. otherwise, it will continuously be reset to empty for each recursive call and the recursive call will infinitely loop.
-        # x.append(start) # changed x to visited for readability
-        visited.append(start) #set object doesn't have an append method
+    def graph_rec(self, start, target=None, visited = []): #Changed data type of visited from set to array to preserve order #. We set the value of visited here instead of in the body of the function. Otherwise, it will continuously be reset to empty for each recursive call and the recursive call will infinitely loop.
+        # x.append(start) # Changed x to visited for readability
+        visited.append(start) # Note: The set object doesn't have an append method. The closest equivalent to the append method of a set() is the add method. 
         # print(start.label) 
         for vert in self.vertices[start]:
             if vert not in visited:
                 self.graph_rec(vert)
         if target in visited or target is None:
-            return visited #can also make it so that this returns only the path leading to the target node.
+            return visited #Can also make it so that this returns only the path leading to the target node (i.e. the visited list without the target node included).
         else:
             return None 
 
     def find_components(self):
         visited = set()
         current_component = 0
-
         for vertex in self.vertices:
-            visited.add(vertex) #vertices weren't added to the visited set here. 
+            visited.add(vertex) #Vertices weren't being added to the visited set here before I added this line of code. 
             if vertex in visited:
-                reachable = self.dfs(vertex)  #dfs method should return all the vertices touched during the traversal
+                reachable = self.dfs(vertex)  #dfs method will return all the vertices touched during the traversal (i.e. all the vertices that are reachable from the vertex vertex).
                 for other_vertex in reachable:
                     other_vertex.component = current_component
                 current_component += 1
