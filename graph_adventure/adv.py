@@ -3,6 +3,7 @@ from collections import deque
 from room import Room
 from player import Player
 from world import World
+
 from sys import argv
 from graph import Graph
 
@@ -16,25 +17,42 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-#starting node
+#starting node _______
 #start = player.currentRoom.id
-#edges of starting node
+#edges of starting node ___________
 #player.currentRoom.getExits() 
-#moving to a neighbor 
+#moving to a neighbor ____________
 #player.travel(direction)
-def traversal_graph_build():
-    traversal_graph = Graph()  # Instantiate your graph
-    for room in world.rooms: 
-        traversal_graph.add_vertex(room)
-    for room in world.rooms:
-        exits = player.currentRoom.getExits() 
-        for direction in exits:
-            traversal_graph.add_edge(direction, room)
-    return traversal_graph
 
-    
 # FILL THIS IN
 traversalPath = []
+
+graph = {0: {'n': '?', 's': '?', 'e':'?'}}
+
+inverse_directions = {"n":"s", "s":"n", "e":"w", "w":"e"}
+
+while True:
+    
+    currentRoomExits = graph[player.currentRoom.id]
+    unexploredExits = []
+
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == "?":
+            unexploredExits.append(direction)
+    if len(unexploredExits) > 0:
+        randomExit = random.choice(unexploredExits)
+        traversalPath.append(randomExit)
+        previous_room_id = player.currentRoom.id
+        player.travel(randomExit)
+        exitDictionary = {}
+        for exit in player.currentRoom.getExits():
+            exitDictionary[exit] = "?"
+        graph[previous_room_id][randomExit] = player.currentRoom.id
+        exitDictionary[inverse_directions[randomExit]]=previous_room_id
+        graph[player.currentRoom.id]=exitDictionary
+    else: 
+        #what do we do when we reach a room with no unexplored???
+        break 
 
 
 # TRAVERSAL TEST
