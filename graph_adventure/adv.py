@@ -14,6 +14,76 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = []
+
+class Vertex:
+    def __init__(self, name, neighbors=list(), distance=9999, color='black'):
+        self.name = name #label
+        self.neighbor = list() #same as edges?
+        self.distance = 9999 #destination
+        self.color = 'black' #black for visited, red for not visited
+
+
+
+class Graph:
+    """Represent a graph as a dictionary of vertices mapping labels to edges."""
+    def __init__(self):
+        self.vertices = {}
+        self.edges = set()
+        # self.destination = destination
+        # self.label = label
+
+
+
+    def add_vertex(self, vertex):
+        self.vertices[vertex] = dict()
+        print(self.vertices)
+
+    def add_edge_bi(self, vertex_start, vertex_end):
+        if vertex_start not in self.vertices:
+            print(f'You chose: {vertex_start}. That Beginning Vertex does not exist...')
+            return
+        if vertex_end not in self.vertices:
+            print(f"You chose: {vertex_end} That End Vertex does not exist...")
+            return
+        for i in self.vertices:
+            # temp = set()
+            # temp.add(i)
+            if i == vertex_start:
+                self.vertices[vertex_start].add(vertex_end)
+                print(self.vertices)
+            if vertex_end == i:
+                self.vertices[vertex_end].add(vertex_start)
+                print(self.vertices)
+
+    def add_edge_mono(self, vertex_start, vertex_end):
+        if vertex_start not in self.vertices:
+            print(f'You chose: {vertex_start}. That Beginning Vertex does not exist...')
+            return
+        if vertex_end not in self.vertices:
+            print(f"You chose: {vertex_end} That End Vertex does not exist...")
+            return
+        for i in self.vertices:
+            # temp = set()
+            # temp.add(i)
+            if i == vertex_start:
+                self.vertices[vertex_start].add(vertex_end)
+                print(self.vertices)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def breadth_first_traversal(starting_room): # roomGraph[starting_room][1]
     q = []
     visited = list()
@@ -41,11 +111,54 @@ def breadth_first_traversal(starting_room): # roomGraph[starting_room][1]
 
     print("Traverse End: ", visited)
     return visited
-print(breadth_first_traversal(0))
+# print(breadth_first_traversal(0))
 print("starting room: ",roomGraph[0][1]['n'])
-for i in roomGraph[0][1]:
-    print(roomGraph[0][1][i])
-    print(i)
+# for i in roomGraph[0][1]:
+#     print(roomGraph[0][1][i])
+#     print(i)
+# print(roomGraph[0][1])
+
+def breadth_first_search(starting_room, target):
+    q = []
+    visited = []
+    print("target: ",target)
+    q.append(starting_room)
+    print("Queue: ", q)
+
+    while len(q) > 0:
+        path = q.pop()
+        print("Path: ", path)
+        if type(path) == int:
+            node = path
+        else:
+            node = path[-1]
+        print("node: ", node)
+        if node not in visited:
+
+            visited.append(node)
+            if target in visited:
+                print("Dup_Path: ", dup_path)
+                return dup_path
+            for i in roomGraph[node][1]:
+                if roomGraph[0][1][i] not in visited:
+                    if type(path) == int:
+                        dup_path = [path]
+                    else:
+                        dup_path = list(path)
+                    dup_path.append(roomGraph[0][1][i])
+                    q.append(dup_path)
+    return None
+
+def getAllDoors(starting_room):
+    visited = {}
+
+    for i in roomGraph[starting_room][1]:
+        print("####: ", roomGraph[i])
+        visited[i] = breadth_first_search(starting_room, roomGraph[0][1][i])
+        print("Visited: ", visited)
+    return visited
+
+# getAllDoors(0)
 
 
 
