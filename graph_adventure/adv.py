@@ -69,6 +69,8 @@ while len(visited) < len(roomGraph):
         # index_last_move -= 1
         traversalPath.append(return_move)
         player.travel(return_move)
+
+        # also need to store index of first step backwards!
     
 
 
