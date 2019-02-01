@@ -88,3 +88,62 @@ class LinkedList:
                 max_val = current.get_value()
             current = current.get_next()
         return max_val
+
+    
+class Graph:
+    """Represent a graph as a dictionary of vertices mapping labels to edges."""
+    def __init__(self):
+        self.vertices = {}
+
+    def add_vertex(self, v):
+        if v is not None:
+            self.vertices[v] = set()
+        else:
+            return "Error: Vertex can not be none"
+
+    def add_edge(self, vertex1, vertex2):
+        if vertex1 and vertex2:
+            self.vertices[vertex1].add(vertex2)
+
+    def bft(self, starting_point):
+        q = Queue()
+        visited = []
+        q.enqueue(starting_point)
+        while q.len() is not 0:
+            n = q.dequeue()
+            if n not in visited:
+                visited.append(n)
+                for i in self.vertices[f"{n}"]:
+                    q.enqueue(f"{i}")
+        return visited
+
+    def dft(self, starting_point, next_set=[], visited=[]):
+        if starting_point not in visited:
+            visited.append(starting_point)
+            for child in self.vertices[f"{starting_point}"]:
+                if child not in visited:
+                    self.dft(child, visited)
+        return visited[1::] if visited[1:] else "No children"
+
+    def dfts(self, starting_point):
+        visited = []
+        stack = []
+        stack.append(starting_point)
+        while len(stack) > 0:
+            visited.append(stack.pop(0))
+            for node in self.vertices[f"{visited[len(visited)-1]}"]:
+                if node not in visited:
+                    stack.append(node)
+        return visited
+
+    def bfs(self, starting_point, value):
+        a = self.bft(starting_point)
+        if str(value) in a:
+            return True
+        return False
+
+    def dfs(self, starting_point, value):
+        a = self.dfts(starting_point)
+        if str(value) in a:
+            return True
+        return False
