@@ -25,3 +25,5 @@ if __name__ == "__main__":
     print(s.pop_1())
     print(s.pop_1())
     print(s.size())
+
+    

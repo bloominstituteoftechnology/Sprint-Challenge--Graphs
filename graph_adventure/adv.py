@@ -44,22 +44,48 @@ print(player.currentRoom.getExits())
 print(player.travel('e'))
 
 start_room = player.currentRoom.id
-destination_room = len(roomGraph) - 1
-
-def DFS_path(start_room, destination_room):
-         if start_room in roomGraph.keys() and destination_room in roomGraph.keys():
-            if start_room == destination_room:
-                 return [start_room]
-            path_stack = Stack()
-            visited = set()
-            stack = Stack()
-            stack.push([roomGraph[start_room][1].values()])
-            print(stack)
-
+# destination_room = len(roomGraph) - 1
 
 # FILL THIS IN
-print(DFS_path(start_room, destination_room))
-traversalPath = ['s', 'w']
+def dfsStackRoomGraph(graph, start):
+    visited, stack , direction = set(), [start] , list()
+    while stack:
+        vertex = stack.pop()
+        if vertex not in visited:
+            visited.add(vertex)
+            
+            print( "V" , vertex,   "visting" , graph[vertex])
+            #graph[vertex][1].keys()
+            #print("visting" , list( graph[vertex][1].keys()) )
+            dirlist = list( graph[vertex][1].keys())           
+            #random.shuffle(dirlist)
+            #print(dirlist[0])
+
+            
+           # nextRoom = graph[vertex][1].get(dirlist[-1])
+            
+            itemsForRoom = set(graph[vertex][1].values())
+            print( " itmes ", itemsForRoom )
+            #print( " max ", graph[vertex][1].keys()[graph[vertex][1].values().index( max(graph[vertex][1].values()) ) )] )
+            print(list(graph[vertex][1].keys())[list(graph[vertex][1].values()).index( max( graph[vertex][1].values())  )]) 
+            dirtiontogo = list(graph[vertex][1].keys())[list(graph[vertex][1].values()).index( max( graph[vertex][1].values())  )]
+            
+            nextRoom = graph[vertex][1].get(dirtiontogo)
+            print ("next room" , nextRoom , " dir ", dirtiontogo)
+            #print(  " extending  ", itemsForRoom - visited)
+            s = sorted( itemsForRoom - visited  )
+            if len(s) != 0 :
+                direction.append(dirtiontogo)
+            else:
+                print( "invalid dir")
+
+
+            print (" Going " ,dirtiontogo , " to visit ", s )
+            
+            stack.extend( s)
+    return direction
+
+traversalPath = dfsStackRoomGraph(roomGraph, start_room)
 
 
 # TRAVERSAL TEST
