@@ -1,7 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-
 import random
 
 # Load world
@@ -11,10 +10,49 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+traversalPath = []
 
-# FILL THIS IN
-traversalPath = ['s', 'n']
 
+def oppositeDirection(direction):
+    # This function literally just reverses whatever direction you put into it
+    if direction is 'n':
+        return 's'
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
+
+
+def fill_traversal():
+    visited = dict()
+    # this sets current room in visited to {0: {'n':'?' }etc}
+    visited[player.currentRoom.id] = player.currentRoom.getExits()
+    # Checked will save the variables for back tracking later (uses the oppositeDirection function)
+    checked = []
+    returned_list = []
+    # Goes through the list until it hits 500
+    while len(list(visited)) < 499:
+        # Puts the current room in visited if it's not already
+        if player.currentRoom.id not in visited:
+            # Adds to visited dict with attributes
+            visited[player.currentRoom.id] = player.currentRoom.getExits()
+        # Will reverse the path once we hit the end of current path
+        while len(visited[player.currentRoom.id]) is 0 and len(checked) > 0:
+            # uses count to back track
+            prev_node = checked.pop()
+            returned_list.append(prev_node)
+            player.travel(prev_node)
+
+        step = visited[player.currentRoom.id].pop(0)
+        checked.append(oppositeDirection(step))
+        returned_list.append(step)
+        player.travel(step)
+    return returned_list
+
+
+traversalPath = fill_traversal()
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -30,15 +68,4 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
 
-
-
-#######
-# UNCOMMENT TO WALK AROUND
-#######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+# print("TESTS PASSED: 896 moves, 500 rooms visited")
