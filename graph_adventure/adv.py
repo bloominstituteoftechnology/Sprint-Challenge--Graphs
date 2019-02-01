@@ -82,6 +82,12 @@ def dft(world, startingRoom):
 
         if visited[roomID] is not 'start':
             traversalPath.append(visited[roomID])
+            
+            print('\n----------------------------------------------------------------\n')
+            print(f"Moving '{visited[roomID]}' to room {roomID}")
+            print('traversalPath:', traversalPath)
+            print('stack:', stack)
+            print(f'Path so far: {path}')
 
         for direction in exits:
             next_room = room.getRoomInDirection(direction).id
@@ -93,33 +99,32 @@ def dft(world, startingRoom):
 
                 stack.append(new_path)
 
-        print('\ntraversalPath:', traversalPath)
-        print('stack:', stack)
-        print('next_directions:', next_directions)
-
         if not len(next_directions) and len(visited) is not len(world.rooms):
             backtrack = -1
 
-            while path[:-1] != stack[-1][:-1]:
-                print(f'comparing {path} to {stack[-1][:-1]}')
+            print('\nNo new rooms from here, time to backtrack:')
 
+            while path[:-1] != stack[-1][:-1]:
                 came_from = traversalPath[backtrack]
+                print('traversalPath[backtrack] = ', traversalPath[backtrack])
+                print('came_from = ', came_from)
                 go_back = ''
 
                 if came_from == 'n':
-                    go_back == 's'
+                    go_back = 's'
                 elif came_from == 's':
-                    go_back == 'n'
+                    go_back = 'n'
                 elif came_from == 'e':
-                    go_back == 'w'
+                    go_back = 'w'
                 elif came_from == 'w':
-                    go_back == 'e'
+                    go_back = 'e'
 
                 traversalPath.append(go_back)
                 path.pop()
 
-                backtrack -= 2
+                print(f"Walking '{go_back}' to room {path[-1]}")
 
+                backtrack -= 2
 
 
 dft(world, world.startingRoom.id)
