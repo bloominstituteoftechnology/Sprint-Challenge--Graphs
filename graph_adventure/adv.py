@@ -13,7 +13,41 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+# init a traversal graph
+traversalGraph = {}
+
+# make a stack
+stack = []
+stack.append(player.currentRoom)
+
+while stack:
+    room = stack.pop()
+    if room not in traversalGraph:
+        traversalGraph[room.id] = {}
+        for direction in room.getExits():
+            traversalGraph[room.id][direction] = '?'
+
+print(traversalGraph)
+
+# pick a random unexplored direction
+# if traversalGraph[room][direction] == ?
+# player.travel(direction)
+# traversalGraph[room][direction] = player.currentRoom.id
+# player.append(direction)
+
+# player.travel('n')
+# traversalPath.append('n')
+# player.travel('n')
+# traversalPath.append('n')
+# player.travel('n')
+# traversalPath.append('n')
+# player.travel('n')
+# traversalPath.append('n')
+# player.travel('n')
+# traversalPath.append('n')
+# print(player.currentRoom)
 
 
 # TRAVERSAL TEST
@@ -35,6 +69,7 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
+'''
 player.currentRoom.printRoomDescription(player)
 while True:
     cmds = input("-> ").lower().split(" ")
@@ -42,3 +77,4 @@ while True:
         player.travel(cmds[0], True)
     else:
         print("I did not understand that command.")
+'''
