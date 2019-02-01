@@ -13,7 +13,68 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN 
-traversalPath = ['s', 'n']
+traversalPath = []
+
+
+rooms = {
+  0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+}
+
+def oppositeDirection(direction):
+    if direction == "n":
+        return "s"
+    if direction == "s":
+        return "n"
+    if direction == "w":
+        return "e"
+    if direction == "e":
+        return "w"
+
+def dfs(room, count):
+
+    if len(traversalPath) > 2000:
+        return
+
+    print(f"COUNT IS {count}")
+    #the starting room passed in
+    starting_room = room
+    print(f"THE CURRENT ROOM IS {room.id}")
+
+    
+    #possilbe room exits
+    room_exits = starting_room.getExits()
+    print(f"ROOM {room.id} POSSIBLE EXITS ARE {room_exits}")
+    
+    #random exit from possible room exits
+    random_exit = random.choice(room_exits)
+    print(f"THE RANDOM EXIT SELECTED FOR ROOM {room.id} IS {random_exit}")
+    
+
+    if room.id not in rooms:
+        print(f"ROOM{room.id} IS NOT IN ROOMS DICTIONARY")
+    else:
+        if rooms[room.id][random_exit] == "?":
+            if player.travel(random_exit):
+                print(f"THE PLAYER SUCESSFULLY TRAVELED TO {player.currentRoom.id}")
+                rooms[room.id][random_exit] = player.currentRoom.id
+                if player.currentRoom.id not in rooms:
+                    rooms[player.currentRoom.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+                    rooms[player.currentRoom.id][oppositeDirection(random_exit)] = room.id
+                    print(rooms)
+                    traversalPath.append(random_exit)
+                    count +=1
+                    dfs(player.currentRoom, count)
+        else:
+            player.travel(random_exit)
+            print(len(traversalPath))
+            dfs(player.currentRoom, count)
+            
+    
+
+
+dfs(player.currentRoom, 0)
+    
+        
 
 
 # TRAVERSAL TEST
