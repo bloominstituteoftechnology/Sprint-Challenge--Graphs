@@ -36,19 +36,21 @@ while generate_graph == True:
 
 # start traversal while loop
 while traverse_graph == True:
-    room_id = player.currentRoom.id
+    current_room_id = player.currentRoom.id
     
-    for direction, room in graph[room_id].items():
+    for direction, room in graph[current_room_id].items():
 
         if room == "?":
+            graph[current_room_id][direction] == player.currentRoom.id
             player.travel(direction)
-            graph[room_id][direction] == player.currentRoom.id
 
             print(f'player.currentRoom.id: {player.currentRoom.id}')
-            print(f'graph[room_id][direction]: {graph[room_id][direction]}')
+            print(f'graph[current_room_id][direction]: {graph[current_room_id][direction]}')
     
     traverse_graph = False
-print(graph[1])
+
+for i in range(0, 10):
+    print(f'graph[{i}]: {graph[i]}')
 
 # graph = {0: {'n': '?', 's': '?', 'e': '?', 'w': '?'}}
 
