@@ -17,37 +17,6 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
-
-
-
-# TRAVERSAL TEST
-# visited_rooms = set()
-# player.currentRoom = world.startingRoom
-# visited_rooms.add(player.currentRoom)
-# for move in traversalPath:
-#     player.travel(move)
-#     visited_rooms.add(player.currentRoom)
-
-
-# if len(visited_rooms) == 500:
-#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{500 - len(visited_rooms)} unvisited rooms")
-
-
-
-#######
-# UNCOMMENT TO WALK AROUND
-#######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
-
 class Stack:
     def __init__(self):
         self.storage = []
@@ -113,52 +82,90 @@ class Graph:
         d = getattr(self, attribute)
         return d
 
+    def shortestPathBack(self, currentRoom):
+        q = Queue()
+        visited = set()
+        roomPath = []
+        q.enqueue([currentRoom])
+        # While the queue is not empty
+        while q.length() > 0:
+            pathArr = q.dequeue()
+            roomPath = pathArr
+            room = pathArr[-1]
+            visited.add(room)
+            for direction in self.adjRooms[room]:
+                if self.adjRooms[room][direction] == '?':
+                    return roomPath
+                else:
+                    newPath = pathArr[:]
+                    newPath.append(self.adjRooms[room][direction])
+                    q.enqueue(newPath)
+
+
     def travel(self, starting_node):
         traversal = []
         s = Stack()
-        q = Queue
         visited = set()
-        path = []
         previousDirection = None
         s.push(starting_node)
         while len(s.storage) > 0:
+            
             direction = None
             room = s.pop()
             visited.add(room)
             exits = player.currentRoom.getExits()
-            if len(exits) == 1:
-                newpath = []
-                for room in path:
-                    player.travel(room)
-                    newpath.append(room)
-                    if player.currentRoom.getExits() > 2:
-                        traversal.append(newpath)
-                        return
-            elif len(exits) < 3:
+            if len(exits) < 1:
+                path = self.shortestPathBack(room)
+            if len(exits) < 3:
                 for exit in exits:
                     if exit != previousDirection:
                         direction = exit
                         break
             else:
-                while True:
-                    direction = exits[random.randint(0, len(exits)-1)]
-                    if self.adjRooms[room][direction] != '?':
-                        return
+                direction = exits[random.randint(0, len(exits)-1)]
 
             player.travel(direction)
             currentRoom = player.currentRoom.id
             newExits = player.currentRoom.getExits()
             self.addRoom(currentRoom, newExits)
             self.addAdjRoom(room, currentRoom, direction)
-            path.append(self.oppositeDirection(direction))
             traversal.append(direction)
             s.push(currentRoom)
-
-            print(traversal)
+            traversalPath.append(direction)
         return traversal
 
 g = Graph()
-print(player.currentRoom.id)
 g.addRoom(player.currentRoom.id, player.currentRoom.getExits())
 print(g.adjRooms)
-g.travel(player.currentRoom.id)
+print(g.travel(player.currentRoom.id))
+
+
+
+# TRAVERSAL TEST
+# visited_rooms = set()
+# player.currentRoom = world.startingRoom
+# visited_rooms.add(player.currentRoom)
+# for move in traversalPath:
+#     player.travel(move)
+#     visited_rooms.add(player.currentRoom)
+
+
+# if len(visited_rooms) == 500:
+#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+# else:
+#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+#     print(f"{500 - len(visited_rooms)} unvisited rooms")
+
+
+
+#######
+# UNCOMMENT TO WALK AROUND
+#######
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
+
