@@ -34,8 +34,24 @@ class TraversalGraph:
       random.shuffle(unexplored)
       return unexplored[0]
 
+  def move_player(self):
+    current_room = player.currentRoom.id
+    direction = self.pick_unexplored()
+    # print(f'Current Room {current_room}\ndirection {direction}') # <-- Debugging
+    player.travel(direction)
+    next_room = player.currentRoom.id
+    # print(f'Next Room {next_room}') # <-- Debugging
+    self.log_room(current_room, next_room, direction)
+    
+  def log_room(self, current_room, next_room, direction):
+    traversalPath.append(direction)
+    if next_room not in self.visited_rooms:
+      self.visited_room[next_room] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+    
+
+
 tg = TraversalGraph()
-print(tg.pick_unexplored())
+tg.move_player()
 
 # TRAVERSAL TEST
 visited_rooms = set()
