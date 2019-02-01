@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from stack import Stack
 
 import random
 
@@ -13,7 +14,48 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+def return_move_calculator(last_move):
+    if last_move == 'n':
+        return 's'
+    elif last_move == 's':
+        return 'n'
+    elif last_move == 'e':
+        return 'w'
+    elif last_move == 'w':
+        return 'e'
+    else:
+        return 'oops'
+
+def visited_rooms_scanner:
+
+# walk through every room once, and keep a record of your movements
+traversalPath = []
+directions = ['n', 's', 'e', 'w']
+visited = set()
+index_last_move = -1
+
+while len(visited) < 500:
+    current_room = player.currentRoom.id
+    if current_room is in visited: # retracing your steps
+        if 
+        # continue to trace backwards on your traversal path 
+        # until you reach a room that has an untried exit
+        # need to track current index on traversal path
+        # how do i do that?3
+    elif current_room is not in visited: # traveling forward
+        visited.add(current_room)
+        exit_directions = player.currentRoom.getExits()
+
+        if len(exit_directions) == 1:
+            return_move = return_move_calculator(traversalPath[-1])
+            player.travel(return_move)
+        else: 
+            for direction in exit_directions:
+                if player.currentRoom[f'{direction}_to'] is not in visited:
+                    player.travel(direction)
+            # all exit rooms have been visited. return the way you came
+            return_move = return_move_calculator(traversalPath[-1])
+            player.travel(return_move)
 
 
 # TRAVERSAL TEST
