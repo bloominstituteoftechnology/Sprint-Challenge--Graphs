@@ -13,7 +13,50 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n', 'e']
+# player.currentRoom.id, player.currentRoom.getExits() and player.travel(direction)
+
+# Start by writing an algorithm that picks a random unexplored direction from the player's current room, travels and logs that direction, then loops. This should cause your player to walk a depth-first traversal. When you reach a dead-end (i.e. a room with no unexplored paths), walk back to the nearest room that does contain an unexplored path. If all paths have been explored, you're done!
+
+
+traversalPath = ['s']
+def generateDirection():
+    return random.choice(player.currentRoom.getExits())
+
+def canTravel(direction):
+    directions = player.currentRoom.getExits()
+    if direction in directions:
+        return True
+    else:
+        return False
+
+def walkBack(facing):
+    if facing == "n":
+        return 's'
+    if facing == 's':
+        return 'n'
+    if facing == 'e':
+        return 'w'
+    if facing == 'w':
+        return 'e'
+
+visitedRooms = {player.currentRoom}
+
+
+while player.currentRoom.getExits() is not None:
+    direction = generateDirection()
+    if canTravel(direction):
+        print(player.currentRoom.id)
+        player.travel(direction)
+        visitedRooms.append(player.currentRoom)
+        traversalPath.append(direction)
+    else:
+        print("walked back")
+        direction = walkBack(direction)
+        player.travel(direction)
+        traversalPath.append(direction)
+        
+        # generateDirection()
+
 
 
 # TRAVERSAL TEST
@@ -35,10 +78,10 @@ else:
 ######
 # UNCOMMENT TO WALK AROUND
 ######
-player.currentRoom.printRoomDescription(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    else:
-        print("I did not understand that command.")
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
