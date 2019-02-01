@@ -36,14 +36,13 @@ def get_traversal_path(world):
     traversalPath = {}
     start = world.startingRoom
     stack.append([start.id])
-
+    nav = []
     directions_stack = [[]]
+    longest_directions = []
     # world.rooms[start.id]
     while len(stack) > 0:
-        directions = directions_stack.pop()
+        # directions = directions_stack.pop()
         path = stack.pop()
-        print(stack)
-        print(path)
         current_room_id = path[-1]
         current_room = world.rooms[current_room_id]
         if current_room not in visited:
@@ -54,28 +53,62 @@ def get_traversal_path(world):
             traversalPath[current_room_id] = []
             for exit in exits:
                 next_room = current_room.getRoomInDirection(exit)
-                if next_room is None:
-                    print('reached a dead end!')
                 if next_room not in visited:
-                    path_copy = path.copy()
-                    path_copy.append(next_room.id)
-                    print(exit)
-                    stack.append(path_copy)
-
-                    # need to capture directions
-                    copy_directions = directions.copy()
-                    copy_directions.append(exit)
-                    directions_stack.append(copy_directions)
-                    traversalPath[current_room_id] = copy_directions
+                    if exit == 'n':
+                        traversalPath[current_room_id].append({'n': next_room.id})
+                    elif exit == 's':
+                        traversalPath[current_room_id].append({'s': next_room.id})
+                    elif exit == 'w':
+                        traversalPath[current_room_id].append({'w': next_room.id})
+                    elif exit == 'e':
+                        traversalPath[current_room_id].append({'e': next_room.id})
                     
+                else:
+                    #No exits found in this room
+                    #Go back to previous room that has more than 1 exit
+                    print('No exits fround out of room:', current_room_id)
+                    i = 2
+                    exits = []
+                    next_room = current_room
+                    while len(exits) == 0:
+                        prev_room_id = path.pop(-i)
+                        prev_room = world.rooms[prev_room_id]
+                        exits = prev_room.getExits()
+                        i +=1
+                    print('Going back to room:', prev_room_id)
+                    next_room = prev_room
+                path_copy = path.copy()
+                path_copy.append(next_room.id)
+                stack.append(path_copy)
 
 
-                    # visited[current_room_id] = path_copy
-                    # print(visited)
+
+                # next_room = current_room.getRoomInDirection(exit)
+                # if next_room is None:
+                #     print('reached a dead end!')
+                # elif next_room not in visited:
+                #     path_copy = path.copy()
+                #     path_copy.append(next_room.id)
+                #     stack.append(path_copy)
+
+                #     # need to capture directions
+                #     copy_directions = directions.copy()
+                #     copy_directions.append(exit)
+                #     print('directions for room: ', next_room.id)
+                #     print(copy_directions)
+
+                #     if len(copy_directions) > len(longest_directions):
+                #         longest_directions = copy_directions
+                #         print('longest directions are now: ', len(longest_directions))
+                #     directions_stack.append(copy_directions)
+                #     # print(directions_stack)
+                #     traversalPath[current_room_id] = copy_directions
+            
+                #     # visited[current_room_id] = path_copy
+                #     # print(visited)
     print(traversalPath)
-    print(directions)
-    return traversalPath[464]
-
+    return traversalPath
+ 
 
 
 
@@ -90,6 +123,7 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
+    print(move)
     player.travel(move)
     visited_rooms.add(player.currentRoom)
 
