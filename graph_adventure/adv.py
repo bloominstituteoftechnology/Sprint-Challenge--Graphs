@@ -11,9 +11,35 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+dirs = ['s', 'n', 'e', 'w']
+
+def dfs(self, starting_vertex, target):
+    visited = []
+    stack = []
+    stack.append([starting_vertex])
+    
+    while stack:     
+        path = stack.pop()
+        last_node = path[-1:][0]
+        if last_node not in visited:
+            print(last_node, path)
+            if last_node == target:
+                return path
+            visited.append(last_node)
+            ops = roomGraph[last_node][1]['e']
+            print('OPS', ops)
+            for v in ops[last_node]:
+                new_list = list(path)
+                new_list.append(v)
+                stack.append(new_list)
+    return False
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+dirs = ['s', 'n', 'e', 'w']
+# for d in dirs:
+print(dfs(roomGraph, 0, 499))
+traversalPath = []
+
 
 
 # TRAVERSAL TEST
@@ -21,14 +47,18 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
+    print('MOVE', move)
     player.travel(move)
+    print('TRAVEL', player.travel)
     visited_rooms.add(player.currentRoom)
+    print('VISITED', visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
+
 
 
 
