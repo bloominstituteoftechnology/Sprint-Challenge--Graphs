@@ -13,10 +13,61 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-pcr = player.currentRoom.id
-unexplored_path = True
-while unexplored_path:
-    for direction in player.currentRoom.getExits():
+
+# make a dictionary of the starting room and all traveled rooms with the possible paths
+# eg graph = {0: {"n":"?", "s":"?" , "e": "?", "w": "?"}}
+# make a loop that tries a path.
+# if that path doesn't work, try the next path and so on
+# once a path is traversed, mark that direction in the graph
+# never visit a traversed direction from a room again
+
+graph = {}
+traversalPath = []
+generate_graph = True
+traverse_graph = True
+
+# generate graph template
+while generate_graph == True:
+    
+    for room in range(0, 500):
+        graph[room] = {"n":"?", "s":"?" , "e": "?", "w": "?"}
+    
+    generate_graph = False
+
+# start traversal while loop
+while traverse_graph == True:
+    room_id = player.currentRoom.id
+    for direction in graph[room_id]:
+        print(direction)
+    traverse_graph = False
+
+
+# graph = {0: {'n': '?', 's': '?', 'e': '?', 'w': '?'}}
+
+# traversalPath = []
+# while True:
+    
+#     currentRoomExits = graph[player.currentRoom.id]
+#     unexploredExits = []
+#     for direction in currentRoomExits:
+#         if currentRoomExits[direction] == "?":
+#             unexploredExits.append(direction)
+#     if len(unexploredExits) > 0:
+#         randomExit = random.choice(unexploredExits)
+#         traversalPath.append(randomExit)
+#         previous_room_id = player.currentRoom.id
+#         traversalPath.append(randomExit)
+#         exitDictionary = {}
+#         for exit in player.currentRoom.getExits():
+#             exitDictionary[exit] = "?"
+#         graph[previous_room_id][randomExit] = player.currentRoom.id
+#         exitDictionary[inverse_directions[randomExit]] = previous_room_id 
+#         graph[player.currentRoom.id] = exitDictionary
+#         print(graph)
+#         break
+#     else:
+#         break
+
 
 
 
