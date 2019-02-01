@@ -67,3 +67,5 @@ if len(visited_rooms) == 500:
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
+
+# print("TESTS PASSED: 896 moves, 500 rooms visited")
