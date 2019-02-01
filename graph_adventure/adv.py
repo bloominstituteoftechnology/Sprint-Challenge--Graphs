@@ -16,6 +16,15 @@ player = Player("Name", world.startingRoom)
 traversalPath = ['s', 'n']
 
 
+def fill_traversal_set():
+    traveled = {}
+    # Pick a random direction
+    # if moving was successful:
+        # add the direction to traversal path
+        # add the attribute to the id 0{'n',5,etc}
+
+
+fill_traversal_set()
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
