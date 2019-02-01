@@ -15,6 +15,27 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
+class TraversalGraph:
+  def __init__(self):
+    self.current_room = 0
+    self.visited_rooms = {
+      0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+    }
+
+  def pick_unexplored(self):
+    exits = player.currentRoom.getExits()
+    unexplored = []
+    for e in exits:
+      if self.visited_rooms[player.currentRoom.id][e] == '?':
+        unexplored.append(e)
+    if len(unexplored) == 0:
+      return None
+    else:
+      random.shuffle(unexplored)
+      return unexplored[0]
+
+tg = TraversalGraph()
+print(tg.pick_unexplored())
 
 # TRAVERSAL TEST
 visited_rooms = set()
