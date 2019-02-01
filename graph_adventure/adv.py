@@ -23,19 +23,54 @@ def opposite_dir(d):
     return directions[d]
 
 traversalPath = []
-visited = {}
-visited[player.currentRoom.id] = player.currentRoom.getExits()
+graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+stack = []
 
-while len(visited) < 499:
-    if player.currentRoom.id not in visited:
-        visited[player.currentRoom.id] = player.currentRoom.getExits()
+while len(graph) != 500:
+    # 1. Collect unexplored rooms
+    current_room_exits = graph[player.currentRoom.id] # => {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+    unexplored_exits = []
 
-    direction = 0
-    while visited[player.currentRoom.id]:
-        next_direction = opposite_dir(visited[player.currentRoom.id][direction])
-        player.travel(next_direction)
-        # print(direction)
-        direction += 1
+    for direction in current_room_exits:
+        # if direction == '?', add it to the unexplored exits
+        if current_room_exits[direction] == '?':
+            unexplored_exits.append(direction)
+
+    if unexplored_exits:
+        # 2. Go to a random exit
+        # random.seed(1)
+        random_exit = random.choice(unexplored_exits)
+        # 3. Add path to traversalPath and queue
+        traversalPath.append(random_exit)
+        stack.append(random_exit)
+        # Store current_room to a temp variable
+        previous_room_id = player.currentRoom.id
+        # 4. Make player enter in the room
+        player.travel(random_exit)
+        # 5. Add new explored room to graph
+        exit_dictionary = {} # => populate this with {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+        for exit in player.currentRoom.getExits():
+            exit_dictionary[exit] = "?"
+        # Mark each direction for each visited room
+        graph[previous_room_id][random_exit] = player.currentRoom.id
+        exit_dictionary[opposite_dir(random_exit)] = previous_room_id
+        graph[player.currentRoom.id] = exit_dictionary
+        # print(graph)
+    else:
+        if stack:
+            previous_exit = stack.pop()
+            # Go back to the next unexplored room
+            player.travel(opposite_dir(previous_exit))
+            # Record move of going back
+            traversalPath.append(opposite_dir(previous_exit))
+
+
+
+# print("graph: ", graph)
+# print("--------------------")
+# print("traversalPath", traversalPath)
+# print("--------------------")
+
 
 
 
