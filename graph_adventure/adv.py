@@ -22,6 +22,7 @@ class TraversalGraph:
       0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
     }
     self.current_path = []
+    self.num_explored = 1
 
   def pick_unexplored(self):
     exits = player.currentRoom.getExits()
@@ -39,17 +40,23 @@ class TraversalGraph:
     current_room = player.currentRoom.id
     direction = self.pick_unexplored()
     # print(f'Current Room {current_room}\ndirection {direction}') # <-- Debugging
+    if direction == None:
+      direction = self.reverse_direction(self.current_path.pop())
+    else:
+      self.current_path.append(direction)
+
     player.travel(direction)
     next_room = player.currentRoom.id
     self.current_room = next_room
     # print(f'Next Room {next_room}') # <-- Debugging
     self.log_travel(current_room, next_room, direction)
+
     
   def log_travel(self, current_room, next_room, direction):
     traversalPath.append(direction)
-    self.current_path.append(direction)
     if next_room not in self.visited_rooms:
       self.visited_rooms[next_room] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+      self.num_explored += 1
     self.visited_rooms[current_room][direction] = next_room
     self.visited_rooms[next_room][self.reverse_direction(direction)] = current_room
 
@@ -65,8 +72,8 @@ class TraversalGraph:
 
 
 tg = TraversalGraph()
-tg.move_player()
-print(tg.visited_rooms)
+while tg.num_explored < 500:
+  tg.move_player()
 
 # TRAVERSAL TEST
 visited_rooms = set()
