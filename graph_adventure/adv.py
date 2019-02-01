@@ -13,18 +13,28 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-def generate_traversal_path(self, start_room):
+def generate_traversal_path():
     room_queue = Queue()
-    traversalPath = []
-    visited_rooms = set()
+    room_queue.enqueue(player.currentRoom)
+    global traversalPath
+    traversalPath = set()
+
     while room_queue.len() > 0:
         path = room_queue.dequeue()
 
-        node = path[-1]
+        for direction in player.currentRoom.getExits():
+            if direction not in traversalPath:
 
-        for room in 
+                print(f'path: {path}')
+                print(f'[room]: {[direction]}')
+                upath = path + [direction]
+
+                traversalPath.add(direction)
+                print(f'traversalPath: {traversalPath}')
+                room_queue.enqueue(upath)
+                
     return traversalPath
-
+print(generate_traversal_path())
 
 # TRAVERSAL TEST
 visited_rooms = set()
