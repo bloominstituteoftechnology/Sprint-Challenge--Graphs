@@ -68,12 +68,77 @@ traversalPath = []
 
 
 
-# Second try
+# # Second try
+
+# def dft(world, startingRoom):
+#     visited = {startingRoom: 'start'}
+#     stack = [[startingRoom]]
+
+#     while len(stack) and len(traversalPath) < 50:
+#     # while len(stack):
+#         path = stack.pop()
+#         roomID = path[-1]
+#         room = world.rooms[roomID]
+#         exits = room.getExits()
+#         next_directions = []
+
+#         if visited[roomID] is not 'start':
+#             traversalPath.append(visited[roomID])
+            
+#             print('\n----------------------------------------------------------------\n')
+#             print(f"Moving '{visited[roomID]}' from room {path[-2]} to room {roomID}")
+#             print('traversalPath:', traversalPath)
+#             print('stack:', stack)
+#             print(f'Current path: {path}')
+
+#         for direction in exits:
+#             next_room = room.getRoomInDirection(direction).id
+
+#             if next_room not in visited:
+#                 visited[next_room] = direction
+#                 new_path = path + [next_room]
+#                 next_directions.append(direction)
+
+#                 stack.append(new_path)
+
+#         if not len(next_directions) and len(stack):
+#             backtrack = 1
+
+#             print('\nNo new rooms from here, time to backtrack:')
+
+#             while path != stack[-1][:-1]:
+#                 came_from = traversalPath[-backtrack]
+#                 go_back = ''
+
+#                 if came_from == 'n':
+#                     go_back = 's'
+#                 elif came_from == 's':
+#                     go_back = 'n'
+#                 elif came_from == 'e':
+#                     go_back = 'w'
+#                 elif came_from == 'w':
+#                     go_back = 'e'
+
+#                 traversalPath.append(go_back)
+#                 path.pop()
+
+#                 print(f"Moving '{go_back}' back to room {path[-1]}")
+
+#                 backtrack += 2
+
+#     print('\n----------------------------------------------------------------\n')
+#     print(f'Visited {len(visited)} rooms in {len(traversalPath)} steps')
+#     print('\n----------------------------------------------------------------\n')
+
+# dft(world, world.startingRoom.id)
+
+# Third try
+
 def dft(world, startingRoom):
     visited = {startingRoom: 'start'}
     stack = [[startingRoom]]
 
-    # while len(stack) and len(traversalPath) < 40:
+    # while len(stack) and len(traversalPath) < 50:
     while len(stack):
         path = stack.pop()
         roomID = path[-1]
@@ -106,27 +171,26 @@ def dft(world, startingRoom):
             print('\nNo new rooms from here, time to backtrack:')
 
             while path != stack[-1][:-1]:
-                came_from = traversalPath[-backtrack]
+                prev_direction = visited[path.pop()]
                 go_back = ''
 
-                if came_from == 'n':
+                if prev_direction == 'n':
                     go_back = 's'
-                elif came_from == 's':
+                elif prev_direction == 's':
                     go_back = 'n'
-                elif came_from == 'e':
+                elif prev_direction == 'e':
                     go_back = 'w'
-                elif came_from == 'w':
+                elif prev_direction == 'w':
                     go_back = 'e'
 
                 traversalPath.append(go_back)
-                path.pop()
 
                 print(f"Moving '{go_back}' back to room {path[-1]}")
 
                 backtrack += 2
 
     print('\n----------------------------------------------------------------\n')
-    print(f'visited {len(visited)} rooms in {len(traversalPath)} steps')
+    print(f'Visited {len(visited)} rooms in {len(traversalPath)} steps')
     print('\n----------------------------------------------------------------\n')
 
 dft(world, world.startingRoom.id)
