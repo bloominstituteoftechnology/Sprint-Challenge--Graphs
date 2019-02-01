@@ -11,9 +11,45 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+def reverseDir(d):
+    if d is 'n':
+        return 's' 
+    elif d is 's':
+        return 'n'
+    elif d is 'e':
+        return 'w'
+    elif d is 'w':
+        return 'e'
+
+# Keep Track of Visited Rooms
+visited = {}
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+# Keep Track of The Path Back
+reversePath = []
+# Keep Track of All Moves Made
+moves = []
+
+while len(list(visited)) < 499:
+    # Add Current Room to Visited
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(reversePath[-1])
+
+    # If there aren't any rooms to travel, back track until there is
+    while len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
+        reverse = reversePath.pop()
+        moves.append(reverse)
+        player.travel(reverse)
+
+    # Make a Move
+    move = visited[player.currentRoom.id].pop(0)
+    # Add Move to moves and reverse Path
+    reversePath.append(reverseDir(move))
+    moves.append(move)
+    player.travel(move)
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = moves
 
 
 # TRAVERSAL TEST
@@ -42,3 +78,4 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
