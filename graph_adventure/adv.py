@@ -12,8 +12,12 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 
+
+
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+
 
 
 # TRAVERSAL TEST
@@ -23,6 +27,7 @@ visited_rooms.add(player.currentRoom)
 for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
+
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
@@ -42,3 +47,73 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+class Stack:
+    def __init__(self):
+        self.storage = []
+        self.size = 0
+
+    def push(self, value):
+        self.size += 1
+        self.storage.append(value)
+
+    def pop(self):
+        if len(self.storage) > 0:
+            self.size -= 1
+            return self.storage.pop()
+        else:
+            return None
+    def length(self):
+        return self.size
+
+class Queue:
+    def __init__(self):
+        self.storage = []
+        self.size = 0
+
+    def enqueue(self, value):
+        self.size += 1
+        self.storage.append(value)
+
+    def dequeue(self):
+        if len(self.storage) > 0:
+            self.size -= 1
+            return self.storage.pop(0)
+        else:
+            return None
+    def length(self):
+        return self.size
+
+class Graph:
+    def __init__(self):
+        self.rooms = []
+        self.adjRooms = {}
+
+    def addRoom(self, roomID, givenExits):
+        self.rooms.append(roomID)
+        self.adjRooms[roomID] = {}
+        exits = {}
+        for exit in givenExits:
+            exits[exit] = '?'
+        self.adjRooms[roomID] = exits
+            
+    def addAdjRoom(self, roomID, otherRoomID, direction):
+        self.adjRooms[roomID][direction] = otherRoomID
+            
+
+    def travel(self, starting_node):
+        s = Stack()
+        q = Queue
+        visited = set()
+        path = []
+        s.push(starting_node)
+        while len(s.storage) > 0:
+            pass
+
+
+g = Graph()
+print(player.currentRoom.id)
+g.addRoom(player.currentRoom.id, player.currentRoom.getExits())
+print(g.adjRooms)
+g.travel(player.currentRoom.id)
+print(g.adjRooms)
