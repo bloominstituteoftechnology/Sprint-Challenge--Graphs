@@ -15,6 +15,33 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
+# making a graph. setting it to be a set instead of a class for now.
+# graph = set()
+# populate the graph
+'''
+{
+  0: {'n': '?', 's': 5, 'w': '?', 'e': '?'},
+  5: {'n': 0, 's': '?', 'e': '?'}
+}
+room's id : exits
+'''
+# trying again with the class
+class Graph:
+    def __init__(self):
+        self.graph = set()
+
+    def add_room(self, room=player.currentRoom.id):
+        if room not in self.graph:
+            self.graph[room] = set()
+        else:
+            print('Been here')
+
+    def add_exits(self, room, exits=player.currentRoom.getExits()):
+        if room in self.graph:
+            self.graph[room].add(exits)
+
+
+
 # travel back to the last room
 def go_back(direction):
     if direction == 'e':
@@ -25,6 +52,8 @@ def go_back(direction):
         return 'n'
     if direction == 'n':
         return 's'
+
+
 
 # My codes from this week for reference
 # def bft(self, starting_room=player.currentRoom.id):
