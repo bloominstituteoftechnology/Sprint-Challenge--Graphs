@@ -12,7 +12,6 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 def shortestPath(currentID, targetID):
-
     queue = [currentID]
 
     backPaths = {currentID:[]}
@@ -71,20 +70,28 @@ while len(list(visited)) < 499:
         visited[player.currentRoom.id].remove(reversePath[-1])
     
     # Add Room to Unexplored Paths if Unexplored Paths Exist in Room
-    if len(visited[player.currentRoom.id]) is not 0:
-        unexploredPaths.append(player.currentRoom.id)
     elif player.currentRoom.id in unexploredPaths:
         unexploredPaths.remove(player.currentRoom.id)
 
     # If there aren't any rooms to travel, back track until there is
-    while len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
+    if len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
         lastUnexplored = unexploredPaths.pop()
-        reverse = reversePath.pop()
-        moves.append(reverse)
-        player.travel(reverse)
+        shortest = shortestPath(player.currentRoom.id, lastUnexplored)
+        while len(shortest) > 0:
+            reverse = shortest.pop(0)
+            moves.append(reverse)
+            player.travel(reverse)
+            
+    # while len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
+    #     lastUnexplored = unexploredPaths.pop()
+    #     reverse = reversePath.pop()
+    #     moves.append(reverse)
+    #     player.travel(reverse)
 
     lastRoom = player.currentRoom.id
 
+    if len(visited[player.currentRoom.id]) == 0:
+        print(player.currentRoom.id)
     # Get next Move
     move = visited[player.currentRoom.id].pop(0)
     
@@ -94,6 +101,9 @@ while len(list(visited)) < 499:
     # Make a Move and Store the Move
     moves.append(move)
     player.travel(move)
+
+    if len(visited[lastRoom]) is not 0:
+        unexploredPaths.append(lastRoom)
 
     # Add Current Room to Memory
     if player.currentRoom.id not in memory:
@@ -134,22 +144,3 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
-
-def shortestPath(currentID, targetID):
-
-    queue = [currentID]
-
-    backPaths = {currentID:[]}
-
-    while len(queue) > 0:
-        for i in memory[queue[0]]:
-            pathy = memory[queue[0]][i]
-            if pathy not in backPaths:
-                backPaths[pathy] = list(backPaths[queue[0]])
-                backPaths[pathy].append(i)
-                queue.append(pathy)
-                if pathy == targetID:
-                    return backPaths[pathy]
-        queue.pop(0)
-
-print(shortestPath(0, 423))
