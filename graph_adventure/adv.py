@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from collections import deque
 
 import random
 
@@ -13,7 +14,25 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+def bft(world):
+    q = deque()
+    visited = {}
+    starting_room = world.startingRoom
+    while len(q) > 0:
+        current_room_list = q.popleft()
+        traversalPath = current_room_list
+        current_room_id = current_room_list[-1]
+        current_room = world.rooms[current_room_id]
+        if current_room not in visited:
+            exits = current_room.getExits()
+            for exit in exits:
+                next_room = current_room.getRoomInDirection(exit)
+                path_copy = traversalPath.copy()
+                path_copy.append(next_room.id)
+                q.append(path_copy)
+                visited[current_room_id] = path_copy
+    return traversalPath
 
 
 # TRAVERSAL TEST
@@ -35,10 +54,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
