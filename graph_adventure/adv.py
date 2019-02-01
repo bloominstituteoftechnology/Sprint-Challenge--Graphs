@@ -88,6 +88,11 @@ class Graph:
     def __init__(self):
         self.rooms = []
         self.adjRooms = {}
+        self.oppN = 's'
+        self.oppS = 'n'
+        self.oppE = 'w'
+        self.oppW = 'e'
+
 
     def addRoom(self, roomID, givenExits):
         self.rooms.append(roomID)
@@ -99,9 +104,17 @@ class Graph:
             
     def addAdjRoom(self, roomID, otherRoomID, direction):
         self.adjRooms[roomID][direction] = otherRoomID
+        d = self.oppositeDirection(direction)
+        self.adjRooms[otherRoomID][d] = roomID
             
+    def oppositeDirection(self, direction):
+        direction = direction.upper()
+        attribute = 'opp' + direction
+        d = getattr(self, attribute)
+        return d
 
     def travel(self, starting_node):
+        traversal = []
         s = Stack()
         q = Queue
         visited = set()
@@ -113,17 +126,36 @@ class Graph:
             room = s.pop()
             visited.add(room)
             exits = player.currentRoom.getExits()
-            if len(exits) < 3:
+            if len(exits) == 1:
+                newpath = []
+                for room in path:
+                    player.travel(room)
+                    newpath.append(room)
+                    if player.currentRoom.getExits() > 2:
+                        traversal.append(newpath)
+                        return
+            elif len(exits) < 3:
                 for exit in exits:
                     if exit != previousDirection:
                         direction = exit
                         break
             else:
-                direction = exits[random.randint(0, len(exits)-1)]
-            
-            print(direction)
-            break
+                while True:
+                    direction = exits[random.randint(0, len(exits)-1)]
+                    if self.adjRooms[room][direction] != '?':
+                        return
 
+            player.travel(direction)
+            currentRoom = player.currentRoom.id
+            newExits = player.currentRoom.getExits()
+            self.addRoom(currentRoom, newExits)
+            self.addAdjRoom(room, currentRoom, direction)
+            path.append(self.oppositeDirection(direction))
+            traversal.append(direction)
+            s.push(currentRoom)
+
+            print(traversal)
+        return traversal
 
 g = Graph()
 print(player.currentRoom.id)
