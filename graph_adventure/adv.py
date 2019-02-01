@@ -26,36 +26,50 @@ def return_move_calculator(last_move):
     else:
         return 'oops'
 
-def visited_rooms_scanner:
+def new_room_finder(current_room):
+    possible_exits = player.currentRoom.getExits()
+    for direction in possible_exits:
+        if f'{direction}_to' is not in visited:
+            return direction
+
+    return None
 
 # walk through every room once, and keep a record of your movements
 traversalPath = []
 directions = ['n', 's', 'e', 'w']
 visited = set()
 index_last_move = -1
+steps_backwards = 0
+print(f'len(roomGraph): {len(roomGraph)}')
 
-while len(visited) < 500:
+while len(visited) < len(roomGraph):
     current_room = player.currentRoom.id
     if current_room is in visited: # retracing your steps
-        if 
-        # continue to trace backwards on your traversal path 
-        # until you reach a room that has an untried exit
-        # need to track current index on traversal path
-        # how do i do that?3
+        new_move = new_room_finder(current_room)
+        if new_move is None:
+            return_move = return_move_calculator(traversalPath[index_last_move])
+            traversalPath.append(return_move)
+            player.travel(return_move)
+        else:
+            traversalPath.append(new_move)
+            player.travel(new_move)
+
     elif current_room is not in visited: # traveling forward
         visited.add(current_room)
         exit_directions = player.currentRoom.getExits()
-
-        if len(exit_directions) == 1:
-            return_move = return_move_calculator(traversalPath[-1])
-            player.travel(return_move)
-        else: 
-            for direction in exit_directions:
-                if player.currentRoom[f'{direction}_to'] is not in visited:
-                    player.travel(direction)
-            # all exit rooms have been visited. return the way you came
-            return_move = return_move_calculator(traversalPath[-1])
-            player.travel(return_move)
+        
+        # if there is an unvisited exit, go there
+        for direction in exit_directions:
+            if player.currentRoom[f'{direction}_to'] is not in visited:
+                traversalPath.append(direction)
+                player.travel(direction)
+        # all exit rooms have been visited. return the way you came
+        steps_backwards -= 1
+        return_move = return_move_calculator(traversalPath[steps_backwards])
+        # index_last_move -= 1
+        traversalPath.append(return_move)
+        player.travel(return_move)
+    
 
 
 # TRAVERSAL TEST
