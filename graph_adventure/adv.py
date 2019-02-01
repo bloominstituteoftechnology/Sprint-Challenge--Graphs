@@ -13,42 +13,115 @@ player = Player("Name", world.startingRoom)
 
 dirs = ['s', 'n', 'e', 'w']
 
-def dfs(self, starting_vertex, target):
+def dfs2(self, starting_vertex, target):
     visited = []
+    all_dirs = []
     stack = []
+
     stack.append([starting_vertex])
     visited_2 = {}
+
     
     while stack:     
         path = stack.pop()
+        # print(path)
+        
         last_node = path[-1:][0]
+        # last_dir = room[-1:][0]
         if last_node not in visited:
             visited_2[last_node] = path
-            print(last_node, path)
+            # visited_3[last_dir] = room
+            # print(last_node, path)
+            # print(last_dir, room)
             if last_node == target:
                 return path
+                # return all_dirs
             visited.append(last_node)
+            # visited_r.append(last_dir)
             # ops = roomGraph[last_node][1]['e']
             # print('OPS', ops)
             poss_dirs = player.currentRoom.getExits()
+            # print(poss_dirs)
             for p in poss_dirs:
+                # print('P2', p)
                 if p in roomGraph[last_node][1]:
-                    # print('P', p, roomGraph[last_node][1][p])
+                    # print('P', p)
+                    all_dirs.append(p)
                     # print('D', d, p, roomGraph[last_node][1][p])
                     # for v in roomGraph[last_node][1]:
                         # print('V', v, roomGraph[last_node][1])
                     new_list = list(path)
                     new_list.append(roomGraph[last_node][1][p])
-                    # print('new', new_list)
+                    # print('N', new_list)
                     stack.append(new_list)
-                            # print('STACK', stack)
+
     return visited_2
+    # return all_dirs
+
+def dfs(self, starting_vertex, target):
+    visited = []
+    all_dirs = []
+    stack = []
+
+    stack.append([starting_vertex])
+    visited_2 = {}
+
+    
+    while stack:     
+        path = stack.pop()
+        # print(path)
+        
+        last_node = path[-1:][0]
+        # last_dir = room[-1:][0]
+        if last_node not in visited:
+            visited_2[last_node] = path
+            # visited_3[last_dir] = room
+            # print(last_node, path)
+            # print(last_dir, room)
+            if last_node == target:
+                # return path
+                return all_dirs
+            visited.append(last_node)
+            # visited_r.append(last_dir)
+            # ops = roomGraph[last_node][1]['e']
+            # print('OPS', ops)
+            poss_dirs = player.currentRoom.getExits()
+            # print(poss_dirs)
+            for p in poss_dirs:
+                # print('P2', p)
+                if p in roomGraph[last_node][1]:
+                    # print('P', p)
+                    all_dirs.append(p)
+                    # print('D', d, p, roomGraph[last_node][1][p])
+                    # for v in roomGraph[last_node][1]:
+                        # print('V', v, roomGraph[last_node][1])
+                    new_list = list(path)
+                    new_list.append(roomGraph[last_node][1][p])
+                    # print('N', new_list)
+                    stack.append(new_list)
+
+    # return visited_2
+    return all_dirs
 
 # FILL THIS IN
 dirs = ['s', 'n', 'e', 'w']
 # for d in dirs:
-print(dfs(roomGraph, 0, 499))
-traversalPath = []
+traversalPath = dfs(roomGraph, 0, 499)
+rooms_visited = (dfs2(roomGraph, 0, 499))
+c = 0
+for n in range(0, 498):
+    for i in range(1, 499):
+
+        traversalPath += dfs(roomGraph, n, i)
+        # print(traversalPath)
+        rooms_visited += dfs2(roomGraph, n, i)
+        c += 1
+        # print(traversalPath)
+
+print(set(rooms_visited))
+print('C', c)
+# print(traversalPath)
+# traversalPath = dfs(roomGraph, 0, 499)
 # You may find the commands player.currentRoom.id, player.currentRoom.getExits() and player.travel(direction) useful.
 
 
@@ -57,11 +130,11 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
-    print('MOVE', move)
+    # print('MOVE', move)
     player.travel(move)
-    print('TRAVEL', player.travel)
+    # print('TRAVEL', player.travel)
     visited_rooms.add(player.currentRoom)
-    print('VISITED', visited_rooms)
+    # print('VISITED', visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")

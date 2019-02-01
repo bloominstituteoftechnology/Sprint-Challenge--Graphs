@@ -8,5 +8,5 @@ class Player:
             self.currentRoom = nextRoom
             if (showRooms):
                 nextRoom.printRoomDescription(self)
-        else:
-            print("You cannot move in that direction.")
+        # else:
+            # print("You cannot move in that direction.")
