@@ -1,9 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-from structures import Queue
-from structures import Graph
-
 import random
 
 # Load world
