@@ -15,40 +15,16 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
-# Old codes
-class Queue:
-    def __init__(self):
-        self.queue = []
-
-    def size(self):
-        return len(self.queue)
-    
-    def enqueue(self, value):
-        self.queue.append(value)
-
-    def dequeue(self):
-        if self.size() > 0:
-            return self.queue.pop(0)
-        else: return None
-
-class Stack:
-    def __init__(self):
-        self.stack = []
-
-    def size(self):
-        return len(self.stack)
-    
-    def push(self, value):
-        self.stack.append(value)
-
-    def pop(self):
-        if self.size() > 0:
-            return self.stack.pop()
-        else: return None
-
-class Graph:
-    def __init__(self):
-        self.all = {}
+# travel back to the last room
+def go_back(direction):
+    if direction == 'e':
+        return 'w'
+    if direction == 'w':
+        return 'e'
+    if direction == 's':
+        return 'n'
+    if direction == 'n':
+        return 's'
 
 # My codes from this week for reference
 # def bft(self, starting_room=player.currentRoom.id):
