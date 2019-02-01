@@ -12,8 +12,43 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 
+from collections import deque
 # FILL THIS IN
-traversalPath = ['s', 'n']
+def get_traversal_path(world):
+    q = deque()
+    visited = {}
+    traversalPath = []
+    start = world.startingRoom
+    q.append([start.id])
+    # world.rooms[start.id]
+    while len(q) > 0:
+        current_room_list = q.popleft()
+        traversalPath = current_room_list
+        current_room_id = current_room_list[-1]
+        current_room = world.rooms[current_room_id]
+        if current_room not in visited:
+            # visited.add(current_room)
+            exits = current_room.getExits()
+            for exit in exits:
+                next_room = current_room.getRoomInDirection(exit)
+                path_copy = traversalPath.copy()
+                path_copy.append(next_room.id)
+                q.append(path_copy)
+                visited[current_room_id] = path_copy
+                print(visited)
+                print(next_room)
+
+
+
+    return traversalPath
+
+
+
+
+
+
+
+traversalPath = get_traversal_path(world)
 
 
 # TRAVERSAL TEST
