@@ -54,11 +54,11 @@ while True:
         previous_room_id = player.currentRoom.id
         player.travel(randomExit)
         s.push(randomExit)
-        print(s.storage)
         exitDictonary = {}
         for exit in player.currentRoom.getExits():
             exitDictonary[exit] = '?'
         graph[previous_room_id][randomExit] = player.currentRoom.id
+        exitDictonary[inverse_directions[randomExit]] = previous_room_id
         graph[player.currentRoom.id] = exitDictonary
 
     else:   
@@ -70,13 +70,14 @@ while True:
             traversalPath.append(goBack)
     
     if len(traversalPath) > 2000: break
+        
 
 
 
 
-# print('***')
-# print(graph)
-# print('***')
+print('***')
+print(graph)
+print('***')
 
 # TRAVERSAL TEST
 visited_rooms = set()
