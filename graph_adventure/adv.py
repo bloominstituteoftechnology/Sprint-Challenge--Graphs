@@ -13,7 +13,7 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
 
 
 # TRAVERSAL TEST
@@ -21,14 +21,14 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
-    player.travel(move)
-    visited_rooms.add(player.currentRoom)
+  player.travel(move)
+  visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == 500:
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+  print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{500 - len(visited_rooms)} unvisited rooms")
+  print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+  print(f"{500 - len(visited_rooms)} unvisited rooms")
 
 
 
@@ -37,8 +37,8 @@ else:
 #######
 # player.currentRoom.printRoomDescription(player)
 # while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+#   cmds = input("-> ").lower().split(" ")
+#   if cmds[0] in ["n", "s", "e", "w"]:
+#     player.travel(cmds[0], True)
+#   else:
+#     print("I did not understand that command.")
