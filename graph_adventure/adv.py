@@ -59,10 +59,8 @@ graph = {
 
 inverse_directions = {"n": "s", "s": "n", "e": "w", "w": "e"}
 s = Stack()
-q = Queue()
 
 while True:
-    print(traversalPath)
     currentRoomExits = graph[player.currentRoom.id]
     unexploredExits = []
     for direction in currentRoomExits:
@@ -89,11 +87,11 @@ while True:
         #     goBack = inverse_directions[lastDirection]
         #     player.travel(goBack)
         #     traversalPath.append(goBack)
+        q = Queue()
         breaking = False
         path = []
         visited = set()
         currentRoom = player.currentRoom.id
-        print("currentRoom", currentRoom)
         q.enqueue([currentRoom])
         goDirection = ''
         while q.length() > 0:
@@ -114,16 +112,9 @@ while True:
 
         for i in range(len(path)):
             room = path[i]
-            # if type(room) == 'string':
-            #     traversalPath.append(room)
-            #     player.travel(room)
-            #     break
-            # else:
             broke = False
             for direction in graph[room]:
                 if graph[room][direction] == '?':
-                    traversalPath.append(direction)
-                    player.travel(direction)
                     broke = True
                     break
             if broke == True:
@@ -132,7 +123,6 @@ while True:
                 if graph[room][direction] == path[i+1]:
                     traversalPath.append(direction)
                     player.travel(direction)
-                
 
 
     if len(graph) >= 500: 
