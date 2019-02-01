@@ -13,7 +13,7 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = []
+
 # inverse_directions = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
 # traversal_graph = {}
 # visited_rooms = []
@@ -180,10 +180,11 @@ traversalPath = []
     #         player.travel("w")
 
 graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
-rooms_we_visited = []
+traversalPath = ['s', 'n']
 inverse_directions = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
-
-while len(traversalPath)<32000:
+reverse_directions = traversalPath.copy()
+while len(traversalPath)< 90000:
+    
     currentRoomExits = graph[player.currentRoom.id]
     unexploredExits = []
     for direction in currentRoomExits:
@@ -193,7 +194,6 @@ while len(traversalPath)<32000:
         randomExit = random.choice(unexploredExits)
         traversalPath.append(randomExit)
         prev_room_id = player.currentRoom.id
-        rooms_we_visited.append(player.currentRoom.id)
         player.travel(randomExit)
         exitDictonary = {}
         for exits in player.currentRoom.getExits():
@@ -202,18 +202,22 @@ while len(traversalPath)<32000:
         exitDictonary[inverse_directions[randomExit]] = prev_room_id
         graph[player.currentRoom.id] = exitDictonary
     else:
-        for moves in traversalPath[::-1]:
-            traversalPath.append(inverse_directions[moves])
+        reverse_directions = traversalPath.copy()
+        for moves in reverse_directions[::-1]:
             player.travel(inverse_directions[moves])
+            reverse_directions.pop()
+            traversalPath.append(inverse_directions[moves])
             if "?" in graph[player.currentRoom.id].values():
                 print("im in a room with ?")
                 currentRoomExits = graph[player.currentRoom.id]
-                print("our current rooms exits!", currentRoomExits)
-                # unexploredExits.append()
                 for direction in currentRoomExits:
                     if currentRoomExits[direction] == '?':
                         unexploredExits.append(direction)
                 break
+
+            
+
+                
     
                 
 
