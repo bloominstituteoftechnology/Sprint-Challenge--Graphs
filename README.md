@@ -1,10 +1,6 @@
 # Sprint Challenge: Graphs
 
-There are two parts to this sprint challenge:
-
- * `graph_shortest_path`: For this part, you'll be extending the functionality of the breadth-first-search traversal algorithm we worked on so that it's able to find the shortest path between two input graph nodes. You'll find further instructions in the README in the directory.
-
- * `graph_social_network`: You have been given skeleton code for a very simple social network. You will be filling out a function that shows a user every other user in their extended friend network and the chain of friendships that link them. For testing purposes, you will also be writing a function that creates a large number of users and creates a random distribution of friendships between them.
+For this Sprint Challenge, you will be traversing a map based on the adventure engine from Week 1 of `Intro to Python`.
 
 Good luck and have fun! :smile:
 
@@ -12,11 +8,11 @@ Note: The `legacy` directory contains an old exercise for archival purposes. You
 
 # Sprint Challenge: Graphs
 
-This challenge allows you to practice the concepts and techniques learned over the past week and apply them in a concrete project. This Sprint explored Graphs. During this Sprint, you studied breadth and depth first traversals and searches along with random graphs. There are two parts to this sprint challenge:
+This challenge allows you to practice the concepts and techniques learned over the past week and apply them in a concrete project. This Sprint explored Graphs. During this Sprint, you studied breadth and depth first traversals and searches along with random graphs.
 
- * `graph_shortest_path`: For this part, you'll be extending the functionality of the breadth-first-search traversal algorithm we worked on so that it's able to find the shortest path between two input graph nodes. You'll find further instructions in the README in the directory.
+You are provided with a pre-generated graph consisting of 500 rooms.
 
- * `graph_social_network`: You have been given skeleton code for a very simple social network. You will be filling out a function that shows a user every other user in their extended friend network and the chain of friendships that link them. For testing purposes, you will also be writing a function that creates a large number of users and creates a random distribution of friendships between them.
+You are responsible for filling `traversalPath` with directions that, when walked in order, will visit every room on the map at least once.
 
 ## Instructions
 
@@ -34,23 +30,22 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 
 ## Description
 
-There are two parts to this sprint challenge:
+Open `adv.py`. There are four parts to the provided code:
 
- * `graph_shortest_path`: For this part, you'll be extending the functionality of the breadth-first-search traversal algorithm we worked on so that it's able to find the shortest path between two input graph nodes. You'll find further instructions in the README in the directory.
-
- * `graph_social_network`: You have been given skeleton code for a very simple social network. You will be filling out a function that shows a user every other user in their extended friend network and the chain of friendships that link them. For testing purposes, you will also be writing a function that creates a large number of users and creates a random distribution of friendships between them.
-
+* 1. World generation code. Do not modify this!
+* 2. A list with two directions in it. Your task is to fill this with valid traversal directions.
+* 3. Test code. Run the tests by typing `python3 adv.py` in your terminal.
+* 4. REPL code. You can uncomment this and run `python3 adv.py` to walk around the map.
 
 ## Minimum Viable Product
 
-`graph_shortest_path` and `graph_social_network` are worth 10 points each, with a possible 4 extra points by completing the social network stretch goals. Stretch points will only be awarded if all other exercises have been completed. You will need to earn 14 points to reach MVP.
-
-* __1__: 0-13
-* __2__: 14-19
-* __3__: 20+
-
-If you are close to MVP but a few points short, your PM can award up to 2 extra points if you can explain the errors in your code and how to fix them and for showing active participation and effort with the week's homework assignment.
+* __1__: Tests do not pass
+* __2__: Tests pass with len(traversalPath) < 2000
+* __3__: Tests pass with len(traversalPath) < 960
 
 ## Stretch Problems
 
-There are two stretch goals in the `graphs_social_network` exercise. You should not work on these until both regular exercises are complete.
+It is very difficult to calculate the shortest possible path that traverses the entire graph. Why? My best path is 957 moves. Can you find a shorter path?
+
+
+
