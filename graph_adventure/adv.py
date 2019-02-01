@@ -22,7 +22,7 @@ player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
     player.travel(move)
-    visited_rooms.add(player.currentRoom)
+    visited_rooms.add(player.currentRoom) 
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
