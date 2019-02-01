@@ -66,7 +66,7 @@ def dfs(room, count):
                     dfs(player.currentRoom, count)
         else:
             player.travel(random_exit)
-            print(len(traversalPath))
+            print(rooms)
             dfs(player.currentRoom, count)
             
     
