@@ -13,31 +13,33 @@ player = Player("Sammie", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
 
 
 # starting dict
-all_rooms = {
-    0: {
-        "n": None,
-        "s": None,
-        "e": None,
-        "w": None
-    }
+all_rooms = {}
+"""
+0: {
+    "n": None,
+    "s": None,
+    "e": None,
+    "w": None
 }
+"""
 
 
 def add_to_all_rooms(room_id, last_room_id, direction_traveled):
-    n = last_room_id if direction_traveled == "s" else None
-    e = last_room_id if direction_traveled == "w" else None
-    s = last_room_id if direction_traveled == "n" else None
-    w = last_room_id if direction_traveled == "e" else None
+    direction = "n"
+    if direction_traveled == "n":
+        direction = "s"
+    if direction_traveled == "w":
+        direction = "e"
+    if direction_traveled == "e":
+        direction = "w"
     if room_id not in all_rooms:
-        all_rooms[room_id] = {"n": n, "s": s, "e": e, "w": w}
+        all_rooms[room_id] = {direction: last_room_id}
     else:
-        for possible_room in [("n", n), ("e", e), ("s", s), ("w", w)]:
-            if possible_room[1] is not None:
-                self.rooms[room_id][possible_room[0]] = possible_room[1]
+        all_rooms[room_id][direction] = last_room_id
 
 
 def travel():
@@ -47,20 +49,13 @@ def travel():
     # if all explored or have no exit:
         # priority is opposite = "w" then "s" then "e" then "n"
     beginning_room = player.currentRoom
-    adjacent_rooms = all_rooms[beginning_room]
+    adjacent_rooms = all_rooms[beginning_room.id]
     # already in beginning room
     # want to travel somewhere else
-    already_explored_count = 0
-    for direction, room in adjacent_rooms.iteritems():
-        if room is None or room == "no exit"
-            already_explored_count += 1
-    
-    if already_explored_count == 4:
-        # priority = "w" -> "s" -> "e" -> "n"
-        pass
-    else:
-        # priority = "n" -> "e" -> "s" -> "w"
-    pass
+    exits = beginning_room.getExits()
+    for direction in ["n", "e", "s", "w"]:
+        if direction not in exits:
+            all_rooms[beginning_room.id][direction] = None
 
 
 # TRAVERSAL TEST
