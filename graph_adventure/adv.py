@@ -68,8 +68,8 @@ while True:
             goBack = inverse_directions[lastDirection]
             player.travel(goBack)
             traversalPath.append(goBack)
-    
-    if len(traversalPath) > 2000: break
+
+    if len(traversalPath) >= 2000 or len(graph) >= 500 : break
         
 
 
@@ -78,6 +78,7 @@ while True:
 print('***')
 print(graph)
 print('***')
+print(traversalPath)
 
 # TRAVERSAL TEST
 visited_rooms = set()
