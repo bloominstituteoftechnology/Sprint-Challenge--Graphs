@@ -30,56 +30,119 @@ player = Player("Name", world.startingRoom)
 
 from collections import deque
 # FILL THIS IN
-def get_traversal_path(world):
-    stack = []
-    visited = set()
-    traversalPath = {}
-    start = world.startingRoom
-    stack.append([start.id])
-    nav = []
-    directions_stack = [[]]
-    longest_directions = []
-    # world.rooms[start.id]
-    while len(stack) > 0:
-        # directions = directions_stack.pop()
-        path = stack.pop()
-        current_room_id = path[-1]
-        current_room = world.rooms[current_room_id]
-        if current_room not in visited:
-            # if current_room_id > 10:
-            #     return traversalPath
-            visited.add(current_room)
-            exits = current_room.getExits()
-            traversalPath[current_room_id] = []
-            for exit in exits:
-                next_room = current_room.getRoomInDirection(exit)
-                if next_room not in visited:
-                    if exit == 'n':
-                        traversalPath[current_room_id].append({'n': next_room.id})
-                    elif exit == 's':
-                        traversalPath[current_room_id].append({'s': next_room.id})
-                    elif exit == 'w':
-                        traversalPath[current_room_id].append({'w': next_room.id})
-                    elif exit == 'e':
-                        traversalPath[current_room_id].append({'e': next_room.id})
+traversalPath = []
+graph = {0:{'n': '?', 's' : '?', 'e': '?', 'w': '?'}}
+inverse_directions = {'n' : 's', "s" : 'n', 'w' : 'e', 'e' : 'w'}
+exploring = True
+while exploring:
+    currentRoomExits = graph[player.currentRoom.id]
+    unexplored = []
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == '?':
+            unexplored.append(direction)
+        if len(unexplored) > 0:
+            randomExit = random.choice(unexplored)
+            traversalPath.append(randomExit)
+            prev_room_id = player.currentRoom.id
+            # move to next room
+            player.travel(randomExit)
+            print(randomExit)
+            print(player.currentRoom.id)
+            exitDict = {}
+            for exit in player.currentRoom.getExits():
+                exitDict[exit] = '?'
+            graph[prev_room_id][randomExit] = player.currentRoom.id
+            exitDict[inverse_directions[randomExit]] = prev_room_id
+            graph[player.currentRoom.id] = exitDict
+        else:
+            #What to do when we reach a room with no unexplored
+            print('reached a room with no unexplored')
+            exploring = False
+            False
+
+# TRAVERSAL TEST
+visited_rooms = set()
+player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
+for move in traversalPath:
+    player.travel(move)
+    visited_rooms.add(player.currentRoom)
+
+if len(visited_rooms) == 500:
+    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{500 - len(visited_rooms)} unvisited rooms")
+
+
+
+#######
+# UNCOMMENT TO WALK AROUND
+#######
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
+
+
+
+
+
+
+# ------ Old code-----
+# def get_traversal_path(world):
+#     stack = []
+#     visited = set()
+#     traversalPath = {}
+#     start = world.startingRoom
+#     stack.append([start.id])
+#     nav = []
+#     directions_stack = [[]]
+#     longest_directions = []
+#     # world.rooms[start.id]
+#     while len(stack) > 0:
+#         # directions = directions_stack.pop()
+#         path = stack.pop()
+#         current_room_id = path[-1]
+#         current_room = world.rooms[current_room_id]
+#         if current_room not in visited:
+#             # if current_room_id > 10:
+#             #     return traversalPath
+#             visited.add(current_room)
+#             exits = current_room.getExits()
+#             traversalPath[current_room_id] = []
+#             for exit in exits:
+#                 next_room = current_room.getRoomInDirection(exit)
+#                 if next_room not in visited:
+#                     if exit == 'n':
+#                         traversalPath[current_room_id].append({'n': next_room.id})
+#                     elif exit == 's':
+#                         traversalPath[current_room_id].append({'s': next_room.id})
+#                     elif exit == 'w':
+#                         traversalPath[current_room_id].append({'w': next_room.id})
+#                     elif exit == 'e':
+#                         traversalPath[current_room_id].append({'e': next_room.id})
                     
-                else:
-                    #No exits found in this room
-                    #Go back to previous room that has more than 1 exit
-                    print('No exits fround out of room:', current_room_id)
-                    i = 2
-                    exits = []
-                    next_room = current_room
-                    while len(exits) == 0:
-                        prev_room_id = path.pop(-i)
-                        prev_room = world.rooms[prev_room_id]
-                        exits = prev_room.getExits()
-                        i +=1
-                    print('Going back to room:', prev_room_id)
-                    next_room = prev_room
-                path_copy = path.copy()
-                path_copy.append(next_room.id)
-                stack.append(path_copy)
+#                 else:
+#                     #No exits found in this room
+#                     #Go back to previous room that has more than 1 exit
+#                     print('No exits fround out of room:', current_room_id)
+#                     i = 2
+#                     exits = []
+#                     next_room = current_room
+#                     while len(exits) == 0:
+#                         prev_room_id = path.pop(-i)
+#                         prev_room = world.rooms[prev_room_id]
+#                         exits = prev_room.getExits()
+#                         i +=1
+#                     print('Going back to room:', prev_room_id)
+#                     next_room = prev_room
+#                 path_copy = path.copy()
+#                 path_copy.append(next_room.id)
+#                 stack.append(path_copy)
 
 
 
@@ -106,43 +169,11 @@ def get_traversal_path(world):
             
                 #     # visited[current_room_id] = path_copy
                 #     # print(visited)
-    print(traversalPath)
-    return traversalPath
+    # print(traversalPath)
+    # return traversalPath
  
 
 
 
 
-
-
-traversalPath = get_traversal_path(world)
-
-
-# TRAVERSAL TEST
-visited_rooms = set()
-player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
-for move in traversalPath:
-    print(move)
-    player.travel(move)
-    visited_rooms.add(player.currentRoom)
-
-if len(visited_rooms) == 500:
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{500 - len(visited_rooms)} unvisited rooms")
-
-
-
-#######
-# UNCOMMENT TO WALK AROUND
-#######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
 
