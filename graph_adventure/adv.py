@@ -13,7 +13,73 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+# Old codes
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def size(self):
+        return len(self.queue)
+    
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else: return None
+
+class Stack:
+    def __init__(self):
+        self.stack = []
+
+    def size(self):
+        return len(self.stack)
+    
+    def push(self, value):
+        self.stack.append(value)
+
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else: return None
+
+class Graph:
+    def __init__(self):
+        self.all = {}
+
+# My codes from this week for reference
+# def bft(self, starting_room=player.currentRoom.id):
+#     queue = Queue()
+#     visited = []
+#     #evas
+#     queue.enqueue(starting_room)
+
+#     while queue.size() > 0:
+#         current_room = queue.dequeue()
+#         visited.append(current_room)
+#         for edge in self.vertices[current_room]:
+#             if edge not in visited:
+#                 queue.enqueue(edge)
+#     return visited
+
+# def dft(self, starting_vertex):
+#     stack = Stack()
+#     visited = []
+
+#     stack.push(starting_vertex)
+
+#     while stack.size() > 0:
+#         current_node = stack.pop()
+#         visited.append(current_node)
+#         for edge in self.vertices[current_node]:
+#             if edge not in visited:
+#                 stack.push(edge)
+#     return visited
+
+
 
 
 # TRAVERSAL TEST
