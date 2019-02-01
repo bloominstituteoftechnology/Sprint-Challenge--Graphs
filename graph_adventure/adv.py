@@ -37,8 +37,8 @@ def add_to_all_rooms(room_id, last_room_id, direction_traveled):
         direction = "e"
     elif direction_traveled == "e":
         direction = "w"
-    else:
-        print("idk where you went")
+    elif direction_traveled != "s":
+        print(f"idk where you went: {direction_traveled}")
         return
     if room_id not in all_rooms:
         all_rooms[room_id] = {direction: last_room_id}
@@ -70,7 +70,7 @@ def travel():
                 all_rooms[beginning_room.id][direction] = None
     # if not done exploring but all adjacent rooms have been
     # retrace your steps
-    if not traveled and all_rooms != 500:
+    if not traveled and len(all_rooms) != 500:
         for direction in ["w", "s", "e", "n"]:
             if direction in exits:
                 moved = player.travel(direction)
@@ -86,15 +86,27 @@ def travel():
 
 
 player.currentRoom = world.startingRoom
-all_rooms[player.currentRoom.id] = {}
-while len(all_rooms) < 500:
-    travel()
+#all_rooms[player.currentRoom.id] = {}
+#while len(all_rooms) < 500:
+#    travel()
+
+
+def dft_recursive(start, visited=None):
+    if not visited:
+        visited = {start}
+    for direction in roomGraph[start][1]:
+        room_id = roomGraph[start][1][direction]
+        if room_id not in visited:
+            visited.add(room_id)
+            traversalPath.append(direction)
+            dft_recursive(room_id, visited)
 
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
+dft_recursive(player.currentRoom.id)
 for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
@@ -110,10 +122,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+#player.currentRoom.printRoomDescription(player)
+#while True:
+#    cmds = input("-> ").lower().split(" ")
+#    if cmds[0] in ["n", "s", "e", "w"]:
+#        player.travel(cmds[0], True)
+#    else:
+#        print("I did not understand that command.")
