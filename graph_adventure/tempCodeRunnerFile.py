@@ -1,1 +1,2 @@
-direction
+:
+        #     visitedRooms.append(player.currentRoom

@@ -6,7 +6,6 @@ class Player:
         nextRoom = self.currentRoom.getRoomInDirection(direction)
         if nextRoom is not None:
             self.currentRoom = nextRoom
-                return True
             if (showRooms):
                 nextRoom.printRoomDescription(self)
         else:

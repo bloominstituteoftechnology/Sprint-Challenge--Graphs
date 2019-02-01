@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+import collections
 import random
 
 # Load world
@@ -39,13 +39,14 @@ def walkBack(facing):
     if facing == 'w':
         return 'e'
 
-visitedRooms = {player.currentRoom}
+visitedRooms = collections.deque()
 
 
-while player.currentRoom.getExits() is not None:
+while len(visitedRooms) < 500:
     direction = generateDirection()
     if canTravel(direction):
         print(player.currentRoom.id)
+        visitedRooms.append(player.currentRoom.id)
         player.travel(direction)
         visitedRooms.append(player.currentRoom)
         traversalPath.append(direction)
@@ -53,6 +54,8 @@ while player.currentRoom.getExits() is not None:
         print("walked back")
         direction = walkBack(direction)
         player.travel(direction)
+        # if player.currentRoom.id == visitedRooms.pop():
+        #     visitedRooms.append(player.currentRoom
         traversalPath.append(direction)
         
         # generateDirection()
