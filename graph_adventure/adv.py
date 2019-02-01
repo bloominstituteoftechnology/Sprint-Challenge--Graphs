@@ -73,8 +73,8 @@ def dft(world, startingRoom):
     visited = {startingRoom: 'start'}
     stack = [[startingRoom]]
 
-    while len(stack) and len(traversalPath) < 40:
-    # while len(stack):
+    # while len(stack) and len(traversalPath) < 40:
+    while len(stack):
         path = stack.pop()
         roomID = path[-1]
         room = world.rooms[roomID]
@@ -85,10 +85,10 @@ def dft(world, startingRoom):
             traversalPath.append(visited[roomID])
             
             print('\n----------------------------------------------------------------\n')
-            print(f"Moving '{visited[roomID]}' to room {roomID}")
+            print(f"Moving '{visited[roomID]}' from room {path[-2]} to room {roomID}")
             print('traversalPath:', traversalPath)
             print('stack:', stack)
-            print(f'Path so far: {path}')
+            print(f'Current path: {path}')
 
         for direction in exits:
             next_room = room.getRoomInDirection(direction).id
@@ -125,6 +125,9 @@ def dft(world, startingRoom):
 
                 backtrack += 2
 
+    print('\n----------------------------------------------------------------\n')
+    print(f'visited {len(visited)} rooms in {len(traversalPath)} steps')
+    print('\n----------------------------------------------------------------\n')
 
 dft(world, world.startingRoom.id)
 
