@@ -11,6 +11,23 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+def shortestPath(currentID, targetID):
+
+    queue = [currentID]
+
+    backPaths = {currentID:[]}
+
+    while len(queue) > 0:
+        for i in memory[queue[0]]:
+            pathy = memory[queue[0]][i]
+            if pathy not in backPaths:
+                backPaths[pathy] = list(backPaths[queue[0]])
+                backPaths[pathy].append(i)
+                queue.append(pathy)
+                if pathy == targetID:
+                    return backPaths[pathy]
+        queue.pop(0)
+
 def reverseDir(d):
     if d is 'n':
         return 's' 
@@ -61,6 +78,7 @@ while len(list(visited)) < 499:
 
     # If there aren't any rooms to travel, back track until there is
     while len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
+        lastUnexplored = unexploredPaths.pop()
         reverse = reversePath.pop()
         moves.append(reverse)
         player.travel(reverse)
@@ -77,10 +95,15 @@ while len(list(visited)) < 499:
     moves.append(move)
     player.travel(move)
 
+    # Add Current Room to Memory
+    if player.currentRoom.id not in memory:
+        memory[player.currentRoom.id] = {}
+
     # Add Move to Memory
     memory[lastRoom][move] = player.currentRoom.id
+    memory[player.currentRoom.id][reverseDir(move)] = lastRoom
 
-print(memory)
+# print(memory)
 
 # FILL THIS IN
 traversalPath = moves
@@ -112,3 +135,21 @@ else:
 #     else:
 #         print("I did not understand that command.")
 
+def shortestPath(currentID, targetID):
+
+    queue = [currentID]
+
+    backPaths = {currentID:[]}
+
+    while len(queue) > 0:
+        for i in memory[queue[0]]:
+            pathy = memory[queue[0]][i]
+            if pathy not in backPaths:
+                backPaths[pathy] = list(backPaths[queue[0]])
+                backPaths[pathy].append(i)
+                queue.append(pathy)
+                if pathy == targetID:
+                    return backPaths[pathy]
+        queue.pop(0)
+
+print(shortestPath(0, 423))
