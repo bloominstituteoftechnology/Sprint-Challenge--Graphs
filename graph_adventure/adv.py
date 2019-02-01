@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from collections import deque
 import random
 
 # Load world
@@ -13,7 +13,90 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+def reverse_direction(direction):
+    if direction is 'n':
+        return 's'
+    if direction is 's':
+        return 'n'
+    if direction is 'w':
+        return 'e'
+    if direction is 'e':
+        return 'w'
+
+
+visited = {}
+#use getExits to track visited
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+reversePath = []
+travPath = []
+#list of visited < 499
+while len(list(visited)) < 499:
+    #if i havent visited current room, put it in visited and the exits
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(reversePath[-1])
+        #while my revers path is not 0 append it to my travPath
+    while len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
+        reverse = reversePath.pop()
+        travPath.append(reverse)
+        player.travel(reverse)
+    #get the next move, add it to travPath and reversed path, then have the player travel and save the move
+    move = visited[player.currentRoom.id].pop(0)
+    reversePath.append(reverse_direction(move))
+    travPath.append(move)
+    player.travel(move)
+
+    #set traversal path to my travPath
+traversalPath = travPath
+        
+
+# class TraverseGraph:
+#     def __init__(self):
+#         self.current_room = 0
+#         self.visited_rooms = {
+#         0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+#         }
+#         self.current_path = []
+
+#     def rooms_unexplored(self):
+#         exits = player.currentRoom.getExits()
+#         unexplored = []
+#         for e in exits:
+#             if self.visited_rooms[player.currentRoom.id][e] == '?':
+#             unexplored.append(e)
+#         if len(unexplored) == 0:
+#             return None
+#         else:
+#             random.shuffle(unexplored)
+#             return unexplored[0]
+
+#             # move here
+#     def move_player(self):
+#         current_room = player.currentRoom.id
+#         direction = self.rooms_unexplored()
+#         player.travel(direction)
+#         next_room = player.currentRoom.id
+#         self.current_room=next_room
+#         self.log_room(current_room, next_room, direction)
+
+#     def log_room(self, current_room, next_room, direction):
+#         traversalPath.append(direction)
+#         if next_room not in self.visited_rooms:
+#             self.visited_room[next_room] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+#         self.visited_rooms[current_room][direction] = next_room
+#         self.visited_rooms[next_room][self.reverse_direction(direction)] = current_room
+
+#     def reverse_direction(self, direction):
+#         if direction == 'n':
+#         return 's'
+#         if direction == 's':
+#         return 'n'
+#         if direction == 'w':
+#         return 'e'
+#         if direction == 'e':
+#         return 'w'
+
+
 
 
 # TRAVERSAL TEST
@@ -42,3 +125,29 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+
+# traversing 
+# class Queue:
+#     def __init__(self):
+#         self.queue = []
+
+#     def enqueue(self, value):
+#         self.queue.append(value)
+
+#     def dequeue(self):
+#         if (self.size()) > 0:
+#             return self.queue.pop(0)
+#         else:
+#             return None
+
+#     def size(self):
+#         return len(self.queue)
+
+
+# def bft (self, world.startingRoom):
+#     #create empty queue
+#     q = Queue()
+#     q.enqueue(world.startingRoom)
+#     visited = []
+#     while q.size() > 0:
