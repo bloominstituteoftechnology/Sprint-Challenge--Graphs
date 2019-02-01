@@ -20,7 +20,7 @@ visited_rooms = []
 player.currentRoom = world.startingRoom
 
 
-while visited_rooms is not 500:
+while len(visited_rooms) < 500:
     visited_rooms.append(player.currentRoom.id)
     if(player.currentRoom.id is not 0):
         # we want to save the room we moved too into the traversal_graph dict
@@ -55,24 +55,28 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "n"
+            traversalPath.append("n")
             player.travel("n")
         elif "e" in possible_exits and traversal_graph[player.currentRoom.id]["e"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "e"
+            traversalPath.append("e")
             player.travel("e")
         elif "s" in possible_exits and traversal_graph[player.currentRoom.id]["s"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "s"
+            traversalPath.append("s")
             player.travel("s")
         elif "w" in possible_exits and traversal_graph[player.currentRoom.id]["w"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "w"
+            traversalPath.append("w")
             player.travel("w")
             
     elif "e" in possible_exits:
@@ -81,18 +85,21 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "e"
+            traversalPath.append("e")
             player.travel("e")
         elif "s" in possible_exits and traversal_graph[player.currentRoom.id]["s"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "s"
+            traversalPath.append("s")
             player.travel("s")
         elif "w" in possible_exits and traversal_graph[player.currentRoom.id]["w"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "w"
+            traversalPath.append("w")
             player.travel("w")
         elif "n" in possible_exits and traversal_graph[player.currentRoom.id]["n"] is "?":
             print("the north room is: ", player.currentRoom.n_to)
@@ -100,6 +107,7 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "n"
+            traversalPath.append("n")
             player.travel("n")
     elif "w" in possible_exits:
         if traversal_graph[player.currentRoom.id]["w"] is "?":
@@ -107,6 +115,7 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "w"
+            traversalPath.append("w")
             player.travel("w")
         elif "n" in possible_exits and traversal_graph[player.currentRoom.id]["n"] is "?":
             print("the north room is: ", player.currentRoom.n_to)
@@ -114,18 +123,21 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "n"
+            traversalPath.append("n")
             player.travel("n")
         elif "e" in possible_exits and traversal_graph[player.currentRoom.id]["e"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "e"
+            traversalPath.append("e")
             player.travel("e")
         elif "s" in possible_exits and traversal_graph[player.currentRoom.id]["s"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "s"
+            traversalPath.append("s")
             player.travel("s")
     elif "s" in possible_exits:
         if traversal_graph[player.currentRoom.id]["s"] is "?":
@@ -133,6 +145,7 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "s"
+            traversalPath.append("s")
             player.travel("s")
         elif "n" in possible_exits and traversal_graph[player.currentRoom.id]["n"] is "?":
             print("the north room is: ", player.currentRoom.n_to)
@@ -140,18 +153,21 @@ while visited_rooms is not 500:
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "n"
+            traversalPath.append("n")
             player.travel("n")
         elif "e" in possible_exits and traversal_graph[player.currentRoom.id]["e"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "e"
+            traversalPath.append("e")
             player.travel("e")
         elif "w" in possible_exits and traversal_graph[player.currentRoom.id]["w"] is "?":
             # save prev room to a temp var
             temp_room = player.currentRoom.id
             #save move to a temp var
             temp_move = "w"
+            traversalPath.append("w")
             player.travel("w")
     
 
