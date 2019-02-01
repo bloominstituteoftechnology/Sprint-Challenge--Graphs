@@ -36,7 +36,7 @@ Open `adv.py`. There are four parts to the provided code:
 * REPL code. You can uncomment this and run `python3 adv.py` to walk around the map.
 
 
-You may find the commands `player.currentRoom.id` and `player.currentRoom.getExits()` useful.
+You may find the commands `player.currentRoom.id`, `player.currentRoom.getExits()` and `player.travel(direction)` useful.
 
 To solve this path, you'll want to construct your own traversal graph. You start in room `0`, which contains exits `['n', 's', 'w', 'e']`. Your starting graph should look something like this:
 
