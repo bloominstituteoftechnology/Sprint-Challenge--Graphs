@@ -58,24 +58,27 @@ def travel():
     # for direction in priority
     for direction in ["n", "e", "s", "w"]:
         # if direction has NOT already been eplored
+        # always try to move somewhere that hasn't been explored yet
         if not adjacent_rooms.get(direction, None):
             # if the direction is in the list of exits
             if direction in exits:
                 # double check to make sure you can move there
                 if player.travel(direction):
                     traveled = True
+                    traversalPath.append(direction)
                     break
             else all_rooms[beginning_room.id][direction] = None
-    if not traveled:
+    # if not done exploring but all adjacent rooms have been
+    # retrace your steps
+    if not traveled and all_rooms != 500:
         for direction in ["w", "s", "e", "n"]:
             if direction in exits:
                 if player.travel(direction):
-                    traveled = True
+                    traversalPath.append(direction)
                     break
        
 
 # TRAVERSAL TEST
-visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
