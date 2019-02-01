@@ -16,6 +16,48 @@ player = Player("Name", world.startingRoom)
 traversalPath = ['s', 'n']
 
 
+def bft():
+    traversalPath = []
+    visited = []
+    queue = []
+    queue.append(roomGraph[0])
+    while queue:
+        print("iter")
+        print("queue", queue)
+        location = queue.pop(0)
+        if location in visited:
+            continue
+        visited.append(location)
+        for neighbor in location[1:]:
+            if "n" in neighbor:
+                print(roomGraph[neighbor["n"]])
+                traversalPath.append("n")
+                queue.append(roomGraph[neighbor["n"]])
+            
+            if "e" in neighbor:
+                print(roomGraph[neighbor["e"]])
+                traversalPath.append("e")
+                queue.append(roomGraph[neighbor["e"]])
+            
+            if "s" in neighbor:
+                print(roomGraph[neighbor["s"]])
+                traversalPath.append("s")
+                queue.append(roomGraph[neighbor["s"]]) 
+            
+            if "w" in neighbor:
+                print(roomGraph[neighbor["w"]])
+                traversalPath.append("w")
+                queue.append(roomGraph[neighbor["w"]])     
+
+    print (queue)
+    print (traversalPath)
+    print (len(visited))
+    print ("visited", visited)
+    print (world.startingRoom)
+
+
+bft()
+
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
