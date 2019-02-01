@@ -30,3 +30,15 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
 
+
+
+#######
+# UNCOMMENT TO WALK AROUND
+#######
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
