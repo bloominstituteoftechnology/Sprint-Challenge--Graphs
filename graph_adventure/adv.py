@@ -55,8 +55,62 @@ def bft():
     print ("visited", visited)
     print (world.startingRoom)
 
+graph = {}
+visited = []
+currentExits = []
+currentRoom = ""
+def mapRoute():
+    print("start")
+    route = ""
+    i = 0
+    # get first room
+    # add room to visited
+    while i < 30:
+        print("iter")
+        print (player.currentRoom)
+        print(graph)
+        visited.append(player.currentRoom.id)
+        currentRoom = player.currentRoom.id
+    # get all possible exits of that room
+        currentExits = player.currentRoom.getExits()
+        graph[player.currentRoom.id]=currentExits
+        if route:
+            if route == "n":
+                graph[currentRoom].remove("s")
+        if route:
+            if route == "e":
+                graph[currentRoom].remove("w")
+        if route:
+            if route == "s":
+                graph[currentRoom].remove("n")
+        if route:
+            if route == "w":
+                graph[currentRoom].remove("e")
+    # go through an exit
+        route = random.choice(graph[currentRoom])
+        graph[currentRoom].remove(route)
+        print(route)
+        traversalPath.append(route)
+        player.travel(route)
+        i+=1
+        
+        
+        
+    # if all exits are visited, go to previous room 
+    # otherwise add direction to traversalPath
+    # mark room: exit as visted
+    
+    
+    
 
-bft()
+mapRoute()
+
+print (graph)
+print("visited", visited)
+print(player.currentRoom)
+
+
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
