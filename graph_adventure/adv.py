@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from collections import deque
 
 import random
 
@@ -14,13 +15,10 @@ player = Player("Andrew", world.startingRoom)
 
 # FILL THIS IN
 
-from collections import deque
-
-traversalPath = []
-
 def analyze_trav_path(world):
     q = deque()
     visited = {}
+    traversalPath = []
 
     start = world.startingRoom
     q.append([start.id])
