@@ -36,16 +36,19 @@ while generate_graph == True:
 
 # start traversal while loop
 while traverse_graph == True:
+
+    # Assign variables to easily refer to common values
     current_room_id = player.currentRoom.id
-    
+    c_room_valid_dir = player.currentRoom.getExits()
+
+    # for loop to find and travel to the first valid unvisited location
     for direction, room in graph[current_room_id].items():
-
         if room == "?":
-            graph[current_room_id][direction] == player.currentRoom.id
-            player.travel(direction)
-
-            print(f'player.currentRoom.id: {player.currentRoom.id}')
-            print(f'graph[current_room_id][direction]: {graph[current_room_id][direction]}')
+            if direction in c_room_valid_dir:
+                player.travel(direction)
+                graph[current_room_id][direction] = player.currentRoom.id\
+                print(f'player.currentRoom.id: {player.currentRoom.id}')
+                print(f'graph[current_room_id][direction]: {graph[current_room_id][direction]}')
     
     traverse_graph = False
 
