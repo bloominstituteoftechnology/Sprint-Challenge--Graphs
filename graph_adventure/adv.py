@@ -31,11 +31,13 @@ graph = {0: {'n': '?', 's': '?', 'e':'?'}}
 
 inverse_directions = {"n":"s", "s":"n", "e":"w", "w":"e"}
 
+
+
 while True:
     
     currentRoomExits = graph[player.currentRoom.id]
     unexploredExits = []
-
+    print(traversalPath)
     for direction in currentRoomExits:
         if currentRoomExits[direction] == "?":
             unexploredExits.append(direction)
@@ -51,8 +53,16 @@ while True:
         exitDictionary[inverse_directions[randomExit]]=previous_room_id
         graph[player.currentRoom.id]=exitDictionary
     else: 
-        #what do we do when we reach a room with no unexplored???
-        break 
+        #what do we do when we reach a room with no unexplored??
+        # make walkout directions 
+            # 1st - inverse current traversal path directions 
+            # 2nd - reverse current traversal path order 
+        # append walkout directions to traversal path
+        
+      
+        break
+
+
 
 
 # TRAVERSAL TEST
