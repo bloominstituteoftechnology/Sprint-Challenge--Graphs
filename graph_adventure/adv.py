@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from queue import Queue
 import random
 
 # Load world
@@ -13,10 +13,18 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
-def travel(direction):
-    
-print(player.currentRoom.getExits())
+def generate_traversal_path(self, start_room):
+    room_queue = Queue()
+    traversalPath = []
+    visited_rooms = set()
+    while room_queue.len() > 0:
+        path = room_queue.dequeue()
+
+        node = path[-1]
+
+        for room in 
+    return traversalPath
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
