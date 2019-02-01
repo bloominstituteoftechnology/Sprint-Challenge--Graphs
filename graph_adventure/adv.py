@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from collections import deque
 import random
 
 # Load world
@@ -13,7 +13,12 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = ['n','s', 'w','e']
+visited_rooms = set()
+queque = deque()
+for move in traversalPath:   
+    player.travel(move)
+print(traversalPath)    
 
 
 # TRAVERSAL TEST
@@ -21,7 +26,7 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
-    player.travel(move)
+    player.travel(move, True)
     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == 500:
