@@ -13,10 +13,10 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = []
+traversalPath = ['n', 's']
 
 # making a graph. setting it to be a set instead of a class for now.
-# graph = set()
+graph = {}
 # populate the graph
 '''
 {
@@ -25,22 +25,8 @@ traversalPath = []
 }
 room's id : exits
 '''
-# trying again with the class
-class Graph:
-    def __init__(self):
-        self.graph = set()
-
-    def add_room(self, room=player.currentRoom.id):
-        if room not in self.graph:
-            self.graph[room] = set()
-        else:
-            print('Been here')
-
-    def add_exits(self, room, exits=player.currentRoom.getExits()):
-        if room in self.graph:
-            self.graph[room].add(exits)
-
-
+graph[player.currentRoom.id] = player.currentRoom.getExits()
+print(graph) # {0: ['n', 's', 'w', 'e']}
 
 # travel back to the last room
 def go_back(direction):
@@ -52,40 +38,33 @@ def go_back(direction):
         return 'n'
     if direction == 'n':
         return 's'
+        
+# the path to traverse back, dft
+reverse_path = []
 
 
+while len(list(graph)) < 500:
+    move = graph[player.currentRoom.id].pop(0)
+    # adding to traversalPath and reverse_path
+    reverse_path.append(go_back(move))
+    traversalPath.append(move)
+    player.travel(move)
 
-# My codes from this week for reference
-# def bft(self, starting_room=player.currentRoom.id):
-#     queue = Queue()
-#     visited = []
-#     #evas
-#     queue.enqueue(starting_room)
+    # adding current room into graph
+    if player.currentRoom.id not in graph:
+        graph[player.currentRoom.id] = player.currentRoom.getExits()
+        # print(graph)
+        # print(reverse_path)
+        # print(reverse_path[-1])
+        
+        # remove the room that you come from if there's exit
+        graph[player.currentRoom.id].remove(reverse_path[-1])
 
-#     while queue.size() > 0:
-#         current_room = queue.dequeue()
-#         visited.append(current_room)
-#         for edge in self.vertices[current_room]:
-#             if edge not in visited:
-#                 queue.enqueue(edge)
-#     return visited
-
-# def dft(self, starting_vertex):
-#     stack = Stack()
-#     visited = []
-
-#     stack.push(starting_vertex)
-
-#     while stack.size() > 0:
-#         current_node = stack.pop()
-#         visited.append(current_node)
-#         for edge in self.vertices[current_node]:
-#             if edge not in visited:
-#                 stack.push(edge)
-#     return visited
-
-
-
+    # if you are at a dead end, go back to a room that has unexplored exits
+    while len(graph[player.currentRoom.id]) is 0 and len(reverse_path) > 0:
+        reverse = reverse_path.pop()
+        traversalPath.append(reverse)
+        player.travel(reverse)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -96,6 +75,7 @@ for move in traversalPath:
     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == 500:
+    # print(graph)
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
