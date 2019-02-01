@@ -1,7 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-from collections import deque
 
 import random
 
@@ -14,26 +13,58 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = []
-def bft(world):
-    q = deque()
-    visited = {}
-    starting_room = world.startingRoom
-    while len(q) > 0:
-        current_room_list = q.popleft()
-        traversalPath = current_room_list
-        current_room_id = current_room_list[-1]
-        current_room = world.rooms[current_room_id]
-        if current_room not in visited:
-            exits = current_room.getExits()
-            for exit in exits:
-                next_room = current_room.getRoomInDirection(exit)
-                path_copy = traversalPath.copy()
-                path_copy.append(next_room.id)
-                q.append(path_copy)
-                visited[current_room_id] = path_copy
-    return traversalPath
 
+def rev_direction(direction):
+    if direction is 'n':
+        return 's'
+    elif direction in 's':
+        return 'n'
+    elif direction is 'w':
+        return 'e'
+    elif direction is 'e':
+        return 'w'
+    
+visited = {}
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+reversep = []
+moves = []
+unexplored_paths = []
+tracking = {}
+tracking[player.currentRoom.id] = {}
+lastRoom = player.currentRoom.id
+
+while len(list(visited)) < 499:
+    if player.currentRoom.id not in tracking:
+        tracking[player.currentRoom.id] = {}
+
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(reversep[-1])
+    
+    if len(visited[player.currentRoom.id]) is not 0:
+        unexplored_paths.append(player.currentRoom.id)
+    elif player.currentRoom.id in unexplored_paths:
+        unexplored_paths.remove(player.currentRoom.id)
+
+    while len(visited[player.currentRoom.id]) is 0 and len(reversep) > 0:
+        reverse = reversep.pop()
+        moves.append(reverse)
+        player.travel(reverse)
+    
+    lastRoom = player.currentRoom.id
+
+    move = visited[player.currentRoom.id].pop(0)
+    
+    reversep.append(rev_direction(move))
+    
+    moves.append(move)
+
+    player.travel(move)
+
+    tracking[lastRoom][move] = player.currentRoom.id
+
+traversalPath = moves
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -54,10 +85,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.currentRoom.printRoomDescription(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    else:
-        print("I did not understand that command.")
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
