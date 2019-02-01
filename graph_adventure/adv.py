@@ -13,7 +13,34 @@ player = Player("Simon", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+graph = {}
+
+unique_rooms_visited = {}
+
+def explore_in(direction,):
+    player.travel(direction)
+    traversalPath.append(direction)
+
+    new_room = player.currentRoom.id
+
+
+while len(unique_rooms_visited) < 500:
+    current_room = player.currentRoom.id
+
+    if current_room not in unique_rooms_visited:
+        exits = {}
+
+        for exit in player.currentRoom.getExits():
+            exits[exit] = "?"
+
+            unique_rooms_visited[current_room] = exits
+
+    exits = unique_rooms_visited[current_room]
+
+    if "n" in exits and exits["n"] == "?":
+        explore_in("n")
+
 
 
 # TRAVERSAL TEST
@@ -33,7 +60,7 @@ else:
 
 
 ######
-UNCOMMENT TO WALK AROUND
+# UNCOMMENT TO WALK AROUND
 ######
 # player.currentRoom.printRoomDescription(player)
 # while True:
