@@ -19,6 +19,7 @@ traversalPath = []
 # starting dict
 all_rooms = {}
 """
+# isolated room
 0: {
     "n": None,
     "s": None,
@@ -53,10 +54,25 @@ def travel():
     # already in beginning room
     # want to travel somewhere else
     exits = beginning_room.getExits()
+    traveled = False
+    # for direction in priority
     for direction in ["n", "e", "s", "w"]:
-        if direction not in exits:
-            all_rooms[beginning_room.id][direction] = None
-
+        # if direction has NOT already been eplored
+        if not adjacent_rooms.get(direction, None):
+            # if the direction is in the list of exits
+            if direction in exits:
+                # double check to make sure you can move there
+                if player.travel(direction):
+                    traveled = True
+                    break
+            else all_rooms[beginning_room.id][direction] = None
+    if not traveled:
+        for direction in ["w", "s", "e", "n"]:
+            if direction in exits:
+                if player.travel(direction):
+                    traveled = True
+                    break
+       
 
 # TRAVERSAL TEST
 visited_rooms = set()
