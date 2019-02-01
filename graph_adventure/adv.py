@@ -13,17 +13,12 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = {}
+pcr = player.currentRoom.id
+unexplored_path = True
+while unexplored_path:
+    for direction in player.currentRoom.getExits():
 
-traversalGraph = {}
 
-visited_rooms = set()
-
-current_room_exits = player.currentRoom.getExits()
-current_room_id = player.currentRoom.id
-for room_id in roomGraph:
-    traversalGraph[room_id] = room.room_id.getExits()
-print(f'traversalGraph: {traversalGraph}')
 
 # TRAVERSAL TEST
 visited_rooms = set()
