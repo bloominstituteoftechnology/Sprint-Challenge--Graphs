@@ -166,8 +166,6 @@ def dft(world, startingRoom):
                 stack.append(new_path)
 
         if not len(next_directions) and len(stack):
-            backtrack = 1
-
             print('\nNo new rooms from here, time to backtrack:')
 
             while path != stack[-1][:-1]:
@@ -187,11 +185,10 @@ def dft(world, startingRoom):
 
                 print(f"Moving '{go_back}' back to room {path[-1]}")
 
-                backtrack += 2
-
     print('\n----------------------------------------------------------------\n')
     print(f'Visited {len(visited)} rooms in {len(traversalPath)} steps')
     print('\n----------------------------------------------------------------\n')
+
 
 dft(world, world.startingRoom.id)
 
