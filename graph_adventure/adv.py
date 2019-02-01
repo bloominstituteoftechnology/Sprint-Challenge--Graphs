@@ -13,7 +13,7 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = ['s', 'n', 'e', 'w']
 
 
 # TRAVERSAL TEST
