@@ -31,7 +31,7 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 Open `adv.py`. There are four parts to the provided code:
 
 * World generation code. Do not modify this!
-* A list with two directions in it. Your task is to fill this with valid traversal directions.
+* An incomplete list of directions. Your task is to fill this with valid traversal directions.
 * Test code. Run the tests by typing `python3 adv.py` in your terminal.
 * REPL code. You can uncomment this and run `python3 adv.py` to walk around the map.
 
