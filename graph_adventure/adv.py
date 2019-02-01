@@ -30,7 +30,7 @@ class Stack():
 #result should look like ===> {
  # 0: {'n': '?', 's': 5, 'w': '?', 'e': '?'},
 #  5: {'n': 0, 's': '?', 'e': '?'}
-}
+
 def worldTraverse(playerId):
     ''' 
         Need a Stack
@@ -48,9 +48,29 @@ def worldTraverse(playerId):
         next path starts with current path
         append value to path
         push path into Storage
-        
     '''
+# Bidirectional case of parent being opposite direction in relation to child
+def oppositeCardinal(direction):
+    if direction is 'n':
+        return 's' 
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
 
+#visited set (dictionary)?
+visited = {}
+#set key to starting room id with value equal to exits ex. 0: {n, e, s, w}
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+print(visited)
+
+#have checked list for bidirectional travel back to the start of the map
+checked = []
+
+#track the steps to completion in order to pass tests/ set to traversalPath var
+count = []
 
 
 # FILL THIS IN
