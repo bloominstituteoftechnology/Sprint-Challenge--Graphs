@@ -60,7 +60,8 @@ def travel():
             # if the direction is in the list of exits
             if direction in exits:
                 # double check to make sure you can move there
-                if player.travel(direction):
+                moved = player.travel(direction)
+                if moved:
                     traveled = True
                     traveled_dir = direction
                     traversalPath.append(direction)
@@ -72,7 +73,8 @@ def travel():
     if not traveled and all_rooms != 500:
         for direction in ["w", "s", "e", "n"]:
             if direction in exits:
-                if player.travel(direction):
+                moved = player.travel(direction)
+                if moved:
                     traveled = True
                     traveled_dir = direction
                     traversalPath.append(direction)
@@ -80,11 +82,12 @@ def travel():
     # if we traveled (should always be yes if not at 500 rooms explored
     if traveled:
         add_to_all_rooms(player.currentRoom.id, beginning_room.id, traveled_dir)
+        print(all_rooms)
 
 
+player.currentRoom = world.startingRoom
+all_rooms[player.currentRoom.id] = {}
 while len(all_rooms) < 500:
-    player.currentRoom = world.startingRoom
-    all_rooms = {player.currentRoom.id: {}}
     travel()
 
 
