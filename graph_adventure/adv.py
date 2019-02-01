@@ -16,12 +16,6 @@ player = Player("Sammie", world.startingRoom)
 traversalPath = ['s', 'n']
 
 
-# make a specific order
-# if any adjacent are unexplored:
-    # priority = "n" then "e" then "s" then "w"
-# if all explored or have no exit:
-    # priority is opposite = "w" then "s" then "e" then "n"
-
 # starting dict
 all_rooms = {
     0: {
@@ -47,12 +41,26 @@ def add_to_all_rooms(room_id, last_room_id, direction_traveled):
 
 
 def travel():
+    # make a specific order
+    # if any adjacent are unexplored:
+        # priority = "n" then "e" then "s" then "w"
+    # if all explored or have no exit:
+        # priority is opposite = "w" then "s" then "e" then "n"
     beginning_room = player.currentRoom
     adjacent_rooms = all_rooms[beginning_room]
+    # already in beginning room
+    # want to travel somewhere else
+    already_explored_count = 0
     for direction, room in adjacent_rooms.iteritems():
-        if adjacent_rooms[direction] is None:
-            player.travel(direction)
-            add_to_all_rooms(player.currentRoom, beginning_room, direction)
+        if room is None or room == "no exit"
+            already_explored_count += 1
+    
+    if already_explored_count == 4:
+        # priority = "w" -> "s" -> "e" -> "n"
+        pass
+    else:
+        # priority = "n" -> "e" -> "s" -> "w"
+    pass
 
 
 # TRAVERSAL TEST
