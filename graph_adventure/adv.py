@@ -12,7 +12,7 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 
-# FILL THIS IN
+# FILL THIS INs
 traversalPath = ['s', 'n']
 
 
