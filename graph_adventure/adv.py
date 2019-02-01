@@ -17,29 +17,39 @@ def dfs(self, starting_vertex, target):
     visited = []
     stack = []
     stack.append([starting_vertex])
+    visited_2 = {}
     
     while stack:     
         path = stack.pop()
         last_node = path[-1:][0]
         if last_node not in visited:
+            visited_2[last_node] = path
             print(last_node, path)
             if last_node == target:
                 return path
             visited.append(last_node)
-            ops = roomGraph[last_node][1]['e']
-            print('OPS', ops)
-            for v in ops[last_node]:
-                new_list = list(path)
-                new_list.append(v)
-                stack.append(new_list)
-    return False
+            # ops = roomGraph[last_node][1]['e']
+            # print('OPS', ops)
+            poss_dirs = player.currentRoom.getExits()
+            for p in poss_dirs:
+                if p in roomGraph[last_node][1]:
+                    # print('P', p, roomGraph[last_node][1][p])
+                    # print('D', d, p, roomGraph[last_node][1][p])
+                    # for v in roomGraph[last_node][1]:
+                        # print('V', v, roomGraph[last_node][1])
+                    new_list = list(path)
+                    new_list.append(roomGraph[last_node][1][p])
+                    # print('new', new_list)
+                    stack.append(new_list)
+                            # print('STACK', stack)
+    return visited_2
 
 # FILL THIS IN
 dirs = ['s', 'n', 'e', 'w']
 # for d in dirs:
 print(dfs(roomGraph, 0, 499))
 traversalPath = []
-
+# You may find the commands player.currentRoom.id, player.currentRoom.getExits() and player.travel(direction) useful.
 
 
 # TRAVERSAL TEST
