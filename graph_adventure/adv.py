@@ -1,7 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-from graph import Map_Graph
 
 import random
 
@@ -15,7 +14,6 @@ player = Player("Sammie", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = ['s', 'n']
-map_graph = Map_Graph()
 
 
 # make a specific order
