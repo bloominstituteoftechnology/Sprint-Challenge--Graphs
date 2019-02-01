@@ -31,21 +31,34 @@ def dft(self, start):
 '''
 # TRAVERSAL TEST
 traversalPath = []
-visited_rooms = dict()
+backtracker = []
+visited_rooms = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 player.currentRoom = world.startingRoom
+inverseDirections = {'n': 's', 's':'n', 'w':'e', 'e':'w'}
 while len(visited_rooms) != 500:
-    exits = player.currentRoom.getExits()
-    if player.currentRoom.id not in visited_rooms:
+    unexpExits = []
+    allRooms = visited_rooms[player.currentRoom.id]
+    for exit in allRooms:
+        if allRooms[exit] == '?':
+            unexpExits.append(exit)
+    
+    if len(unexpExits) > 0:
+        
+        direction = unexpExits[random.randint(0, len(unexpExits) - 1)]
+        prevRoom = player.currentRoom.id
+        traversalPath.append(direction)
+        backtracker.append(direction)
+        player.travel(direction)
         temp = {}
-        for exit in exits:
+        for exit in player.currentRoom.getExits():
             temp[exit] = '?'
+        visited_rooms[prevRoom][direction] = player.currentRoom.id
+        temp[inverseDirections[direction]] = prevRoom
         visited_rooms[player.currentRoom.id] = temp
-    direction = exits[random.randint(0, len(exits) - 1)]
-    prevRoom = player.currentRoom.id
-    player.travel(direction)
-    visited_rooms[prevRoom][direction] = player.currentRoom.id
+    else:
+        prevDir = backtracker.pop()
+        player.travel(inverseDirections[prevDir])
 
-print(traversalPath)
 print(visited_rooms)
 
 
