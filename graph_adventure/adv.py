@@ -2,7 +2,6 @@ from room import Room
 from player import Player
 from world import World
 
-import random
 
 # Load world
 # DO NOT MODIFY
@@ -13,70 +12,240 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN 
-traversalPath = []
+traversalPath = ['s', 'n']
 
 
-rooms = {
-  0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
-}
+# rooms = {
+#   0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+# }
 
-def oppositeDirection(direction):
-    if direction == "n":
-        return "s"
-    if direction == "s":
-        return "n"
-    if direction == "w":
-        return "e"
-    if direction == "e":
-        return "w"
+# def oppositeDirection(direction):
+#     if direction == "n":
+#         return "s"
+#     if direction == "s":
+#         return "n"
+#     if direction == "w":
+#         return "e"
+#     if direction == "e":
+#         return "w"
 
-def dfs(room, count):
 
-    if len(traversalPath) > 2000:
-        return
+# # def dfs2(room, stack = []):
 
-    print(f"COUNT IS {count}")
-    #the starting room passed in
-    starting_room = room
-    print(f"THE CURRENT ROOM IS {room.id}")
+
+# #     currentRoomExits = rooms[room.id]
+
+# #     unexploredExits = []
+
+# #     for direction in currentRoomExits:
+# #         if currentRoomExits[direction] == "?":
+# #             unexploredExits.append(direction)
+    
+# #     if len(unexploredExits) > 0:
+# #         randomExit = random.choice(unexploredExits)
+# #         traversalPath.append(randomExit)
+# #         player.travel(randomExit)
+# #     else:
+# #         #What do we do when we reach a room with no unexplored??
+
+
+# def dfs(room, count):
+
+#     if len(traversalPath) > 2000:
+#         return
+
+#     print(f"COUNT IS {count}")
+#     #the starting room passed in
+#     starting_room = room
+#     print(f"THE CURRENT ROOM IS {room.id}")
 
     
-    #possilbe room exits
-    room_exits = starting_room.getExits()
-    print(f"ROOM {room.id} POSSIBLE EXITS ARE {room_exits}")
+#     #possilbe room exits
+#     room_exits = starting_room.getExits()
+#     print(f"ROOM {room.id} POSSIBLE EXITS ARE {room_exits}")
     
-    #random exit from possible room exits
-    random_exit = random.choice(room_exits)
-    print(f"THE RANDOM EXIT SELECTED FOR ROOM {room.id} IS {random_exit}")
+#     #random exit from possible room exits
+#     random_exit = random.choice(room_exits)
+#     print(f"THE RANDOM EXIT SELECTED FOR ROOM {room.id} IS {random_exit}")
     
 
-    if room.id not in rooms:
-        print(f"ROOM{room.id} IS NOT IN ROOMS DICTIONARY")
-    else:
-        if rooms[room.id][random_exit] == "?":
-            if player.travel(random_exit):
-                print(f"THE PLAYER SUCESSFULLY TRAVELED TO {player.currentRoom.id}")
-                rooms[room.id][random_exit] = player.currentRoom.id
-                if player.currentRoom.id not in rooms:
-                    rooms[player.currentRoom.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
-                    rooms[player.currentRoom.id][oppositeDirection(random_exit)] = room.id
-                    print(rooms)
-                    print(f"length of rooms {len(rooms)}")
-                    traversalPath.append(random_exit)
-                    count +=1
-                    dfs(player.currentRoom, count)
-        else:
-            traversalPath.append(random_exit)
-            player.travel(random_exit)
-            print(f"length of rooms {len(rooms)}")
-            dfs(player.currentRoom, count)
+#     if room.id not in rooms:
+#         print(f"ROOM{room.id} IS NOT IN ROOMS DICTIONARY")
+#     else:
+#         if rooms[room.id][random_exit] == "?":
+#             if player.travel(random_exit):
+#                 print(f"THE PLAYER SUCESSFULLY TRAVELED TO {player.currentRoom.id}")
+#                 rooms[room.id][random_exit] = player.currentRoom.id
+#                 if player.currentRoom.id not in rooms:
+#                     rooms[player.currentRoom.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+#                     rooms[player.currentRoom.id][oppositeDirection(random_exit)] = room.id
+#                     print(rooms)
+#                     print(f"length of rooms {len(rooms)}")
+#                     traversalPath.append(random_exit)
+#                     count +=1
+#                     dfs(player.currentRoom, count)
+#         else:
+#             traversalPath.append(random_exit)
+#             player.travel(random_exit)
+#             print(f"length of rooms {len(rooms)}")
+#             dfs(player.currentRoom, count)
             
     
 
 
-dfs(player.currentRoom, 0)
+# # dfs2(player.currentRoom)
+
+# graph =  {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+
+# inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
+
+# while True:
+#     currentRoomExits = graph[player.currentRoom.id]
+
+#     unexploredExits = []
+
+#     for direction in currentRoomExits:
+#         if currentRoomExits[direction] == "?":
+#             unexploredExits.append(direction)
     
+#     if len(unexploredExits) > 0:
+#         randomExit = random.choice(unexploredExits)
+#         traversalPath.append(randomExit)
+#         previous_room_id = player.currentRoom.id
+#         player.travel(randomExit)
+#         exitDictionary = {}
+#         for exit in player.currentRoom.getExits():
+#             exitDictionary[exit] = "?"
+#         graph[previous_room_id][randomExit] = player.currentRoom.id
+#         exitDictionary[inverse_directions[randomExit]] = previous_room_id
+#         graph[player.currentRoom.id] = exitDictionary
         
+#     else:
+#         #What do we do when we reach a room with no unexplored??
+#         player.travel()
+#         print(player.currentRoom.id)
+#         break
+
+# print(traversalPath)
+# print(graph)
+import random
+
+
+# graph =  {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+
+# inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
+
+# stack = []
+# count = 0
+
+# while True:
+    
+#     print(f"Count = {count}")
+#     count += 1
+
+
+
+#     currentRoomExits = graph[player.currentRoom.id]
+
+#     unexploredExits = []
+
+#     for direction in currentRoomExits:
+#         if currentRoomExits[direction] == "?":
+#             unexploredExits.append(direction)
+    
+#     if len(unexploredExits) > 0:
+#         randomExit = random.choice(unexploredExits)
+#         print(randomExit)
+#         traversalPath.append(randomExit)
+#         previous_room_id = player.currentRoom.id
+#         player.travel(randomExit)
+#         stack.append(randomExit)
+#         exitDictionary = {}
+#         for exit in player.currentRoom.getExits():
+#             exitDictionary[exit] = "?"
+#         graph[previous_room_id][randomExit] = player.currentRoom.id
+#         exitDictionary[inverse_directions[randomExit]] = previous_room_id
+#         graph[player.currentRoom.id] = exitDictionary
+        
+#     else:
+#         # break
+#         #What do we do when we reach a room with no unexplored??
+#         last_exit = stack.pop()
+#         print(stack)
+#         player.travel(inverse_directions[last_exit])
+        
+
+# print(traversalPath)
+# print(graph)
+# print(f"Stack = {stack}")
+
+# graph = {}
+
+# steps = []
+
+# inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
+
+# graph[player.currentRoom.id] = {}
+
+# while len(graph) < 500:
+#     newRoom = False
+#     currentRoom = player.currentRoom.id
+#     currentRoomExits = player.currentRoom.getExits()
+
+#     for exit in currentRoomExits:
+#         if graph[currentRoom].get(exit, '?') == "?":
+#             player.travel(exit)
+#             newRoom = player.currentRoom.id
+#             traversalPath.append(exit)
+#             graph[currentRoom][exit] = newRoom
+
+#             if not graph.get(newRoom, None):
+#                 graph[newRoom] = {}
+#             graph[newRoom][inverse_directions[exit]] = currentRoom
+
+#             steps.append(inverse_directions[exit])
+#             newRoom = True
+#             break
+#         else:
+#             continue
+
+#     if not newRoom:
+#         previous = steps.pop()
+#         traversalPath.append(previous)
+#         player.travel(previous)
+
+graph = {}
+
+steps = []
+
+inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
+
+graph[player.currentRoom.id] = {}
+
+while len(graph) < 500:
+    newRoom = False
+    currentRoom = player.currentRoom.id
+    currentRoomExits = player.currentRoom.getExits()
+
+    for exit in currentRoomExits:
+        if graph[currentRoom].get(exit, '?') == "?":
+            player.travel(exit)
+            newRoom = player.currentRoom.id
+            traversalPath.append(exit)
+            graph[currentRoom][exit] = newRoom
+
+            if newRoom not in graph:
+                graph[newRoom] = {}
+            graph[newRoom][inverse_directions[exit]] = currentRoom
+
+            steps.append(inverse_directions[exit])
+            newRoom = True
+            break
+        
+    if not newRoom:
+        previous = steps.pop()
+        traversalPath.append(previous)
+        player.travel(previous)
 
 
 # TRAVERSAL TEST
@@ -92,7 +261,6 @@ if len(visited_rooms) == 500:
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
-
 
 
 #######
