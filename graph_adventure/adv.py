@@ -13,18 +13,89 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n', 'e', 'w']
+traversalPath = []
+
+traversal_graph = {}
+visited_rooms = []
+player.currentRoom = world.startingRoom
+
+
+while visited_rooms is not 500:
+    visited_rooms.append(player.currentRoom.id)
+    if(player.currentRoom.id is not 0):
+        # we want to save the room we moved too into the traversal_graph dict
+        traversal_graph[temp_room].update({temp_move: player.currentRoom.id})
+
+    #save exits of current room to variable
+    num_exits = player.currentRoom.getExits()
+    # create an empty dict for the moves
+    moves = dict()
+    # iterate through exits and make them a dict
+    for exits in num_exits:
+        print(exits)
+        moves.update({exits: '?'})
+    # appends dict of room exits to current room
+    # ex: {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+    traversal_graph[player.currentRoom.id] = moves
+    print(traversal_graph)
+    # now we want to attempt a movement either n, s, w, or e
+    if player.currentRoom.n_to.id is not None and player.currentRoom.n_to.id is not visited_rooms:
+        print("the north room is: ", player.currentRoom.n_to)
+        # save prev room to a temp var
+        temp_room = player.currentRoom.id
+        #save move to a temp var
+        temp_move = "n"
+        player.travel("n")
+    elif player.currentRoom.s_to.id is not visited_rooms and player.currentRoom.s_to.id is not None:
+        # save prev room to a temp var
+        temp_room = player.currentRoom.id
+        #save move to a temp var
+        temp_move = "s"
+        player.travel("s")
+    elif player.currentRoom.e_to.id is not visited_rooms and player.currentRoom.e_to.id is not None:
+        # save prev room to a temp var
+        temp_room = player.currentRoom.id
+        #save move to a temp var
+        temp_move = "e"
+        player.travel("e")
+    elif player.currentRoom.w_to.id is not visited_rooms and player.currentRoom.w_to.id is not None:
+        # save prev room to a temp var
+        temp_room = player.currentRoom.id
+        #save move to a temp var
+        temp_move = "w"
+        player.travel("w")
+    print("we have traversed these rooms: ", visited_rooms)
+    # take id of that next room, add it to traversal graph
+    # go back to previous room and change the direction key from ? to room id
+    # need to check if any keys have values that are still ?
+    
+
+    
+    print(traversal_graph)
+    # # pop current room from traversal_graph
+    # list_of_directions = traversal_graph.pop(player.currentRoom.id)
+    # print(list_of_directions)
+    # # attempt to go a direction
+    # for move in list_of_directions:
+    #         player.travel(move)
+           
+    #         traversalPath.append(move)
+    #         list_of_directions.pop(0)
+    #         visited_rooms.add(player.currentRoom)
+        
+
+    # save the direction into traversalPath
+
 
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
+print(player.currentRoom.id)
 for move in traversalPath:
-    print(move)
     player.travel(move)
     visited_rooms.add(player.currentRoom)
-    print(visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
