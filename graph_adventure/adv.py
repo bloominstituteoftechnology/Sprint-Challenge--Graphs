@@ -14,43 +14,57 @@ player = Player("Andrew", world.startingRoom)
 
 
 # FILL THIS IN
+# traversalPath = []
 
-def analyze_trav_path(world):
-    q = deque()
-    visited = {}
-    traversalPath = []
+# Instantiate directional dictionary graph
+graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
+# initial traversal path
+traversalPath = ['s', 'n']
+# Instantiate direction_dict that will be reversed in order to define what the "opposite" direction of something is
+direction_dict = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
+inversed_direction_dict = traversalPath.copy()
 
-    start = world.startingRoom
-    q.append([start.id])
+while len(traversalPath)< 90000:
+    # Determine the exits available to a player based on where they are
+    curr_room_exits = graph[player.currentRoom.id]
+    # Instantiate upcoming_exits list to be able to reference what moves are available while traversing rooms
+    upcoming_exits = []
 
-    while len(q) > 0:
+    # Add to upcoming exits based on your current room
+    for direction in curr_room_exits:
+        if curr_room_exits[direction] == '?':
+            upcoming_exits.append(direction)
+    
+    # If there are still upcoming exits left
+    if len(upcoming_exits)>0:
+        # select random exit and traverse it
+        exit_selection = random.choice(upcoming_exits)
+        traversalPath.append(exit_selection)
+        # set pre_room_id to the current room that you're about to leave, and run player.travel method to the exit picked
+        prev_room_id = player.currentRoom.id
+        player.travel(exit_selection)
+        exit_dict = {}
 
-        current_room_list = q.popleft()
-        traversalPath = current_room_list
-        curr_room_identifier = current_room_list[-1]
-        curr_room = world.rooms[curr_room_identifier]
-        
-        if curr_room not in visited:
+        for exits in player.currentRoom.getExits():
+            exit_dict[exits] = "?"
+            
+        graph[prev_room_id][exit_selection] = player.currentRoom.id
+        exit_dict[direction_dict[exit_selection]] = prev_room_id
+        graph[player.currentRoom.id] = exit_dict
+    else:
+        # When no more upcoming exits left
+        for player_moves in traversalPath[::-1]:
+            player.travel(direction_dict[player_moves])
+            traversalPath.append(direction_dict[player_moves])
+            
+            if "?" in graph[player.currentRoom.id].values():
+                curr_room_exits = graph[player.currentRoom.id]
 
-            room_exits = curr_room.getExits()
+                for direction in curr_room_exits:
+                    if curr_room_exits[direction] == '?':
+                        upcoming_exits.append(direction)
 
-            for exit in room_exits:
-                advance_to_room = curr_room.getRoomInDirection(exit)
-
-                path_info = traversalPath.copy()
-                path_info.append(advance_to_room.id)
-                q.append(path_info)
-                visited[curr_room_identifier] = path_info
-
-                print(visited)
-                print(advance_to_room)
-
-    return traversalPath
-
-
-traversalPath = analyze_trav_path(world)
-
-
+                break
 
 # TRAVERSAL TEST
 visited_rooms = set()
