@@ -3,6 +3,8 @@ from collections import deque
 from room import Room
 from player import Player
 from world import World
+from sys import argv
+from graph import Graph
 
 import random
 
@@ -14,13 +16,24 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-def traversal_path ()
+
+traversal_graph = Graph()  # Instantiate your graph
+
+def build_traversal_graph(world):
+    for room in world.rooms: 
+        traversal_graph.add_vertex(room)
+    for room in world.rooms:
+        exits = player.currentRoom.getExits(room) 
+        for direction in exits:
+            traversal_graph.add_edge(direction, room)
+
+print (traversal_graph)
 #starting node
-player.currentRoom.id
+#start = player.currentRoom.id
 #edges of starting node
-player.currentRoom.getExits() 
+#player.currentRoom.getExits() 
 #moving to a neighbor 
-player.travel(direction)
+#player.travel(direction)
     
 # FILL THIS IN
 traversalPath = []
