@@ -11,22 +11,47 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+class TraversalGraph:
+    def __init__(self):
+        self.nodes = {}
 
 # FILL THIS IN
-traversalPath = ['n','s', 'w','e']
-visited_rooms = set()
+traversalPath = []
+visited_rooms = {}
 queque = deque()
-for move in traversalPath:   
-    player.travel(move)
-print(traversalPath)    
+queque.append(player.currentRoom)
+while queque:
+    room = queque.pop()
+    visited_rooms[room.id] = {}
+    for move in room.getExits():
+        visited_rooms[room.id][move] = room.getRoomInDirection(move).id
+        traversalPath.append(move)
+        if not room.getRoomInDirection(move).id in visited_rooms:
+            queque.append(room.getRoomInDirection(move))
+            
 
+# while True:
+#     move = player.getExits()[random.randint(0, len(player.getExits()))]
+#     traversalPath.append(move)
+
+print(visited_rooms)
+print(len(visited_rooms))
+# move = player.currentRoom.getExits()[random.randint(0, len(player.currentRoom.getExits()))]
+# while player.currentRoom.getRoomInDirection(move).id in visited_rooms:
+#     move = player.currentRoom.getExits()[random.randint(0, len(player.currentRoom.getExits()))]
+# traversalPath.append(move)
+
+# print(len(traversalPath))       
+traversalPath = ['n','e','s','w'] * 30000
+print(traversalPath)
+random.shuffle(traversalPath)
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
-    player.travel(move, True)
+    player.travel(move)
     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == 500:
