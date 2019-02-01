@@ -16,6 +16,7 @@ def reverseDir(d):
         return 's' 
     elif d is 's':
         return 'n'
+
     elif d is 'e':
         return 'w'
     elif d is 'w':
@@ -24,16 +25,39 @@ def reverseDir(d):
 # Keep Track of Visited Rooms
 visited = {}
 visited[player.currentRoom.id] = player.currentRoom.getExits()
+
 # Keep Track of The Path Back
 reversePath = []
+
 # Keep Track of All Moves Made
 moves = []
 
+# Keep Track of Rooms with Unexplored Paths
+unexploredPaths = []
+
+# Memory for Finding Shortest Bath Back
+memory = {}
+memory[player.currentRoom.id] = {}
+
+# Keep track of the Last Room Visited
+lastRoom = player.currentRoom.id
+
 while len(list(visited)) < 499:
+
+    # Add Current Room to Memory
+    if player.currentRoom.id not in memory:
+        memory[player.currentRoom.id] = {}
+
     # Add Current Room to Visited
     if player.currentRoom.id not in visited:
         visited[player.currentRoom.id] = player.currentRoom.getExits()
         visited[player.currentRoom.id].remove(reversePath[-1])
+    
+    # Add Room to Unexplored Paths if Unexplored Paths Exist in Room
+    if len(visited[player.currentRoom.id]) is not 0:
+        unexploredPaths.append(player.currentRoom.id)
+    elif player.currentRoom.id in unexploredPaths:
+        unexploredPaths.remove(player.currentRoom.id)
 
     # If there aren't any rooms to travel, back track until there is
     while len(visited[player.currentRoom.id]) is 0 and len(reversePath) > 0:
@@ -41,16 +65,25 @@ while len(list(visited)) < 499:
         moves.append(reverse)
         player.travel(reverse)
 
-    # Make a Move
+    lastRoom = player.currentRoom.id
+
+    # Get next Move
     move = visited[player.currentRoom.id].pop(0)
+    
     # Add Move to moves and reverse Path
     reversePath.append(reverseDir(move))
+    
+    # Make a Move and Store the Move
     moves.append(move)
     player.travel(move)
 
+    # Add Move to Memory
+    memory[lastRoom][move] = player.currentRoom.id
+
+print(memory)
+
 # FILL THIS IN
 traversalPath = moves
-
 
 # TRAVERSAL TEST
 visited_rooms = set()
