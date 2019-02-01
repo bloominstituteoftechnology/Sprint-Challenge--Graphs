@@ -13,7 +13,7 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = ['s', 'n', 'e', 'w']
 
 
 # TRAVERSAL TEST
@@ -21,8 +21,10 @@ visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
+    print(move)
     player.travel(move)
     visited_rooms.add(player.currentRoom)
+    print(visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
