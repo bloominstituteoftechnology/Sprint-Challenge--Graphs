@@ -13,7 +13,62 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+def dft(world, startingRoom):
+    visited = set([startingRoom])
+    stack = [[startingRoom]]
+
+    while len(stack):
+        path = stack[-1]
+        roomID = path[-1]
+        room = world.rooms[roomID]
+        exits = room.getExits()
+        next_directions = []
+
+        for direction in exits:
+            next_room = room.getRoomInDirection(direction).id
+
+            if next_room not in visited:
+                visited.add(next_room)
+                new_path = path + [next_room]
+                next_directions.append(direction)
+
+                stack.append(new_path)
+
+        print('\ntraversalPath', traversalPath)
+        print('stack', stack)
+        print('next_directions', next_directions)
+
+        if not len(next_directions) and len(visited) is not len(world.rooms):
+            backtrack = -1
+
+            while path is not stack[-1]:
+                came_from = traversalPath[backtrack]
+                go_back = ''
+
+                if came_from == 'n':
+                    go_back == 's'
+                elif came_from == 's':
+                    go_back == 'n'
+                elif came_from == 'e':
+                    go_back == 'w'
+                elif came_from == 'w':
+                    go_back == 'e'
+
+                traversalPath.append(go_back)
+                path.pop()
+
+                backtrack -= 2
+
+            stack.pop()
+        
+        else:
+            traversalPath.append(next_directions[-1])
+
+
+
+dft(world, world.startingRoom.id)
 
 
 # TRAVERSAL TEST
@@ -35,10 +90,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.currentRoom.printRoomDescription(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    else:
-        print("I did not understand that command.")
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
