@@ -26,7 +26,7 @@ graph = {}
 room's id : exits
 '''
 graph[player.currentRoom.id] = player.currentRoom.getExits()
-print(graph) # {0: ['n', 's', 'w', 'e']}
+# print(graph) # {0: ['n', 's', 'w', 'e']}
 
 # travel back to the last room
 def go_back(direction):
@@ -42,9 +42,12 @@ def go_back(direction):
 # the path to traverse back, dft
 reverse_path = []
 
-
+# print(graph)
+# print(list(graph)) # 0, key
 while len(list(graph)) < 500:
     move = graph[player.currentRoom.id].pop(0)
+    # print(graph[player.currentRoom.id])
+    # print(move)
     # adding to traversalPath and reverse_path
     reverse_path.append(go_back(move))
     traversalPath.append(move)
@@ -56,8 +59,8 @@ while len(list(graph)) < 500:
         # print(graph)
         # print(reverse_path)
         # print(reverse_path[-1])
-        
-        # remove the room that you come from if there's exit
+
+        # remove the room that you come from if explore
         graph[player.currentRoom.id].remove(reverse_path[-1])
 
     # if you are at a dead end, go back to a room that has unexplored exits
