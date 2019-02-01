@@ -12,11 +12,6 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 
-
-
-# FILL THIS IN
-traversalPath = []
-
 class Stack:
     def __init__(self):
         self.storage = []
@@ -35,126 +30,68 @@ class Stack:
     def length(self):
         return self.size
 
-class Queue:
-    def __init__(self):
-        self.storage = []
-        self.size = 0
+# FILL THIS IN
+traversalPath = []
 
-    def enqueue(self, value):
-        self.size += 1
-        self.storage.append(value)
+graph = {
+  0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+}
 
-    def dequeue(self):
-        if len(self.storage) > 0:
-            self.size -= 1
-            return self.storage.pop(0)
-        else:
-            return None
-    def length(self):
-        return self.size
+inverse_directions = {"n":"s", "s":"n", "e": "w", "w": "e"}
+path = []
+s = Stack()
 
-class Graph:
-    def __init__(self):
-        self.rooms = []
-        self.adjRooms = {}
-        self.oppN = 's'
-        self.oppS = 'n'
-        self.oppE = 'w'
-        self.oppW = 'e'
-
-
-    def addRoom(self, roomID, givenExits):
-        self.rooms.append(roomID)
-        self.adjRooms[roomID] = {}
-        exits = {}
-        for exit in givenExits:
-            exits[exit] = '?'
-        self.adjRooms[roomID] = exits
+while True:
+    currentRoomExits = graph[player.currentRoom.id]
+    unexploredExits = []
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == "?":
+            unexploredExits.append(direction)
             
-    def addAdjRoom(self, roomID, otherRoomID, direction):
-        self.adjRooms[roomID][direction] = otherRoomID
-        d = self.oppositeDirection(direction)
-        self.adjRooms[otherRoomID][d] = roomID
-            
-    def oppositeDirection(self, direction):
-        direction = direction.upper()
-        attribute = 'opp' + direction
-        d = getattr(self, attribute)
-        return d
+    if len(unexploredExits) > 0:
+        randomExit = random.choice(unexploredExits)
+        traversalPath.append(randomExit)
+        previous_room_id = player.currentRoom.id
+        player.travel(randomExit)
+        s.push(randomExit)
+        print(s.storage)
+        exitDictonary = {}
+        for exit in player.currentRoom.getExits():
+            exitDictonary[exit] = '?'
+        graph[previous_room_id][randomExit] = player.currentRoom.id
+        graph[player.currentRoom.id] = exitDictonary
 
-    def shortestPathBack(self, currentRoom):
-        q = Queue()
-        visited = set()
-        roomPath = []
-        q.enqueue([currentRoom])
-        # While the queue is not empty
-        while q.length() > 0:
-            pathArr = q.dequeue()
-            roomPath = pathArr
-            room = pathArr[-1]
-            visited.add(room)
-            for direction in self.adjRooms[room]:
-                if self.adjRooms[room][direction] == '?':
-                    return roomPath
-                else:
-                    newPath = pathArr[:]
-                    newPath.append(self.adjRooms[room][direction])
-                    q.enqueue(newPath)
+    else:   
+        # What do we do when we reach a room with no unexplored
+        if s.length() > 0:
+            lastDirection = s.pop()
+            goBack = inverse_directions[lastDirection]
+            player.travel(goBack)
+            traversalPath.append(goBack)
+    
+    if len(traversalPath) > 2000: break
 
 
-    def travel(self, starting_node):
-        traversal = []
-        s = Stack()
-        visited = set()
-        previousDirection = None
-        s.push(starting_node)
-        while len(s.storage) > 0:
-            
-            direction = None
-            room = s.pop()
-            visited.add(room)
-            exits = player.currentRoom.getExits()
-            if len(exits) < 1:
-                path = self.shortestPathBack(room)
-            if len(exits) < 3:
-                for exit in exits:
-                    if exit != previousDirection:
-                        direction = exit
-                        break
-            else:
-                direction = exits[random.randint(0, len(exits)-1)]
-
-            player.travel(direction)
-            currentRoom = player.currentRoom.id
-            newExits = player.currentRoom.getExits()
-            self.addRoom(currentRoom, newExits)
-            self.addAdjRoom(room, currentRoom, direction)
-            traversal.append(direction)
-            s.push(currentRoom)
-            traversalPath.append(direction)
-        return traversal
-
-g = Graph()
-g.addRoom(player.currentRoom.id, player.currentRoom.getExits())
-print(g.adjRooms)
-print(g.travel(player.currentRoom.id))
 
 
+# print('***')
+# print(graph)
+# print('***')
 
 # TRAVERSAL TEST
-# visited_rooms = set()
-# player.currentRoom = world.startingRoom
-# visited_rooms.add(player.currentRoom)
-# for move in traversalPath:
-#     player.travel(move)
-#     visited_rooms.add(player.currentRoom)
+visited_rooms = set()
+player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
+for move in traversalPath:
+    player.travel(move)
+    visited_rooms.add(player.currentRoom)
 
 
-# if len(visited_rooms) == 500:
-#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{500 - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == 500:
+    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{500 - len(visited_rooms)} unvisited rooms")
 
 
 
@@ -169,3 +106,142 @@ print(g.travel(player.currentRoom.id))
 #     else:
 #         print("I did not understand that command.")
 
+
+
+
+
+#  Previous attempt
+# class Stack:
+#     def __init__(self):
+#         self.storage = []
+#         self.size = 0
+
+#     def push(self, value):
+#         self.size += 1
+#         self.storage.append(value)
+
+#     def pop(self):
+#         if len(self.storage) > 0:
+#             self.size -= 1
+#             return self.storage.pop()
+#         else:
+#             return None
+#     def length(self):
+#         return self.size
+
+# class Queue:
+#     def __init__(self):
+#         self.storage = []
+#         self.size = 0
+
+#     def enqueue(self, value):
+#         self.size += 1
+#         self.storage.append(value)
+
+#     def dequeue(self):
+#         if len(self.storage) > 0:
+#             self.size -= 1
+#             return self.storage.pop(0)
+#         else:
+#             return None
+#     def length(self):
+#         return self.size
+
+# class Graph:
+#     def __init__(self):
+#         self.rooms = []
+#         self.adjRooms = {}
+#         self.oppN = 's'
+#         self.oppS = 'n'
+#         self.oppE = 'w'
+#         self.oppW = 'e'
+
+
+#     def addRoom(self, roomID, givenExits):
+#         self.rooms.append(roomID)
+#         self.adjRooms[roomID] = {}
+#         exits = {}
+#         for exit in givenExits:
+#             exits[exit] = '?'
+#         self.adjRooms[roomID] = exits
+            
+#     def addAdjRoom(self, roomID, otherRoomID, direction):
+#         self.adjRooms[roomID][direction] = otherRoomID
+#         d = self.oppositeDirection(direction)
+#         self.adjRooms[otherRoomID][d] = roomID
+            
+#     def oppositeDirection(self, direction):
+#         direction = direction.upper()
+#         attribute = 'opp' + direction
+#         d = getattr(self, attribute)
+#         return d
+
+#     def shortestPathBack(self, currentRoom):
+
+#         q = Queue()
+#         visited = set()
+#         roomPath = []
+#         directionPath = []
+#         obj = {
+#             'path': [currentRoom],
+#             'direction': []
+#         }
+#         q.enqueue(obj)
+#         # While the queue is not empty
+#         while q.length() > 0:
+#             pathArr = q.dequeue()
+#             roomPath = pathArr['path']
+#             directionPath = pathArr['direction']
+#             room = roomPath[-1]
+#             visited.add(room)
+#             for direction in self.adjRooms[room]:
+#                 if self.adjRooms[room][direction] == '?':
+#                     return directionPath
+#                 else:
+#                     newRoomPath = roomPath[:]
+#                     newRoomPath.append(room)
+#                     newdirectionPath = directionPath[:]
+#                     newObj = {
+#                         'path': newRoomPath,
+#                         'direction': newdirectionPath
+#                     }
+#                     q.enqueue(newObj)
+
+
+#     def travel(self, starting_node):
+#         count = 0
+#         traversal = []
+#         s = Stack()
+#         visited = set()
+#         previousDirection = None
+#         s.push(starting_node)
+#         while len(s.storage) > 0:
+#             direction = None
+#             room = s.pop()
+#             visited.add(room)
+#             exits = player.currentRoom.getExits()
+#             if len(exits) < 1:
+#                 directionPath = self.shortestPathBack(room)
+#                 direction = directionPath[-1]
+#                 traversal = traversal + directionPath
+#             if len(exits) < 3:
+#                 for exit in exits:
+#                     if exit != previousDirection:
+#                         direction = exit
+#             else:
+#                 direction = exits[random.randint(0, len(exits)-1)]
+
+#             player.travel(direction)
+#             currentRoom = player.currentRoom.id
+#             newExits = player.currentRoom.getExits()
+#             self.addRoom(currentRoom, newExits)
+#             self.addAdjRoom(room, currentRoom, direction)
+#             s.push(currentRoom)
+#             traversal.append(direction)
+#             count += 1
+#             if visited = 500: return traversal
+
+# g = Graph()
+# g.addRoom(player.currentRoom.id, player.currentRoom.getExits())
+# # print(g.shortestPathBack(0))
+# traversalPath = g.travel(player.currentRoom.id)
