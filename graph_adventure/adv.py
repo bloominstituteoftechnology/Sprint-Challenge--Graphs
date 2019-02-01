@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from lines import Stack
 
 import random
 
@@ -11,6 +12,28 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+# entry = world.startingRoom.id
+
+# print(entry)
+# print(world.rooms[436].getRoomInDirection('w'))
+# next_room = world.rooms[436].getRoomInDirection('w')
+# print(next_room.id)
+
+def dft(world, start, visited=None):
+    if visited is None:
+        visited = set()
+
+    visited.add(world.rooms[start].name)
+    for exit in world.rooms[start].getExits():
+        player.travel(exit)
+        if player.currentRoom.id not in visited:
+            dft(player.currentRoom.id, visited)
+        # print(exit)
+    
+    # print(visited)
+
+
+dft(world, player.currentRoom.id)
 
 # FILL THIS IN
 traversalPath = ['s', 'n']
