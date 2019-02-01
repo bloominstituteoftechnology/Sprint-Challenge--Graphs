@@ -28,7 +28,18 @@ room_checked = []
 options = []
 while len(list(visited)) < 499:
     if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(room_checked[-1])
+    while len(visited[player.currentRoom.id]) is 0 and len(room_checked) > 0:
+        step_back = room_checked.pop()
+        options.append(step_back)
+        player.travel(step_back)
+    s = visited[player.currentRoom.id].pop(0)
+    room_checked.append(directions(s))
+    options.append(s)
+    player.travel(s)
 
+traversalPath = options
 
 # TRAVERSAL TEST
 visited_rooms = set()
