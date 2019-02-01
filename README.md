@@ -59,7 +59,7 @@ You know you are done when you have exactly 500 entries (0-499) in your graph an
 
 ## Hints
 
-Start by writing an algorithm that picks a random unexplored direction from the player's current room. This should cause your player to walk a depth-first traversal. When you reach a dead-end (i.e. a room with no unexplored paths), walk back to the nearest room that does contain an unexplored path. If all paths have been explored, you're done!
+Start by writing an algorithm that picks a random unexplored direction from the player's current room, travels and logs that direction, then loops. This should cause your player to walk a depth-first traversal. When you reach a dead-end (i.e. a room with no unexplored paths), walk back to the nearest room that does contain an unexplored path. If all paths have been explored, you're done!
 
 How can you find the nearest room with an unexplored path?
 
