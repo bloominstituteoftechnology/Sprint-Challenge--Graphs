@@ -61,12 +61,14 @@ def dfs(room, count):
                     rooms[player.currentRoom.id] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
                     rooms[player.currentRoom.id][oppositeDirection(random_exit)] = room.id
                     print(rooms)
+                    print(f"length of rooms {len(rooms)}")
                     traversalPath.append(random_exit)
                     count +=1
                     dfs(player.currentRoom, count)
         else:
+            traversalPath.append(random_exit)
             player.travel(random_exit)
-            print(rooms)
+            print(f"length of rooms {len(rooms)}")
             dfs(player.currentRoom, count)
             
     
