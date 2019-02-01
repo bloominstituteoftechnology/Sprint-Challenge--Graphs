@@ -32,7 +32,7 @@ def room_generator(curr_room_id, prev_room_id, destination_dir):
     room_dict[prev_room_id][destination_dir] = curr_room_id
 
 # Movement logic
-def travel():
+def movement_logic():
     # Instantiate where you're starting, available rooms to move to, and their corresponding exits
     start_room = player.currentRoom
     adjacent_rooms = room_dict[start_room.id]
@@ -63,7 +63,7 @@ def travel():
 
 # While there are still rooms left to traverse, continue to run method
 while len(room_dict) < 500:
-    travel()
+    movement_logic()
 
 # TRAVERSAL TEST
 visited_rooms = set()
