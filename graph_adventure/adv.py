@@ -24,31 +24,35 @@ stack.append(player.currentRoom)
 
 while stack:
     room = stack.pop()
-    if room not in traversalGraph:
+#     # create node in traversal graph
+    if room.id not in traversalGraph:
         traversalGraph[room.id] = {}
         for direction in room.getExits():
             traversalGraph[room.id][direction] = '?'
+    
+    # get random direction
+    directions = room.getExits()
+    random.shuffle(directions)
+    direction = directions[0]
 
-print(traversalGraph)
+    if traversalGraph[room.id][direction] == '?':
+        player.travel(direction)
+        # mark as explored
+        traversalGraph[room.id][direction] = player.currentRoom.id
+        # append direction path
+        traversalPath.append(direction)
+        # add current room to stack
+        stack.append(player.currentRoom)
+
+# print(traversalGraph)
+
+
 
 # pick a random unexplored direction
 # if traversalGraph[room][direction] == ?
 # player.travel(direction)
 # traversalGraph[room][direction] = player.currentRoom.id
 # player.append(direction)
-
-# player.travel('n')
-# traversalPath.append('n')
-# player.travel('n')
-# traversalPath.append('n')
-# player.travel('n')
-# traversalPath.append('n')
-# player.travel('n')
-# traversalPath.append('n')
-# player.travel('n')
-# traversalPath.append('n')
-# print(player.currentRoom)
-
 
 # TRAVERSAL TEST
 visited_rooms = set()
