@@ -11,10 +11,37 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
+graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 # FILL THIS IN
+inverse_direction = {"n": "s", "s": "n", "w": "e", "e": "w"}
+
 traversalPath = ['s', 'n']
 
+while True:
+    currentRoomExits = graph[player.currentRoom.id]
+
+    unexploredExits = []
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == "?":
+            unexploredExits.append(direction)
+    if len(unexploredExits) > 0:
+        randomExit = random.choice(unexploredExits)
+        traversalPath.append(randomExit)
+        previous_room_id = player.currentRoom.id
+        player.travel(randomExit)
+        exitDictionary = {}
+        for exit in player.currentRoom.getExits():
+            exitDictionary[exit] = "?"
+        graph[previous_room_id][randomExit] = player.currentRoom.id
+        exitDictionary[inverse_direction[randomExit]] = previous_room_id
+        graph[player.currentRoom.id] = exitDictionary
+    else:
+        #if there are no unexplored exits, go back to the previous room
+        #repeat until you find a room with an unexplored exit
+        last_move = inverse_direction[traversalPath[-1]]
+        traversalPath.append(last_move)
+        player.travel(last_move)
+        
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -35,10 +62,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+""" player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.") """
