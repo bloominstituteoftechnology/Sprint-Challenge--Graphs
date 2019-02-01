@@ -12,8 +12,58 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 
-# FILL THIS INs
-traversalPath = ['s', 'n']
+# FILL THIS IN
+traversalPath = []
+
+
+
+visited = {}
+path_back = []
+
+came_from_direction = '?'
+
+def is_explored(room):
+    for exit in visited[room]:
+        if exit == '?':
+            return False
+    return True
+
+#while len(traversalPath) < 499:
+def traverse(player):
+    print(player.currentRoom.id)
+    curr_room = player.currentRoom
+    curr_exits = curr_room.getExits()
+    path_back.append(curr_room.id)
+
+    if curr_room.id not in visited:
+        # Create new graph entry
+        curr_graph_entry = {}
+        for exit in curr_exits:
+            curr_graph_entry[exit] = '?'
+        visited[curr_room.id] = curr_graph_entry
+
+        for exit in curr_exits:
+            if visited[curr_room.id][exit] == '?':
+                room = curr_room.getRoomInDirection(exit)
+                visited[curr_room.id][exit] = room.id
+                traversalPath.append(exit)
+                player.travel(exit)
+                traverse(player)
+            else:
+                # check if previously visited?
+                pass
+    else:
+        pass
+        # go back to previous path
+        # but how?? :(
+
+
+
+traverse(player)
+
+print(visited)
+print(traversalPath)
+print(path_back)
 
 
 # TRAVERSAL TEST
