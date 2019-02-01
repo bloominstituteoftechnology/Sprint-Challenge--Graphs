@@ -14,57 +14,56 @@ player = Player("Andrew", world.startingRoom)
 
 
 # FILL THIS IN
-# traversalPath = []
 
-# Instantiate directional dictionary graph
-graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
-# initial traversal path
-traversalPath = ['s', 'n']
-# Instantiate direction_dict that will be reversed in order to define what the "opposite" direction of something is
-direction_dict = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
-inversed_direction_dict = traversalPath.copy()
+traversalPath = []
+player.currentRoom = world.startingRoom
+# Instantiate room dict, corresponding inverse dirs, and dequeue stack
+room_dict = {0: {"n": "?", "e": "?", "s": "?", "w": "?"}}
+inverse_direction_dict = {"n": "s", "s": "n", "e": "w", "w": "e"}
+trav_stack = deque()
 
-while len(traversalPath)< 90000:
-    # Determine the exits available to a player based on where they are
-    curr_room_exits = graph[player.currentRoom.id]
-    # Instantiate upcoming_exits list to be able to reference what moves are available while traversing rooms
-    upcoming_exits = []
+# Analyzes visited and unvisited rooms
+def room_generator(curr_room_id, prev_room_id, destination_dir):
+    if destination_dir not in inverse_direction_dict:
+        print("invalid direction")
+    if curr_room_id not in room_dict:
+        room_dict[curr_room_id] = {"n": "?", "e": "?", "s": "?", "w": "?"}
+    room_dict[curr_room_id][inverse_direction_dict[destination_dir]] = prev_room_id
+    room_dict[prev_room_id][destination_dir] = curr_room_id
 
-    # Add to upcoming exits based on your current room
-    for direction in curr_room_exits:
-        if curr_room_exits[direction] == '?':
-            upcoming_exits.append(direction)
-    
-    # If there are still upcoming exits left
-    if len(upcoming_exits)>0:
-        # select random exit and traverse it
-        exit_selection = random.choice(upcoming_exits)
-        traversalPath.append(exit_selection)
-        # set pre_room_id to the current room that you're about to leave, and run player.travel method to the exit picked
-        prev_room_id = player.currentRoom.id
-        player.travel(exit_selection)
-        exit_dict = {}
+# Movement logic
+def travel():
+    # Instantiate where you're starting, available rooms to move to, and their corresponding exits
+    start_room = player.currentRoom
+    adjacent_rooms = room_dict[start_room.id]
+    room_exits = start_room.getExits()
+    leftover_rooms = []
 
-        for exits in player.currentRoom.getExits():
-            exit_dict[exits] = "?"
-            
-        graph[prev_room_id][exit_selection] = player.currentRoom.id
-        exit_dict[direction_dict[exit_selection]] = prev_room_id
-        graph[player.currentRoom.id] = exit_dict
+    # Add unexplored rooms denoted with "?" to leftover_rooms
+    for exit in room_exits:
+        if adjacent_rooms[exit] == "?":
+            leftover_rooms.append(exit)
+    # If still rooms left to explore, add the next explored room to the trav_stack 
+    if len(leftover_rooms) > 0:
+        if player.travel(leftover_rooms[0]):
+            trav_stack.append(leftover_rooms[0])
+            traversalPath.append(leftover_rooms[0])
+            # run method with the players room info as inputs recursively
+            room_generator(player.currentRoom.id, start_room.id, leftover_rooms[0])
+        else:
+            room_dict[start_room.id][leftover_rooms[0]] = None
     else:
-        # When no more upcoming exits left
-        for player_moves in traversalPath[::-1]:
-            player.travel(direction_dict[player_moves])
-            traversalPath.append(direction_dict[player_moves])
-            
-            if "?" in graph[player.currentRoom.id].values():
-                curr_room_exits = graph[player.currentRoom.id]
+        # backwards traversal of sorts
+        if len(trav_stack) > 0:
+            reverse_stack_trav = trav_stack.pop()
+            player.travel(inverse_direction_dict[reverse_stack_trav])
+            traversalPath.append(inverse_direction_dict[reverse_stack_trav])
+    
+    return traversalPath
 
-                for direction in curr_room_exits:
-                    if curr_room_exits[direction] == '?':
-                        upcoming_exits.append(direction)
-
-                break
+# While there are still rooms left to traverse, continue to run method
+while len(room_dict) < 500:
+    travel()
 
 # TRAVERSAL TEST
 visited_rooms = set()
