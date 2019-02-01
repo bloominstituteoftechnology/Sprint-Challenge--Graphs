@@ -89,7 +89,7 @@ class LinkedList:
             current = current.get_next()
         return max_val
 
-    
+
 class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
