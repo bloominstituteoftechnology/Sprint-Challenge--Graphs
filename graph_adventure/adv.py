@@ -13,7 +13,188 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+# def dft(world, startingRoom):
+#     visited = set([startingRoom])
+#     stack = [[startingRoom]]
+
+#     while len(stack) and len(traversalPath) < 10:
+#         path = stack.pop()
+#         roomID = path[-1]
+#         room = world.rooms[roomID]
+#         exits = room.getExits()
+#         next_directions = []
+
+#         for direction in exits:
+#             next_room = room.getRoomInDirection(direction).id
+
+#             if next_room not in visited:
+#                 visited.add(next_room)
+#                 new_path = path + [next_room]
+#                 next_directions.append(direction)
+
+#                 stack.append(new_path)
+
+#         print('\ntraversalPath:', traversalPath)
+#         print('stack:', stack)
+#         print('next_directions:', next_directions)
+
+#         if not len(next_directions) and len(visited) is not len(world.rooms):
+#             backtrack = -1
+
+#             while len(path) >= len(stack[-1]):
+#                 print(f'comparing {path} to {stack[-1]}')
+
+#                 came_from = traversalPath[backtrack]
+#                 go_back = ''
+
+#                 if came_from == 'n':
+#                     go_back == 's'
+#                 elif came_from == 's':
+#                     go_back == 'n'
+#                 elif came_from == 'e':
+#                     go_back == 'w'
+#                 elif came_from == 'w':
+#                     go_back == 'e'
+
+#                 traversalPath.append(go_back)
+#                 path.pop()
+
+#                 backtrack -= 2
+
+#         else:
+#             traversalPath.append(next_directions[-1])
+
+
+
+# # Second try
+
+# def dft(world, startingRoom):
+#     visited = {startingRoom: 'start'}
+#     stack = [[startingRoom]]
+
+#     while len(stack) and len(traversalPath) < 50:
+#     # while len(stack):
+#         path = stack.pop()
+#         roomID = path[-1]
+#         room = world.rooms[roomID]
+#         exits = room.getExits()
+#         next_directions = []
+
+#         if visited[roomID] is not 'start':
+#             traversalPath.append(visited[roomID])
+            
+#             print('\n----------------------------------------------------------------\n')
+#             print(f"Moving '{visited[roomID]}' from room {path[-2]} to room {roomID}")
+#             print('traversalPath:', traversalPath)
+#             print('stack:', stack)
+#             print(f'Current path: {path}')
+
+#         for direction in exits:
+#             next_room = room.getRoomInDirection(direction).id
+
+#             if next_room not in visited:
+#                 visited[next_room] = direction
+#                 new_path = path + [next_room]
+#                 next_directions.append(direction)
+
+#                 stack.append(new_path)
+
+#         if not len(next_directions) and len(stack):
+#             backtrack = 1
+
+#             print('\nNo new rooms from here, time to backtrack:')
+
+#             while path != stack[-1][:-1]:
+#                 came_from = traversalPath[-backtrack]
+#                 go_back = ''
+
+#                 if came_from == 'n':
+#                     go_back = 's'
+#                 elif came_from == 's':
+#                     go_back = 'n'
+#                 elif came_from == 'e':
+#                     go_back = 'w'
+#                 elif came_from == 'w':
+#                     go_back = 'e'
+
+#                 traversalPath.append(go_back)
+#                 path.pop()
+
+#                 print(f"Moving '{go_back}' back to room {path[-1]}")
+
+#                 backtrack += 2
+
+#     print('\n----------------------------------------------------------------\n')
+#     print(f'Visited {len(visited)} rooms in {len(traversalPath)} steps')
+#     print('\n----------------------------------------------------------------\n')
+
+# dft(world, world.startingRoom.id)
+
+# Third try
+
+def dft(world, startingRoom):
+    visited = {startingRoom: 'start'}
+    stack = [[startingRoom]]
+
+    # while len(stack) and len(traversalPath) < 50:
+    while len(stack):
+        path = stack.pop()
+        roomID = path[-1]
+        room = world.rooms[roomID]
+        exits = room.getExits()
+        next_paths = []
+
+        if visited[roomID] is not 'start':
+            traversalPath.append(visited[roomID])
+            
+            print('\n----------------------------------------------------------------\n')
+            print(f"Moving '{visited[roomID]}' from room {path[-2]} to room {roomID}")
+            print('traversalPath:', traversalPath)
+            print('stack:', stack)
+            print(f'Current path: {path}')
+
+        for direction in exits:
+            next_room = room.getRoomInDirection(direction).id
+
+            if next_room not in visited:
+                visited[next_room] = direction
+                new_path = path + [next_room]
+
+                next_paths.append(new_path)
+
+        if len(next_paths):
+            # # randomize!
+            # random.shuffle(next_paths)
+            stack += next_paths
+
+        elif len(stack):
+            print('\nNo new rooms from here, time to backtrack:')
+
+            while path != stack[-1][:-1]:
+                prev_direction = visited[path.pop()]
+                go_back = ''
+
+                if prev_direction == 'n':
+                    go_back = 's'
+                elif prev_direction == 's':
+                    go_back = 'n'
+                elif prev_direction == 'e':
+                    go_back = 'w'
+                elif prev_direction == 'w':
+                    go_back = 'e'
+
+                traversalPath.append(go_back)
+
+                print(f"Moving '{go_back}' back to room {path[-1]}")
+
+    print('\n----------------------------------------------------------------\n')
+    print(f'Visited {len(visited)} rooms in {len(traversalPath)} steps')
+    print('\n----------------------------------------------------------------\n')
+
+
+dft(world, world.startingRoom.id)
 
 
 # TRAVERSAL TEST
