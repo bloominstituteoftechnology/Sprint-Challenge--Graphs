@@ -183,6 +183,7 @@ graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
 traversalPath = ['s', 'n']
 inverse_directions = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
 reverse_directions = traversalPath.copy()
+rooms_weve_been = []
 while len(traversalPath)< 90000:
     
     currentRoomExits = graph[player.currentRoom.id]
@@ -193,6 +194,7 @@ while len(traversalPath)< 90000:
     if len(unexploredExits)>0:
         randomExit = random.choice(unexploredExits)
         traversalPath.append(randomExit)
+        rooms_weve_been.append(player.currentRoom.id)
         prev_room_id = player.currentRoom.id
         player.travel(randomExit)
         exitDictonary = {}
@@ -206,12 +208,8 @@ while len(traversalPath)< 90000:
             player.travel(inverse_directions[moves])
             traversalPath.append(inverse_directions[moves])
             if "?" in graph[player.currentRoom.id].values():
-                print("im in a room with ?")
-                currentRoomExits = graph[player.currentRoom.id]
-                for direction in currentRoomExits:
-                    if currentRoomExits[direction] == '?':
-                        unexploredExits.append(direction)
                 break
+        
 
             
 
