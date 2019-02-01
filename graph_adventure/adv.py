@@ -16,24 +16,22 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
-traversal_graph = Graph()  # Instantiate your graph
-
-def build_traversal_graph(world):
-    for room in world.rooms: 
-        traversal_graph.add_vertex(room)
-    for room in world.rooms:
-        exits = player.currentRoom.getExits(room) 
-        for direction in exits:
-            traversal_graph.add_edge(direction, room)
-
-print (traversal_graph)
 #starting node
 #start = player.currentRoom.id
 #edges of starting node
 #player.currentRoom.getExits() 
 #moving to a neighbor 
 #player.travel(direction)
+def traversal_graph_build():
+    traversal_graph = Graph()  # Instantiate your graph
+    for room in world.rooms: 
+        traversal_graph.add_vertex(room)
+    for room in world.rooms:
+        exits = player.currentRoom.getExits() 
+        for direction in exits:
+            traversal_graph.add_edge(direction, room)
+    return traversal_graph
+
     
 # FILL THIS IN
 traversalPath = []
