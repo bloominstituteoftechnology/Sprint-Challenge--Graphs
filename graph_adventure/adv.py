@@ -92,6 +92,21 @@ while len(traversalGraph) < 500 and len(traversalPath) < 5000:
             else:
                 # The room already exists in the graph, so just set it's entrance to be the room we just came from
                 traversalGraph[newRoom][returningDirection] = currentRoom
+                
+                exploredAllExitsInNewRoom = True
+                newRoomExits = traversalGraph[newRoom]
+                
+                for direction, exit in newRoomExits.items():
+                    if exit == "?": # if the exit is unexplored, then we havcan explore further
+                        exploredAllExitsInNewRoom = False
+                
+                if exploredAllExitsInNewRoom:
+                    # Since we discovered an already-existing room, return to the previous one
+                    player.travel(returningDirection)
+                    # ... while erasing our steps (no one needs to know ;)
+                    traversalPath.pop()
+                    # and check the next exit in the loop instead (this will skip the steps of adding to the stack and marking that we explored an exit, and continue immediately to the next exit)
+                    continue
             
             # Add the direction necessary to get back to this room in the stack so we can backtrack if we run into a dead end
             stack.push(returningDirection)
@@ -99,8 +114,7 @@ while len(traversalGraph) < 500 and len(traversalPath) < 5000:
             # Mark that we checked at least one exit.
             exitsAvailableToExplore = True
             break
-    
-    
+
     if not exitsAvailableToExplore: # This will happen when we reach a room we already explored, or a dead end (aka no other exits)
         backTrackDirection = stack.pop()
         
@@ -110,7 +124,6 @@ while len(traversalGraph) < 500 and len(traversalPath) < 5000:
         
         player.travel(backTrackDirection)
         traversalPath.append(backTrackDirection)
-
 
 
 # TRAVERSAL TEST
