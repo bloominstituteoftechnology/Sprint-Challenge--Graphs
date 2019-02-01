@@ -13,7 +13,30 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+def dft_visit_all_rooms(self, starting_vertex):
+    visited = {}
+    backtrack = []
+    move_counter = []
+    while len(list(visited)) < 499:
+        #while there is a current path forward
+        #add unvisited to visited
+        if player.currentRoom.id not in visited:
+
+    #if you reach a dead end, back track until there is an unvisited path forward
+    while
+\
+# {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+    
+    #rooms are stacked, backtracking is recursion
+    #if already visited, mark as visited
+    # visited.append(starting_vertex)
+
+    # for vertex in self.blah(starting_vertex):
+    #     if vertex is not in visited:
+    #         self.dft_visit_all_rooms(vertex, visited)
+        
 
 
 # TRAVERSAL TEST
@@ -42,3 +65,15 @@ while True:
         player.travel(cmds[0], True)
     else:
         print("I did not understand that command.")
+
+# Algorithm DFS(graph G, Vertex v) 
+# // Recursive algorithm
+
+# for all edges e in G.incidentEdges(v) do
+# if edge e is unexplored then
+# w = G.opposite(v, e) 
+# if vertex w is unexplored then 
+#     label e as discovery edge 
+#     recursively call DFS(G, w) 
+# else 
+#     label e a a back edge
