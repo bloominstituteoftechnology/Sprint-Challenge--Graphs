@@ -31,39 +31,130 @@ while visited_rooms is not 500:
     # create an empty dict for the moves
     moves = dict()
     # iterate through exits and make them a dict
-    for exits in num_exits:
-        print(exits)
-        moves.update({exits: '?'})
+    if player.currentRoom.id not in traversal_graph.keys():
+        for exits in num_exits:
+            print(exits)
+            moves.update({exits: '?'})
+        traversal_graph[player.currentRoom.id] = moves
     # appends dict of room exits to current room
     # ex: {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
-    traversal_graph[player.currentRoom.id] = moves
+    
     print(traversal_graph)
+
     # now we want to attempt a movement either n, s, w, or e
-    if player.currentRoom.n_to.id is not None and player.currentRoom.n_to.id is not visited_rooms:
-        print("the north room is: ", player.currentRoom.n_to)
-        # save prev room to a temp var
-        temp_room = player.currentRoom.id
-        #save move to a temp var
-        temp_move = "n"
-        player.travel("n")
-    elif player.currentRoom.s_to.id is not visited_rooms and player.currentRoom.s_to.id is not None:
-        # save prev room to a temp var
-        temp_room = player.currentRoom.id
-        #save move to a temp var
-        temp_move = "s"
-        player.travel("s")
-    elif player.currentRoom.e_to.id is not visited_rooms and player.currentRoom.e_to.id is not None:
-        # save prev room to a temp var
-        temp_room = player.currentRoom.id
-        #save move to a temp var
-        temp_move = "e"
-        player.travel("e")
-    elif player.currentRoom.w_to.id is not visited_rooms and player.currentRoom.w_to.id is not None:
-        # save prev room to a temp var
-        temp_room = player.currentRoom.id
-        #save move to a temp var
-        temp_move = "w"
-        player.travel("w")
+    temp_move = "s"
+    possible_exits = player.currentRoom.getExits()
+    print("this is the current room: ", player.currentRoom.id)
+    print('this is possible exits: ', possible_exits)
+
+        
+    if "n" in possible_exits:
+        if traversal_graph[player.currentRoom.id]["n"] is "?":
+            print("the north room is: ", player.currentRoom.n_to)
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "n"
+            player.travel("n")
+        elif "e" in possible_exits and traversal_graph[player.currentRoom.id]["e"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "e"
+            player.travel("e")
+        elif "s" in possible_exits and traversal_graph[player.currentRoom.id]["s"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "s"
+            player.travel("s")
+        elif "w" in possible_exits and traversal_graph[player.currentRoom.id]["w"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "w"
+            player.travel("w")
+            
+    elif "e" in possible_exits:
+        if traversal_graph[player.currentRoom.id]["e"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "e"
+            player.travel("e")
+        elif "s" in possible_exits and traversal_graph[player.currentRoom.id]["s"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "s"
+            player.travel("s")
+        elif "w" in possible_exits and traversal_graph[player.currentRoom.id]["w"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "w"
+            player.travel("w")
+        elif "n" in possible_exits and traversal_graph[player.currentRoom.id]["n"] is "?":
+            print("the north room is: ", player.currentRoom.n_to)
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "n"
+            player.travel("n")
+    elif "w" in possible_exits:
+        if traversal_graph[player.currentRoom.id]["w"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "w"
+            player.travel("w")
+        elif "n" in possible_exits and traversal_graph[player.currentRoom.id]["n"] is "?":
+            print("the north room is: ", player.currentRoom.n_to)
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "n"
+            player.travel("n")
+        elif "e" in possible_exits and traversal_graph[player.currentRoom.id]["e"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "e"
+            player.travel("e")
+        elif "s" in possible_exits and traversal_graph[player.currentRoom.id]["s"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "s"
+            player.travel("s")
+    elif "s" in possible_exits:
+        if traversal_graph[player.currentRoom.id]["s"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "s"
+            player.travel("s")
+        elif "n" in possible_exits and traversal_graph[player.currentRoom.id]["n"] is "?":
+            print("the north room is: ", player.currentRoom.n_to)
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "n"
+            player.travel("n")
+        elif "e" in possible_exits and traversal_graph[player.currentRoom.id]["e"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "e"
+            player.travel("e")
+        elif "w" in possible_exits and traversal_graph[player.currentRoom.id]["w"] is "?":
+            # save prev room to a temp var
+            temp_room = player.currentRoom.id
+            #save move to a temp var
+            temp_move = "w"
+            player.travel("w")
+    
+
     print("we have traversed these rooms: ", visited_rooms)
     # take id of that next room, add it to traversal graph
     # go back to previous room and change the direction key from ? to room id
