@@ -33,10 +33,13 @@ def add_to_all_rooms(room_id, last_room_id, direction_traveled):
     direction = "n"
     if direction_traveled == "n":
         direction = "s"
-    if direction_traveled == "w":
+    elif direction_traveled == "w":
         direction = "e"
-    if direction_traveled == "e":
+    elif direction_traveled == "e":
         direction = "w"
+    else:
+        print("idk where you went")
+        return
     if room_id not in all_rooms:
         all_rooms[room_id] = {direction: last_room_id}
     else:
@@ -44,17 +47,11 @@ def add_to_all_rooms(room_id, last_room_id, direction_traveled):
 
 
 def travel():
-    # make a specific order
-    # if any adjacent are unexplored:
-        # priority = "n" then "e" then "s" then "w"
-    # if all explored or have no exit:
-        # priority is opposite = "w" then "s" then "e" then "n"
     beginning_room = player.currentRoom
     adjacent_rooms = all_rooms[beginning_room.id]
-    # already in beginning room
-    # want to travel somewhere else
     exits = beginning_room.getExits()
     traveled = False
+    traveled_dir = None
     # for direction in priority
     for direction in ["n", "e", "s", "w"]:
         # if direction has NOT already been eplored
@@ -65,20 +62,34 @@ def travel():
                 # double check to make sure you can move there
                 if player.travel(direction):
                     traveled = True
+                    traveled_dir = direction
                     traversalPath.append(direction)
                     break
-            else all_rooms[beginning_room.id][direction] = None
+            else:
+                all_rooms[beginning_room.id][direction] = None
     # if not done exploring but all adjacent rooms have been
     # retrace your steps
     if not traveled and all_rooms != 500:
         for direction in ["w", "s", "e", "n"]:
             if direction in exits:
                 if player.travel(direction):
+                    traveled = True
+                    traveled_dir = direction
                     traversalPath.append(direction)
                     break
-       
+    # if we traveled (should always be yes if not at 500 rooms explored
+    if traveled:
+        add_to_all_rooms(player.currentRoom.id, beginning_room.id, traveled_dir)
+
+
+while len(all_rooms) < 500:
+    player.currentRoom = world.startingRoom
+    all_rooms = {player.currentRoom.id: {}}
+    travel()
+
 
 # TRAVERSAL TEST
+visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
