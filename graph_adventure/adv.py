@@ -13,8 +13,58 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
 
+def rev_direction(direction):
+    if direction is 'n':
+        return 's'
+    elif direction in 's':
+        return 'n'
+    elif direction is 'w':
+        return 'e'
+    elif direction is 'e':
+        return 'w'
+    
+visited = {}
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+reversep = []
+moves = []
+unexplored_paths = []
+tracking = {}
+tracking[player.currentRoom.id] = {}
+lastRoom = player.currentRoom.id
+
+while len(list(visited)) < 499:
+    if player.currentRoom.id not in tracking:
+        tracking[player.currentRoom.id] = {}
+
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(reversep[-1])
+    
+    if len(visited[player.currentRoom.id]) is not 0:
+        unexplored_paths.append(player.currentRoom.id)
+    elif player.currentRoom.id in unexplored_paths:
+        unexplored_paths.remove(player.currentRoom.id)
+
+    while len(visited[player.currentRoom.id]) is 0 and len(reversep) > 0:
+        reverse = reversep.pop()
+        moves.append(reverse)
+        player.travel(reverse)
+    
+    lastRoom = player.currentRoom.id
+
+    move = visited[player.currentRoom.id].pop(0)
+    
+    reversep.append(rev_direction(move))
+    
+    moves.append(move)
+
+    player.travel(move)
+
+    tracking[lastRoom][move] = player.currentRoom.id
+
+traversalPath = moves
 
 # TRAVERSAL TEST
 visited_rooms = set()
