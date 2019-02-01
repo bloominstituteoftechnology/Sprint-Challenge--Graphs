@@ -54,6 +54,7 @@ def fill_traversal():
         player.travel(step)
     return returned_list
 
+
 traversalPath = fill_traversal()
 
 # TRAVERSAL TEST
