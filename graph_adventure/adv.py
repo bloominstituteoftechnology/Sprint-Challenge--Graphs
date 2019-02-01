@@ -43,39 +43,23 @@ print(player.currentRoom.id)
 print(player.currentRoom.getExits())
 print(player.travel('e'))
 
-#global path 
+start_room = player.currentRoom.id
+destination_room = len(roomGraph) - 1
 
-def putPathinArray( start,end):
-    print("  Len  ", len(roomGraph))
-    visited = [False] * len(roomGraph)
-    path= []
-    print("Start" , start, " End", end)
-    generate_player_path(start,end,visited, path, "e" )
-    print( " path " ,path)
-    return path
+def DFS_path(start_room, destination_room):
+         if start_room in roomGraph.keys() and destination_room in roomGraph.keys():
+            if start_room == destination_room:
+                 return [start_room]
+            path_stack = Stack()
+            visited = set()
+            stack = Stack()
+            stack.push([roomGraph[start_room][1].values()])
+            print(stack)
 
-
-def generate_player_path( start, end, visited = None, path = None , dir=None):
-   # print(" start ", start)
-    visited[start] = True
-    path.append(dir)
- #   print( type( roomGraph[start]))
-  #  print(  roomGraph[start][1].values()  )
-    if start == end:
-        print("path  : ",path)
-    else:
-        for i in roomGraph[start][1].keys():
-            val = roomGraph[start][1].get(i)
-         #   print( " what is i", i  , " dircection" , roomGraph[start][1].get(i) ) 
-
-            if visited[val] is False:
-                generate_player_path( val , end, visited, path,  i  )
-    path.pop(-1)
-    visited[start] = False
 
 # FILL THIS IN
-traversalPath = putPathinArray(0,5)
-
+print(DFS_path(start_room, destination_room))
+traversalPath = ['s', 'w']
 
 
 # TRAVERSAL TEST
