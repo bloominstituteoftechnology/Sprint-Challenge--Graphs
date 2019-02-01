@@ -22,6 +22,13 @@ def directions(direction):
     elif direction is 'w':
         return 'e'
 
+visited = {}
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+room_checked = []
+options = []
+while len(list(visited)) < 499:
+    if player.currentRoom.id not in visited:
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
