@@ -15,6 +15,71 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = ['s', 'n']
 
+# Return reverse direction. Used for retracing steps
+def reverse_directions(direction):
+    if direction is 'n':
+        return 's' 
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
+
+
+def traverseRooms(player):
+    # create traversl graph. Holds room ids and what directions lead to which room
+    traversalGraph = {}
+    # Holds path to retrace steps
+    retrace_steps = []
+    # add starting room to traversal graph
+    traversalGraph[player.currentRoom.id] = {}
+    # Loop until every room explored
+    while len(traversalGraph)<500:
+        # variable to check if new room was explored
+        new_room_check = False
+        # get current rooms exits
+        room_exits = player.currentRoom.getExits()
+        # get current room id
+        current_room_id = player.currentRoom.id
+        # Iterate through possible directions for current room
+        for direction in room_exits:
+            # If room in direction not explored
+            if traversalGraph[current_room_id].get(direction, '?') == '?':
+                # travel in direction
+                player.travel(direction)
+                # set new room id
+                new_room_id = player.currentRoom.id
+                # add direction to traversal path
+                traversalPath.append(direction)
+                # Add new room id to proper direction of current room
+                traversalGraph[current_room_id][direction] = new_room_id
+                # If new room id not in traversal graph
+                if not traversalGraph.get(new_room_id, None):
+                    # add to traversal graph
+                    traversalGraph[new_room_id] = {}
+                # add current room id to proper direction of new room
+                traversalGraph[new_room_id][reverse_directions(direction)] = current_room_id
+                # Add reverse of direction moved to retrace steps
+                retrace_steps.append(reverse_directions(direction))
+                # Flip variable to True if traveled to new room. This is so we don't retrace steps
+                new_room_check = True
+                # Break for loop since we are in a new room and need to look at new directions
+                break
+            # else if direction already explored
+            else:
+                # continue onto next direction
+                continue
+        # If no new room to explore
+        if new_room_check == False:
+            # remove last direction from retrace steps
+            retrace = retrace_steps.pop()
+            # add direction to traversal path
+            traversalPath.append(retrace)
+            # move in last moved opposite direction
+            player.travel(retrace)
+
+traverseRooms(player)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -42,3 +107,7 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+
+
+
