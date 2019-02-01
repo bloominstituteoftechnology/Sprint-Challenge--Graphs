@@ -13,7 +13,40 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+def breadth_first_traversal(starting_room): # roomGraph[starting_room][1]
+    q = []
+    visited = list()
+
+    q.append(starting_room)
+    print(q)
+
+    while len(q) > 0:
+        deq = q.pop()
+        visited.append(deq)
+        print("visited: ", visited)
+
+        for i in roomGraph[deq][1]:
+            if roomGraph[0][1][i] not in visited:
+                q.append(roomGraph[0][1][i])
+        # for i in roomGraph[deq][1]['s']:
+        #     if i not in visited:
+        #         q.append(i)
+        # for i in roomGraph[deq][1]['e']:
+        #     if i not in visited:
+        #         q.append(i)
+        # for i in roomGraph[deq][1]['w']:
+        #     if i not in visited:
+        #         q.append(i)
+
+    print("Traverse End: ", visited)
+    return visited
+print(breadth_first_traversal(0))
+print("starting room: ",roomGraph[0][1]['n'])
+for i in roomGraph[0][1]:
+    print(roomGraph[0][1][i])
+    print(i)
+
 
 
 # TRAVERSAL TEST
