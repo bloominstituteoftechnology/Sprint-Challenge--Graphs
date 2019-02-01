@@ -65,16 +65,35 @@ visited = {}
 #set key to starting room id with value equal to exits ex. 0: {n, e, s, w}
 visited[player.currentRoom.id] = player.currentRoom.getExits()
 print(visited)
-
 #have checked list for bidirectional travel back to the start of the map
 checked = []
-
 #track the steps to completion in order to pass tests/ set to traversalPath var
 count = []
+#while loop as long as visited is less than 500
+while len(list(visited)) < 499:
+    #if our current room has not been flagged, put it in visited 
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(checked[-1])
+    #once we hit end of a path, go backwards until available path
+    while len(visited[player.currentRoom.id]) is 0 and len(checked) > 0:
+        #get last item on checked
+        back = checked.pop()
+        #add next available path to our count and travel to that room
+        count.append(back)
+        #travel to that room
+        player.travel(back)
 
+    #take a step
+    step = visited[player.currentRoom.id].pop(0)
+    #add the reversed direction to checked using oppositeCardinal funtion
+    checked.append(oppositeCardinal(step))
+    #add direction to our count
+    count.append(step)
+    player.travel(step)
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = count
 
 
 # TRAVERSAL TEST
