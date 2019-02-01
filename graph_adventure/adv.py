@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from helpers.py import Queue, Stack
 import random
 
 # Load world
@@ -13,8 +13,44 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ["n", "s", "e", "w"]
+class TraversalGraph:
+    def __init__(self):
+        self.room = []
+        self.n = 'n'
+        self.s = 's'
+        self.w = 'w'
+        self.e = 'e'
 
+    def path(self, starting_room):
+        s = Stack()
+        visited_rooms = {}
+        traversalPath = []
+        s.push(starting_room)
+        while s.size() > 0:
+            room = s.pop()
+            if room not in visited_rooms:
+                visited_rooms.update(room)
+            # for room in self.
+
+tg = TraversalGraph()
+tg.path(player.currentRoom.id) 
+print(player.currentRoom.id)
+
+
+# traversalPath = ["n", "s", "e", "w"]
+
+# def traversal_path(self, player.currentRoom, visited=None):
+#     visited = {}
+#     q = Queue()
+#     q.enqueue(player.currentRoom)
+#     print('q', q)
+#     # while q.size() > 0:
+#     #     path = q.dequeue()
+#     #     new_room = path[-1]
+#     #     if new_room not in visited:
+#     #         visited[new_room] = [path]
+#     #         for room in self.
+    
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -22,7 +58,9 @@ player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
     player.travel(move)
+    print('move', move)
     visited_rooms.add(player.currentRoom)
+    print('visited_rooms', visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
@@ -35,10 +73,11 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
+
