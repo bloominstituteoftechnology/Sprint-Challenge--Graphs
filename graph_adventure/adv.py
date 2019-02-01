@@ -13,7 +13,117 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+traversalGraph = {}
+
+class Stack:
+    def __init__(self):
+        self.stack = []
+    def push(self, value): 
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
+def oppositeDirection(direction):
+    if direction == "n":
+        return "s"
+    elif direction == "e":
+        return "w"
+    elif direction == "s":
+        return "n"
+    elif direction == "w":
+        return "e"
+
+stack = Stack()
+
+while len(traversalGraph) < 500 and len(traversalPath) < 5000:
+    currentRoom = player.currentRoom.id
+    
+#    print(f"Current room: {currentRoom} - Explored {len(traversalGraph)} rooms, {len(traversalPath)} steps")
+    
+    # It is possible that we already found the current room, but if we haven't yet (aka it isn't in the graph), go ahead and add it and it's associated exits
+    if currentRoom not in traversalGraph:
+        exits = {}     # dictionary
+        
+        # if there is an exit in the current room in a given direction (aka if there is a north exit, and not just a wall), give it a placeholder "?"
+        for exit in player.currentRoom.getExits():
+            exits[exit] = "?"
+        
+        # add the exits we found to the graph for the current room ID
+        traversalGraph[currentRoom] = exits
+    
+    # Now that we are sure the room exists in the graph, fetch the available exits
+    exits = traversalGraph[currentRoom]
+#    print(f"    Exits: {exits}")
+    
+    # Keep a marker around to check if we explored at least one exit. If we didn't, we'll need to backtrack
+    exitsAvailableToExplore = False
+    
+    for direction, exitRoom in exits.items():
+        if exitRoom == "?":
+            # travel in the direction of the exit, and check the current room
+            player.travel(direction)
+            traversalPath.append(direction)
+            
+            newRoom = player.currentRoom.id
+            
+            # set the exit to be the new room we just travelled to, rather than a "?" as it was before
+            exits[direction] = newRoom
+            
+            returningDirection = oppositeDirection(direction)
+            
+            # Only add the new room to the graph if it doesn't exist yet
+            if newRoom not in traversalGraph:
+                # Explore the new room, so we can see what exits it has
+                newRoom_exits = {}
+                for exit in player.currentRoom.getExits():
+                    newRoom_exits[exit] = "?"
+                
+                # Be sure to set the entrance we just came from to the old room we were just in
+                newRoom_exits[returningDirection] = currentRoom # currentRoom is still set to the old room
+                # assign the exits for the new room
+                traversalGraph[newRoom] = newRoom_exits
+            else:
+                # The room already exists in the graph, so just set it's entrance to be the room we just came from
+                traversalGraph[newRoom][returningDirection] = currentRoom
+                
+                exploredAllExitsInNewRoom = True
+                newRoomExits = traversalGraph[newRoom]
+                
+                for direction, exit in newRoomExits.items():
+                    if exit == "?": # if the exit is unexplored, then we havcan explore further
+                        exploredAllExitsInNewRoom = False
+                
+                if exploredAllExitsInNewRoom:
+                    # Since we discovered an already-existing room, return to the previous one
+                    player.travel(returningDirection)
+                    # ... while erasing our steps (no one needs to know ;)
+                    traversalPath.pop()
+                    # and check the next exit in the loop instead (this will skip the steps of adding to the stack and marking that we explored an exit, and continue immediately to the next exit)
+                    continue
+            
+            # Add the direction necessary to get back to this room in the stack so we can backtrack if we run into a dead end
+            stack.push(returningDirection)
+            
+            # Mark that we checked at least one exit.
+            exitsAvailableToExplore = True
+            break
+
+    if not exitsAvailableToExplore: # This will happen when we reach a room we already explored, or a dead end (aka no other exits)
+        backTrackDirection = stack.pop()
+        
+        # If we ended up in the first room and there is no where else to go, since we can't backtrack, the stack will return None, so we stop the loop
+        if backTrackDirection is None:
+            break
+        
+        player.travel(backTrackDirection)
+        traversalPath.append(backTrackDirection)
 
 
 # TRAVERSAL TEST
