@@ -1,3 +1,5 @@
+from collections import deque
+
 from room import Room
 from player import Player
 from world import World
@@ -12,12 +14,20 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
+def traversal_path ()
+#starting node
+player.currentRoom.id
+#edges of starting node
+player.currentRoom.getExits() 
+#moving to a neighbor 
+player.travel(direction)
+    
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
 
 
 # TRAVERSAL TEST
+
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
