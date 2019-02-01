@@ -14,7 +14,9 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = ['s', 'n']
-
+def travel(direction):
+    
+print(player.currentRoom.getExits())
 
 # TRAVERSAL TEST
 visited_rooms = set()
