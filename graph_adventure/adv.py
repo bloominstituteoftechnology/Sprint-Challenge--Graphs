@@ -13,7 +13,30 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n', 'e', 'w']
+def opposite_dir(d):
+    directions = {
+        "n": "s",
+        "s": "n",
+        "e": "w",
+        "w": "e"
+    }
+    return directions[d]
+
+traversalPath = []
+visited = {}
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+while len(visited) < 499:
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+    direction = 0
+    while visited[player.currentRoom.id]:
+        next_direction = opposite_dir(visited[player.currentRoom.id][direction])
+        player.travel(next_direction)
+        # print(direction)
+        direction += 1
+
 
 
 # TRAVERSAL TEST
