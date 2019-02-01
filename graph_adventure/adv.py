@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from collections import deque
 import random
 
 # Load world
@@ -13,7 +13,57 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+class TraverseGraph:
+    def __init__(self):
+        self.current_room = 0
+        self.visited_rooms = {
+        0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+        }
+        self.current_path = []
+
+    def rooms_unexplored(self):
+        exits = player.currentRoom.getExits()
+        unexplored = []
+        for e in exits:
+            if self.visited_rooms[player.currentRoom.id][e] == '?':
+            unexplored.append(e)
+        if len(unexplored) == 0:
+            return None
+        else:
+            random.shuffle(unexplored)
+            return unexplored[0]
+
+            # move here
+    def move_player(self):
+        current_room = player.currentRoom.id
+        direction = self.rooms_unexplored()
+        player.travel(direction)
+        next_room = player.currentRoom.id
+        self.current_room=next_room
+        self.log_room(current_room, next_room, direction)
+
+    def log_room(self, current_room, next_room, direction):
+        traversalPath.append(direction)
+        if next_room not in self.visited_rooms:
+            self.visited_room[next_room] = {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+        self.visited_rooms[current_room][direction] = next_room
+        self.visited_rooms[next_room][self.reverse_direction(direction)] = current_room
+
+    def reverse_direction(self, direction):
+        if direction == 'n':
+        return 's'
+        if direction == 's':
+        return 'n'
+        if direction == 'w':
+        return 'e'
+        if direction == 'e':
+        return 'w'
+
+tg = TraverseGraph()
+print(tg.rooms_unexplored())
+
 
 
 # TRAVERSAL TEST
@@ -35,10 +85,37 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
+
+
+# traversing 
+# class Queue:
+#     def __init__(self):
+#         self.queue = []
+
+#     def enqueue(self, value):
+#         self.queue.append(value)
+
+#     def dequeue(self):
+#         if (self.size()) > 0:
+#             return self.queue.pop(0)
+#         else:
+#             return None
+
+#     def size(self):
+#         return len(self.queue)
+
+
+# def bft (self, world.startingRoom):
+#     #create empty queue
+#     q = Queue()
+#     q.enqueue(world.startingRoom)
+#     visited = []
+#     while q.size() > 0:
+        
