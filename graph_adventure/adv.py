@@ -13,7 +13,7 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = []
+
 '''
 def dft(self, start):
         print('DFT')
@@ -30,20 +30,25 @@ def dft(self, start):
                         nextItems.append(num)
 '''
 # TRAVERSAL TEST
-visited_rooms = set()
+traversalPath = []
+visited_rooms = dict()
 player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
-traversalPath += player.currentRoom.getExits()
-while len(traversalPath) is not 0:
-    print(visited_rooms[0].id)
-    nextRoom = traversalPath.pop()
-    player.travel(nextRoom)
-    visited_rooms.add(player.currentRoom)
+while len(visited_rooms) != 500:
     exits = player.currentRoom.getExits()
-    for move in exits:
-        traversalPath.append(move)
+    if player.currentRoom.id not in visited_rooms:
+        temp = {}
+        for exit in exits:
+            temp[exit] = '?'
+        visited_rooms[player.currentRoom.id] = temp
+    direction = exits[random.randint(0, len(exits) - 1)]
+    prevRoom = player.currentRoom.id
+    player.travel(direction)
+    visited_rooms[prevRoom][direction] = player.currentRoom.id
+
 print(traversalPath)
-print(player.currentRoom)
+print(visited_rooms)
+
+
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
