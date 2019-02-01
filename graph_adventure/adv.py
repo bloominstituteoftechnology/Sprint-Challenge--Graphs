@@ -202,10 +202,8 @@ while len(traversalPath)< 90000:
         exitDictonary[inverse_directions[randomExit]] = prev_room_id
         graph[player.currentRoom.id] = exitDictonary
     else:
-        reverse_directions = traversalPath.copy()
-        for moves in reverse_directions[::-1]:
+        for moves in traversalPath[::-1]:
             player.travel(inverse_directions[moves])
-            reverse_directions.pop()
             traversalPath.append(inverse_directions[moves])
             if "?" in graph[player.currentRoom.id].values():
                 print("im in a room with ?")
