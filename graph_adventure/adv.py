@@ -144,7 +144,7 @@ def dft(world, startingRoom):
         roomID = path[-1]
         room = world.rooms[roomID]
         exits = room.getExits()
-        next_directions = []
+        next_paths = []
 
         if visited[roomID] is not 'start':
             traversalPath.append(visited[roomID])
@@ -161,11 +161,15 @@ def dft(world, startingRoom):
             if next_room not in visited:
                 visited[next_room] = direction
                 new_path = path + [next_room]
-                next_directions.append(direction)
 
-                stack.append(new_path)
+                next_paths.append(new_path)
 
-        if not len(next_directions) and len(stack):
+        if len(next_paths):
+            # # randomize!
+            # random.shuffle(next_paths)
+            stack += next_paths
+
+        elif len(stack):
             print('\nNo new rooms from here, time to backtrack:')
 
             while path != stack[-1][:-1]:
