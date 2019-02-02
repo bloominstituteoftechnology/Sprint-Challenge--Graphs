@@ -14,6 +14,43 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = []
+graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+
+inverse_directions = {"n": "s", "s": "n", "e": "w", "w":"e"}
+
+#need to loop through this
+while True:
+    currentRoomExits = graph[player.currentRoom.id]
+
+    unexploredExits = []
+    #direction is key in dictionary
+    for direction in currentRoomExits:
+        #if exit has question mark it is still unexplored, so it should be added
+        if currentRoomExits == "?"
+            unexploredExits.append[direction]
+    #cant have empty sequence so have to do null check
+    if len(unexploredExits) > 0:
+        #randomly choose an exit that has not already been explored
+        randomExit = random.choice[unexploredExits]
+        #taking this exit, we append it to our traversal path
+        traversalPath.append(randomExit)
+        #set previous room
+        previous_room_id = player.currentRoom.id
+        #then player actually moves that direction
+        player.travel(randomExit)
+        #have to add new room to graph
+        exitDictionary = {}
+        for exit in player.currentRoom.getExits():
+            exitDictionary[exit] = "?"
+        #this initializes to all rooms as "?" but we know the rooms we've already passed through
+        #set previous room to the room player is currently in
+        graph[previous_room_id][randomExit] = player.currentRoom.id
+        #we can look at the inverse directions to know where the previous room is
+        exitDictionary[inverse_directions[randomExit]] = previous_room_id
+        graph[player.currentRoom.id] = exitDictionary
+    else:
+        #if reach room with no unexplored exits, need to backtrack
+        break
 
 def dft_visit_all_rooms(self, starting_vertex):
     visited = {}
@@ -27,7 +64,7 @@ def dft_visit_all_rooms(self, starting_vertex):
     #if you reach a dead end, back track until there is an unvisited path forward
     while
 \
-# {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+
     
     #rooms are stacked, backtracking is recursion
     #if already visited, mark as visited
@@ -77,3 +114,5 @@ while True:
 #     recursively call DFS(G, w) 
 # else 
 #     label e a a back edge
+
+#brady solution lecture https://youtu.be/wiEbw8ib2vc
