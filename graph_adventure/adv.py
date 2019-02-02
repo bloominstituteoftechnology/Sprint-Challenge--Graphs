@@ -15,6 +15,9 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
+
+
+
 class Vertex:
     def __init__(self, name, neighbors=list(), distance=9999, color='black'):
         self.name = name #label
@@ -28,17 +31,18 @@ class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
         self.vertices = {}
-        self.edges = set()
+        self.edges = dict()
         # self.destination = destination
         # self.label = label
 
 
 
     def add_vertex(self, vertex):
-        self.vertices[vertex] = dict()
-        print(self.vertices)
+        self.vertices[vertex] = {"n": "?", "s": "?", "w": "?", "e": "?"}
+        # print(self.vertices)
 
     def add_edge_bi(self, vertex_start, vertex_end):
+
         if vertex_start not in self.vertices:
             print(f'You chose: {vertex_start}. That Beginning Vertex does not exist...')
             return
@@ -68,6 +72,76 @@ class Graph:
             if i == vertex_start:
                 self.vertices[vertex_start].add(vertex_end)
                 print(self.vertices)
+
+
+
+    def traversal(self):
+        inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
+        while True:
+            currentRoomExits = self.vertices[player.currentRoom.id]
+            print("currentRoomExits: ",currentRoomExits)
+            unexploredExits = []
+
+            for direction in currentRoomExits:
+                if currentRoomExits[direction] == '?':
+                    unexploredExits.append(direction)
+            if len(unexploredExits) > 0:
+                randomExit = random.choice(unexploredExits)
+                traversalPath.append(randomExit)
+                previous_room_id = player.currentRoom.id
+                player.travel(randomExit)
+                exitDictionary = {}
+                for exit in player.currentRoom.getExits():
+                    exitDictionary[exit] = "?"
+                self.vertices[previous_room_id][randomExit] = player.currentRoom.id
+                exitDictionary[inverse_directions[randomExit]] = previous_room_id
+                self.vertices[player.currentRoom.id] = exitDictionary
+                print("unexploredExits: ",unexploredExits)
+            else:
+                print("unexploredExits: ",unexploredExits)
+                print(traversalPath)
+                if len(unexploredExits) == 0:
+                    inverse_travel = traversalPath.pop()
+                    print(traversalPath)
+                    inverse_exit = inverse_directions[inverse_travel]
+                    print(inverse_exit)
+                    traversalPath.append(inverse_exit)
+                    previous_room_id = player.currentRoom.id
+                    player.travel(inverse_exit)
+                    # exitDictionary = {}
+                    # for exit in player.currentRoom.getExits():
+                    #     print("inverse_exit: ",inverse_exit)
+                    #     exitDictionary[exit] = inverse_directions[inverse_exit]
+                    # print("exitDictionary: ",exitDictionary)
+                    # self.vertices[previous_room_id][inverse_exit] = player.currentRoom.id
+                    # exitDictionary[inverse_directions[inverse_exit]] = previous_room_id
+                    # self.vertices[player.currentRoom.id] = exitDictionary
+
+                #     for direction in currentRoomExits:
+                #         if direction == inverse_directions[inverse_travel]:
+                #             print(self.vertices[currentRoomExits[inverse_directions[inverse_travel]]])
+                # player.travel(inverse_directions[inverse_travel])
+                # print("Going Back: ",currentRoomExits)
+        return traversalPath
+
+
+                    # travel the inverse direction of the last element
+                    # in traversal path
+
+
+                # break
+
+
+
+
+def print_graph():
+    graph = Graph()
+    for i in range(0, 500):
+        graph.add_vertex(i)
+    print(len(graph.vertices))
+    graph.traversal()
+
+print_graph()
 
 
 
