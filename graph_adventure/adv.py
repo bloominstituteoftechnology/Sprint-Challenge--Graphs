@@ -3,6 +3,7 @@ from player import Player
 from world import World
 
 import random
+from collections import deque
 
 # Load world
 # DO NOT MODIFY
@@ -11,40 +12,124 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
 traversalPath = []
 
 # init a traversal graph
 traversalGraph = {}
+traversalGraph[player.currentRoom.id] = {}
+for cardnal in player.currentRoom.getExits():
+    traversalGraph[player.currentRoom.id][cardnal] = '?'
 
-# make a stack
-stack = []
-stack.append(player.currentRoom)
+inverse_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+queue = deque()
 
-while stack:
-    room = stack.pop()
-#     # create node in traversal graph
-    if room.id not in traversalGraph:
-        traversalGraph[room.id] = {}
-        for direction in room.getExits():
-            traversalGraph[room.id][direction] = '?'
-    
-    # get random direction
-    directions = room.getExits()
-    random.shuffle(directions)
-    direction = directions[0]
+while True:
+    # show exits of current room
+    room_exits = traversalGraph[player.currentRoom.id]
+    # init unexplored exists
+    unexplored_exits = []
+    # add possible directions to unexplored exits
+    for direction in room_exits:
+        if room_exits[direction] == '?':
+            unexplored_exits.append(direction)
+    # while room is explorable
+    if unexplored_exits:
+        # pick random exit
+        random_exit = random.choice(unexplored_exits)
+        # add to path
+        traversalPath.append(random_exit)
+        # set temp variable
+        previous_room_id = player.currentRoom.id
+        # travel to that room
+        player.travel(random_exit)
+        # init exits in current room
+        if player.currentRoom.id not in traversalGraph:
+            traversalGraph[player.currentRoom.id] = {}
+            for cardnal in player.currentRoom.getExits():
+                traversalGraph[player.currentRoom.id][cardnal] = '?'
 
-    if traversalGraph[room.id][direction] == '?':
-        player.travel(direction)
-        # mark as explored
-        traversalGraph[room.id][direction] = player.currentRoom.id
-        # append direction path
-        traversalPath.append(direction)
-        # add current room to stack
-        stack.append(player.currentRoom)
+        traversalGraph[previous_room_id][random_exit] = player.currentRoom.id
+        traversalGraph[player.currentRoom.id][inverse_directions[random_exit]] = previous_room_id
 
+        # traversalGraph[player.currentRoom.id] = exit_dict
+    else:
+        # break
+        count = -1
+        path_creation = True
+        path = []
+        # walk backwards
+        while path_creation:
+            # Player moves back one room
+            player.travel(inverse_directions[traversalPath[count]])
+
+            # add move to path
+            path.append(inverse_directions[traversalPath[count]])
+
+            # check if room exits have not been explored
+            current_room_exits = traversalGraph[player.currentRoom.id]
+            # add possible directions to unexplored exits
+            for direction in current_room_exits:
+                if current_room_exits[direction] == '?':
+                    # add path to traversal
+                    traversalPath.extend(path)
+                    # stop loop
+                    path_creation = False
+            # go back
+            count -= 1
+
+        print(count)
+        # break
+        
 # print(traversalGraph)
+# print(traversalPath)
+
+# print(traversalGraph[player.currentRoom.id])# print(inverse_directions[traversalPath[-1]])
+        
+# random.choice(list)
+
+# # get random direction
+# directions = player.currentRoom.getExits()
+# random.shufkfle(directions)
+# direction = directions[0]
+
+# # make a stack
+# stack = []
+# stack.append(player.currentRoom)
+
+# # get random direction
+# directions = player.currentRoom.getExits()
+# random.shuffle(directions)
+# direction = directions[0]
+
+# while stack:
+#     room = stack.pop()
+
+#     if direction not in traversalGraph[player.currentRoom.id]:
+#         directions = player.currentRoom.getExits()
+#         random.shuffle(directions)
+#         direction = directions[0]
+
+#     if traversalGraph[player.currentRoom.id][direction] == '?':
+#         # travel to that room
+#         player.travel(direction)
+        
+#         # mark as visited
+#         traversalGraph[room.id][direction] = player.currentRoom.id
+        
+#         # add current room to graph
+#         if player.currentRoom.id not in traversalGraph:
+#             traversalGraph[player.currentRoom.id] = {}
+#             for cardnal in player.currentRoom.getExits():
+#                 traversalGraph[player.currentRoom.id][cardnal] = '?'
+        
+#         # append direction path
+#         traversalPath.append(direction)
+#         # add current room to stacl
+
+#         stack.append(player.currentRoom)
+
+
 
 
 
