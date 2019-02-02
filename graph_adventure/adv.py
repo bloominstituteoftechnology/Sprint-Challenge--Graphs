@@ -22,12 +22,14 @@ def opposite_dir(d):
     }
     return directions[d]
 
+
+# def traversal_graph():
 traversalPath = []
 graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 stack = []
 
 while len(graph) != 500:
-    # 1. Collect unexplored rooms
+    # Collect unexplored rooms
     current_room_exits = graph[player.currentRoom.id] # => {'n': '?', 's': '?', 'w': '?', 'e': '?'}
     unexplored_exits = []
 
@@ -37,17 +39,17 @@ while len(graph) != 500:
             unexplored_exits.append(direction)
 
     if unexplored_exits:
-        # 2. Go to a random exit
+        # Go to a random exit
         # random.seed(1)
         random_exit = random.choice(unexplored_exits)
-        # 3. Add path to traversalPath and queue
+        # Add path to traversalPath and queue
         traversalPath.append(random_exit)
         stack.append(random_exit)
         # Store current_room to a temp variable
         previous_room_id = player.currentRoom.id
-        # 4. Make player enter in the room
+        # Make player enter in the room
         player.travel(random_exit)
-        # 5. Add new explored room to graph
+        # Add new explored room to graph
         exit_dictionary = {} # => populate this with {'n': '?', 's': '?', 'w': '?', 'e': '?'}
         for exit in player.currentRoom.getExits():
             exit_dictionary[exit] = "?"
@@ -55,7 +57,6 @@ while len(graph) != 500:
         graph[previous_room_id][random_exit] = player.currentRoom.id
         exit_dictionary[opposite_dir(random_exit)] = previous_room_id
         graph[player.currentRoom.id] = exit_dictionary
-        # print(graph)
     else:
         if stack:
             previous_exit = stack.pop()
@@ -63,6 +64,20 @@ while len(graph) != 500:
             player.travel(opposite_dir(previous_exit))
             # Record move of going back
             traversalPath.append(opposite_dir(previous_exit))
+
+    # return traversalPath
+
+# traversalPath = traversal_graph()
+
+# traversalPath = []
+# print(traversalPath)
+# while True:
+#     path = traversal_graph()
+#     if len(path) < 2000:
+#         break
+#     else:
+#         path = None
+
 
 
 
