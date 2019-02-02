@@ -13,7 +13,80 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+def opposite_dir(d):
+    directions = {
+        "n": "s",
+        "s": "n",
+        "e": "w",
+        "w": "e"
+    }
+    return directions[d]
+
+
+# def traversal_graph():
+traversalPath = []
+graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+stack = []
+
+while len(graph) != 500:
+    # Collect unexplored rooms
+    current_room_exits = graph[player.currentRoom.id] # => {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+    unexplored_exits = []
+
+    for direction in current_room_exits:
+        # if direction == '?', add it to the unexplored exits
+        if current_room_exits[direction] == '?':
+            unexplored_exits.append(direction)
+
+    if unexplored_exits:
+        # Go to a random exit
+        # random.seed(1)
+        random_exit = random.choice(unexplored_exits)
+        # Add path to traversalPath and queue
+        traversalPath.append(random_exit)
+        stack.append(random_exit)
+        # Store current_room to a temp variable
+        previous_room_id = player.currentRoom.id
+        # Make player enter in the room
+        player.travel(random_exit)
+        # Add new explored room to graph
+        exit_dictionary = {} # => populate this with {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+        for exit in player.currentRoom.getExits():
+            exit_dictionary[exit] = "?"
+        # Mark each direction for each visited room
+        graph[previous_room_id][random_exit] = player.currentRoom.id
+        exit_dictionary[opposite_dir(random_exit)] = previous_room_id
+        graph[player.currentRoom.id] = exit_dictionary
+    else:
+        if stack:
+            previous_exit = stack.pop()
+            # Go back to the next unexplored room
+            player.travel(opposite_dir(previous_exit))
+            # Record move of going back
+            traversalPath.append(opposite_dir(previous_exit))
+
+    # return traversalPath
+
+# traversalPath = traversal_graph()
+
+# traversalPath = []
+# print(traversalPath)
+# while True:
+#     path = traversal_graph()
+#     if len(path) < 2000:
+#         break
+#     else:
+#         path = None
+
+
+
+
+# print("graph: ", graph)
+# print("--------------------")
+# print("traversalPath", traversalPath)
+# print("--------------------")
+
+
 
 
 # TRAVERSAL TEST
