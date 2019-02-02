@@ -1,7 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-from helpers import Queue, Stack
 import random
 
 # Load world
@@ -11,46 +10,88 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
-traversalPath = ['n', 's'] 
+traversalPath = []
+backtrack_path = []
+visited_rooms = {}
 
-# starting point
-graph = { 0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
-print(player.currentRoom.id)
+def inverse_dir(dir):
+    if dir is 'n':
+        return 's'
+    elif dir is 's':
+        return 'n'
+    elif dir is 'e':
+        return 'w'
+    elif dir is 'w':
+        return 'e'
 
-print('*****\n\n\n')
+# initiate visited_rooms with a starting value
+visited_rooms[player.currentRoom.id] = player.currentRoom.getExits() # ['n', 's', 'w', 'e']
 
-inverse_dir = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+# checking for a value less than 499 b/c line above initiates player to a room
+while len(visited_rooms) < 499:
+    if player.currentRoom.id not in visited_rooms:
+        # mark as visited
+        visited_rooms[player.currentRoom.id] = player.currentRoom.getExits()
+        # player had valid traversed move, remove the last move from backtrack_path
+        visited_rooms[player.currentRoom.id].remove(backtrack_path[-1])
+    
+    # if player hits a dead end, they will walk backtrack unexplored path
+    while len(visited_rooms[player.currentRoom.id]) == 0:
+        # player will go to last place in backstrack_path to backtrack its move
+        backtrack = backtrack_path.pop()
+        # add that that backstrack move as traversed
+        traversalPath.append(backtrack)
+        # have plaver backtrack its move
+        player.travel(backtrack)
 
-while True:
-    currentRoomExits = graph[player.currentRoom.id]
-    unexploredExits = []
+    # move to the first room in visited rooms
+    move = visited_rooms[player.currentRoom.id].pop(0)
+    # add that move to the traversalPath to keep track of traversed path
+    traversalPath.append(move)
+    # add that move to backtrack_path to keep track of the inversed traversed path
+    backtrack_path.append(inverse_dir(move))
+    # have player move
+    player.travel(move)
 
-    for direction in currentRoomExits:
-        if currentRoomExits[direction] == '?':
-            unexploredExits.append(direction)
-        
-    if len(unexploredExits) > 0:
-        randomExit = random.choice(unexploredExits)
-        traversalPath.append(randomExit)
-        previous_roomID = player.currentRoom.id
-        player.travel(randomExit)
-        exitDictionary = {}
-        for exit in player.currentRoom.getExits():
-            exitDictionary[exit] = '?'
-            # print(exitDictionary)
-        graph[previous_roomID][randomExit] = player.currentRoom.id
-        exitDictionary[inverse_dir[randomExit]] = previous_roomID
-        graph[player.currentRoom.id] = exitDictionary
-        # print(graph)
-    else:
-        # what do we do when we reach a room with no unexplored ????
-        break
+# # From Instructor Review:
+# print('*****\n\n\n')
 
-# print(randomExit)
-# print (currentRoomExits)
-print('\n\n\n*****')
+# traversalPath = []
+# traveled = []
+# graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+# inverse_dir = {"n":"s", "s":"n", "e": "w", "w": "e"}
+
+# while True:
+#     currentRoomExits = graph[player.currentRoom.id]
+#     unexploredExits = []
+#     for direction in currentRoomExits:
+#         if currentRoomExits[direction] == "?":
+#             unexploredExits.append(direction)
+
+#     if len(unexploredExits) > 0:
+#         randomExit = random.choice(unexploredExits)
+#         traversalPath.append(randomExit)
+#         previous_roomID = player.currentRoom.id
+#         player.travel(randomExit)
+#         traveled.append(randomExit)
+#         exitDictonary = {}
+#         for exit in player.currentRoom.getExits():
+#             exitDictonary[exit] = '?'
+#         graph[previous_roomID][randomExit] = player.currentRoom.id
+#         exitDictonary[inverse_dir[randomExit]] = previous_roomID
+#         graph[player.currentRoom.id] = exitDictonary
+
+#     else:   
+#         # What do we do when we reach a room with no unexplored
+#         if len(traveled) > 0:
+#             prev_dir = traveled.pop()
+#             backtrack = inverse_dir[prev_dir]
+#             player.travel(backtrack)
+#             traversalPath.append(backtrack)
+#             break       
+
+# print('\n\n\n*****')
     
 
 # TRAVERSAL TEST
@@ -59,9 +100,7 @@ player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
     player.travel(move)
-    print('move', move)
     visited_rooms.add(player.currentRoom)
-    print('visited_rooms', visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
