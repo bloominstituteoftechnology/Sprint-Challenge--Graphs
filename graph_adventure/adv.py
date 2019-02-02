@@ -26,69 +26,49 @@ def return_move_calculator(last_move):
     else:
         return 'oops'
 
-def new_room_finder(current_room):
-    possible_exits = player.currentRoom.getExits()
-    for direction in possible_exits:
-        if f'{direction}_to' is not in visited:
-            return direction
-
-    return None
-
 # walk through every room once, and keep a record of your movements
 traversalPath = []
 directions = ['n', 's', 'e', 'w']
 directions_book = {'n': ['e', 'n', 'w'], 's': ['w', 's', 'e'], 'e':['s', 'e', 'n'], 'w':['n', 'w', 's']}
 visited = set()
-print(f'len(roomGraph): {len(roomGraph)}')
 
 while len(visited) < len(roomGraph):
     current_room = player.currentRoom.id
     if current_room not in visited:
         visited.add(current_room)
 
-    last_move = traversalPath[-1]
+    if len(traversalPath) == 0:
+        last_move = 'n' # arbitrary start direction
     
     # starting on rhs, if there is an unvisited room, go there
     options_ahead = directions_book[last_move]
     for direction in options_ahead:
-        next_room = player.currentRoom[f'{direction}_to']
-        if next_room is not None and next_room is not in visited:
+        next_room = player.currentRoom
+        if next_room is not None and not next_room in visited:
+            traversalPath.append(direction)
             player.travel(direction)
 
-    # there are no unvisited rooms and only one exit. you're at a terminus. turn around
-    elif len(player.currentRoom.getExits()) == 1:
+    # only one exit. you're at a terminus. turn around
+    if len(player.currentRoom.getExits()) == 1:
         return_direction = return_move_calculator(traversalPath[-1])
+        traversalPath.append(return_direction)
         player.travel(return_direction)
 
-    # you're in a room where every exit has been visited.  you should turn right.
+    # you're in a room where every exit has been visited.  follow the right hand rule
     else:
-        player.travel(return_direction)
+        for direction in options_ahead:
+            next_room = player.currentRoom[f'{direction}_to']
+            if next_room is not None:
+                traversalPath.append(direction)
+                player.travel(direction)
 
+# for service in accounts:
+#         for account in accounts[service]:
+#             account.setupAccount(account['username'], account['password'])
 
-
-    # if current_room is in visited: # retracing your steps
-    #     new_move = new_room_finder(current_room)
-    #     if new_move is None:
-    #         return_move = return_move_calculator(traversalPath[index_last_move])
-    #         traversalPath.append(return_move)
-    #         player.travel(return_move)
-    #     else:
-    #         traversalPath.append(new_move)
-    #         player.travel(new_move)
-
-    # elif current_room is not in visited: # traveling forward
-    #     visited.add(current_room)
-    #     exit_directions = player.currentRoom.getExits()
-        
-    #     # if there is an unvisited exit, go there
-    #     for direction in exit_directions:
-    #         if player.currentRoom[f'{direction}_to'] is not in visited:
-    #             traversalPath.append(direction)
-    #             player.travel(direction)
-    #     # all exit rooms have been visited. return the way you came
-    #     return_move = return_move_calculator(traversalPath[steps_backwards])
-    #     traversalPath.append(return_move)
-    #     player.travel(return_move)
+# for service in accounts:
+#         for account, creds in accounts[service].iteritems():
+#             account.setupAccount(creds['username'], creds['password'])
 
 
 # TRAVERSAL TEST
