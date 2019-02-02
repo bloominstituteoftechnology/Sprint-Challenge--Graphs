@@ -22,9 +22,8 @@ for cardnal in player.currentRoom.getExits():
     traversalGraph[player.currentRoom.id][cardnal] = '?'
 
 inverse_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
-queue = deque()
 
-while True:
+while len(traversalPath) < 70000:
     # show exits of current room
     room_exits = traversalGraph[player.currentRoom.id]
     # init unexplored exists
@@ -54,32 +53,40 @@ while True:
 
         # traversalGraph[player.currentRoom.id] = exit_dict
     else:
-        # break
-        count = -1
+        # count = -1
         path_creation = True
         path = []
+        new_list = list(traversalPath)
         # walk backwards
         while path_creation:
             # Player moves back one room
-            player.travel(inverse_directions[traversalPath[count]])
+            if new_list:
+                popped = new_list.pop()
+                player.travel(inverse_directions[popped])
+                # add move to path
+                path.append(inverse_directions[popped])
 
-            # add move to path
-            path.append(inverse_directions[traversalPath[count]])
-
-            # check if room exits have not been explored
-            current_room_exits = traversalGraph[player.currentRoom.id]
-            # add possible directions to unexplored exits
-            for direction in current_room_exits:
-                if current_room_exits[direction] == '?':
-                    # add path to traversal
+                # check if current_room_exits has not been explored
+                current_room_exits = traversalGraph[player.currentRoom.id]
+                unexplored_exits = []
+                # add possible directions to unexplored exits
+                for direction in current_room_exits:
+                    if current_room_exits[direction] == '?':
+                        unexplored_exits.append(direction)
+                        # add path to traversal
+                if unexplored_exits:
+                    print(f"PATH: {path}")
                     traversalPath.extend(path)
+                    # player.travel(direction)
                     # stop loop
                     path_creation = False
+                        
+            # else:
+            #     break
             # go back
-            count -= 1
-
-        print(count)
+            # count -= 1
         # break
+        
         
 # print(traversalGraph)
 # print(traversalPath)
