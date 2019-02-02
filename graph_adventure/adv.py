@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from collections import deque
 import random
 
 # Load world
@@ -11,10 +11,121 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+class TraversalGraph:
+    def __init__(self):
+        self.nodes = {}
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+visited_rooms = {}
 
+
+queque = deque()
+
+def reverseMove(move):
+    if move == 'n':
+        return 's'
+    if move == 'w':
+        return 'e'
+    if move == 's':
+        return 'n'
+    if move == 'e':
+        return 'w'
+
+while len(visited_rooms) < 500:
+    room = player.currentRoom    
+   
+    if visited_rooms.get(room.id) is None:
+      visited_rooms[room.id] = {}
+      for move in room.getExits():
+          visited_rooms[room.id][move] = '?'
+    choices = [key for key in visited_rooms[room.id] if visited_rooms[room.id][key] == '?']
+    if choices:
+        queque.append(room.id)
+        direction = random.choice(choices)
+        traversalPath.append(direction)
+        prevId = room.id
+        player.travel(direction)
+        if visited_rooms.get(player.currentRoom.id) is None:
+          visited_rooms[player.currentRoom.id] = {}
+          for move in player.currentRoom.getExits():
+            visited_rooms[player.currentRoom.id][move] = '?'
+        # print(visited_rooms)
+        # print(visited_rooms[player.currentRoom.id])
+
+        visited_rooms[player.currentRoom.id][reverseMove(direction)], visited_rooms[prevId][direction] = prevId, player.currentRoom.id    
+    else:
+        prevId = queque.pop()
+        for key, value in visited_rooms[player.currentRoom.id].items():
+            if value == prevId:
+                player.travel(key)
+                traversalPath.append(key)
+        # for value in visited_rooms[player.currentRoom.id].values():
+        #     queque.append(value)
+        
+        # while queque:
+        #     roomkey = queque.popleft()
+        #     notFound = True
+        #     for value in visited_rooms[roomkey]:
+        #         if value == '?':
+        #             for direction, roomId in visited_rooms[player.currentRoom.id].items():
+        #                 if roomId == roomkey:
+        #                     player.travel(direction)
+        #                     traversalPath.append(direction)
+        #                     queque.clear()
+        #     while notFound:
+        #       print('queque', queque)
+        #       print('pre ',visited_rooms[player.currentRoom.id])
+        #       player.travel(random.choice(player.currentRoom.getExits()))
+        #       print('post ',visited_rooms[player.currentRoom.id])
+        #       for value in visited_rooms[player.currentRoom.id].values():
+        #           queque.append(value)
+
+
+        # while not choices:
+        #     for move in player.currentRoom.getExits():
+        #         print(visited_rooms[player.currentRoom.id])
+        #         print(visited_rooms[player.currentRoom.id][move])
+        #         if visited_rooms[visited_rooms].get(visited_rooms[player.currentRoom.id][move], None):
+        #           choices = [key for key, value in visited_rooms[visited_rooms[player.currentRoom.id][move]].items() if value == '?']
+        #         print(choices)
+        #         if choices:
+        #             traversalPath.append(move)
+        #             player.travel(move)
+        #         else:
+        #             traversalPath.append(move)
+        #             direction = random.choice(player.currentRoom.getExits())
+        #             player.travel(direction)
+
+
+        
+
+
+
+
+# while queque:
+#     room = queque.pop()
+#     visited_rooms[room.id] = {}
+#         visited_rooms[room.id][move] = room.getRoomInDirection(move).id
+#         if not room.getRoomInDirection(move).id in visited_rooms:
+#             queque.append(room.getRoomInDirection(move))
+
+# for dicts in visited_rooms.values():
+#     for key in dicts:
+#         traversalPath.append(key)
+
+            
+
+# while True:
+#     move = player.getExits()[random.randint(0, len(player.getExits()))]
+#     traversalPath.append(move)
+
+# move = player.currentRoom.getExits()[random.randint(0, len(player.currentRoom.getExits()))]
+# while player.currentRoom.getRoomInDirection(move).id in visited_rooms:
+#     move = player.currentRoom.getExits()[random.randint(0, len(player.currentRoom.getExits()))]
+# traversalPath.append(move)
+
+# print(len(traversalPath))       
 
 # TRAVERSAL TEST
 visited_rooms = set()
