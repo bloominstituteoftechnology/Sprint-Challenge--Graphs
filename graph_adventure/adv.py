@@ -32,7 +32,9 @@ directions = ['n', 's', 'e', 'w']
 directions_book = {'n': ['e', 'n', 'w'], 's': ['w', 's', 'e'], 'e':['s', 'e', 'n'], 'w':['n', 'w', 's']}
 visited = set()
 
-while len(visited) < len(roomGraph):
+while len(visited) < 10:
+# while len(visited) < len(roomGraph):
+    print(traversalPath)
     current_room = player.currentRoom.id
     if current_room not in visited:
         visited.add(current_room)
@@ -43,10 +45,11 @@ while len(visited) < len(roomGraph):
     # starting on rhs, if there is an unvisited room, go there
     options_ahead = directions_book[last_move]
     for direction in options_ahead:
-        next_room = player.currentRoom
-        if next_room is not None and not next_room in visited:
-            traversalPath.append(direction)
-            player.travel(direction)
+        if player.currentRoom[f'{direction}_to'] is not None:
+            next_room = player.currentRoom[f'{direction}_to'].id
+            if not next_room in visited:
+                traversalPath.append(direction)
+                player.travel(direction)
 
     # only one exit. you're at a terminus. turn around
     if len(player.currentRoom.getExits()) == 1:
