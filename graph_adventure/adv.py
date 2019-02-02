@@ -14,28 +14,88 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 
-class Queue:
-    def __init__(self):
-        self.queue = []
-
-    def size(self):
-        return len(self.queue)
-    
-    def enqueue(self, value):
-        self.queue.append(value)
-
-    def dequeue(self):
-        if self.size() > 0:
-            return self.queue.pop(0)
-        else: 
-            return None
-
+graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
 traversalPath = ['s', 'n']
+inverse_directions = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
+while len(graph) < 500:
+    
+    currentRoomExits = graph[player.currentRoom.id]
+    unexploredExits = []
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == '?':
+            unexploredExits.append(direction)
+    if len(unexploredExits)>0:
+        randomExit = random.choice(unexploredExits)
+        traversalPath.append(randomExit)
+        prev_room_id = player.currentRoom.id
+        player.travel(randomExit)
+        exitDictonary = {}
+        for exits in player.currentRoom.getExits():
+            exitDictonary[exits] = "?"
+        graph[prev_room_id][randomExit] = player.currentRoom.id
+        exitDictonary[inverse_directions[randomExit]] = prev_room_id
+        graph[player.currentRoom.id] = exitDictonary
+    else:
+        for move in traversalPath[::-1]:
+            player.travel(inverse_directions[move])
+            traversalPath.append(inverse_directions[move])
+            if "?" in graph[player.currentRoom.id].values():
+                break
 
-directions = ['s', 'n', 'e', 'w']
+# graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
+# traversalPath = ['s', 'n']
+# inverse_directions = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
+# while len(graph) < 500:
+    
+#     currentRoomExits = graph[player.currentRoom.id]
+#     unexploredExits = []
+#     for direction in currentRoomExits:
+#         if currentRoomExits[direction] == '?':
+#             unexploredExits.append(direction)
+#     if len(unexploredExits)>=0:
+#         prev_room_id = player.currentRoom.id
+#         for i in range(0, len(unexploredExits) - 1):
+#             if player.currentRoom.getRoomInDirection(unexploredExits[i]) is not None:
+#                 player.travel(unexploredExits[i])
+#                 traversalPath.append(unexploredExits[i])
+#                 graph[prev_room_id][unexploredExits[i]] = player.currentRoom.id
+#                 exitDictonary = {}
+#                 for exits in player.currentRoom.getExits():
+#                     exitDictonary[exits] = "?"
+#                 exitDictonary[inverse_directions[unexploredExits[i]]] = prev_room_id
+#                 graph[player.currentRoom.id] = exitDictonary
+#                 graph[player.currentRoom.id][inverse_directions[unexploredExits[i]]] = prev_room_id
+#             else:
+#                 break
+#     else:
+#         for move in traversalPath[::-1]:
+#             player.travel(inverse_directions[move])
+#             traversalPath.append(inverse_directions[move])
+#             if "?" in graph[player.currentRoom.id].values():
+#                 break
 
-for item in directions:
-    player.travel(item)
+# class Queue:
+#     def __init__(self):
+#         self.queue = []
+
+#     def size(self):
+#         return len(self.queue)
+    
+#     def enqueue(self, value):
+#         self.queue.append(value)
+
+#     def dequeue(self):
+#         if self.size() > 0:
+#             return self.queue.pop(0)
+#         else: 
+#             return None
+
+# traversalPath = ['s', 'n']
+
+# directions = ['s', 'n', 'e', 'w']
+
+# for item in directions:
+#     player.travel(item)
 
     
 # def bfs_path(start_room):
@@ -58,18 +118,18 @@ for item in directions:
 # bfs_path(player.currentRoom)
 
 # TRAVERSAL TEST
-# visited_rooms = set()
-# player.currentRoom = world.startingRoom
-# visited_rooms.add(player.currentRoom)
-# for move in traversalPath:
-#     player.travel(move)
-#     visited_rooms.add(player.currentRoom)
+visited_rooms = set()
+player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
+for move in traversalPath:
+    player.travel(move)
+    visited_rooms.add(player.currentRoom)
 
-# if len(visited_rooms) == 500:
-#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{500 - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == 500:
+    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{500 - len(visited_rooms)} unvisited rooms")
 
 
 
