@@ -3,6 +3,7 @@ from player import Player
 from world import World
 
 import random
+from collections import deque
 
 # Load world
 # DO NOT MODIFY
@@ -11,10 +12,86 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
 
+# init a traversal graph
+traversalGraph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+# dictonary to loop up inverse directions
+inverse_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+looping = True
+visited = set()
+
+while len(visited) < 500:
+    room_exits = traversalGraph[player.currentRoom.id]
+    unexplored = []
+    # get a list of unexplored exits
+    for direction in room_exits:
+        if room_exits[direction] == '?':
+            unexplored.append(direction)
+    if unexplored:
+        # add to traveral path
+        move = random.choice(unexplored)
+        traversalPath.append(move)
+        # save id
+        previous_room_id = player.currentRoom.id
+        # travel
+        player.travel(move)
+        # if not in graph add room
+        if player.currentRoom.id not in traversalGraph:
+            traversalGraph[player.currentRoom.id] = {}
+            for direction in player.currentRoom.getExits():
+                traversalGraph[player.currentRoom.id][direction] = '?'
+
+        traversalGraph[previous_room_id][move] = player.currentRoom.id
+        traversalGraph[player.currentRoom.id][inverse_directions[move]] = previous_room_id
+        
+    else:
+        
+        queue = deque()
+        queue.append(list(inverse_directions[traversalPath[-1]]))
+        make_path = True
+        # print(f"DEAD END: {player.currentRoom.id}")
+        while make_path:
+            dequeued = queue.popleft()
+            # print(f"LENGTH OF PATH: {len(traversalPath)}")
+            # print(f"SHORTEST PATH: {dequeued}")
+            last_move = dequeued[-1]
+            for m in dequeued:
+                player.travel(m)
+                # print(f"Player in Q: {player.currentRoom.id}")
+            exits = traversalGraph[player.currentRoom.id]
+            for exit in exits:
+                if exits[exit] == '?':
+                    make_path = False
+                    # print(f"LENGTH OF PATH afterExtend: {len(traversalPath)}")
+                elif inverse_directions[exit] != last_move:
+                    path_copy = list(dequeued)
+                    path_copy.append(exit)
+                    queue.append(path_copy)
+            # reset player
+            if make_path:
+                for r_move in dequeued[::-1]:
+                    player.travel(inverse_directions[r_move])
+            else:
+                # shortest path
+                traversalPath.extend(dequeued)
+            # print(f"Player after reset: {player.currentRoom.id}")
+    
+    # add completed rooms to visited
+    for p in traversalGraph:
+        if p not in visited:
+            qs = []
+            for direction in traversalGraph[p]:
+                if traversalGraph[p][direction] == '?':
+                    qs.append(direction)
+            if len(qs) == 0:
+                visited.add(p)
+    
+print(len(visited))
+print(traversalGraph)
+print(traversalPath)
+# print(len(traversalPath))
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -35,10 +112,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+'''
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
+'''
