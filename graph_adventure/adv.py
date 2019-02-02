@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from queue import Queue
 
 import random
 
@@ -26,6 +27,30 @@ def reverse_directions(direction):
     elif direction is 'w':
         return 'e'
 
+# takes in player
+# def closest_unexplored(player, traversalGraph):
+#     queue = Queue()
+#     found = False
+#     checked_rooms = set()
+#     current_room = player.currentRoom
+#     next_room = player.currentRoom
+#     room_exits = current_room.getExits()
+#     for direction in room_exits:
+#         queue.put({traversalGraph[current_room][direction]): [direction]})
+#     while not found:
+#         # Get room number and path to room
+#         check_room = queue.get()
+#         # Room number
+#         next_room = check_room.key()
+#         # Path to room number
+#         path_to_next = check_room[next_room]
+#         for direction in traversalGraph[next_room]:
+#             if traversalGraph[next_room][direction] == '?':
+#                 found = True
+#             else:
+#                 queue.put({next_room})
+
+
 
 def traverseRooms(player):
     # create traversl graph. Holds room ids and what directions lead to which room
@@ -42,6 +67,9 @@ def traverseRooms(player):
         room_exits = player.currentRoom.getExits()
         # get current room id
         current_room_id = player.currentRoom.id
+        for direction in room_exits:
+            if traversalGraph[current_room_id].get(direction, None) is None:
+                traversalGraph[current_room_id][direction] = '?'
         # Iterate through possible directions for current room
         for direction in room_exits:
             # If room in direction not explored
