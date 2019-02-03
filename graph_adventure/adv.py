@@ -18,11 +18,18 @@ traversalPath = []
 inverse_directions = {'n': 's', 's': 'n', 'w':'e',  'e':'w'}
 complete_list = []
 prev_room_id = 0
+ending_list = {0: {'n': 2, 's':5,'w':3,'e':1}}
 while len(traversalPath) < 48:
     currentRoomExits = graph[player.currentRoom.id]
+    print(graph[player.currentRoom.id])
+    print(ending_list[0])
+    if graph[player.currentRoom.id] == ending_list[0]:
+        print("im here!")
+        break
     # print(f"in room {player.currentRoom.id}", graph[player.currentRoom.id])
     unexploredExits = []
     for direction in currentRoomExits:
+        print(currentRoomExits)
         if currentRoomExits[direction] == '?':
             unexploredExits.append(direction)
     if len(unexploredExits)>0:
