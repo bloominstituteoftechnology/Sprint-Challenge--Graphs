@@ -15,38 +15,44 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
+def __checkDirections(roomExits):
+    # create an empty list to save each rooms exits
+    unexplored = []
+    # check direction variable for a question mark
+    for direction in roomExits:
+        if roomExits[direction] == '?':
+            # save direction to a list needing to be explored
+            unexplored.append(direction)
+    if len(unexplored) > 0:
+        return unexplored
+    else:
+        return None
+
 # create the graph base to check against each room
 graph = {0: {'n' : '?', 's' : '?', 'w' : '?', 'e' : '?'}}
 
 # create a dictionary to find reverse paths
 goBack = {'n' : 's', 's' : 'n', 'w' : 'e', 'e' : 'w'}
 
-# create a stack to traverse rooms
-currentRoomList = Stack()
-# add current room to stack
-currentRoomList.push(player.currentRoom.id)
 
-while currentRoomList.size() > 0:
-
+while True:
     #create the graph of the current room
     curRoomExits = graph[player.currentRoom.id]
-    # create an empty list to save each rooms exits
-    unexplored = []
     # check direction variable for a question mark
-    for direction in curRoomExits:
-        if curRoomExits[direction] == '?':
-            # save direction to a list needing to be explored
-            unexplored.append(direction)
+    unknownExits = __checkDirections(curRoomExits)
     # check to make sure there are still elements to explore
-    if len(unexplored) > 0:
+    if unknownExits is not None and len(unknownExits) > 0:
+        print(unknownExits)
         # select a random unexplored exit
-        randomExit = random.choice(unexplored)
+        randomExit = random.choice(unknownExits)
         # save your path to traversalPath
         traversalPath.append(randomExit)
         # save the current room for use after leaving
         comingFrom = player.currentRoom.id
+        print(player.currentRoom.id)
         # walk into the unknown
         player.travel(randomExit)
+        print(player.currentRoom.id)
         # create an empty dictionary to create a graph for the traveled to room
         exitDict = {}
         # create the dictionary for the next rooms graph
@@ -60,14 +66,19 @@ while currentRoomList.size() > 0:
         # add dictionary to room graph
         graph[player.currentRoom.id] = exitDict
     else:
+
         retrace = goBack[traversalPath[-1]]
-        traversalPath.append(retrace)
         player.travel(retrace)
-        currentRoomList.push(player.currentRoom.id)
-        print(retrace)
+        traversalPath.append(retrace)
+        unknownExits = __checkDirections(graph[player.currentRoom.id])
+        print(f'step back to {player.currentRoom.id}')
+        print(unknownExits)
+        # currentRoomList.push(player.currentRoom.id)
+        # print(retrace)
         print(graph)
         print(traversalPath)
-        print(currentRoomList.stack)
+        # print(currentRoomList.stack)
+        break
 
 
 
