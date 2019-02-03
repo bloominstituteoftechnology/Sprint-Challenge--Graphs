@@ -21,35 +21,31 @@ prev_room_id = 0
 ending_list = {0: {'n': 2, 's':5,'w':3,'e':1}}
 while len(traversalPath) < 48:
     currentRoomExits = graph[player.currentRoom.id]
-    print(graph[player.currentRoom.id])
-    print(ending_list[0])
     if graph[player.currentRoom.id] == ending_list[0]:
-        print("im here!")
         break
     # print(f"in room {player.currentRoom.id}", graph[player.currentRoom.id])
     unexploredExits = []
     for direction in currentRoomExits:
-        print(currentRoomExits)
         if currentRoomExits[direction] == '?':
             unexploredExits.append(direction)
     if len(unexploredExits)>0:
         if prev_room_id <= player.currentRoom.id:
             if "n" in unexploredExits:
-                randomExit = "n"
-            elif "w" in unexploredExits:
-                randomExit = "w"      
+                randomExit = "n" 
             elif "e" in unexploredExits:
                 randomExit = "e"
+            elif "w" in unexploredExits:
+                randomExit = "w"  
             elif "s" in unexploredExits:
                 randomExit = "s"
         else:
-            print(unexploredExits)
             if "s" in unexploredExits:
                 randomExit = "s"
-            elif "e" in unexploredExits:
-                randomExit = "e" 
+            
             elif "w" in unexploredExits:
-                randomExit = "w"     
+                randomExit = "w"  
+            elif "e" in unexploredExits:
+                randomExit = "e"    
             elif "n" in unexploredExits:
                 randomExit = "n"
 
@@ -58,27 +54,23 @@ while len(traversalPath) < 48:
                
         
         prev_room_id = player.currentRoom.id
-        print("prev room: ", player.currentRoom.id)
+       
         player.travel(randomExit)
-        print("new room: ", player.currentRoom.id)
+        
         
         traversalPath.append(randomExit)
         complete_list.append(randomExit)
         if player.currentRoom.id not in graph:
-            print("this number is not yet in the dict: ", player.currentRoom.id)
             exitDictonary = {}
             for exits in player.currentRoom.getExits():
                 exitDictonary[exits] = "?"
             graph[prev_room_id][randomExit] = player.currentRoom.id
             exitDictonary[inverse_directions[randomExit]] = prev_room_id
             graph[player.currentRoom.id] = exitDictonary
-            print("after exit dict: ", graph[player.currentRoom.id])
         else:
             graph[prev_room_id][randomExit] = player.currentRoom.id
     else:
             new_list = []
-            # we are in room 175
-            
             for i, moves in enumerate(traversalPath[::-1]):
                 player.travel(inverse_directions[moves])
                 new_list.append(inverse_directions[moves])
@@ -90,7 +82,7 @@ while len(traversalPath) < 48:
                 
 
 traversalPath = complete_list
-print(complete_list)
+
 
                     
                     
