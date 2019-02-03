@@ -71,7 +71,7 @@ while len(traversalPath) < 48:
             graph[prev_room_id][randomExit] = player.currentRoom.id
     else:
             new_list = []
-            for i, moves in enumerate(traversalPath[::-1]):
+            for moves in traversalPath[::-1]:
                 player.travel(inverse_directions[moves])
                 new_list.append(inverse_directions[moves])
                 traversalPath.pop(-1)
