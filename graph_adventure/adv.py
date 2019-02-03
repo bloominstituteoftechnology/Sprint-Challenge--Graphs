@@ -12,14 +12,110 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 
-# FILL THIS IN
-traversalPath = ['s', 'n']
+
+graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
+traversalPath = []
+inverse_directions = {'n': 's', 's': 'n', 'w':'e',  'e':'w'}
+complete_list = []
+prev_room_id = 0
+ending_list = {0: {'n': 2, 's':5,'w':3,'e':1}}
+while len(traversalPath) < 48:
+    currentRoomExits = graph[player.currentRoom.id]
+    if graph[player.currentRoom.id] == ending_list[0]:
+        break
+    # print(f"in room {player.currentRoom.id}", graph[player.currentRoom.id])
+    unexploredExits = []
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == '?':
+            unexploredExits.append(direction)
+    if len(unexploredExits)>0:
+        if prev_room_id <= player.currentRoom.id:
+            if "n" in unexploredExits:
+                randomExit = "n" 
+            elif "e" in unexploredExits:
+                randomExit = "e"
+            elif "w" in unexploredExits:
+                randomExit = "w"  
+            elif "s" in unexploredExits:
+                randomExit = "s"
+        else:
+            if "s" in unexploredExits:
+                randomExit = "s"
+            
+            elif "w" in unexploredExits:
+                randomExit = "w"  
+            elif "e" in unexploredExits:
+                randomExit = "e"    
+            elif "n" in unexploredExits:
+                randomExit = "n"
+
+
+        
+               
+        
+        prev_room_id = player.currentRoom.id
+       
+        player.travel(randomExit)
+        
+        
+        traversalPath.append(randomExit)
+        complete_list.append(randomExit)
+        if player.currentRoom.id not in graph:
+            exitDictonary = {}
+            for exits in player.currentRoom.getExits():
+                exitDictonary[exits] = "?"
+            graph[prev_room_id][randomExit] = player.currentRoom.id
+            exitDictonary[inverse_directions[randomExit]] = prev_room_id
+            graph[player.currentRoom.id] = exitDictonary
+        else:
+            graph[prev_room_id][randomExit] = player.currentRoom.id
+    else:
+            new_list = []
+            for moves in traversalPath[::-1]:
+                player.travel(inverse_directions[moves])
+                new_list.append(inverse_directions[moves])
+                traversalPath.pop(-1)
+                if "?" in graph[player.currentRoom.id].values():
+                    for moves in new_list:
+                        complete_list.append(moves)
+                    break
+                
+
+traversalPath = complete_list
+
+
+                    
+                    
+            
+                
+           
+               
+                
+        
+
+        
+                
+
+
+
+        
+
+            
+
+                
+    
+                
+
+        
+
+
 
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
+print(len(traversalPath))
 for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
@@ -28,13 +124,13 @@ if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{500 - len(visited_rooms)} unvisited rooms")
+    print(f"{500 - len(visited_rooms)} unvisited rooms, only {len(visited_rooms)} explored ")
 
 
 
-#######
+# ######
 # UNCOMMENT TO WALK AROUND
-#######
+# ######
 # player.currentRoom.printRoomDescription(player)
 # while True:
 #     cmds = input("-> ").lower().split(" ")
