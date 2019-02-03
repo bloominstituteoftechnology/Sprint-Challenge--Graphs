@@ -65,27 +65,29 @@ def mapRoute():
     i = 0
     # get first room
     # add room to visited
-    while i < 30:
+    while len(visited) < 500:
         print("iter")
         print (player.currentRoom)
         print(graph)
-        visited.append(player.currentRoom.id)
+        if player.currentRoom.id not in visited:
+            visited.append(player.currentRoom.id)
         currentRoom = player.currentRoom.id
     # get all possible exits of that room
         currentExits = player.currentRoom.getExits()
         graph[player.currentRoom.id]=currentExits
-        if route:
-            if route == "n":
-                graph[currentRoom].remove("s")
-        if route:
-            if route == "e":
-                graph[currentRoom].remove("w")
-        if route:
-            if route == "s":
-                graph[currentRoom].remove("n")
-        if route:
-            if route == "w":
-                graph[currentRoom].remove("e")
+        graph[player.currentRoom.id]
+        # if route:
+        #     if route == "n":
+        #         graph[currentRoom].remove("s")
+        # if route:
+        #     if route == "e":
+        #         graph[currentRoom].remove("w")
+        # if route:
+        #     if route == "s":
+        #         graph[currentRoom].remove("n")
+        # if route:
+        #     if route == "w":
+        #         graph[currentRoom].remove("e")
     # go through an exit
         route = random.choice(graph[currentRoom])
         graph[currentRoom].remove(route)
