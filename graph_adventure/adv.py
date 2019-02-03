@@ -13,75 +13,38 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-
+# create an array to store the path traversed throughout the "quest"
+# append any direction to this path
+traversalPath = []
+# create an array to store the stack for the next traverals attempts and tests
 # make a dictionary of the starting room and all traveled rooms with the possible paths
-# eg graph = {0: {"n":"?", "s":"?" , "e": "?", "w": "?"}}
+# create an object to house the graph needed to traverse the map
+# {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}, 1: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+graph = {}
+if player.currentRoom.id not in graph:
+    graph[player.currentRoom.id] = {}
+    
+    for path in player.currentRoom.getExits():
+        graph[player.currentRoom.id][path] = "?"
+
+for path in graph[player.currentRoom.id].keys():
+    # implement way to pick first item in room keys that isn't a ?
+
+# populate_graph -> travel_direction ->
+# add_direction_to_traversalPath -> populate_graph_connections
+# 
+
+print(player.currentRoom.id)
+print(graph)
+# print(graph)
+    
+            
+# eg graph = {{0: {"n":"?", "e":"?" , "s": "?", "w": "?"}}}
+# utilize player.currentRoom.getExits() and append this to a nesw template
 # make a loop that tries a path.
-# if that path doesn't work, try the next path and so on
+# 
 # once a path is traversed, mark that direction in the graph
 # never visit a traversed direction from a room again
-
-graph = {}
-traversalPath = []
-generate_graph = True
-traverse_graph = True
-
-# generate graph template
-while generate_graph == True:
-    
-    for room in range(0, 500):
-        graph[room] = {"n":"?", "s":"?" , "e": "?", "w": "?"}
-    
-    generate_graph = False
-
-# start traversal while loop
-while traverse_graph == True:
-
-    # Assign variables to easily refer to common values
-    current_room_id = player.currentRoom.id
-    c_room_valid_dir = player.currentRoom.getExits()
-
-    # for loop to find and travel to the first valid unvisited location
-    for direction, room in graph[current_room_id].items():
-        if room == "?":
-            if direction in c_room_valid_dir:
-                player.travel(direction)
-                graph[current_room_id][direction] = player.currentRoom.id\
-                print(f'player.currentRoom.id: {player.currentRoom.id}')
-                print(f'graph[current_room_id][direction]: {graph[current_room_id][direction]}')
-    
-    traverse_graph = False
-
-for i in range(0, 10):
-    print(f'graph[{i}]: {graph[i]}')
-
-# graph = {0: {'n': '?', 's': '?', 'e': '?', 'w': '?'}}
-
-# traversalPath = []
-# while True:
-    
-#     currentRoomExits = graph[player.currentRoom.id]
-#     unexploredExits = []
-#     for direction in currentRoomExits:
-#         if currentRoomExits[direction] == "?":
-#             unexploredExits.append(direction)
-#     if len(unexploredExits) > 0:
-#         randomExit = random.choice(unexploredExits)
-#         traversalPath.append(randomExit)
-#         previous_room_id = player.currentRoom.id
-#         traversalPath.append(randomExit)
-#         exitDictionary = {}
-#         for exit in player.currentRoom.getExits():
-#             exitDictionary[exit] = "?"
-#         graph[previous_room_id][randomExit] = player.currentRoom.id
-#         exitDictionary[inverse_directions[randomExit]] = previous_room_id 
-#         graph[player.currentRoom.id] = exitDictionary
-#         print(graph)
-#         break
-#     else:
-#         break
-
-
 
 
 # TRAVERSAL TEST
