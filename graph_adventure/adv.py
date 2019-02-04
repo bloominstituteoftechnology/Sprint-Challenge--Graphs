@@ -3,6 +3,7 @@ from player import Player
 from world import World
 
 import random
+from collections import deque
 
 # Load world
 # DO NOT MODIFY
@@ -18,6 +19,8 @@ graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 
 inverse_directions = {"n": "s", "s": "n", "e": "w", "w":"e"}
 
+itinerary = []
+
 #need to loop through this
 while True:
     currentRoomExits = graph[player.currentRoom.id]
@@ -26,7 +29,7 @@ while True:
     #direction is key in dictionary
     for direction in currentRoomExits:
         #if exit has question mark it is still unexplored, so it should be added
-        if currentRoomExits == "?"
+        if currentRoomExits == "?":
             unexploredExits.append[direction]
     #cant have empty sequence so have to do null check
     if len(unexploredExits) > 0:
@@ -46,34 +49,40 @@ while True:
         #set previous room to the room player is currently in
         graph[previous_room_id][randomExit] = player.currentRoom.id
         #we can look at the inverse directions to know where the previous room is
-        exitDictionary[inverse_directions[randomExit]] = previous_room_id
+        exitDictionary[inverse_directions[randomExit]] = previous_room_id  #bracket placement?
         graph[player.currentRoom.id] = exitDictionary
     else:
         #if reach room with no unexplored exits, need to backtrack
-        break
+        backtrack = []
+        for move in traversalPath[::-1]:  #two or one colon? 
+            player.travel(inverse_directions[move])
+            backtrack.append(inverse_directions[move])
+            traversalPath.pop()
+            if player.currentRoom.id in :
+                for move in backtrack:
+                    itinerary.append(move)
 
-def dft_visit_all_rooms(self, starting_vertex):
-    visited = {}
-    backtrack = []
-    move_counter = []
-    while len(list(visited)) < 499:
-        #while there is a current path forward
-        #add unvisited to visited
-        if player.currentRoom.id not in visited:
 
-    #if you reach a dead end, back track until there is an unvisited path forward
-    while
-\
+        # queue = deque()
+        # queue.append(list(inverse_directions[traversalPath[-1]]))
+        # dequeued = queue.popleft()
+        # last_move = dequeued[-1]
+        # for previous_rooom in dequeued:
+        #     player.travel(previous_rooom)
 
-    
-    #rooms are stacked, backtracking is recursion
-    #if already visited, mark as visited
-    # visited.append(starting_vertex)
 
-    # for vertex in self.blah(starting_vertex):
-    #     if vertex is not in visited:
-    #         self.dft_visit_all_rooms(vertex, visited)
-        
+        # previous_room = exitDictionary[inverse_directions].pop()
+        # traversalPath.append.previous_room
+        # player.travel.previous_room
+
+        #then go back to previous room until we get to one with an unexplored exit
+        #need bfs to get back b/c want to find nearest
+        #but cant use only id, need to translate into directions
+        #change integers into cardinal directions
+        #for exits check each to direction to see if roomid is number looking for
+        #if get to question mark then you are done backtracking and should explore it
+        #can make a 'move queue' when queue is empty call method get next move
+        #or have a stack of directions that you pop off until you get back to a room with an unexplored exit
 
 
 # TRAVERSAL TEST
@@ -116,3 +125,24 @@ while True:
 #     label e a a back edge
 
 #brady solution lecture https://youtu.be/wiEbw8ib2vc
+
+# def dft_visit_all_rooms(self, starting_vertex):
+#     visited = {}
+#     backtrack = []
+#     move_counter = []
+#     while len(list(visited)) < 499:
+#         #while there is a current path forward
+#         #add unvisited to visited
+#         if player.currentRoom.id not in visited:
+
+#     #if you reach a dead end, back track until there is an unvisited path forward
+#     while
+
+    #rooms are stacked, backtracking is recursion
+    #if already visited, mark as visited
+    # visited.append(starting_vertex)
+
+    # for vertex in self.blah(starting_vertex):
+    #     if vertex is not in visited:
+    #         self.dft_visit_all_rooms(vertex, visited)
+        
