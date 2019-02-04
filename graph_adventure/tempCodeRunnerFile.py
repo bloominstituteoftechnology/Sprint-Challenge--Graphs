@@ -1,2 +1,3 @@
-:
-        #     visitedRooms.append(player.currentRoom
+rrentRoom.id)
+    visitedRooms.append(player.currentRoom.id)
+    player.travel(d
