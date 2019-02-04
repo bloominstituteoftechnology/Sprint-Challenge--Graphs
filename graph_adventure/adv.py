@@ -13,7 +13,127 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+
+def bft():
+    traversalPath = []
+    visited = []
+    queue = []
+    queue.append(roomGraph[0])
+    while queue:
+        print("iter")
+        print("queue", queue)
+        location = queue.pop(0)
+        if location in visited:
+            continue
+        visited.append(location)
+        for neighbor in location[1:]:
+            if "n" in neighbor:
+                print(roomGraph[neighbor["n"]])
+                traversalPath.append("n")
+                queue.append(roomGraph[neighbor["n"]])
+            
+            if "e" in neighbor:
+                print(roomGraph[neighbor["e"]])
+                traversalPath.append("e")
+                queue.append(roomGraph[neighbor["e"]])
+            
+            if "s" in neighbor:
+                print(roomGraph[neighbor["s"]])
+                traversalPath.append("s")
+                queue.append(roomGraph[neighbor["s"]]) 
+            
+            if "w" in neighbor:
+                print(roomGraph[neighbor["w"]])
+                traversalPath.append("w")
+                queue.append(roomGraph[neighbor["w"]])     
+
+    print (queue)
+    print (traversalPath)
+    print (len(visited))
+    print ("visited", visited)
+    print (world.startingRoom)
+
+graph = {}
+visited = []
+currentExits = []
+currentRoom = ""
+def mapRoute():
+    print("start")
+    escape=[]
+    route = ""
+    i = 0
+    # get first room
+    # add room to visited
+    while len(visited)<500:
+        print("iter")
+        print ("Room: ", player.currentRoom.id)
+        if player.currentRoom.id not in visited:
+            visited.append(player.currentRoom.id)
+        currentRoom = player.currentRoom.id
+    # get all possible exits of that room
+        if graph.get(player.currentRoom.id) == None:
+            currentExits = player.currentRoom.getExits()
+        else: 
+            currentExits = graph[player.currentRoom.id]
+        graph[player.currentRoom.id]=currentExits #<--- fix bug here
+        if route:
+            if route == "n":
+                if "s" in graph[currentRoom]:
+                    graph[currentRoom].remove("s")
+                escape.append("s")
+        
+        if route:
+            if route == "e":
+                if "w" in graph[currentRoom]:
+                    graph[currentRoom].remove("w")
+                escape.append("w")
+        if route:
+            if route == "s":
+                if "n" in graph[currentRoom]:
+                    graph[currentRoom].remove("n")
+                escape.append("n")
+        if route:
+            if route == "w":
+                if "e" in graph[currentRoom]:
+                    graph[currentRoom].remove("e")
+                escape.append("e")
+        print ("Exits: ", graph[player.currentRoom.id])
+
+    # go through an exit
+        if graph[currentRoom]:
+            route = random.choice(graph[currentRoom])
+            graph[currentRoom].remove(route)
+            print(route)
+            traversalPath.append(route)
+            player.travel(route)
+        else: 
+            print("!!escape!!")
+            escapeRoute = (escape.pop())
+            print(escapeRoute[-1])
+            traversalPath.append(escapeRoute)
+            player.travel(escapeRoute)
+            route = None
+
+
+        i+=1
+    print(traversalPath)
+        
+        
+        
+    # if all exits are visited, go to previous room 
+    # otherwise add direction to traversalPath
+    # mark room: exit as visted
+    
+    
+    
+
+mapRoute()
+
+
+
+
 
 
 # TRAVERSAL TEST

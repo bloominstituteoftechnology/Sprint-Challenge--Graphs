@@ -30,11 +30,10 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 
 Open `adv.py`. There are four parts to the provided code:
 
-* World generation code. Do not modify this!
-* An incomplete list of directions. Your task is to fill this with valid traversal directions.
-* Test code. Run the tests by typing `python3 adv.py` in your terminal.
-* REPL code. You can uncomment this and run `python3 adv.py` to walk around the map.
-
+- World generation code. Do not modify this!
+- An incomplete list of directions. Your task is to fill this with valid traversal directions.
+- Test code. Run the tests by typing `python3 adv.py` in your terminal.
+- REPL code. You can uncomment this and run `python3 adv.py` to walk around the map.
 
 You may find the commands `player.currentRoom.id`, `player.currentRoom.getExits()` and `player.travel(direction)` useful.
 
@@ -65,12 +64,14 @@ How can you find the nearest room with an unexplored path?
 
 ## Minimum Viable Product
 
-* __1__: Tests do not pass
-* __2__: Tests pass with `len(traversalPath) < 2000`
-* __3__: Tests pass with `len(traversalPath) < 960`
+- **1**: Tests do not pass
+- **2**: Tests pass with `len(traversalPath) < 2000`
+- **3**: Tests pass with `len(traversalPath) < 960`
 
 ## Stretch Problems
 
 It is very difficult to calculate the shortest possible path that traverses the entire graph. Why?
 
 My best path is 957 moves. Can you find a shorter path?
+
+-read
