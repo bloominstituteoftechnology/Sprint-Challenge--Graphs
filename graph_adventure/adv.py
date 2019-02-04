@@ -66,43 +66,57 @@ def mapRoute():
     i = 0
     # get first room
     # add room to visited
-    while len(visited) < 500:
+    while len(visited)<500:
         print("iter")
-        print (player.currentRoom)
-        print(graph)
+        print ("Room: ", player.currentRoom.id)
         if player.currentRoom.id not in visited:
             visited.append(player.currentRoom.id)
         currentRoom = player.currentRoom.id
     # get all possible exits of that room
-        currentExits = player.currentRoom.getExits()
-        graph[player.currentRoom.id]=currentExits
-        graph[player.currentRoom.id]
+        if graph.get(player.currentRoom.id) == None:
+            currentExits = player.currentRoom.getExits()
+        else: 
+            currentExits = graph[player.currentRoom.id]
+        graph[player.currentRoom.id]=currentExits #<--- fix bug here
         if route:
             if route == "n":
-                graph[currentRoom].remove("s")
-                escape.append('s')
+                if "s" in graph[currentRoom]:
+                    graph[currentRoom].remove("s")
+                escape.append("s")
         
         if route:
             if route == "e":
-                graph[currentRoom].remove("w")
-                escape.append('w')
+                if "w" in graph[currentRoom]:
+                    graph[currentRoom].remove("w")
+                escape.append("w")
         if route:
             if route == "s":
-                graph[currentRoom].remove("n")
-                escape.append("")
+                if "n" in graph[currentRoom]:
+                    graph[currentRoom].remove("n")
+                escape.append("n")
         if route:
             if route == "w":
-                graph[currentRoom].remove("e")
+                if "e" in graph[currentRoom]:
+                    graph[currentRoom].remove("e")
                 escape.append("e")
+        print ("Exits: ", graph[player.currentRoom.id])
+
     # go through an exit
         if graph[currentRoom]:
             route = random.choice(graph[currentRoom])
             graph[currentRoom].remove(route)
             print(route)
+            traversalPath.append(route)
+            player.travel(route)
         else: 
-            route = escape.pop()
-        traversalPath.append(route)
-        player.travel(route)
+            print("!!escape!!")
+            escapeRoute = (escape.pop())
+            print(escapeRoute[-1])
+            traversalPath.append(escapeRoute)
+            player.travel(escapeRoute)
+            route = None
+
+
         i+=1
     print(traversalPath)
         
@@ -117,9 +131,7 @@ def mapRoute():
 
 mapRoute()
 
-print (graph)
-print("visited", visited)
-print(player.currentRoom)
+
 
 
 
