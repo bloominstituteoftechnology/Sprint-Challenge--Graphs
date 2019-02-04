@@ -15,23 +15,49 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 # create an array to store the path traversed throughout the "quest"
 # append any direction to this path
-traversalPath = []
+traversal_path = []
 # create an array to store the stack for the next traverals attempts and tests
 # make a dictionary of the starting room and all traveled rooms with the possible paths
 # create an object to house the graph needed to traverse the map
 # {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}, 1: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 graph = {}
-if player.currentRoom.id not in graph:
-    graph[player.currentRoom.id] = {}
-    
-    for path in player.currentRoom.getExits():
-        graph[player.currentRoom.id][path] = "?"
+reverse_direction = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+def generate_room():
+    if player.currentRoom.id not in graph:
+        graph[player.currentRoom.id] = {}
+        
+        for path in player.currentRoom.getExits():
+            graph[player.currentRoom.id][path] = "?"
 
-for path in graph[player.currentRoom.id].keys():
+def first_direction():
+    for path in graph[player.currentRoom.id]:
+        if graph[player.currentRoom.id][path] == '?':
+            return path
+        else:
+            return False
+
+def travel(direction):
+    previous_room = player.currentRoom.id
+    if direction:
+        player.travel(direction)
+        generate_room()
+        graph[player.currentRoom.id][direction] = previous_room
+        graph[previous_room][reverse_direction[direction]] = previous_room
+    else:
+        print("Woops.")
+
+# while len(traversal_path) < 1:
+generate_room()
+travel(first_direction())
+
+# traveral logic
+# store previous room ID in variable
+# check if graph contains room after 
+
     # implement way to pick first item in room keys that isn't a ?
 
 # populate_graph -> travel_direction ->
-# add_direction_to_traversalPath -> populate_graph_connections
+# add_direction_to_traversal_path -> populate_graph_connections
 # 
 
 print(player.currentRoom.id)
@@ -51,12 +77,12 @@ print(graph)
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
-for move in traversalPath:
+for move in traversal_path:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == 500:
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
