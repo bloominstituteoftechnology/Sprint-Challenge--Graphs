@@ -13,7 +13,55 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+visited = {0: {"n": "?", "e": "?", "s": "?", "w": "?"}}
+path_stack = []
+
+inverse_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+
+
+while len(visited) < 500:
+    curr_room = player.currentRoom
+    curr_exits = visited[curr_room.id]
+
+    unexploredExits = []
+    for exit in curr_room.getExits():
+        if curr_exits[exit] == '?':
+            unexploredExits.append(exit)
+
+    if len(unexploredExits) > 0:
+        prev_room = player.currentRoom.id
+
+        direction = unexploredExits[0]
+        player.travel(direction)
+        traversalPath.append(direction)
+        path_stack.append(direction)
+
+        entered_room = player.currentRoom.id
+
+        print(f"going into direction {direction}. currroom {prev_room}. next {entered_room}")
+        if entered_room not in visited:
+            entered_room_exits = {}
+            for exit in player.currentRoom.getExits():
+                entered_room_exits[exit] = '?'
+            visited[entered_room] = entered_room_exits
+
+        visited[prev_room][direction] = entered_room
+        visited[entered_room][inverse_directions[direction]] = prev_room
+
+
+    else:
+        if len(path_stack) > 0:
+            prev_direction = path_stack.pop()
+            print(f"go back to {prev_direction}")
+            back = inverse_directions[prev_direction]
+            player.travel(back)
+            traversalPath.append(back)
+            print(f"went back to {player.currentRoom.id}")
+
+print(visited)
+print(traversalPath)
 
 
 # TRAVERSAL TEST
