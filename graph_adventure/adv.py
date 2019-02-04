@@ -54,14 +54,14 @@ while len(graph) < 500:
             unexploredExits.append(direction)
     if len(unexploredExits) > 0:
         direction = ""
-        if unexploredExits[0] and player.currentRoom.getRoomInDirection(unexploredExits[0]):
-            direction = unexploredExits[0]
-        elif unexploredExits[1] and player.currentRoom.getRoomInDirection(unexploredExits[1]):
-            direction = unexploredExits[1]
-        elif unexploredExits[2] and player.currentRoom.getRoomInDirection(unexploredExits[2]):
-            direction = unexploredExits[2]
-        elif unexploredExits[3] and player.currentRoom.getRoomInDirection(unexploredExits[3]):
-            direction = unexploredExits[3]
+        if unexploredExits[-1] and player.currentRoom.getRoomInDirection(unexploredExits[-1]):
+            direction = unexploredExits.pop()
+        # elif unexploredExits[1] and player.currentRoom.getRoomInDirection(unexploredExits[1]):
+        #     direction = unexploredExits[1]
+        # elif unexploredExits[2] and player.currentRoom.getRoomInDirection(unexploredExits[2]):
+        #     direction = unexploredExits[2]
+        # elif unexploredExits[3] and player.currentRoom.getRoomInDirection(unexploredExits[3]):
+        #     direction = unexploredExits[3]
 
         prev_room_id = player.currentRoom.id
         player.travel(direction)
