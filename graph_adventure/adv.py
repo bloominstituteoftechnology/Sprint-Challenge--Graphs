@@ -73,11 +73,11 @@ while exploring:
         exitDict[inverse_directions[randomExit]] = prev_room_id
         graph[player.currentRoom.id] = exitDict
     else:
+        print(f'{traversalPath[-1].upper()} direction led to dead end')
+        print(f'reached room {player.currentRoom.id} with no unexplored exits, need to go back')
             # What to do when we reach a room with no unexplored exits
-        
-        x = inverse_directions[traversalPath[-1]
-        traversalPath.append(x)
-        player.travel(x)
+       
+                    
 
 
         # print(f'{traversalPath[-1].upper()} direction led to dead end')
@@ -130,10 +130,11 @@ while exploring:
     
     
     steps =  steps + 1
-    if steps > 50:
+    if steps > 100:
         print('too many steps')
         exploring = False
     print(graph)
+    print(traversalPath)
 
 
 # TRAVERSAL TEST
