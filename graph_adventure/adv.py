@@ -31,34 +31,110 @@ player = Player("Name", world.startingRoom)
 from collections import deque
 # FILL THIS IN
 traversalPath = []
-graph = {0:{'n': '?', 's' : '?', 'e': '?', 'w': '?'}}
+graph = { 0:{'n': '?', 's' : '?', 'e': '?', 'w': '?'}}
 inverse_directions = {'n' : 's', "s" : 'n', 'w' : 'e', 'e' : 'w'}
 exploring = True
+directions = []
+steps = 0
 while exploring:
+    print('Current room: ', player.currentRoom.id)
+    print('Exits in current room:', graph[player.currentRoom.id])
+
+    # if player.currentRoom.id not in graph:
+    #     graph[player.currentRoom.id] = {'n': '?', 's' : '?', 'e': '?', 'w': '?'}
     currentRoomExits = graph[player.currentRoom.id]
     unexplored = []
     for direction in currentRoomExits:
         if currentRoomExits[direction] == '?':
             unexplored.append(direction)
-        if len(unexplored) > 0:
-            randomExit = random.choice(unexplored)
-            traversalPath.append(randomExit)
-            prev_room_id = player.currentRoom.id
-            # move to next room
-            player.travel(randomExit)
-            print(randomExit)
-            print(player.currentRoom.id)
-            exitDict = {}
-            for exit in player.currentRoom.getExits():
-                exitDict[exit] = '?'
-            graph[prev_room_id][randomExit] = player.currentRoom.id
-            exitDict[inverse_directions[randomExit]] = prev_room_id
-            graph[player.currentRoom.id] = exitDict
-        else:
-            #What to do when we reach a room with no unexplored
-            print('reached a room with no unexplored')
-            exploring = False
-            False
+    if len(unexplored) > 0:
+        randomExit = random.choice(unexplored)
+        #randomExit = 'n'
+        traversalPath.append(randomExit)
+        prev_room_id = player.currentRoom.id
+
+        print(f'lets move {randomExit.upper()}  ')
+            
+        # move to next room
+        player.travel(randomExit)
+        print('--------> moved to room ', player.currentRoom.id)
+        directions.append(randomExit)
+        exitDict = {}
+        for exit in player.currentRoom.getExits():
+            exitDict[exit] = '?'
+            
+            # if prev_room_id not in graph:
+            #     print('mother fucking room does not exist!!!')
+            #     graph[prev_room_id] = {'n': '?', 's' : '?', 'e': '?', 'w': '?'}
+        print(f'* assigned room #{player.currentRoom.id} to {randomExit.upper()} of room {prev_room_id}')
+        graph[prev_room_id][randomExit] = player.currentRoom.id
+            
+        print(f'* assigned room #{prev_room_id} to {inverse_directions[randomExit].upper()} of room {player.currentRoom.id}')
+        exitDict[inverse_directions[randomExit]] = prev_room_id
+        graph[player.currentRoom.id] = exitDict
+    else:
+            # What to do when we reach a room with no unexplored exits
+        
+        x = inverse_directions[traversalPath[-1]
+        traversalPath.append(x)
+        player.travel(x)
+
+
+        # print(f'{traversalPath[-1].upper()} direction led to dead end')
+        # print(f'reached room {player.currentRoom.id} with no unexplored exits, need to go back')
+        #     # dead_end_room_id = graph[player.currentRoom.id]
+        # dead_end_room_id = player.currentRoom.id
+        # exits_from_adjacent_room = deque()
+        # adjacent_rooms = deque()
+        #     # print(dead_end_room_id)
+        # print(f'here are the exits in room: {dead_end_room_id}', graph[dead_end_room_id])
+        # adjacent_rooms.append(dead_end_room_id)
+        # while len(adjacent_rooms) > 0:
+        #     print('adjacent rooms: ',adjacent_rooms)
+        #     room = adjacent_rooms.popleft()
+        #     print(room)
+        #     for exit in graph[room]:
+        #         print(exit)
+        #         print('OK lets look at room,' , room)
+        #         exits_from_adjacent_room.append(exit)
+        #         if graph[room][exit] == '?':
+        #             player.travel(exit)
+        #             traversalPath.append(exit)
+        #             break
+        #         else:
+        #             print(f'lets add {graph[room][exit]} to the Queue')
+        #             adjacent_rooms.append(graph[room][exit])
+        #             break
+                
+                
+                
+                # adjacent_room = graph[dead_end_room_id][exit]
+                # print('adjacent room',adjacsent_room)
+                # q.append(adjacent_room)
+            
+            # print('adjacent room',room)
+            # for exit in graph[room]:
+            #     if exit == "?":
+            #         print(f'{exit} is unexplored, lets travel {exit.upper()}')
+            #         player.travel(exit)
+            #         traversalPath.append(exit)
+            # options = ['n', 's', 'w', 'e']
+            # x = random.choice(options)
+            # print(x)
+            # # x = inverse_directions[direction]
+            # print(f'reached room {player.currentRoom.id} with no unexplored exits, lets go back')
+            # print('lets travel ', x)
+            # traversalPath.append(x)
+            # player.travel(x)
+            
+    
+    
+    steps =  steps + 1
+    if steps > 50:
+        print('too many steps')
+        exploring = False
+    print(graph)
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -74,8 +150,7 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
 
-
-
+print('length of traversal path:' ,len(traversalPath))
 #######
 # UNCOMMENT TO WALK AROUND
 #######
