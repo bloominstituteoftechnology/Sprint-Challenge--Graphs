@@ -13,7 +13,7 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
 
 
 def bft():
@@ -61,6 +61,7 @@ currentExits = []
 currentRoom = ""
 def mapRoute():
     print("start")
+    escape=[]
     route = ""
     i = 0
     # get first room
@@ -76,25 +77,34 @@ def mapRoute():
         currentExits = player.currentRoom.getExits()
         graph[player.currentRoom.id]=currentExits
         graph[player.currentRoom.id]
-        # if route:
-        #     if route == "n":
-        #         graph[currentRoom].remove("s")
-        # if route:
-        #     if route == "e":
-        #         graph[currentRoom].remove("w")
-        # if route:
-        #     if route == "s":
-        #         graph[currentRoom].remove("n")
-        # if route:
-        #     if route == "w":
-        #         graph[currentRoom].remove("e")
+        if route:
+            if route == "n":
+                graph[currentRoom].remove("s")
+                escape.append('s')
+        
+        if route:
+            if route == "e":
+                graph[currentRoom].remove("w")
+                escape.append('w')
+        if route:
+            if route == "s":
+                graph[currentRoom].remove("n")
+                escape.append("")
+        if route:
+            if route == "w":
+                graph[currentRoom].remove("e")
+                escape.append("e")
     # go through an exit
-        route = random.choice(graph[currentRoom])
-        graph[currentRoom].remove(route)
-        print(route)
+        if graph[currentRoom]:
+            route = random.choice(graph[currentRoom])
+            graph[currentRoom].remove(route)
+            print(route)
+        else: 
+            route = escape.pop()
         traversalPath.append(route)
         player.travel(route)
         i+=1
+    print(traversalPath)
         
         
         
