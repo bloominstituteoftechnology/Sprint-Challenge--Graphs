@@ -15,55 +15,53 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = []
 
+visited = {0: {"n": "?", "e": "?", "s": "?", "w": "?"}}
+path_stack = []
+
+inverse_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
 
 
-visited = {}
-path_back = []
-
-came_from_direction = '?'
-
-def is_explored(room):
-    for exit in visited[room]:
-        if exit == '?':
-            return False
-    return True
-
-#while len(traversalPath) < 499:
-def traverse(player):
-    print(player.currentRoom.id)
+while len(visited) < 500:
     curr_room = player.currentRoom
-    curr_exits = curr_room.getExits()
-    path_back.append(curr_room.id)
+    curr_exits = visited[curr_room.id]
 
-    if curr_room.id not in visited:
-        # Create new graph entry
-        curr_graph_entry = {}
-        for exit in curr_exits:
-            curr_graph_entry[exit] = '?'
-        visited[curr_room.id] = curr_graph_entry
+    unexploredExits = []
+    for exit in curr_room.getExits():
+        if curr_exits[exit] == '?':
+            unexploredExits.append(exit)
 
-        for exit in curr_exits:
-            if visited[curr_room.id][exit] == '?':
-                room = curr_room.getRoomInDirection(exit)
-                visited[curr_room.id][exit] = room.id
-                traversalPath.append(exit)
-                player.travel(exit)
-                traverse(player)
-            else:
-                # check if previously visited?
-                pass
+    if len(unexploredExits) > 0:
+        prev_room = player.currentRoom.id
+
+        direction = unexploredExits[0]
+        player.travel(direction)
+        traversalPath.append(direction)
+        path_stack.append(direction)
+
+        entered_room = player.currentRoom.id
+
+        print(f"going into direction {direction}. currroom {prev_room}. next {entered_room}")
+        if entered_room not in visited:
+            entered_room_exits = {}
+            for exit in player.currentRoom.getExits():
+                entered_room_exits[exit] = '?'
+            visited[entered_room] = entered_room_exits
+
+        visited[prev_room][direction] = entered_room
+        visited[entered_room][inverse_directions[direction]] = prev_room
+
+
     else:
-        pass
-        # go back to previous path
-        # but how?? :(
-
-
-
-traverse(player)
+        if len(path_stack) > 0:
+            prev_direction = path_stack.pop()
+            print(f"go back to {prev_direction}")
+            back = inverse_directions[prev_direction]
+            player.travel(back)
+            traversalPath.append(back)
+            print(f"went back to {player.currentRoom.id}")
 
 print(visited)
 print(traversalPath)
-print(path_back)
 
 
 # TRAVERSAL TEST
