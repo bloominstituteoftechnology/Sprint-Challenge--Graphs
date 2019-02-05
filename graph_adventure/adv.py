@@ -1,8 +1,6 @@
 from room import Room
 from player import Player
 from world import World
-from queue import Queue
-from stack import Stack
 
 import random
 
@@ -39,56 +37,94 @@ roomGraph = {
 
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
-print(player.currentRoom.id)
-print(player.currentRoom.getExits())
-print(player.travel('e'))
-
-start_room = player.currentRoom.id
-# destination_room = len(roomGraph) - 1
 
 # FILL THIS IN
-def dfsStackRoomGraph(graph, start):
-    visited, stack , direction = set(), [start] , list()
-    while stack:
-        vertex = stack.pop()
-        if vertex not in visited:
-            visited.add(vertex)
+
+traversalPath = []
+graph = {} # graph structure to track player move...
+
+graph[player.currentRoom.id] = player.currentRoom.getExits() #graph[0] : ['n', 's', 'w', 'e']
+print("Graph : ",graph) # {0: ['n', 's', 'w', 'e']}
+
+def go_back(direction):
+    if direction == 'e':
+        return 'w'
+    if direction == 'w':
+        return 'e'
+    if direction == 's':
+        return 'n'
+    if direction == 'n':
+        return 's'
+        
+#path for traversing back, DFT
+reverse_path = []
+
+while len(graph) < 500:
+    player_move = graph[player.currentRoom.id].pop(0)
+    reverse_path.append(go_back(player_move))
+    traversalPath.append(player_move)
+    player.travel(player_move)
+
+    # adding current room into graph
+    if player.currentRoom.id not in graph:
+        graph[player.currentRoom.id] = player.currentRoom.getExits()
+        graph[player.currentRoom.id].remove(reverse_path[-1])
+
+    # if you are at a dead end, go back to a room that has unexplored exits
+    while len(graph[player.currentRoom.id]) is 0 and len(reverse_path) > 0:
+        reverse = reverse_path.pop()
+        traversalPath.append(reverse)
+        player.travel(reverse)
+
+
+# #################################################################################################################
+# start_room = player.currentRoom.id
+# # destination_room = len(roomGraph) - 1
+
+# # FILL THIS IN
+# def dfsStackRoomGraph(graph, start):
+#     visited, stack , direction = set(), [start] , list()
+#     while stack:
+#         vertex = stack.pop()
+#         if vertex not in visited:
+#             visited.add(vertex)
             
-            print( "V" , vertex,   "visting" , graph[vertex])
-            #graph[vertex][1].keys()
-            #print("visting" , list( graph[vertex][1].keys()) )
-            dirlist = list( graph[vertex][1].keys())           
-            #random.shuffle(dirlist)
-            #print(dirlist[0])
+#             print( "V" , vertex,   "visting" , graph[vertex])
+#             #graph[vertex][1].keys()
+#             #print("visting" , list( graph[vertex][1].keys()) )
+#             dirlist = list( graph[vertex][1].keys())           
+#             #random.shuffle(dirlist)
+#             #print(dirlist[0])
 
             
-           # nextRoom = graph[vertex][1].get(dirlist[-1])
+#            # nextRoom = graph[vertex][1].get(dirlist[-1])
             
-            itemsForRoom = set(graph[vertex][1].values())
-            print( " itmes ", itemsForRoom )
-            #print( " max ", graph[vertex][1].keys()[graph[vertex][1].values().index( max(graph[vertex][1].values()) ) )] )
-            print(list(graph[vertex][1].keys())[list(graph[vertex][1].values()).index( max( graph[vertex][1].values())  )]) 
-            dirtiontogo = list(graph[vertex][1].keys())[list(graph[vertex][1].values()).index( max( graph[vertex][1].values())  )]
+#             itemsForRoom = set(graph[vertex][1].values())
+#             print( " itmes ", itemsForRoom )
+#             #print( " max ", graph[vertex][1].keys()[graph[vertex][1].values().index( max(graph[vertex][1].values()) ) )] )
+#             print(list(graph[vertex][1].keys())[list(graph[vertex][1].values()).index( max( graph[vertex][1].values())  )]) 
+#             dirtiontogo = list(graph[vertex][1].keys())[list(graph[vertex][1].values()).index( max( graph[vertex][1].values())  )]
             
-            nextRoom = graph[vertex][1].get(dirtiontogo)
-            print ("next room" , nextRoom , " dir ", dirtiontogo)
-            #print(  " extending  ", itemsForRoom - visited)
-            s = sorted( itemsForRoom - visited  )
-            if len(s) != 0 :
-                direction.append(dirtiontogo)
-            else:
-                print( "invalid dir")
+#             nextRoom = graph[vertex][1].get(dirtiontogo)
+#             print ("next room" , nextRoom , " dir ", dirtiontogo)
+#             #print(  " extending  ", itemsForRoom - visited)
+#             s = sorted( itemsForRoom - visited  )
+#             if len(s) != 0 :
+#                 direction.append(dirtiontogo)
+#             else:
+#                 print( "invalid dir")
 
 
-            print (" Going " ,dirtiontogo , " to visit ", s )
+#             print (" Going " ,dirtiontogo , " to visit ", s )
             
-            stack.extend( s)
-    return direction
+#             stack.extend( s)
+#     return direction
 
-traversalPath = dfsStackRoomGraph(roomGraph, start_room)
+# traversalPath = dfsStackRoomGraph(roomGraph, start_room)
 
 
 # TRAVERSAL TEST
+print(len(traversalPath))
 visited_rooms = set()
 player.currentRoom = world.startingRoom #None at starting 
 visited_rooms.add(player.currentRoom)
