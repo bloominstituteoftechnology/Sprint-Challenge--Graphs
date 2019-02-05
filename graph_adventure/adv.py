@@ -53,15 +53,10 @@ while True:
         graph[player.currentRoom.id] = exitDictionary
     else:
         #if reach room with no unexplored exits, need to backtrack
-        backtrack = []
-        for move in traversalPath[::-1]:  #two or one colon? 
-            player.travel(inverse_directions[move])
-            backtrack.append(inverse_directions[move])
-            traversalPath.pop()
-            if player.currentRoom.id in :
-                for move in backtrack:
-                    itinerary.append(move)
-
+        # previous_room = exitDictionary[inverse_directions].pop()
+        # traversalPath.append.previous_room
+        # player.travel.previous_room
+        pass
 
         # queue = deque()
         # queue.append(list(inverse_directions[traversalPath[-1]]))
@@ -71,9 +66,18 @@ while True:
         #     player.travel(previous_rooom)
 
 
-        # previous_room = exitDictionary[inverse_directions].pop()
-        # traversalPath.append.previous_room
-        # player.travel.previous_room
+
+
+        # backtrack = []
+        # for move in traversalPath[::-1]:  #new list in reverse rather than in place
+        #     player.travel(inverse_directions[move])
+        #     backtrack.append(inverse_directions[move])
+        #     traversalPath.pop()
+        #     if "?" in graph[player.currentRoom.id]:
+        #         for move in backtrack:
+        #             itinerary.append(move)
+        # break
+
 
         #then go back to previous room until we get to one with an unexplored exit
         #need bfs to get back b/c want to find nearest
@@ -104,13 +108,13 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.currentRoom.printRoomDescription(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    else:
-        print("I did not understand that command.")
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
 
 # Algorithm DFS(graph G, Vertex v) 
 # // Recursive algorithm
