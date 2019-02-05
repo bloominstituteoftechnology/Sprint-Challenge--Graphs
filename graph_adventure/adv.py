@@ -13,7 +13,85 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def size(self):
+        return len(self.queue)
+    
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else: 
+            return None
+        
+def backtrack_to_nearest_unexplored():        
+    queue = Queue()
+    visited = set()  # Note that this is a dictionary, not a set
+    queue.enqueue([player.currentRoom.id])
+    while queue.size() > 0:
+        path = queue.dequeue()
+        node = path[-1]
+        if node not in visited:
+            visited.add(node)
+            for exit in graph[node]:
+                if graph[node][exit] == "?":
+                    return path
+                else:
+                    dupl_path = list(path)
+                    dupl_path.append(graph[node][exit])
+                    queue.enqueue(dupl_path)
+    return []
+
+def rooms_to_directions(room_list):
+    current_room = room_list[0]
+    directions = []
+        
+    for room in room_list[1:]:
+        for exits in graph[current_room]:
+            if graph[current_room][exits] == room:
+                directions.append(exits)
+                current_room = room
+                break
+    return directions
+
+graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
+traversalPath = []
+opposite = {'n': 's', 's': 'n', 'e':'w', 'w':'e'}
+while len(graph) < 500:
+    currentRoomExits = graph[player.currentRoom.id]
+    unexploredExits = []
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == "?":
+            unexploredExits.append(direction)
+    if len(unexploredExits) > 0:
+        direction = ""
+        if player.currentRoom.getRoomInDirection(unexploredExits[-1]):
+            direction = unexploredExits.pop()
+        previousRoomId = player.currentRoom.id
+        player.travel(direction)
+        traversalPath.append(direction)
+        if player.currentRoom.id not in graph:
+            exitDict = {}
+            for exit in player.currentRoom.getExits():
+                exitDict[exit] = "?"
+            graph[previousRoomId][direction] = player.currentRoom.id
+            exitDict[opposite[direction]] = previousRoomId
+            graph[player.currentRoom.id] = exitDict
+        else:
+            graph[previousRoomId][direction] = player.currentRoom.id
+    else:
+        #create a BFS that finds the shortest path to the next "?"
+        room_list = backtrack_to_nearest_unexplored()
+        path_to_nearest_unexplored = rooms_to_directions(room_list)
+        for direction in path_to_nearest_unexplored:
+            player.travel(direction)
+            traversalPath.append(direction)
 
 
 # TRAVERSAL TEST
