@@ -15,8 +15,28 @@ graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 # FILL THIS IN
 inverse_direction = {"n": "s", "s": "n", "w": "e", "e": "w"}
 
-traversalPath = ['s', 'n']
+traversalPath = []
+backtrack_path = []
+visited_rooms = {}
 
+visited_rooms[player.currentRoom.id] = player.currentRoom.getExits()
+
+while len(visited_rooms) < 499:
+    if player.currentRoom.id not in visited_rooms:
+        visited_rooms[player.currentRoom.id] = player.currentRoom.getExits()
+        visited_rooms[player.currentRoom.id].remove(backtrack_path[-1])
+
+    while len(visited_rooms[player.currentRoom.id]) == 0:
+        backtrack = backtrack_path.pop()
+        traversalPath.append(backtrack)
+        player.travel(backtrack)
+
+    backtrack_move = visited_rooms[player.currentRoom.id].pop(0)
+    traversalPath.append(backtrack_move)
+    backtrack_path.append(inverse_direction[backtrack_move])
+    player.travel(backtrack_move)
+
+""" 
 while True:
     currentRoomExits = graph[player.currentRoom.id]
 
@@ -27,7 +47,9 @@ while True:
             unexploredExits.append(direction)
 
     if len(unexploredExits) > 0:
+        
         randomExit = random.choice(unexploredExits)
+
         traversalPath.append(randomExit)
         previous_room_id = player.currentRoom.id
         player.travel(randomExit)
@@ -45,12 +67,18 @@ while True:
         #repeat until you find a room with an unexplored exit
         #take a copy of the traversalPath list
         #pop off the last element in the list
-        traversalPath.append(inverse_direction[backtrackPath[-1]])
-        """ backtrackPath.pop() """
-        player.travel(inverse_direction[backtrackPath[-1]])
+        backtrackPath = traversalPath.copy()
+        backtrack = backtrackPath.pop()
+        traversalPath.append(backtrack)
         backtrackPath.pop()
+        backtrackPath.append(inverse_direction[backtrack])
+        previous_room_id = player.currentRoom.id
+        player.travel(backtrack) 
+
+
+
         #travel to the new last element
-        #repeat until you find an unexplored exit and continue the loop
+        #repeat until you find an unexplored exit and continue the loop """
 
 """ print(traversalPath)
 print(exitDictionary)
