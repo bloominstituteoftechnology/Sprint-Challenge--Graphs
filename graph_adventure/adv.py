@@ -11,44 +11,95 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
-# FILL THIS IN
-# create an array to store the path traversed throughout the "quest"
-# append any direction to this path
+# create an array to store the path traversed throughout the adventure
 traversal_path = []
-# create an array to store the stack for the next traverals attempts and tests
-# make a dictionary of the starting room and all traveled rooms with the possible paths
 # create an object to house the graph needed to traverse the map
-# {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}, 1: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
-graph = {}
+adventure_graph = {}
+# object to reference when looking for the reversed direction
 reverse_direction = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+
+# function to generate a room if room ID doesn't exist in adventure_graph
 def generate_room():
-    if player.currentRoom.id not in graph:
-        graph[player.currentRoom.id] = {}
-        
+    # check if player's room id is not in adventure_graph
+    if player.currentRoom.id not in adventure_graph:
+        # adds player's room id in the adventure_graph
+        adventure_graph[player.currentRoom.id] = {}
+        # populates adventure_graph with avaiable paths
         for path in player.currentRoom.getExits():
-            graph[player.currentRoom.id][path] = "?"
+            # assigns available paths to "?"
+            adventure_graph[player.currentRoom.id][path] = "?"
 
+# returns the direction you will go 
 def first_direction():
-    for path in graph[player.currentRoom.id]:
-        if graph[player.currentRoom.id][path] == '?':
+    # iterates through paths in the current room
+    for path in adventure_graph[player.currentRoom.id]:
+        # if a path equates to "?" the function will return that path key
+        if adventure_graph[player.currentRoom.id][path] == '?':
             return path
-        else:
-            return False
 
+    return False
+# function to travel to next room
 def travel(direction):
+    # store the previous room to populate the graph
     previous_room = player.currentRoom.id
+    # checks if direction was passed
     if direction:
+        # travel to the passed direction
         player.travel(direction)
+        # generates the room based on new player location
         generate_room()
-        graph[player.currentRoom.id][direction] = previous_room
-        graph[previous_room][reverse_direction[direction]] = previous_room
+        adventure_graph[player.currentRoom.id][reverse_direction[direction]] = previous_room
+        adventure_graph[previous_room][direction] = player.currentRoom.id
+        traversal_path.append(direction)
     else:
-        print("Woops.")
+        # bfs
+        room_list = backtrack_to_nearest_unexplored_room()
+        if len(room_list) == 0:
+            return False
+        print(rooms_to_directions(room_list))
+        for direction in rooms_to_directions(room_list):
+            player.travel(direction)
+            traversal_path.append(direction)
+        # find the nearest unexplored room
+    return True
+def backtrack_to_nearest_unexplored_room():
+    queue = Queue()
+    visited = set()
+    queue.enqueue([player.currentRoom.id])
+    # check if visted
+    while queue.len() > 0:
+        path = queue.dequeue()
+        node = path[-1]
+        if node not in visited:
+            visited.add(node)    
+            for exit in adventure_graph[node]:
+                if adventure_graph[node][exit] == "?":
+                    return path
+                else:
+                    upath = list(path)
+                    upath.append(adventure_graph[node][exit])
+                    queue.enqueue(upath)
+    print("path not found")
+    return []
 
-# while len(traversal_path) < 1:
-generate_room()
-travel(first_direction())
+def rooms_to_directions(room_list):
+    current_room = room_list[0]
+    direction_list = []
+    for room in room_list[1:]:
+        for exit in adventure_graph[current_room]:
+            print(adventure_graph[current_room])
+            print(exit)
+            if adventure_graph[current_room][exit] == room:
+                direction_list.append(exit)
+                current_room = room
+                break
+    return direction_list
+
+while True:
+    generate_room()
+    if not travel(first_direction()):
+        break
+    print(f'\nCurrent location ID: {player.currentRoom.id}')
 
 # traveral logic
 # store previous room ID in variable
@@ -61,7 +112,7 @@ travel(first_direction())
 # 
 
 print(player.currentRoom.id)
-print(graph)
+print(adventure_graph)
 # print(graph)
     
             
