@@ -87,13 +87,11 @@ while len(graph) < 500:
             graph[previousRoomId][direction] = player.currentRoom.id
     else:
         #create a BFS that finds the shortest path to the next "?"
-        
         room_list = backtrack_to_nearest_unexplored()
         path_to_nearest_unexplored = rooms_to_directions(room_list)
-        if len(room_list) > 0:
-            for direction in path_to_nearest_unexplored:
-                player.travel(direction)
-                traversalPath.append(direction)
+        for direction in path_to_nearest_unexplored:
+            player.travel(direction)
+            traversalPath.append(direction)
 
 
 # TRAVERSAL TEST
