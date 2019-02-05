@@ -12,92 +12,88 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-# FILL THIS IN
-def return_move_calculator(last_move):
-    if last_move == 'n':
-        return 's'
-    elif last_move == 's':
-        return 'n'
-    elif last_move == 'e':
-        return 'w'
-    elif last_move == 'w':
-        return 'e'
-    else:
-        return 'oops'
-
+# Traversal
 # walk through every room once, and keep a record of your movements
 traversalPath = []
-directions = ['n', 's', 'e', 'w']
-directions_book = {'n': ['e', 'n', 'w'], 's': ['w', 's', 'e'], 'e':['s', 'e', 'n'], 'w':['n', 'w', 's']}
+directions_forward = {'n': ['e', 'n', 'w'], 's': ['w', 's', 'e'], 'e':['s', 'e', 'n'], 'w':['n', 'w', 's']}
 visited = set()
-i = 0
+path_found = False 
 
-# while len(visited) < 10:
+while len(visited) < 490: # breaks at 490
 # while len(visited) < len(roomGraph):
-while i < 3:
-    i =+ 1
-    print(f'i: {i}')
-    print(f'\n\ntraversalPath: {traversalPath}')
-    print(f'len(visited): {len(visited)}')
+    exits = player.currentRoom.getExits()
+    print('checkpoint 1')
+    print(f'exits: {exits}')
+    print(f'player.currentRoom: {player.currentRoom}')
+
+    if len(traversalPath) >= 2000: #
+            break
+
+    if not player.currentRoom in visited:
+        print('checkpoint 2')
+        visited.add(player.currentRoom)
+
+    # Path finding logic   
     path_found = False
-    current_room = player.currentRoom.id
-    if current_room not in visited:
-        visited.add(current_room)
-
+    new_direction = None
     if len(traversalPath) == 0:
-        last_move = 'n' # arbitrary start direction
-    
-    # starting on rhs, if there is an unvisited room, go there
-    options_ahead = directions_book[last_move]
-    print('checkpoint 3')
-    print(f'options_ahead: {options_ahead}')
-    print(f'player.currentRoom.getExits(): {player.currentRoom.getExits()}')
-    for direction in options_ahead:
-        while path_found == False:
-            print('l57 checkpoint 4')
-            print(f'direction: {direction}')
-            next_room = player.currentRoom.getRoomInDirection(direction)
-            print(f'next_room: {next_room}')
-            if next_room is not None:
-                print('checkpoint 4.5')
-                if not next_room in visited:
-                    print('checkpoint 5')
-                    path_found = True
-                    traversalPath.append(direction)
-                    print(f'traversalPath2: {traversalPath}')
-                    player.travel(direction)
+        print('checkpoint 3')
+        path_found = True
+        new_direction = exits[0]
+        traversalPath.append(new_direction)
+        player.travel(new_direction)
 
-    # current room is a terminus. turn around
-    if len(player.currentRoom.getExits()) == 1:
-        print('checkpoint 7')
-        return_direction = return_move_calculator(traversalPath[-1])
-        traversalPath.append(return_direction)
-        player.travel(return_direction)
-    # no unvisited options ahead. try going right, straight, left
-    elif path_found is False:
-        print('checkpoint 8')
-        break
-        for direction in options_ahead:
-            while path_found is False:
-                if player.currentRoom.getRoomInDirection(direction) is not None:
+    while path_found is False:
+        print('checkpoint while loop')
+        
+        if len(exits) == 1:
+            print('checkpoint 4')
+            path_found = True
+            new_direction = exits[0]
+            print(new_direction)
+        else:
+            print('checkpoint 5')
+            visited_exits = 0
+            for _exit in directions_forward[traversalPath[-1]]:
+                print('checkpoint 6')
+                next_room = player.currentRoom.getRoomInDirection(_exit)
+                if next_room is not None and not next_room in visited:
+                    print('checkpoint 7')
                     path_found = True
-                    traversalPath.append(direction)
-                    player.travel(direction)
+                    new_direction = _exit
+                elif next_room is not None and next_room in visited:
+                    print('checkpoint 8')
+                    visited_exits += 1
 
+            # all exits ahead visited. take rightmost path
+            if visited_exits == len(exits) - 1:
+                print('checkpoint 9')
+                for _exit in directions_forward[traversalPath[-1]]:
+                    if player.currentRoom.getRoomInDirection(_exit) is not None:
+                        path_found = True
+                        new_direction = _exit
+        # path found, time to move
+        print('checkpoint loop end')
+        traversalPath.append(new_direction)
+        player.travel(new_direction)
+        print(f'\n\nlen(traversalPath): {len(traversalPath)}')
+        print(f'\n>>>>>>>>>>> len(visited): {len(visited)}')
+        
+# print(traversalPath)
 
 # TRAVERSAL TEST
-visited_rooms = set()
-player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
-for move in traversalPath:
-    player.travel(move)
-    visited_rooms.add(player.currentRoom)
+# visited_rooms = set()
+# player.currentRoom = world.startingRoom
+# visited_rooms.add(player.currentRoom)
+# for move in traversalPath:
+#     player.travel(move)
+#     visited_rooms.add(player.currentRoom)
 
-if len(visited_rooms) == 500:
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{500 - len(visited_rooms)} unvisited rooms")
+# if len(visited_rooms) == 500:
+#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+# else:
+#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+#     print(f"{500 - len(visited_rooms)} unvisited rooms")
 
 
 
