@@ -35,7 +35,48 @@ class Graph:
         # self.destination = destination
         # self.label = label
 
+    def breadth_first_s(self, starting_room, target):
+        q = []
+        visited = []
+        print("target: ",target)
+        q.append(starting_room)
+        print("Queue: ", q)
 
+        while len(q) > 0:
+            path = q.pop()
+            print("Path: ", path)
+            if type(path) == int:
+                node = path
+            else:
+                node = path[-1]
+            print("node: ", node)
+            # print("self.vert node: ",self.vertices[node])
+            print("get exits: ",player.currentRoom.getExits())
+            if node == target:
+                for direction in self.vertices[player.currentRoom.id]:
+                    if self.vertices[player.currentRoom.id][direction] == '?':
+
+                        player.travel(direction)
+            if node not in visited:
+                if node is not '?':
+
+                    visited.append(node)
+
+                for i in player.currentRoom.getExits():
+                    # if target in self.vertices[node]:
+                    #     print("Dup_Path: ", dup_path)
+                    #     return dup_path
+                    if self.vertices[node][i] not in visited:
+                        if type(path) == int:
+                            dup_path = [path]
+                            print("type int: ")
+                            player.travel(i)
+                        else:
+                            print("type list: ")
+                            dup_path = list(path)
+                        dup_path.append(self.vertices[node][i])
+                        q.append(dup_path)
+        return None
 
     def add_vertex(self, vertex):
         self.vertices[vertex] = {"n": "?", "s": "?", "w": "?", "e": "?"}
@@ -76,8 +117,10 @@ class Graph:
 
 
     def traversal(self):
+
         inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
         while True:
+            print(self.vertices)
             currentRoomExits = self.vertices[player.currentRoom.id]
             print("currentRoomExits: ",currentRoomExits)
             unexploredExits = []
@@ -88,6 +131,7 @@ class Graph:
             if len(unexploredExits) > 0:
                 randomExit = random.choice(unexploredExits)
                 traversalPath.append(randomExit)
+                print("randomExit: ",randomExit)
                 previous_room_id = player.currentRoom.id
                 player.travel(randomExit)
                 exitDictionary = {}
@@ -97,31 +141,12 @@ class Graph:
                 exitDictionary[inverse_directions[randomExit]] = previous_room_id
                 self.vertices[player.currentRoom.id] = exitDictionary
                 print("unexploredExits: ",unexploredExits)
+                print("current room id: ",player.currentRoom.id)
             else:
-                print("unexploredExits: ",unexploredExits)
-                print(traversalPath)
-                if len(unexploredExits) == 0:
-                    inverse_travel = traversalPath.pop()
-                    print(traversalPath)
-                    inverse_exit = inverse_directions[inverse_travel]
-                    print(inverse_exit)
-                    traversalPath.append(inverse_exit)
-                    previous_room_id = player.currentRoom.id
-                    player.travel(inverse_exit)
-                    # exitDictionary = {}
-                    # for exit in player.currentRoom.getExits():
-                    #     print("inverse_exit: ",inverse_exit)
-                    #     exitDictionary[exit] = inverse_directions[inverse_exit]
-                    # print("exitDictionary: ",exitDictionary)
-                    # self.vertices[previous_room_id][inverse_exit] = player.currentRoom.id
-                    # exitDictionary[inverse_directions[inverse_exit]] = previous_room_id
-                    # self.vertices[player.currentRoom.id] = exitDictionary
+                print("ID: ",player.currentRoom.id)
+                print(self.breadth_first_s(player.currentRoom.id, '?'))
+                break
 
-                #     for direction in currentRoomExits:
-                #         if direction == inverse_directions[inverse_travel]:
-                #             print(self.vertices[currentRoomExits[inverse_directions[inverse_travel]]])
-                # player.travel(inverse_directions[inverse_travel])
-                # print("Going Back: ",currentRoomExits)
         return traversalPath
 
 
@@ -134,14 +159,16 @@ class Graph:
 
 
 
-def print_graph():
+def print_graph(x):
     graph = Graph()
-    for i in range(0, 500):
-        graph.add_vertex(i)
+    graph.add_vertex(x)
     print(len(graph.vertices))
-    graph.traversal()
+    if len(graph.vertices) == 499:
+        return graph.vertices
+    if x == 0:
+        graph.traversal()
 
-print_graph()
+print_graph(0)
 
 
 
@@ -192,36 +219,7 @@ print("starting room: ",roomGraph[0][1]['n'])
 #     print(i)
 # print(roomGraph[0][1])
 
-def breadth_first_search(starting_room, target):
-    q = []
-    visited = []
-    print("target: ",target)
-    q.append(starting_room)
-    print("Queue: ", q)
 
-    while len(q) > 0:
-        path = q.pop()
-        print("Path: ", path)
-        if type(path) == int:
-            node = path
-        else:
-            node = path[-1]
-        print("node: ", node)
-        if node not in visited:
-
-            visited.append(node)
-            if target in visited:
-                print("Dup_Path: ", dup_path)
-                return dup_path
-            for i in roomGraph[node][1]:
-                if roomGraph[0][1][i] not in visited:
-                    if type(path) == int:
-                        dup_path = [path]
-                    else:
-                        dup_path = list(path)
-                    dup_path.append(roomGraph[0][1][i])
-                    q.append(dup_path)
-    return None
 
 def getAllDoors(starting_room):
     visited = {}
