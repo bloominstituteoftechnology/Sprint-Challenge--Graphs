@@ -50,57 +50,63 @@ def inverse(direction):
     if direction == 'w':
         return 'e'
 
-# def bfs2(self, starting_vertex, target): 
-#     visited = []
-#     queue = deque()
-#     queue.append([starting_vertex])
+#  starting_vertex = player.currentRoom.id
+#  target = 
+
+def bfs(self, starting_vertex, target): 
+    visited = []
+    queue = deque()
+    queue.append([starting_vertex])
     
-#     while queue:     
-#         path = queue.popleft()
-#         last_node = path[-1:][0]
-#         if last_node not in visited:
-#             print(last_node, path)
-#             if last_node == target:
-#                 return path
-#             visited.append(last_node)
-#             for v in graph[last_node]:
-#                 new_list = list(path)
-#                 new_list.append(v)
-#                 queue.append(new_list)
-#     return False
+    while queue:    
+        print('STARTING QUEUE')
+        path = queue.popleft()
+        print('PATH', path)
+        last_node = path[-1:][0]
+        print(last_node)
+        if last_node not in visited:
+            visited.append(last_node)
+            print(last_node, path)
+            # if last_node == target:
+            #     return path
+            # visited.append(last_node)
+            for an_exit in graph[last_node]:
+                print('AN EXIT', an_exit)
+                if graph[last_node][an_exit] == target:
+                    print('BFS path', path)
+                    return path
+                else: 
+                    new_list = list(path)
+                    new_list.append(an_exit)
+                    queue.append(new_list)
+    print('You are lost!!!!')
+    return []
 
-# while len(graph) < 11:
-#     # print('Curr Room', player.currentRoom.id)
-#     direction = generateDirection(graph, player.currentRoom.id)
-#     print(direction)
-#     previous_room_id = player.currentRoom.id
-#     # currentRoomExits = graph[player.currentRoom.id]
-#     unexploredExits.append(player.currentRoom.id)
-#     player.travel(direction)
+def room_to_directions(room_list):
+    current_room = room_list[0]
+    direction_list = []
+    for room in room_list[1:]:
+        for another_exit in graph[current_room]:
+            print(graph[current_room])
+            print(another_exit)
+            if graph[current_room][another_exit] == room:
+                direction_list.append(another_exit)
+                current_room = room
+                break
+    return direction_list
+    # return False
 
-#     if player.currentRoom.id not in graph:
-#         exitmap = {}
-#         for possible_exit in player.currentRoom.getExits():
-#             exitmap[possible_exit] = '?'
-#         graph[player.currentRoom.id] = exitmap
 
-#     graph[player.currentRoom.id][inverse(direction)] = previous_room_id
-#     graph[previous_room_id][direction] = player.currentRoom.id
-#     # print(graph)
-#     if canTravel(direction) == False:
-#         print(graph)
-#         print(direction)
-#         break
-#     break
 traversalPath = []
 room_path = []
+alt_path = []
 unexploredExits = []
 def travel(graph, currentPos, traversalPath, unexploredExits):
-    while len(graph) < 12:
+    while len(graph) < 13:
         print('Curr Room', player.currentRoom.id)
-        
+        # alt_path = traversalPath[:]
 
-        room_path.append(player.currentRoom.id)
+        # room_path.append(player.currentRoom.id)
         currentRoomExits = graph[player.currentRoom.id]
         print('Curr Exits', currentRoomExits, 'Actual', roomGraph[player.currentRoom.id][1])
         poss_directions = []
@@ -120,45 +126,38 @@ def travel(graph, currentPos, traversalPath, unexploredExits):
             elif 's' in poss_directions:
                 move = 's'
             else:
-                print('*' * 20)
-                print(traversalPath)
-                print(room_path)
-                print(unexploredExits)
-                print('Curr Exits', currentRoomExits, 'Actual2', roomGraph[player.currentRoom.id][1])
-                print(graph)
-                reveresed_room_path = room_path[::-1]
-                # counter = 0;
-                for index, room in enumerate(reveresed_room_path):
-                    for direction in graph[room]:
-                        if graph[room][direction] == '?':
-                            print('newGoal', room, index)
-                            print(traversalPath[-index:])
-                            reversewalk = 
-                break
-            traversalPath.append(move)
+                room_list = bfs(graph, player.currentRoom.id, '?')
+                if not len(room_list):
+                    return False
+                print(room_to_directions(room_list))
+                for next_direction in room_to_directions(room_list):
+                    player.travel(next_direction)
+                    traversalPath.append(next_direction)
+            print(move)
+            print(traversalPath)
+            print(player.currentRoom.id)
+                # break
+            traversalPath.extend(move)
             previous_room_id = player.currentRoom.id
             player.travel(move)
             exitDictionary = {}
             for possible_exits in player.currentRoom.getExits():
-                # print(curr)
-                print('POSSIBLE EXITS', possible_exits)
                 if possible_exits not in exitDictionary:
                     exitDictionary[possible_exits] = '?'
-                    print(exitDictionary[possible_exits])
                     print('EXXXXIT', exitDictionary)
                 elif possible_exits in exitDictionary:
                     print('*' * 30)
-                    # print(exitDictionary[possible_exits])
-                    # print('ELSE EXIT', exitDictionary)
+
+            print('SINGLE MOVE', move)
             graph[previous_room_id][move] = player.currentRoom.id
             print('RM', player.currentRoom.id, 'Curr Exits', currentRoomExits, 'Actual', roomGraph[player.currentRoom.id][1])
             
             print('EXIT DICT', exitDictionary)
             print(move)
             print(previous_room_id)
-            # print(exitDictionary[move])
+
             opposite_way = inverse_directions[move]
-            print(exitDictionary[inverse_directions[move]])
+
             exitDictionary[opposite_way] = previous_room_id
             graph[player.currentRoom.id] = exitDictionary
             print(graph)
@@ -166,6 +165,7 @@ def travel(graph, currentPos, traversalPath, unexploredExits):
             print('EXIT DICT', exitDictionary)
         else:
             print('HEEEEEERRRRRRRREEEEEEE')
+    print(room_path)
     return traversalPath
 travel(graph, 0, traversalPath, unexploredExits)
 
@@ -248,6 +248,30 @@ travel(graph, 0, traversalPath, unexploredExits)
     # print(graph)
     # return traversalPath
 # traversalPath = travel(graph, 0, traversalPath, unexploredExits)
+
+# while len(graph) < 11:
+#     # print('Curr Room', player.currentRoom.id)
+#     direction = generateDirection(graph, player.currentRoom.id)
+#     print(direction)
+#     previous_room_id = player.currentRoom.id
+#     # currentRoomExits = graph[player.currentRoom.id]
+#     unexploredExits.append(player.currentRoom.id)
+#     player.travel(direction)
+
+#     if player.currentRoom.id not in graph:
+#         exitmap = {}
+#         for possible_exit in player.currentRoom.getExits():
+#             exitmap[possible_exit] = '?'
+#         graph[player.currentRoom.id] = exitmap
+
+#     graph[player.currentRoom.id][inverse(direction)] = previous_room_id
+#     graph[previous_room_id][direction] = player.currentRoom.id
+#     # print(graph)
+#     if canTravel(direction) == False:
+#         print(graph)
+#         print(direction)
+#         break
+#     break
 
 print('*' * 10)
 print(traversalPath)
