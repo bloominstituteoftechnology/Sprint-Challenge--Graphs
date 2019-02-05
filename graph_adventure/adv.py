@@ -12,6 +12,31 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+# def bfs(currentRoom, graph):
+#     #create a queue
+#     q = deque()
+#     visited = []
+#     #path = [] #def use list since it needs to be ordered
+#     #queue entire path
+#     #enqueue starting vertex
+#     q.append(currentRoom)
+#     #while the queue is not empty
+#     while q: 
+#         #dequeue a vertex from the queue
+#         path = q.popleft()
+#         last_vertex = path[-1:]
+#         #if that vertex has not been visited
+#         if last_vertex not in visited:
+#             #mark it as visited and if is equal to target return that path
+#             if last_vertex == target:
+#                 return path
+#             visited.add(last_vertex)
+#             #enqueue all of its children
+#             for exit in graph[last_vertex]:
+#                 duplicate_path = list(path)
+#                 duplicate_path.append(graph[last_vertex][exit])
+#                 q.append(duplicate_path)
+#     return False
 
 # FILL THIS IN
 traversalPath = []
@@ -30,12 +55,12 @@ while True:
     #direction is key in dictionary
     for direction in currentRoomExits:
         #if exit has question mark it is still unexplored, so it should be added
-        if currentRoomExits == "?":
-            unexploredExits.append[direction]
+        if currentRoomExits[direction] == "?":
+            unexploredExits.append(direction)  #bracket v parens???!?!!??
     #cant have empty sequence so have to do null check
     if len(unexploredExits) > 0:
         #randomly choose an exit that has not already been explored
-        randomExit = random.choice[unexploredExits]
+        randomExit = random.choice(unexploredExits)
         #taking this exit, we append it to our traversal path
         traversalPath.append(randomExit)
         #set previous room
@@ -46,6 +71,7 @@ while True:
         exitDictionary = {}
         for exit in player.currentRoom.getExits():
             exitDictionary[exit] = "?"
+        
         #this initializes to all rooms as "?" but we know the rooms we've already passed through
         #set previous room to the room player is currently in
         graph[previous_room_id][randomExit] = player.currentRoom.id
@@ -68,7 +94,6 @@ while True:
 
 
 
-
         backtrack = []
         #new list in reverse rather than in place
         for move in traversalPath[::-1]:  
@@ -83,6 +108,8 @@ while True:
                     itinerary.append(move)
         break
 
+print(graph)
+print(itinerary)
 
         #then go back to previous room until we get to one with an unexplored exit
         #need bfs to get back b/c want to find nearest
