@@ -13,7 +13,225 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['s', 'n']
+traversalPath = []
+
+
+
+
+class Vertex:
+    def __init__(self, name, neighbors=list(), distance=9999, color='black'):
+        self.name = name #label
+        self.neighbor = list() #same as edges?
+        self.distance = 9999 #destination
+        self.color = 'black' #black for visited, red for not visited
+
+
+
+class Graph:
+    """Represent a graph as a dictionary of vertices mapping labels to edges."""
+    def __init__(self):
+        self.vertices = {}
+        self.edges = dict()
+        # self.destination = destination
+        # self.label = label
+
+    def breadth_first_s(self, starting_room, target):
+        q = []
+        visited = []
+        print("target: ",target)
+        q.append(starting_room)
+        print("Queue: ", q)
+
+        while len(q) > 0:
+            path = q.pop()
+            print("Path: ", path)
+            if type(path) == int:
+                node = path
+            else:
+                node = path[-1]
+            print("node: ", node)
+            # print("self.vert node: ",self.vertices[node])
+            print("get exits: ",player.currentRoom.getExits())
+            if node == target:
+                for direction in self.vertices[player.currentRoom.id]:
+                    if self.vertices[player.currentRoom.id][direction] == '?':
+
+                        player.travel(direction)
+            if node not in visited:
+                if node is not '?':
+
+                    visited.append(node)
+
+                for i in player.currentRoom.getExits():
+                    # if target in self.vertices[node]:
+                    #     print("Dup_Path: ", dup_path)
+                    #     return dup_path
+                    if self.vertices[node][i] not in visited:
+                        if type(path) == int:
+                            dup_path = [path]
+                            print("type int: ")
+                            player.travel(i)
+                        else:
+                            print("type list: ")
+                            dup_path = list(path)
+                        dup_path.append(self.vertices[node][i])
+                        q.append(dup_path)
+        return None
+
+    def add_vertex(self, vertex):
+        self.vertices[vertex] = {"n": "?", "s": "?", "w": "?", "e": "?"}
+        # print(self.vertices)
+
+    def add_edge_bi(self, vertex_start, vertex_end):
+
+        if vertex_start not in self.vertices:
+            print(f'You chose: {vertex_start}. That Beginning Vertex does not exist...')
+            return
+        if vertex_end not in self.vertices:
+            print(f"You chose: {vertex_end} That End Vertex does not exist...")
+            return
+        for i in self.vertices:
+            # temp = set()
+            # temp.add(i)
+            if i == vertex_start:
+                self.vertices[vertex_start].add(vertex_end)
+                print(self.vertices)
+            if vertex_end == i:
+                self.vertices[vertex_end].add(vertex_start)
+                print(self.vertices)
+
+    def add_edge_mono(self, vertex_start, vertex_end):
+        if vertex_start not in self.vertices:
+            print(f'You chose: {vertex_start}. That Beginning Vertex does not exist...')
+            return
+        if vertex_end not in self.vertices:
+            print(f"You chose: {vertex_end} That End Vertex does not exist...")
+            return
+        for i in self.vertices:
+            # temp = set()
+            # temp.add(i)
+            if i == vertex_start:
+                self.vertices[vertex_start].add(vertex_end)
+                print(self.vertices)
+
+
+
+    def traversal(self):
+
+        inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
+        while True:
+            print(self.vertices)
+            currentRoomExits = self.vertices[player.currentRoom.id]
+            print("currentRoomExits: ",currentRoomExits)
+            unexploredExits = []
+
+            for direction in currentRoomExits:
+                if currentRoomExits[direction] == '?':
+                    unexploredExits.append(direction)
+            if len(unexploredExits) > 0:
+                randomExit = random.choice(unexploredExits)
+                traversalPath.append(randomExit)
+                print("randomExit: ",randomExit)
+                previous_room_id = player.currentRoom.id
+                player.travel(randomExit)
+                exitDictionary = {}
+                for exit in player.currentRoom.getExits():
+                    exitDictionary[exit] = "?"
+                self.vertices[previous_room_id][randomExit] = player.currentRoom.id
+                exitDictionary[inverse_directions[randomExit]] = previous_room_id
+                self.vertices[player.currentRoom.id] = exitDictionary
+                print("unexploredExits: ",unexploredExits)
+                print("current room id: ",player.currentRoom.id)
+            else:
+                print("ID: ",player.currentRoom.id)
+                print(self.breadth_first_s(player.currentRoom.id, '?'))
+                break
+
+        return traversalPath
+
+
+                    # travel the inverse direction of the last element
+                    # in traversal path
+
+
+                # break
+
+
+
+
+def print_graph(x):
+    graph = Graph()
+    graph.add_vertex(x)
+    print(len(graph.vertices))
+    if len(graph.vertices) == 499:
+        return graph.vertices
+    if x == 0:
+        graph.traversal()
+
+print_graph(0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def breadth_first_traversal(starting_room): # roomGraph[starting_room][1]
+    q = []
+    visited = list()
+
+    q.append(starting_room)
+    print(q)
+
+    while len(q) > 0:
+        deq = q.pop()
+        visited.append(deq)
+        print("visited: ", visited)
+
+        for i in roomGraph[deq][1]:
+            if roomGraph[0][1][i] not in visited:
+                q.append(roomGraph[0][1][i])
+        # for i in roomGraph[deq][1]['s']:
+        #     if i not in visited:
+        #         q.append(i)
+        # for i in roomGraph[deq][1]['e']:
+        #     if i not in visited:
+        #         q.append(i)
+        # for i in roomGraph[deq][1]['w']:
+        #     if i not in visited:
+        #         q.append(i)
+
+    print("Traverse End: ", visited)
+    return visited
+# print(breadth_first_traversal(0))
+print("starting room: ",roomGraph[0][1]['n'])
+# for i in roomGraph[0][1]:
+#     print(roomGraph[0][1][i])
+#     print(i)
+# print(roomGraph[0][1])
+
+
+
+def getAllDoors(starting_room):
+    visited = {}
+
+    for i in roomGraph[starting_room][1]:
+        print("####: ", roomGraph[i])
+        visited[i] = breadth_first_search(starting_room, roomGraph[0][1][i])
+        print("Visited: ", visited)
+    return visited
+
+# getAllDoors(0)
+
 
 
 # TRAVERSAL TEST
