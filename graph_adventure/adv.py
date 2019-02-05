@@ -19,6 +19,7 @@ graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 
 inverse_directions = {"n": "s", "s": "n", "e": "w", "w":"e"}
 
+#record of all moves made
 itinerary = []
 
 #need to loop through this
@@ -56,27 +57,31 @@ while True:
         # previous_room = exitDictionary[inverse_directions].pop()
         # traversalPath.append.previous_room
         # player.travel.previous_room
-        pass
+        
 
         # queue = deque()
         # queue.append(list(inverse_directions[traversalPath[-1]]))
         # dequeued = queue.popleft()
         # last_move = dequeued[-1]
         # for previous_rooom in dequeued:
-        #     player.travel(previous_rooom)
+        #     player.travel(previous_room)
 
 
 
 
-        # backtrack = []
-        # for move in traversalPath[::-1]:  #new list in reverse rather than in place
-        #     player.travel(inverse_directions[move])
-        #     backtrack.append(inverse_directions[move])
-        #     traversalPath.pop()
-        #     if "?" in graph[player.currentRoom.id]:
-        #         for move in backtrack:
-        #             itinerary.append(move)
-        # break
+        backtrack = []
+        #new list in reverse rather than in place
+        for move in traversalPath[::-1]:  
+            #players moves backward to previous room ie inverse direction
+            player.travel(inverse_directions[move])
+            #add this move to the end of the list
+            backtrack.append(inverse_directions[move])
+            #traversalPath.pop()
+            #if there is an unexplored exit in current room add it to itinerary
+            if "?" in graph[player.currentRoom.id]:
+                for move in backtrack:
+                    itinerary.append(move)
+        break
 
 
         #then go back to previous room until we get to one with an unexplored exit
