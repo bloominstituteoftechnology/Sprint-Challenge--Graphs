@@ -14,6 +14,51 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def size(self):
+        return len(self.queue)
+    
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else: 
+            return None
+        
+def backtrack_to_nearest_unexplored():        
+    queue = Queue()
+    visited = set()  # Note that this is a dictionary, not a set
+    queue.enqueue([player.currentRoom.id])
+    while queue.size() > 0:
+        path = queue.dequeue()
+        node = path[-1]
+        if node not in visited:
+            visited.add(node)
+            for exit in graph[node]:
+                if graph[node][exit] == "?":
+                    return path
+                else:
+                    dupl_path = list(path)
+                    dupl_path.append(graph[node][exit])
+                    queue.enqueue(dupl_path)
+    return []
+
+def rooms_to_directions(room_list):
+    current_room = room_list[0]
+    directions = []
+        
+    for room in room_list[1:]:
+        for exits in graph[current_room]:
+            if graph[current_room][exits] == room:
+                directions.append(exits)
+                current_room = room
+                break
+    return directions
 
 graph = {0: {'n': '?', 's':'?','w':'?','e':'?'}}
 traversalPath = []
@@ -42,75 +87,14 @@ while len(graph) < 500:
             graph[previousRoomId][direction] = player.currentRoom.id
     else:
         #create a BFS that finds the shortest path to the next "?"
-        visited = set()
-        queue = {}
-        room = player.currentRoom.id
-        paths = {}
-        path = []
-        visited.add(room)
-        queue[room] = graph[room]
-        while len(queue) > 0:
-            children = queue[room]
-            
-            if len(children) == 1:
-                # print(room, children)
-                [(key, value)] = children.items()
-                dupl_path = list(paths[-1])
-                dupl_path.append(key)
-                paths[room] = path
-                room = value
-                queue[room] = graph[room]
-                visited.add(room)
-            else:
-                print(room, children)
-                for key, value in children:
-                    if value == "?":
-                        path = paths[-1]
-                        break
-                    elif value not in visited:
-                        path.append(key)
-                        paths[room] = path
-                        room = value
-                        queue[room] = graph[room]
-                        visited.add(room)
-                    else:
-                        dupl_path = list(paths[-1])
-                        dupl_path.append(key)
-                        paths.append(dupl_path)
-                        room = value
-                        queue[room] = graph[room]
-                        visited.add(room)
-                
-        for direction in path:
-            if player.currentRoom.getRoomInDirection(direction):
+        
+        room_list = backtrack_to_nearest_unexplored()
+        path_to_nearest_unexplored = rooms_to_directions(room_list)
+        if len(room_list) > 0:
+            for direction in path_to_nearest_unexplored:
                 player.travel(direction)
-                
+                traversalPath.append(direction)
 
-
-        # for move in traversalPath[::-1]:
-        #     player.travel(opposite[move])
-        #     traversalPath.append(opposite[move])
-        #     if "?" in graph[player.currentRoom.id].values():
-        #         break
-
-# print(graph)
-
-#         visited = {}  # Note that this is a dictionary, not a set
-#         queue = Queue()
-#         queue.enqueue([userID])
-#         while queue.size() > 0:
-#             path = queue.dequeue()
-#             node = path[-1]
-#             if node not in visited:
-#                 visited[node] = path
-#             for next_friendship in self.friendships[node]:
-#                 if next_friendship not in visited:
-#                     dupl_path = list(path)
-#                     dupl_path.append(next_friendship)
-#                     queue.enqueue(dupl_path)
-#         return visited
-
-# ['e', 'e', 'w', 'w', 'w', 'w', 'w', 'w', 'n', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'e', 'e', 's', 'w', 'w', 'e', 'e', 'n','w', 'w', 'e', 'e', 'e', 'e', 'n', 'w', 'w', 'w', 'w', 'n', 'w', 'w', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'n', 'w', 'w']
 
 # TRAVERSAL TEST
 visited_rooms = set()
