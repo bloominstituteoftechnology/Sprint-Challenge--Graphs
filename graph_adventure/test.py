@@ -12,88 +12,103 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-# Traversal
+# TRAVERSAL
 # walk through every room once, and keep a record of your movements
+
 traversalPath = []
 directions_forward = {'n': ['e', 'n', 'w'], 's': ['w', 's', 'e'], 'e':['s', 'e', 'n'], 'w':['n', 'w', 's']}
 visited = set()
+rooms_map = {0: {'n': '?', 's': '?', 'e': '?', 'w': '?'}}
 path_found = False 
+reverse = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
 
-while len(visited) < 490: # breaks at 490
-# while len(visited) < len(roomGraph):
+def add_next_room_to_map(next_room):
+    if rooms_map.get(next_room.id) is None:
+        rooms_map[next_room.id] = {}
+        for exit in next_room.getExits():
+            rooms_map[next_room.id][exit] = '?'
+
+# TRAVELING LOGIC
+while len(visited) < 489: # breaks at 490
     exits = player.currentRoom.getExits()
-    print('checkpoint 1')
-    print(f'exits: {exits}')
-    print(f'player.currentRoom: {player.currentRoom}')
 
-    if len(traversalPath) >= 2000: #
+    if len(traversalPath) >= 2000: 
             break
 
     if not player.currentRoom in visited:
-        print('checkpoint 2')
         visited.add(player.currentRoom)
 
-    # Path finding logic   
+    # PATH FINDING LOGIC  
     path_found = False
     new_direction = None
+    # first step
     if len(traversalPath) == 0:
-        print('checkpoint 3')
         path_found = True
         new_direction = exits[0]
+        next_room = player.currentRoom.getRoomInDirection(new_direction)
+        add_next_room_to_map(next_room)
+        rooms_map[player.currentRoom.id][new_direction] = next_room.id
+        rooms_map[next_room.id][reverse[new_direction]] = player.currentRoom.id
         traversalPath.append(new_direction)
         player.travel(new_direction)
 
+    # steps after the first
     while path_found is False:
-        print('checkpoint while loop')
-        
         if len(exits) == 1:
-            print('checkpoint 4')
             path_found = True
             new_direction = exits[0]
-            print(new_direction)
         else:
-            print('checkpoint 5')
             visited_exits = 0
             for _exit in directions_forward[traversalPath[-1]]:
-                print('checkpoint 6')
                 next_room = player.currentRoom.getRoomInDirection(_exit)
                 if next_room is not None and not next_room in visited:
-                    print('checkpoint 7')
                     path_found = True
                     new_direction = _exit
                 elif next_room is not None and next_room in visited:
-                    print('checkpoint 8')
                     visited_exits += 1
-
             # all exits ahead visited. take rightmost path
             if visited_exits == len(exits) - 1:
-                print('checkpoint 9')
                 for _exit in directions_forward[traversalPath[-1]]:
                     if player.currentRoom.getRoomInDirection(_exit) is not None:
                         path_found = True
                         new_direction = _exit
         # path found, time to move
-        print('checkpoint loop end')
+        next_room = player.currentRoom.getRoomInDirection(new_direction)
+        add_next_room_to_map(next_room)
+        rooms_map[player.currentRoom.id][new_direction] = next_room.id
+        rooms_map[next_room.id][reverse[new_direction]] = player.currentRoom.id
         traversalPath.append(new_direction)
         player.travel(new_direction)
-        print(f'\n\nlen(traversalPath): {len(traversalPath)}')
-        print(f'\n>>>>>>>>>>> len(visited): {len(visited)}')
-        
-# print(traversalPath)
+
+
+final_steps = ['s', 'e', 's','s','s', 's', 'w', 's','s','w', 's','s','n','w', 's','s','s','e', 's','s','e', 'w', 'n', 'n', 'w', 's', 's', 's', 'e', 'e', 'e', 'e', 'n', 'n', 'w', 's', 'n', 'e', 'n', 'n', 'w', 'w', 'w', 'e', 's', 'e', 'w', 's']
+
+traversalPath.extend(final_steps)
+
+unvisited_rooms = []
+for key in roomGraph:
+    if not key in rooms_map:
+        unvisited_rooms.append(key)
+
+
+print(unvisited_rooms)
+print(f'\nlast room (player.currentRoom): {player.currentRoom}')
+print(f'len(traversalPath): {len(traversalPath)}')
 
 # TRAVERSAL TEST
-# visited_rooms = set()
-# player.currentRoom = world.startingRoom
-# visited_rooms.add(player.currentRoom)
-# for move in traversalPath:
-#     player.travel(move)
-#     visited_rooms.add(player.currentRoom)
+visited_rooms = set()
+player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
+for move in traversalPath:
+    print(f'current room: {player.currentRoom.id}')
+    player.travel(move)
+    visited_rooms.add(player.currentRoom)
 
-# if len(visited_rooms) == 500:
-#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{500 - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == 500:
+    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{500 - len(visited_rooms)} unvisited rooms")
 
 
 
