@@ -28,8 +28,8 @@ def __checkDirections(roomExits):
             unexplored.append(direction)
     if len(unexplored) > 0:
         return unexplored
-    else:
-        return None
+    # else:
+    #     return None
 
 roomStack = Stack()
 
@@ -37,6 +37,7 @@ roomStack.push(player.currentRoom.id)
 # print(roomStack.stack)
 
 while roomStack.size() > 0:
+    # visited_rooms.add(player.currentRoom.id)
     roomExits = graph[roomStack.stack[-1]]
     # get the exits in the room
     unknownExits = __checkDirections(roomExits)
@@ -48,25 +49,29 @@ while roomStack.size() > 0:
         graph[enterFromRoom][firstExit] = player.currentRoom.id
         # create an empty dictionary to graph new traveled to room
         exitDict = {}
-        for exit in player.currentRoom.getExits():
-            exitDict[exit] = '?'
-        exitDict[inverseKey[firstExit]] = enterFromRoom
-        graph[player.currentRoom.id] = exitDict
         if player.currentRoom.id not in roomStack.stack:
-            roomStack.push(player.currentRoom.id)
+            for exit in player.currentRoom.getExits():
+                exitDict[exit] = '?'
+            exitDict[inverseKey[firstExit]] = enterFromRoom
+            graph[player.currentRoom.id] = exitDict
+        else:
+            graph[player.currentRoom.id][inverseKey[firstExit]] = enterFromRoom
+        roomStack.push(player.currentRoom.id)
         print(f'\n\n\n{graph}')
         # print(player.currentRoom.id)
         print(roomStack.stack)
+        print(traversalPath)
         # break
     else:
         finishedRoom = roomStack.pop()
         lastRoom = roomStack.stack[-1]
         for route, room in graph[lastRoom].items():
             if room == finishedRoom:
-                print('DEAD END!!!!!!!')
+                print(f'DEAD END!!!!!!! drop {finishedRoom}')
                 traversalPath.append(inverseKey[route])
                 player.travel(inverseKey[route])
-        print(f'traversal ==== {traversalPath}')        
+                
+        # print(f'traversal ==== {traversalPath}')        
         # pass
 
 # TRAVERSAL TEST
