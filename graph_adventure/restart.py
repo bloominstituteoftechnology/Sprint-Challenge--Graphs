@@ -63,9 +63,10 @@ while roomStack.size() > 0:
         lastRoom = roomStack.stack[-1]
         for route, room in graph[lastRoom].items():
             if room == finishedRoom:
+                print('DEAD END!!!!!!!')
+                traversalPath.append(inverseKey[route])
                 player.travel(inverseKey[route])
-            else:
-                continue
+        print(f'traversal ==== {traversalPath}')        
         # pass
 
 # TRAVERSAL TEST
