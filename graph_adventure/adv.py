@@ -25,8 +25,12 @@ traversalPath = []
 def generateDirection(graph, current_room):
     for exit in graph[current_room]:
         if graph[current_room][exit] == '?':
-            return exit
-        
+            # print("\n call from genDir")
+            if exit is None:
+                return reverseDir(traversalPath[-1])
+            else:
+                return exit
+            
 
 # returns the opposite direction than the one travelled
 def reverseDir(facing):
@@ -38,7 +42,7 @@ def reverseDir(facing):
         return 'w'
     if facing == 'w':
         return 'e'
-    print(facing)
+    print("\n call from reverse")
 
 # bfs
 def walkBack(current_room_id, graph):
@@ -88,25 +92,39 @@ visitedRooms = collections.deque()
 
 
 def travel(direction):
-    # travel into new room 
-    player.travel(direction)
-    # log it into traversal path
-    traversalPath.append(direction)
+    if direction is not None:
+        # travel into new room 
+        player.travel(direction)
+        # log it into traversal path
+        traversalPath.append(direction)
 
-
+def deadEnd(room_id, graph):
+    rooms_to_walk_back = walkBack(room_id, graph)
+    
+    directions_togo_back = rooms_to_direction(graph, rooms_to_walk_back)
+    
+    for direction in directions_togo_back:
+        # travel into new room 
+        player.travel(direction)
+        # log it into traversal path
+        traversalPath.append(direction)
 
 # while not all rooms are explored
-while len(mapGraph) < 54:
+while len(mapGraph) < 500:
     # add the room to list of visited rooms
     visitedRooms.append(player.currentRoom.id)
     # got to the first possible unexplored direction from 
     direction = generateDirection(mapGraph, player.currentRoom.id)
-    if direction is None:
-        #  walk back
-    print(direction)
+
+    while direction is None:
+        deadEnd(player.currentRoom.id, mapGraph)
+        direction = generateDirection(mapGraph, player.currentRoom.id)
+
     # save the current room we are in
     old_room = player.currentRoom.id
   
+    # print(traversalPath)
+    # print(f'direction: {direction}')
     # travel into new room
     travel(direction)
 
@@ -120,37 +138,11 @@ while len(mapGraph) < 54:
         # add dictionary to the mapgraph of current room
         mapGraph[player.currentRoom.id] = exitmap
 
-
     # replace unknown room value '?' to the appropriate room
     # set new room to get to the old room
     mapGraph[player.currentRoom.id][reverseDir(direction)] = old_room
     # set old room to get to current room
     mapGraph[old_room][direction] = player.currentRoom.id
-
-
-    exitToMove = None
-    #if room is a deadend
-    for exit in exitmap:
-        
-        if exitmap[exit] == '?':
-            exitToMove = exit
-            
-            break
-
-    # if there is a deadend
-    if exitToMove is None:
-        # walkback
-        rooms_to_walk_back = walkBack(player.currentRoom.id, mapGraph)
-        
-        directions_togo_back = rooms_to_direction(mapGraph, rooms_to_walk_back)
-        
-
-        for direction in directions_togo_back:
-            # travel into new room 
-            player.travel(direction)
-            
-            # log it into traversal path
-            traversalPath.append(direction)
 
    
 print(f'\n{mapGraph}')

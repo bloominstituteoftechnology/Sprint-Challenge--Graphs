@@ -1,2 +1,2 @@
-(f'******{exit}')
-        # print
+
+    # print(f'direction: {direction}')
