@@ -12,31 +12,32 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-# def bfs(currentRoom, graph):
-#     #create a queue
-#     q = deque()
-#     visited = []
-#     #path = [] #def use list since it needs to be ordered
-#     #queue entire path
-#     #enqueue starting vertex
-#     q.append(currentRoom)
-#     #while the queue is not empty
-#     while q: 
-#         #dequeue a vertex from the queue
-#         path = q.popleft()
-#         last_vertex = path[-1:]
-#         #if that vertex has not been visited
-#         if last_vertex not in visited:
-#             #mark it as visited and if is equal to target return that path
-#             if last_vertex == target:
-#                 return path
-#             visited.add(last_vertex)
-#             #enqueue all of its children
-#             for exit in graph[last_vertex]:
-#                 duplicate_path = list(path)
-#                 duplicate_path.append(graph[last_vertex][exit])
-#                 q.append(duplicate_path)
-#     return False
+def backtrack_to_unexplored(currentRoom, graph):
+    #create a queue
+    q = deque()
+    visited = []
+    #path = [] #def use list since it needs to be ordered
+    #queue entire path
+    #enqueue starting vertex
+    q.append([currentRoom])  #appending a list
+    #while the queue is not empty
+    while q: 
+        #dequeue a vertex from the queue
+        path = q.popleft()
+        room_id = path[-1]
+        #if that vertex has not been visited
+        if room_id not in visited:
+            #mark it as visited and if is equal to target return that path
+            for exit in graph[room_id]:
+                 if graph[room_id][exit] == "?":
+                    return path
+            visited.add(room_id)
+            #enqueue all of its children
+            for exit in graph[room_id]:
+                duplicate_path = list(path)
+                duplicate_path.append(graph[room_id][exit])
+                q.append(duplicate_path)
+    return False
 
 # FILL THIS IN
 traversalPath = []
@@ -60,7 +61,7 @@ while True:
     #cant have empty sequence so have to do null check
     if len(unexploredExits) > 0:
         #randomly choose an exit that has not already been explored
-        randomExit = random.choice(unexploredExits)
+        randomExit = unexploredExits[0]
         #taking this exit, we append it to our traversal path
         traversalPath.append(randomExit)
         #set previous room
@@ -71,7 +72,6 @@ while True:
         exitDictionary = {}
         for exit in player.currentRoom.getExits():
             exitDictionary[exit] = "?"
-        
         #this initializes to all rooms as "?" but we know the rooms we've already passed through
         #set previous room to the room player is currently in
         graph[previous_room_id][randomExit] = player.currentRoom.id
@@ -80,6 +80,21 @@ while True:
         graph[player.currentRoom.id] = exitDictionary
     else:
         #if reach room with no unexplored exits, need to backtrack
+        backtrack = backtrack_to_unexplored(player.currentRoom.id, graph)
+        shortest = []
+        currentRoom = backtrack.pop(0)
+        
+
+
+
+
+
+
+
+
+
+
+
         # previous_room = exitDictionary[inverse_directions].pop()
         # traversalPath.append.previous_room
         # player.travel.previous_room
@@ -94,19 +109,19 @@ while True:
 
 
 
-        backtrack = []
-        #new list in reverse rather than in place
-        for move in traversalPath[::-1]:  
-            #players moves backward to previous room ie inverse direction
-            player.travel(inverse_directions[move])
-            #add this move to the end of the list
-            backtrack.append(inverse_directions[move])
-            #traversalPath.pop()
-            #if there is an unexplored exit in current room add it to itinerary
-            if "?" in graph[player.currentRoom.id]:
-                for move in backtrack:
-                    itinerary.append(move)
-        break
+        # backtrack = []
+        # #new list in reverse rather than in place
+        # :  
+        #     #players moves backward to previous room ie inverse direction
+        #     player.travel(inverse_directions[move])
+        #     #add this move to the end of the list
+        #     backtrack.append(inverse_directions[move])
+        #     #traversalPath.pop()
+        #     #if there is an unexplored exit in current room add it to itinerary
+        #     if "?" in graph[player.currentRoom.id]:
+        #         for move in backtrack:
+        #             itinerary.append(move)
+        # break
 
 print(graph)
 print(itinerary)
