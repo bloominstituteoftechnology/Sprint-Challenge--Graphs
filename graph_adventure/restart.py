@@ -34,10 +34,8 @@ def __checkDirections(roomExits):
 roomStack = Stack()
 
 roomStack.push(player.currentRoom.id)
-# print(roomStack.stack)
 
 while roomStack.size() > 0:
-    # visited_rooms.add(player.currentRoom.id)
     roomExits = graph[roomStack.stack[-1]]
     # get the exits in the room
     unknownExits = __checkDirections(roomExits)
@@ -49,30 +47,27 @@ while roomStack.size() > 0:
         graph[enterFromRoom][firstExit] = player.currentRoom.id
         # create an empty dictionary to graph new traveled to room
         exitDict = {}
-        if player.currentRoom.id not in roomStack.stack:
+        if player.currentRoom.id in roomStack.stack:
+            graph[player.currentRoom.id][inverseKey[firstExit]] = enterFromRoom
+        else:
             for exit in player.currentRoom.getExits():
                 exitDict[exit] = '?'
             exitDict[inverseKey[firstExit]] = enterFromRoom
             graph[player.currentRoom.id] = exitDict
-        else:
-            graph[player.currentRoom.id][inverseKey[firstExit]] = enterFromRoom
         roomStack.push(player.currentRoom.id)
-        print(f'\n\n\n{graph}')
-        # print(player.currentRoom.id)
-        print(roomStack.stack)
-        print(traversalPath)
-        # break
+
     else:
         finishedRoom = roomStack.pop()
-        lastRoom = roomStack.stack[-1]
-        for route, room in graph[lastRoom].items():
-            if room == finishedRoom:
-                print(f'DEAD END!!!!!!! drop {finishedRoom}')
-                traversalPath.append(inverseKey[route])
-                player.travel(inverseKey[route])
+        if roomStack.size() > 0:
+            lastRoom = roomStack.stack[-1]
+            for route, room in graph[lastRoom].items():
+                if room == finishedRoom:
+                    traversalPath.append(inverseKey[route])
+                    player.travel(inverseKey[route])
+                    break
                 
-        # print(f'traversal ==== {traversalPath}')        
-        # pass
+print(graph)
+print(traversalPath)
 
 # TRAVERSAL TEST
 visited_rooms = set()
