@@ -13,8 +13,61 @@ world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
-traversalPath = ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'w', 'n', 's', 'e', 's', 'w', 'e', 's', 's', 's', 'w', 'n', 'n', 's', 'w', 'n', 'n', 'w', 'n', 'n', 'n', 'n', 'n', 's', 'w', 'n', 'n', 'e', 'n', 's', 'w', 's', 's', 's', 'n', 'e', 's', 's', 's', 'e', 'n', 'n', 'n', 'n', 'n', 'n', 's', 'e', 'n', 's', 'w', 's', 's', 's', 'e', 'n', 'n', 's', 's', 'e', 'e', 'n', 'n', 's', 's', 's', 's', 's', 's', 's', 's', 's', 'w', 'e', 'e', 'e', 'n', 'n', 'n', 'n', 'w', 'e', 's', 's', 's', 'e', 'n', 'n', 'n', 'n', 'n', 's', 'w', 'n', 'n', 'n', 's', 's', 's', 'w', 'e', 'e', 's', 'e', 'n', 'n', 'n', 'n', 'w', 'n', 'w', 'e', 's', 'e', 's', 'w', 'e', 's', 's', 's', 'w', 's', 'e', 'e', 'n', 'n', 'n', 'e', 'n', 'n', 'e', 'n', 'n', 'n', 's', 's', 'e', 'n', 's', 'w', 's', 'e', 'e', 'n', 's', 's', 'e', 'w', 'n', 'w', 'w', 'w', 's', 'w', 'n', 'n', 'n', 'n', 's', 'w', 'n', 's', 's', 'n', 'e', 's', 'e', 'n', 'n', 'n', 's', 's', 's', 'w', 's', 's', 'e', 'e', 's', 'e', 'n', 's', 's', 'e', 'w', 'n', 'w', 'n', 'w', 's', 'w', 's', 's', 'e', 'n', 'e', 's', 's', 'n', 'e', 'e', 'e', 'n', 'n', 'w', 'e', 'e', 'w', 's', 'e', 'e', 'e', 'w', 'w', 'w', 's', 'e', 's', 'n', 'e', 'w', 'w', 'w', 'w', 'w', 'n', 'w', 's', 'w', 's', 'e', 'w', 'w', 'w', 's', 'e', 'e', 'w', 'w', 's', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 'n', 'e', 'e', 'n', 'e', 'e', 'w', 'w', 's', 'w', 'w', 's', 'e', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 's', 'w', 'w', 'n', 'e', 'n', 'n', 's', 's', 'w', 'n', 'n', 'n', 'n', 'n', 'w', 'e', 'e', 'n', 'n', 's', 's', 'w', 'n', 'w', 'w', 'w', 's', 's', 'w', 's', 'w', 'n', 'n', 'w', 'e', 's', 's', 'w', 'n', 's', 'e', 'e', 'e', 's', 'w', 'e', 's', 'e', 's', 'e', 's', 's', 'e', 'e', 'w', 'w', 's', 'w', 'n', 'n', 's', 's', 'w', 'n', 'n', 'n', 'w', 'n', 's', 'e', 's', 's', 'w', 'n', 's', 'w', 'n', 'n', 'n', 'n', 'w', 'w', 'e', 'e', 's', 's', 's', 's', 'w', 'n', 'n', 'n', 's', 's', 'w', 'n', 'n', 's', 's', 'w', 'n', 'n', 's', 's', 'e', 'e', 's', 'e', 'e', 'e', 's', 'w', 'e', 'e', 'e', 'e', 'e', 'e', 'n', 's', 'e', 'n', 'e', 'w', 's', 'e', 'e', 'n', 'e', 'n', 'e', 'w', 's', 'e', 's', 'n', 'e', 'n', 'e', 'e', 'n', 'n', 's', 'e', 'n', 's', 'e', 'n', 's', 'w', 'w', 's', 's', 'n', 'e', 's', 'n', 'e', 's', 'n', 'w', 'w', 'w', 'w', 's', 'e', 'w', 'w', 'w', 'w', 's', 'w', 'w', 'w', 'w', 'w', 'w', 's', 's', 's', 's', 's', 'n', 'w', 's', 's', 's', 's', 'n', 'e', 'w', 'n', 'w', 'e', 'e', 'e', 's', 's', 's', 's', 'w', 'w', 'w', 'w', 'n', 'n', 'n', 'n', 'n', 'n', 'e', 'n', 'e', 'n', 'n', 'w', 's', 'w', 's', 'n', 'w', 's', 's', 's', 'w', 's', 'w', 's', 's', 's', 's', 's', 'n', 'n', 'n', 'n', 'w', 's', 's', 'n', 'w', 'e', 'n', 'w', 'e', 'e', 'n', 'w', 'e', 'e', 'n', 'e', 'n', 'w', 'e', 'n', 'w', 'e', 'n', 'w', 'n', 's', 'w', 'n', 's', 's', 's', 's', 'w', 'e', 'n', 'w', 'w', 's', 's', 'n', 'w', 's', 'w', 's', 'w', 'w', 'e', 'e', 'e', 's', 'n', 'w', 'n', 'w', 'w', 'e', 'e', 'e', 'n', 'w', 'w', 'e', 'e', 'e', 'n', 'w', 'w', 'w', 'e', 'e', 'e', 'e', 'e', 'n', 'w', 'n', 'w', 'e', 's', 'w', 'e', 'e', 'n', 'e', 'e', 'e', 'e', 'n', 'w', 'w', 'n', 'w', 'w', 'n', 's', 'w', 's', 'n', 'w', 'n', 'n', 's', 'e', 'w', 's', 's', 'w', 's', 's', 'w', 'w', 'e', 'e', 'n', 'w', 'w', 'e', 'e', 'n', 'w', 'e', 'e', 'n', 'w', 'n', 'n', 'n', 'n', 's', 'e', 'n', 's', 'w', 's', 'w', 'n', 'n', 'n', 'e', 'n', 'w', 'e', 's', 'e', 'w', 'w', 's', 's', 'w', 'n', 'n', 'n', 'n', 's', 's', 's', 's', 'w', 'n', 'n', 's', 's', 's', 'n', 'w', 'e', 'e', 'e', 's', 'w', 'e', 'e', 's', 'w', 'w', 'w', 'w', 'n', 'w', 'w', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'w', 'w', 's', 'w', 'w', 'e', 'e', 'n', 'w', 'w', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'w', 'w', 'w', 's', 's', 'w', 's', 's', 'n', 'w', 's', 's', 'w', 'e', 's', 'w', 's', 's', 's', 's', 'e', 's', 'n', 'w', 'n', 'w', 's', 'n', 'e', 'n', 'n', 'w', 's', 'n', 'e', 'n', 'w', 'e', 'e', 'e', 's', 's', 'e', 'w', 'n', 'n', 'w', 's', 's', 's', 'e', 'e', 'e', 'e', 'n', 'n', 'w', 's', 'n', 'e', 'n', 'n', 'e', 's', 's', 's', 's', 'e', 's', 'w', 's', 'n', 'w', 'e', 'e', 'n', 'w', 'n', 'n', 'n', 'e', 's', 's', 'n', 'e', 's', 's', 'n', 'n', 'w', 'n', 'w', 'n', 'w', 'w', 'w', 'n', 'n', 'e', 'n', 'n', 'e', 's', 's', 's', 'n', 'e', 's', 'n', 'w', 'n', 'e', 'e', 's', 's', 'e', 's', 's', 'n', 'w', 'e', 'n', 'w', 'n', 'n', 'e', 's', 'n', 'e', 's', 'n', 'e', 's', 's', 'w', 's', 's', 's', 'n', 'e', 's', 's', 'w', 'e', 'n', 'e', 's', 's', 'n', 'n', 'e', 's', 'n', 'w', 'w', 'n', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 's', 'n', 'e', 's', 's', 'e', 'w', 'n', 'e', 'w', 'n', 'w', 'w', 'w', 'w', 'n', 'e', 'n', 'e', 's', 'n', 'e', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'n', 'e', 's', 'e', 's', 'n', 'e', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 'w', 's', 'w', 'w', 'w', 'n', 'e', 'w', 'w', 'w', 'w', 'w', 'w', 'n', 'e', 'e', 'n', 'e', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 'n', 's', 's', 'e', 's', 'n', 'w', 'n', 'e', 'e', 'n', 'e', 'e', 'w', 'w', 's', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e']
+traversalPath = []
 
+graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+inverseKey = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+
+def __checkDirections(roomExits):
+    # create an empty list to save each rooms exits
+    unexplored = []
+    # check direction variable for a question mark
+    for direction in roomExits:
+        if roomExits[direction] == '?':
+            # save direction to a list needing to be explored
+            unexplored.append(direction)
+    if len(unexplored) > 0:
+        return unexplored
+    # else:
+    #     return None
+
+roomStack = Stack()
+
+roomStack.push(player.currentRoom.id)
+
+while roomStack.size() > 0:
+    roomExits = graph[roomStack.stack[-1]]
+    # get the exits in the room
+    unknownExits = __checkDirections(roomExits)
+    if unknownExits is not None:
+        firstExit = unknownExits[0]
+        enterFromRoom = player.currentRoom.id
+        traversalPath.append(firstExit)
+        player.travel(firstExit)
+        graph[enterFromRoom][firstExit] = player.currentRoom.id
+        # create an empty dictionary to graph new traveled to room
+        exitDict = {}
+        if player.currentRoom.id in roomStack.stack:
+            graph[player.currentRoom.id][inverseKey[firstExit]] = enterFromRoom
+        else:
+            for exit in player.currentRoom.getExits():
+                exitDict[exit] = '?'
+            exitDict[inverseKey[firstExit]] = enterFromRoom
+            graph[player.currentRoom.id] = exitDict
+        roomStack.push(player.currentRoom.id)
+
+    else:
+        finishedRoom = roomStack.pop()
+        if roomStack.size() > 0:
+            lastRoom = roomStack.stack[-1]
+            for route, room in graph[lastRoom].items():
+                if room == finishedRoom:
+                    traversalPath.append(inverseKey[route])
+                    player.travel(inverseKey[route])
+                    break
+                
+print(graph)
+print(traversalPath)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -35,11 +88,11 @@ else:
 # ######
 # UNCOMMENT TO WALK AROUND
 # ######
-player.currentRoom.printRoomDescription(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    else:
-        print("I did not understand that command.")
-        break
+# player.currentRoom.printRoomDescription(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     else:
+#         print("I did not understand that command.")
+#         break
