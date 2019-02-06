@@ -31,7 +31,7 @@ def backtrack_to_unexplored(currentRoom, graph):
             for exit in graph[room_id]:
                  if graph[room_id][exit] == "?":
                     return path
-            visited.add(room_id)
+            visited.append(room_id)
             #enqueue all of its children
             for exit in graph[room_id]:
                 duplicate_path = list(path)
@@ -44,9 +44,6 @@ traversalPath = []
 graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
 
 inverse_directions = {"n": "s", "s": "n", "e": "w", "w":"e"}
-
-#record of all moves made
-itinerary = []
 
 #need to loop through this
 while True:
@@ -80,11 +77,25 @@ while True:
         graph[player.currentRoom.id] = exitDictionary
     else:
         #if reach room with no unexplored exits, need to backtrack
+        #then go back to previous room until we get to one with an unexplored exit
+        #need bfs to get back b/c want to find nearest
+        #but cant use only id, need to translate into directions
         backtrack = backtrack_to_unexplored(player.currentRoom.id, graph)
         shortest = []
         currentRoom = backtrack.pop(0)
+        for questionable_room in backtrack:
+            # for direction in graph[currentRoom]:
+            #     if graph[currentRoom][direction] == questionable_room:
+            #         shortest.append(direction)
+            #         currentRoom = questionable_room
+            for direction in shortest:
+                traversalPath.append(direction)
+                player.travel(direction)
         
-
+        #change integers into cardinal directions
+        #for exits check each to direction to see if roomid is number looking for
+        #if get to question mark then you are done backtracking and should explore it
+        #stack of directions that you pop off until you get back to a room with an unexplored exit
 
 
 
@@ -99,15 +110,12 @@ while True:
         # traversalPath.append.previous_room
         # player.travel.previous_room
         
-
         # queue = deque()
         # queue.append(list(inverse_directions[traversalPath[-1]]))
         # dequeued = queue.popleft()
         # last_move = dequeued[-1]
         # for previous_rooom in dequeued:
         #     player.travel(previous_room)
-
-
 
         # backtrack = []
         # #new list in reverse rather than in place
@@ -125,16 +133,6 @@ while True:
 
 print(graph)
 print(itinerary)
-
-        #then go back to previous room until we get to one with an unexplored exit
-        #need bfs to get back b/c want to find nearest
-        #but cant use only id, need to translate into directions
-        #change integers into cardinal directions
-        #for exits check each to direction to see if roomid is number looking for
-        #if get to question mark then you are done backtracking and should explore it
-        #can make a 'move queue' when queue is empty call method get next move
-        #or have a stack of directions that you pop off until you get back to a room with an unexplored exit
-
 
 # TRAVERSAL TEST
 visited_rooms = set()
