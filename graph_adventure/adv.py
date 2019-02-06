@@ -15,7 +15,8 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 # player.currentRoom.id, player.currentRoom.getExits() and player.travel(direction)
 
-# Start by writing an algorithm that picks a random unexplored direction from the player's current room, travels and logs that direction, then loops. This should cause your player to walk a depth-first traversal. When you reach a dead-end (i.e. a room with no unexplored paths), walk back to the nearest room that does contain an unexplored path. If all paths have been explored, you're done!
+# Start by writing an algorithm that picks a random unexplored direction from the player's current room, travels and logs that direction, then loops. This should cause your player to walk a depth-first traversal. 
+# When you reach a dead-end (i.e. a room with no unexplored paths), walk back to the nearest room that does contain an unexplored path. If all paths have been explored, you're done!
 
 
 traversalPath = []
@@ -25,10 +26,11 @@ def generateDirection(graph, current_room):
     for exit in graph[current_room]:
         if graph[current_room][exit] == '?':
             return exit
+        
 
 # returns the opposite direction than the one travelled
 def reverseDir(facing):
-    if facing == "n":
+    if facing == 'n':
         return 's'
     if facing == 's':
         return 'n'
@@ -36,6 +38,47 @@ def reverseDir(facing):
         return 'w'
     if facing == 'w':
         return 'e'
+    print(facing)
+
+# bfs
+def walkBack(current_room_id, graph):
+    visited = set()
+    queue = []
+    queue.append([current_room_id])
+    # print(queue)
+    while queue:
+        # print(f'new queue: {queue}')
+        path = queue.pop(0)
+        # print(f'path {path}')
+        room = path[-1]
+
+        if room not in visited:
+            visited.add(room)
+            for exit in graph[room]:
+                if graph[room][exit] == "?":
+                    return path
+                else:
+                    new_path = list(path)
+                    new_path.append(graph[room][exit])
+                    queue.append(new_path)
+
+    print("no path")
+    return list()
+
+def rooms_to_direction(graph, roomlist):
+    cur = roomlist[0]
+    directions = []
+    for room in roomlist[1:]:
+        for exit in mapGraph[cur]:
+            # print(player.currentRoom.id)
+            # print(mapGraph[cur])
+            if mapGraph[cur][exit] == room:
+                directions.append(exit)
+                cur = room
+                break
+    
+    return directions
+
 
 # initalize graph of the world map
 mapGraph = {0: {'n': '?', 's': '?', 'e': '?','w':'?'}}
@@ -43,22 +86,29 @@ mapGraph = {0: {'n': '?', 's': '?', 'e': '?','w':'?'}}
 # initialize list of visited Rooms
 visitedRooms = collections.deque()
 
-# while not all rooms are explored
-while len(mapGraph) < 11:
 
-    # add the room to list of visited rooms
-    visitedRooms.append(player.currentRoom.id)
-
-    # got to the first possible unexplored direction from 
-    direction = generateDirection(mapGraph, player.currentRoom.id)
-
-    # save the current room we are in
-    old_room = player.currentRoom.id
-  
+def travel(direction):
     # travel into new room 
     player.travel(direction)
     # log it into traversal path
     traversalPath.append(direction)
+
+
+
+# while not all rooms are explored
+while len(mapGraph) < 54:
+    # add the room to list of visited rooms
+    visitedRooms.append(player.currentRoom.id)
+    # got to the first possible unexplored direction from 
+    direction = generateDirection(mapGraph, player.currentRoom.id)
+    if direction is None:
+        #  walk back
+    print(direction)
+    # save the current room we are in
+    old_room = player.currentRoom.id
+  
+    # travel into new room
+    travel(direction)
 
     # if the new room is not in the graph of the map
     if player.currentRoom.id not in mapGraph:
@@ -71,22 +121,40 @@ while len(mapGraph) < 11:
         mapGraph[player.currentRoom.id] = exitmap
 
 
-# replace unknown room value '?' to the appropriate room
+    # replace unknown room value '?' to the appropriate room
     # set new room to get to the old room
     mapGraph[player.currentRoom.id][reverseDir(direction)] = old_room
     # set old room to get to current room
     mapGraph[old_room][direction] = player.currentRoom.id
+
+
+    exitToMove = None
+    #if room is a deadend
+    for exit in exitmap:
         
-print(mapGraph)
+        if exitmap[exit] == '?':
+            exitToMove = exit
+            
+            break
+
+    # if there is a deadend
+    if exitToMove is None:
+        # walkback
+        rooms_to_walk_back = walkBack(player.currentRoom.id, mapGraph)
+        
+        directions_togo_back = rooms_to_direction(mapGraph, rooms_to_walk_back)
+        
+
+        for direction in directions_togo_back:
+            # travel into new room 
+            player.travel(direction)
+            
+            # log it into traversal path
+            traversalPath.append(direction)
+
+   
+print(f'\n{mapGraph}')
 print(f'\n{traversalPath}')
-        
-    # else:
-    #     print("walked back")
-    #     direction = walkBack(direction)
-    #     player.travel(direction)
-    #     traversalPath.append(direction)
-        
-        # generateDirection()
 
 
 
@@ -116,3 +184,4 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+# ['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'w', 'n']
