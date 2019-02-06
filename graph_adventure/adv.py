@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from collections import deque
 
 import random
 
@@ -11,26 +12,27 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-
-# FILL THIS IN
-traversalPath = ['s', 'n']
-
+seed = {'0': {'n': '?', 'e': '?', 'w': '?', 's': '?'}}
+inverse_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
+traversalPath = []
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
 for move in traversalPath:
+    print('MOVE', move)
     player.travel(move)
-    visited_rooms.add(player.currentRoom)
+    print('TRAVEL', player.travel)
+    visited_rooms.add(player.currentRoom.id)
+    print('VISITED', visited_rooms)
 
 if len(visited_rooms) == 500:
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
-
-
+    print(f"TESTS Failed: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 
 #######
 # UNCOMMENT TO WALK AROUND
