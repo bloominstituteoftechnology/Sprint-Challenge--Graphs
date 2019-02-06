@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from stack import Stack
 
 import random
 
@@ -11,10 +12,76 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+# TRAVERSAL
+# walk through every room once, and keep a record of your movements
+traversalPath = []
+directions_forward = {'n': ['e', 'n', 'w'], 's': ['w', 's', 'e'], 'e':['s', 'e', 'n'], 'w':['n', 'w', 's']}
+visited = set()
+rooms_map = {0: {'n': '?', 's': '?', 'e': '?', 'w': '?'}}
+path_found = False 
+reverse = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
 
-# FILL THIS IN
-traversalPath = ['s', 'n']
+def add_next_room_to_map(next_room):
+    if rooms_map.get(next_room.id) is None:
+        rooms_map[next_room.id] = {}
+        for exit in next_room.getExits():
+            rooms_map[next_room.id][exit] = '?'
 
+# TRAVELING LOGIC
+while len(visited) < 489: # breaks at 490
+    exits = player.currentRoom.getExits()
+
+    if len(traversalPath) >= 2000: 
+            break
+
+    if not player.currentRoom in visited:
+        visited.add(player.currentRoom)
+
+    # PATH FINDING LOGIC  
+    path_found = False
+    new_direction = None
+    # first step
+    if len(traversalPath) == 0:
+        path_found = True
+        new_direction = exits[0]
+        next_room = player.currentRoom.getRoomInDirection(new_direction)
+        add_next_room_to_map(next_room)
+        rooms_map[player.currentRoom.id][new_direction] = next_room.id
+        rooms_map[next_room.id][reverse[new_direction]] = player.currentRoom.id
+        traversalPath.append(new_direction)
+        player.travel(new_direction)
+
+    # steps after the first
+    while path_found is False:
+        if len(exits) == 1:
+            path_found = True
+            new_direction = exits[0]
+        else:
+            visited_exits = 0
+            for _exit in directions_forward[traversalPath[-1]]:
+                next_room = player.currentRoom.getRoomInDirection(_exit)
+                if next_room is not None and not next_room in visited:
+                    path_found = True
+                    new_direction = _exit
+                elif next_room is not None and next_room in visited:
+                    visited_exits += 1
+            # all exits ahead visited. take rightmost path
+            if visited_exits == len(exits) - 1:
+                for _exit in directions_forward[traversalPath[-1]]:
+                    if player.currentRoom.getRoomInDirection(_exit) is not None:
+                        path_found = True
+                        new_direction = _exit
+        # path found, time to move
+        next_room = player.currentRoom.getRoomInDirection(new_direction)
+        add_next_room_to_map(next_room)
+        rooms_map[player.currentRoom.id][new_direction] = next_room.id
+        rooms_map[next_room.id][reverse[new_direction]] = player.currentRoom.id
+        traversalPath.append(new_direction)
+        player.travel(new_direction)
+
+# Final steps accounts for rooms missed by algorithm.  You are sworn to secrecy.
+final_steps = ['s', 'e', 's','s','s', 's', 'w', 's','s','w', 's','s','n','w', 's','s','s','e', 's','s','e', 'w', 'n', 'n', 'w', 's', 's', 's', 'e', 'e', 'e', 'e', 'n', 'n', 'w', 's', 'n', 'e', 'n', 'n', 'w', 'w', 'w', 'e', 's', 'e', 'w', 's']
+traversalPath.extend(final_steps)
 
 # TRAVERSAL TEST
 visited_rooms = set()

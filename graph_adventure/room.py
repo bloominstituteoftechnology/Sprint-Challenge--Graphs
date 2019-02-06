@@ -19,10 +19,10 @@ class Room:
         exits = []
         if self.n_to is not None:
             exits.append("n")
-        if self.s_to is not None:
-            exits.append("s")
         if self.w_to is not None:
             exits.append("w")
+        if self.s_to is not None:
+            exits.append("s")
         if self.e_to is not None:
             exits.append("e")
         return exits
@@ -57,3 +57,5 @@ class Room:
             return None
     def getCoords(self):
         return [self.x, self.y]
+    def __getitem__(self, key):
+        pass
