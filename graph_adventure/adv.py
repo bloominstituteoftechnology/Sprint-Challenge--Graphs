@@ -11,36 +11,56 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Simon", world.startingRoom)
 
-
-# FILL THIS IN
 traversalPath = []
-graph = {}
+stack = []
+unique_rooms_visited = {0: {"n": "?", "e": "?", "s": "?", "w": "?"}}
 
-unique_rooms_visited = {}
 
-def explore_in(direction,):
-    player.travel(direction)
-    traversalPath.append(direction)
+def opposite_direction(direc):
+    if direc == "n":
+        return "s"
+    elif direc == "s":
+        return "n"
+    elif direc == "e":
+        return "w"
+    elif direc == "w":
+        return "e"
 
-    new_room = player.currentRoom.id
+print(player.currentRoom.id)
 
 
 while len(unique_rooms_visited) < 500:
-    current_room = player.currentRoom.id
+    current_room = player.currentRoom
+    current_exits = unique_rooms_visited[current_room.id]
 
-    if current_room not in unique_rooms_visited:
-        exits = {}
+    new_exits = []
+    for exit in current_room.getExits():
+        if current_exits[exit] == '?':
+            new_exits.append(exit)
 
-        for exit in player.currentRoom.getExits():
-            exits[exit] = "?"
+    if new_exits:
+        last_room = player.currentRoom.id
+        direction = new_exits[0]
+        player.travel(direction)
+        traversalPath.append(direction)
+        stack.append(direction)
+        new_room = player.currentRoom.id
+        if new_room not in unique_rooms_visited:
+            new_room_exits = {}
+            for exit in player.currentRoom.getExits():
+                new_room_exits[exit] = '?'
+            unique_rooms_visited[new_room] = new_room_exits
 
-            unique_rooms_visited[current_room] = exits
-
-    exits = unique_rooms_visited[current_room]
-
-    if "n" in exits and exits["n"] == "?":
-        explore_in("n")
-
+        back_direction = opposite_direction(direction)
+        print(back_direction)
+        unique_rooms_visited[last_room][direction] = new_room
+        unique_rooms_visited[new_room][back_direction] = last_room
+    else:
+        if stack:
+            last_direction = stack.pop()
+            back_direction = opposite_direction(last_direction)
+            player.travel(back_direction)
+            traversalPath.append(back_direction)
 
 
 # TRAVERSAL TEST
