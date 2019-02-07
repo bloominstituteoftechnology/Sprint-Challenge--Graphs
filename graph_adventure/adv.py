@@ -17,53 +17,110 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
-#starting node _______
-#start = player.currentRoom.id
-#edges of starting node ___________
-#player.currentRoom.getExits() 
-#moving to a neighbor ____________
-#player.travel(direction)
 
 # FILL THIS IN
+# path for player to move in
 traversalPath = []
 
-graph = {0: {'n': '?', 's': '?', 'e':'?'}}
+# graph structure tracking player, setting default to question mark
+graph = {0: {'n': '?', 's': '?', 'e':'?', 'w':'?'}}
 
 inverse_directions = {"n":"s", "s":"n", "e":"w", "w":"e"}
 
+#function to move in a reverse direction 
+def reverse_travel(direction):
+    if direction == 'e':
+        return 'w'
+    if direction == 'w':
+        return 'e'
+    if direction == 's':
+        return 'n'
+    if direction == 'n':
+        return 's'
 
+reverse = []
 
-while True:
-    
-    currentRoomExits = graph[player.currentRoom.id]
+while len(graph) < 500:
+    exits = graph[player.currentRoom.id]
     unexploredExits = []
-    print(traversalPath)
-    for direction in currentRoomExits:
-        if currentRoomExits[direction] == "?":
+    #player in room and asks - which exits are available to explore? 
+  
+
+    for direction in exits:
+        if exits[direction] == "?":
             unexploredExits.append(direction)
+ 
+    #player decides to randomly choose an exit and then takes it  
     if len(unexploredExits) > 0:
         randomExit = random.choice(unexploredExits)
         traversalPath.append(randomExit)
+        #after traveling, the current room will then be the previous room 
         previous_room_id = player.currentRoom.id
         player.travel(randomExit)
+
         exitDictionary = {}
+
         for exit in player.currentRoom.getExits():
             exitDictionary[exit] = "?"
+        #from the room I'm standing in now, add an exit from the previous room 
+        #...going the direction I took, to this room that I'm in now 
         graph[previous_room_id][randomExit] = player.currentRoom.id
+        #get an edge(path) of the graph from the room I'm in now (same as above) to the room the I was in before, going in the reverse direction
         exitDictionary[inverse_directions[randomExit]]=previous_room_id
-        graph[player.currentRoom.id]=exitDictionary
+        #add the inverted edge(path) to the graph
+        graph[player.currentRoom.id]= exitDictionary
+
+        #directions = list(graph[player.currentRoom.id])
+
     else: 
-        #what do we do when we reach a room with no unexplored??
-        # make walkout directions 
-            # 1st - inverse current traversal path directions 
-            # 2nd - reverse current traversal path order 
-        # append walkout directions to traversal path
+        # we traversed depth first to an ending point
+        # have reached a point where there are no unknown exits = 0
+
+        # (mark the current room as previous room, so it can be removed from options for player movement later)
+        previous_room_id = player.currentRoom.id
+
+        # move player back by one room 
+        move = deque(player.currentRoom.getExits())
+        print("move", move)
+        print("move from", player.currentRoom.id)
+        player.travel(move[0])
+        move.pop
+        print("moved to", player.currentRoom.id)
+        print('previous', previous_room_id)
         
-      
+        
+        #remove exit to previous room since because all exits in previous room have been explored.
+        exits_now = graph[player.currentRoom.id]
+        exits_update = {}
+        print('exits now', exits_now)
+        
+        for direction in exits_now:
+            if exits_now[direction] != previous_room_id:
+                exits_update[direction] = exits_now[direction]
+                
+        #if any exits in the updated exit list have a ?, add it to unexplored exits 
+        print('exits update', exits_update)
+        for direction in exits_update:
+            if exits_update[direction] == "?":
+                unexploredExits.append(direction)
+
+        print("unexplored", unexploredExits)
+
+        #ideally - restart if statement above 
+    
+
+    
         break
+    
 
 
-
+    #else:  
+        #move player to previous room 
+        #block off last exit used 
+        #random choose next exit 
+        #repeat 
+        #break
+    
 
 # TRAVERSAL TEST
 
@@ -92,3 +149,34 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+'''
+
+0: {'n': '?', 's': '?', 'e':'?', 'w':'?'}
+while True:
+    currentRoomExits = graph[player.currentRoom.id]
+    unexploredExits = []
+
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == "?":
+            unexploredExits.append(direction)
+
+    if len(unexploredExits) > 0:
+        randomExit = random.choice(unexploredExits)
+        traversalPath.append(randomExit)
+        previous_room_id = player.currentRoom.id
+        player.travel(randomExit)
+
+        exitDictionary = {}
+
+        for exit in player.currentRoom.getExits():
+            exitDictionary[exit] = "?"
+   
+        graph[previous_room_id][randomExit] = player.currentRoom.id
+        exitDictionary[inverse_directions[randomExit]]=previous_room_id
+        graph[player.currentRoom.id]=exitDictionary
+
+    else:
+
+       
+        break'''
