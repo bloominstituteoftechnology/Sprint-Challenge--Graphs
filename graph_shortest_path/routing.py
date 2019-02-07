@@ -45,8 +45,7 @@ class Graph:
         for vertex in self.vertices:
             if vertex.value == value:
                 return vertex
-            else:
-                return None
+        return None
 
 
 
@@ -58,17 +57,18 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        start_vertex = self.find_vertex(start)
-        if start_vertex is not None:
-            queue=[start]
-            visited=[]
-            while queue:
-                current_vertex = queue.pop()
-                for edge in current_vertex.edges:
-                    if edge.destination not in visited:
-                        queue.append(edge.destination)
-                        visited.append(edge.destination)
+        queue = []
+        queue.append(start)
+        while len(queue) > 0:
+            curr_vertex = queue.pop(0)
 
+            if curr_vertex.color == "white":
+                curr_vertex.color = "black"
+                for edge in curr_vertex.edges:
+                    child = edge.destination
+                    if child.color == "white":
+                        child.parent = curr_vertex
+                        queue.append(child)
 
     def output_route(self, start):
         """
@@ -78,16 +78,28 @@ class Graph:
         @param {Vertex} start: The starting Vertex to follow and print
         """
         # !!!! IMPLEMENT ME
-        print(start.value)
-        while start.parent is not None:
-            print(start.parent.value)
+        # print(start.value)
+        # while start.value is not None:
+        #     print(start.parent.value)
+    
+        output = ""
+        while start is not None:
+            output += start.value
+
+            if start.parent is not None:
+                output += "-->"
+            start = start.parent
+        print(output)
+        
 
     def route(self, start, end):
         # BFS to build the parent reference tree
         self.bfs(end)
         # print the route from the start Vertex
         self.output_route(start)
+       
 
+        
 
 # Helper function to add bidirectional edges
 def add_edge(start, end):
@@ -145,3 +157,6 @@ if __name__ == '__main__':
 
     # Show the route from one Vertex to the other
     graph.route(hostAVert, hostBVert)
+
+# graph.route("HostA", "HostD")
+# print(graph.route("HostA", "HostD"))
