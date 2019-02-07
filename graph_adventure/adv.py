@@ -26,6 +26,21 @@ class Vertex:
         self.color = 'black' #black for visited, red for not visited
 
 
+class Queue:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+
+
 
 class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
@@ -37,46 +52,59 @@ class Graph:
 
     def breadth_first_s(self, starting_room, target):
         q = []
-        visited = []
-        print("target: ",target)
-        q.append(starting_room)
-        print("Queue: ", q)
+        visited_exits = list()
 
+        q.append([starting_room])
+        print("starting_room: ",q)
         while len(q) > 0:
-            path = q.pop()
-            print("Path: ", path)
-            if type(path) == int:
-                node = path
+            deq = q.pop(0)
+            print("deq: ", deq)
+            if type(deq) == int:
+                v = deq
             else:
-                node = path[-1]
-            print("node: ", node)
-            # print("self.vert node: ",self.vertices[node])
-            print("get exits: ",player.currentRoom.getExits())
-            if node == target:
-                for direction in self.vertices[player.currentRoom.id]:
-                    if self.vertices[player.currentRoom.id][direction] == '?':
+                v = deq[-1]
+            print(v)
 
-                        player.travel(direction)
-            if node not in visited:
-                if node is not '?':
+            if v not in visited_exits:
+                visited_exits.append(v)
+                if v == target:
+                    print(deq)
+                    for idx, room in enumerate(deq):
+                        if room == '?':
+                            return deq
+                        if idx + 1 < len(deq):
+                            next_room = deq[idx + 1]
+                            print("room: ", room)
+                            print("next room: ",next_room)
+                            print("room traverse: ", self.vertices[room])
+                            if self.vertices[room]['n'] == next_room:
+                                pass
+                            if self.vertices[room]['e'] == next_room:
+                                pass
+                            if self.vertices[room]['s'] == next_room:
+                                pass
+                            if self.vertices[room]['w'] == next_room:
+                                pass
 
-                    visited.append(node)
+                for child in self.vertices[v]:
+                    new_path = list(deq)
+                    if child == 'n':
+                        new_path.append(self.vertices[v][child])
+                        q.append(new_path)
+                    if child == 'e':
+                        new_path.append(self.vertices[v][child])
+                        q.append(new_path)
+                    if child == 'w':
+                        new_path.append(self.vertices[v][child])
+                        q.append(new_path)
+                    if child == 's':
+                        new_path.append(self.vertices[v][child])
+                        q.append(new_path)
+        return []
 
-                for i in player.currentRoom.getExits():
-                    # if target in self.vertices[node]:
-                    #     print("Dup_Path: ", dup_path)
-                    #     return dup_path
-                    if self.vertices[node][i] not in visited:
-                        if type(path) == int:
-                            dup_path = [path]
-                            print("type int: ")
-                            player.travel(i)
-                        else:
-                            print("type list: ")
-                            dup_path = list(path)
-                        dup_path.append(self.vertices[node][i])
-                        q.append(dup_path)
-        return None
+
+
+
 
     def add_vertex(self, vertex):
         self.vertices[vertex] = {"n": "?", "s": "?", "w": "?", "e": "?"}
@@ -172,19 +200,6 @@ print_graph(0)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 def breadth_first_traversal(starting_room): # roomGraph[starting_room][1]
     q = []
     visited = list()
@@ -193,22 +208,13 @@ def breadth_first_traversal(starting_room): # roomGraph[starting_room][1]
     print(q)
 
     while len(q) > 0:
-        deq = q.pop()
-        visited.append(deq)
+        deq = q.pop(0)
         print("visited: ", visited)
 
         for i in roomGraph[deq][1]:
             if roomGraph[0][1][i] not in visited:
                 q.append(roomGraph[0][1][i])
-        # for i in roomGraph[deq][1]['s']:
-        #     if i not in visited:
-        #         q.append(i)
-        # for i in roomGraph[deq][1]['e']:
-        #     if i not in visited:
-        #         q.append(i)
-        # for i in roomGraph[deq][1]['w']:
-        #     if i not in visited:
-        #         q.append(i)
+                visited.append(deq)
 
     print("Traverse End: ", visited)
     return visited
