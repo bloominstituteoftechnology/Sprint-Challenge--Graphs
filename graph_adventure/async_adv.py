@@ -12,10 +12,41 @@ roomGraph={496: [(5, 23), {'e': 457}], 457: [(6, 23), {'e': 361, 'w': 496}], 449
 world.loadGraph(roomGraph)
 player = Player("Name", world.startingRoom)
 
+
+visited = {}
+for room in roomGraph:
+  #0 index is coord so we need 1 index
+  #put room key into roomGraph
+  visited[room] = {}
+  for direction in roomGraph[room][1]:
+    visited[room][direction] = "?"
+#print(visited[2]["s"])
+
+def makeDirections(currentRoom, path, graph):
+  #path will be bfs path, graph is visited
+  directions = []
+  tempRoom = currentRoom
+  #need to iterate over graph
+  #already in currentRoom so skip it and start range at 1
+  for i in range(1, len(path)):
+    next_room = path[i]
+    for direction in graph[tempRoom]:
+      if graph[tempRoom][direction] == next_room:
+        directions.append(direction)
+        break
+    #end of second loop
+    tempRoom = visited[tempRoom][directions[-1]]
+  #end of first for loop
+  return directions
+
+
+# When we want to check for a question mark use Visited  
+# when we want to update the currentRoom use RoomGraph 
+
 def backtrack_to_unexplored(currentRoom, graph):
     #create a queue
     q = deque()
-    visited = []
+    seen = set()
     #path = [] #def use list since it needs to be ordered
     #queue entire path
     #enqueue starting vertex
@@ -26,111 +57,133 @@ def backtrack_to_unexplored(currentRoom, graph):
         path = q.popleft()
         room_id = path[-1]
         #if that vertex has not been visited
-        if room_id not in visited:
+        if room_id not in seen:
             #mark it as visited and if is equal to target return that path
             for exit in graph[room_id]:
                  if graph[room_id][exit] == "?":
                     return path
-            visited.append(room_id)
+            seen.add(room_id)
             #enqueue all of its children
             for exit in graph[room_id]:
                 duplicate_path = list(path)
                 duplicate_path.append(graph[room_id][exit])
                 q.append(duplicate_path)
-    return False
+    return []
+#end of bfs function
 
-# FILL THIS IN
-traversalPath = []
-graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+opposites = {'n': 's', 'w': 'e', 'e': 'w', 's': 'n'}
+def directionChoice (currentRoom):
+  """
+  return None if the room doesn't have a path untraveled 
+  return direction if there is a path untravelled. 
+  """
+  #keep track of direction choice.  
+  if 's' in visited[currentRoom] and visited[currentRoom]['s'] == '?':
+    return 's'
+  # 'n'
+  elif 'n' in visited[currentRoom] and visited[currentRoom]['n'] == '?':
+    return 'n'
+  elif 'e' in visited[currentRoom] and visited[currentRoom]['e'] == '?':
+    return 'e'
+  elif 'w' in visited[currentRoom] and  visited[currentRoom]['w'] == '?':
+    return 'w'
+  else: 
+    return None 
+  #end of direction Choice 
 
-inverse_directions = {"n": "s", "s": "n", "e": "w", "w":"e"}
+def mainLoop ():
 
-#need to loop through this
-while True:
-    currentRoomExits = graph[player.currentRoom.id]
+  currentRoom = 0
+  traversalPath = []
+  #use if need to take bfs path
+  takePath = []
+  #use to keep track of rooms to know when to stop loop
+  rooms = set()
+  while True:
+    #add to rooms
+    rooms.add(currentRoom)
+    print(f"Currently in Room {currentRoom}")
+    if len(takePath) == 0:
+      getDirection = directionChoice(currentRoom)
+      if getDirection is None:
+        # do some some bfs 
+        numberPath = backtrack_to_unexplored(currentRoom, visited)
+        print(numberPath)
+        #getting numberpath back in 102 and we make directions out of that path
+        takePath = makeDirections(currentRoom, numberPath, visited)
+        print(takePath)
+      else: 
+        traversalPath.append(getDirection)
+        next_room = roomGraph[currentRoom][1][getDirection]
+        previousDirection = opposites[getDirection]
+        #variables above 
 
-    unexploredExits = []
-    #direction is key in dictionary
-    for direction in currentRoomExits:
-        #if exit has question mark it is still unexplored, so it should be added
-        if currentRoomExits[direction] == "?":
-            unexploredExits.append(direction)  #bracket v parens???!?!!??
-    #cant have empty sequence so have to do null check
-    if len(unexploredExits) > 0:
-        #randomly choose an exit that has not already been explored
-        randomExit = unexploredExits[0]
-        #taking this exit, we append it to our traversal path
-        traversalPath.append(randomExit)
-        #set previous room
-        previous_room_id = player.currentRoom.id
-        #then player actually moves that direction
-        player.travel(randomExit)
-        #have to add new room to graph
-        exitDictionary = {}
-        for exit in player.currentRoom.getExits():
-            exitDictionary[exit] = "?"
-        #this initializes to all rooms as "?" but we know the rooms we've already passed through
-        #set previous room to the room player is currently in
-        graph[previous_room_id][randomExit] = player.currentRoom.id
-        #we can look at the inverse directions to know where the previous room is
-        exitDictionary[inverse_directions[randomExit]] = previous_room_id  #bracket placement?
-        graph[player.currentRoom.id] = exitDictionary
+        visited[currentRoom][getDirection] = next_room 
+        visited[next_room][previousDirection]= currentRoom 
+        #updated visited before you change rooms
+
+        #Now change the room 
+        currentRoom = next_room
     else:
-        #if reach room with no unexplored exits, need to backtrack
-        #then go back to previous room until we get to one with an unexplored exit
-        #need bfs to get back b/c want to find nearest
-        #but cant use only id, need to translate into directions
-        backtrack = backtrack_to_unexplored(player.currentRoom.id, graph)
-        shortest = []
-        currentRoom = backtrack.pop(0)
-        for questionable_room in backtrack:
-            for direction in graph[currentRoom]:
-                pass 
-            for direction in shortest:
-                traversalPath.append(direction)
-                player.travel(direction)
+      getDirection = takePath.pop(0)
+      traversalPath.append(getDirection)
+      next_room = roomGraph[currentRoom][1][getDirection]
+      previousDirection = opposites[getDirection]
+      #take current room, get direction is current direction to next room
+      visited[currentRoom][getDirection] = next_room
+      #assigning next room moving to as current room
+      visited[next_room][previousDirection] = currentRoom
+      currentRoom = next_room
+
+    if len(rooms) == 499:
+      print(rooms)
+      print(f"Only took you {len(traversalPath)} moves")
+      print(f"Here is your moves {traversalPath}")
+      break
+#end of main function
+mainLoop()
+
+print(visited)
         
-        #change integers into cardinal directions
-        #for exits check each to direction to see if roomid is number looking for
-        #if get to question mark then you are done backtracking and should explore it
-        #stack of directions that you pop off until you get back to a room with an unexplored exit
 
-
-
-
-
-
-
-
-
-
-        # previous_room = exitDictionary[inverse_directions].pop()
-        # traversalPath.append.previous_room
-        # player.travel.previous_room
         
-        # queue = deque()
-        # queue.append(list(inverse_directions[traversalPath[-1]]))
-        # dequeued = queue.popleft()
-        # last_move = dequeued[-1]
-        # for previous_rooom in dequeued:
-        #     player.travel(previous_room)
 
-        # backtrack = []
-        # #new list in reverse rather than in place
-        # :  
-        #     #players moves backward to previous room ie inverse direction
-        #     player.travel(inverse_directions[move])
-        #     #add this move to the end of the list
-        #     backtrack.append(inverse_directions[move])
-        #     #traversalPath.pop()
-        #     #if there is an unexplored exit in current room add it to itinerary
-        #     if "?" in graph[player.currentRoom.id]:
-        #         for move in backtrack:
-        #             itinerary.append(move)
-        # break
 
-print(graph)
-print(itinerary)
+
+
+
+
+
+
+# #keep track of visited rooms
+# visited = {}
+# #keep track of all traversalPath
+# traversalPath = []
+# #keep track of path back
+# backtrack = []
+# #keep track of unexplored exits
+# unexploredExits = []
+# #build own map
+# graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+# #dictionary of inverse directions for backtracking
+# inverse_directions = {"n": "s", "s": "n", "e": "w", "w":"e"}
+
+# #continue looping until end
+# while len(list(visited)) < 499:
+#     #if room not visited add current room to visited rooms
+#     if player.currentRoom.id not in visited:
+#         visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+#     #if room has unexplore paths add it to unexploredExits
+#     elif player.currentRoom.id in unexploredExits:
+#         unexploredExits.append(player.currentRoom.id)
+
+# #as player visits room add exits of current room to visited rooms dictionary
+# visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+
+ 
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -141,7 +194,7 @@ for move in traversalPath:
     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == 500:
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+    print(f"TESTS PASSED: {len(traversalPath)} traversalPath, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{500 - len(visited_rooms)} unvisited rooms")
@@ -158,38 +211,3 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
-
-# Algorithm DFS(graph G, Vertex v) 
-# // Recursive algorithm
-
-# for all edges e in G.incidentEdges(v) do
-# if edge e is unexplored then
-# w = G.opposite(v, e) 
-# if vertex w is unexplored then 
-#     label e as discovery edge 
-#     recursively call DFS(G, w) 
-# else 
-#     label e a a back edge
-
-#brady solution lecture https://youtu.be/wiEbw8ib2vc
-
-# def dft_visit_all_rooms(self, starting_vertex):
-#     visited = {}
-#     backtrack = []
-#     move_counter = []
-#     while len(list(visited)) < 499:
-#         #while there is a current path forward
-#         #add unvisited to visited
-#         if player.currentRoom.id not in visited:
-
-#     #if you reach a dead end, back track until there is an unvisited path forward
-#     while
-
-    #rooms are stacked, backtracking is recursion
-    #if already visited, mark as visited
-    # visited.append(starting_vertex)
-
-    # for vertex in self.blah(starting_vertex):
-    #     if vertex is not in visited:
-    #         self.dft_visit_all_rooms(vertex, visited)
-        
