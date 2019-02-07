@@ -11,11 +11,14 @@ class World:
     def loadGraph(self, roomGraph):
         numRooms = len(roomGraph)
         rooms = [None] * numRooms
+        gridSize = 1
         for i in range(0, numRooms):
             x = roomGraph[i][0][0]
+            gridSize = max(gridSize, roomGraph[i][0][0], roomGraph[i][0][1])
             self.rooms[i] = Room(f"Room {i}", f"({roomGraph[i][0][0]},{roomGraph[i][0][1]})",i, roomGraph[i][0][0], roomGraph[i][0][1])
-        gridSize = math.ceil((numRooms * 3) ** 0.5 + 1)
         self.roomGrid = []
+        gridSize += 1
+        self.gridSize = gridSize
         for i in range(0, gridSize):
             self.roomGrid.append([None] * gridSize)
         for roomID in roomGraph:
