@@ -201,8 +201,9 @@ class Queue:
 
 ###########################
     
-# basic graph testing to see whether the class is doing what it's supposed to
+# print tests
 
 print(player.currentRoom.id)
 print(traversalPath)
 print(reversePath)
+print(visited)
