@@ -76,15 +76,37 @@ class Graph:
                             next_room = deq[idx + 1]
                             print("room: ", room)
                             print("next room: ",next_room)
-                            print("room traverse: ", self.vertices[room])
-                            if self.vertices[room]['n'] == next_room:
-                                pass
-                            if self.vertices[room]['e'] == next_room:
-                                pass
-                            if self.vertices[room]['s'] == next_room:
-                                pass
-                            if self.vertices[room]['w'] == next_room:
-                                pass
+                            print("current room: ", player.currentRoom.id)
+
+                            if next_room == '?':
+                                print("unexplored room: ",room)
+                                return next_room
+
+                            if 'n' in self.vertices[room]:
+                                if self.vertices[room]['n'] == next_room:
+                                    player.travel('n')
+                                    traversalPath.append('n')
+                                    print("Traveled North")
+
+                            if 'e' in self.vertices[room]:
+                                if self.vertices[room]['e'] == next_room:
+                                    player.travel('e')
+                                    traversalPath.append('e')
+                                    print("Traveled East")
+
+                            if 's' in self.vertices[room]:
+                                if self.vertices[room]['s'] == next_room:
+                                    player.travel('s')
+                                    traversalPath.append('s')
+                                    print("Traveled South")
+
+                            if 'w' in self.vertices[room]:
+                                if self.vertices[room]['w'] == next_room:
+                                    player.travel('w')
+                                    traversalPath.append('w')
+                                    print("Traveled West")
+
+
 
                 for child in self.vertices[v]:
                     new_path = list(deq)
@@ -170,9 +192,11 @@ class Graph:
                 self.vertices[player.currentRoom.id] = exitDictionary
                 print("unexploredExits: ",unexploredExits)
                 print("current room id: ",player.currentRoom.id)
+                print("traversalPath Before bfs: ",traversalPath)
             else:
                 print("ID: ",player.currentRoom.id)
                 print(self.breadth_first_s(player.currentRoom.id, '?'))
+                print("traversalPath After bfs: ",traversalPath)
                 break
 
         return traversalPath
