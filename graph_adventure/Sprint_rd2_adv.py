@@ -25,17 +25,31 @@ def routeFinder(currentRoom, path, graph):
     directions = []
     for i in range(1, len(path)):
         next_room = path[i]
-        for direction in roomGraph[currentRoom]:
+        for direction in graph[currentRoom]:
             if graph[currentRoom][direction] == next_room:
                 directions.append(direction)
                 break
         currentRoom = visited[currentRoom][directions[-1]]
     return directions 
 
-def backtracker():
+def backtracker(currentRoom, graph):
     q = deque()
-    visited = set()
-    pass
+    been_there = set()
+    q.append([currentRoom])
+    while q: 
+        path = q.popleft()
+        room_id = path[-1]
+        if room_id not in been_there:
+            for exit in graph[room_id]:
+                if graph[room_id][exit] == "?":
+                    return path
+            been_there.add(room_id)
+            #enqueue all neighbors
+            for exit in graph[room_id]:
+                duplicate_path = list(path)
+                duplicate_path.append(graph[room_id][exit])
+                q.append(duplicate_path)
+    return []
 
 def directionChoice(currentRoom):
     if 'n' in visited[currentRoom] and visited[currentRoom]['n'] == "?":
@@ -44,7 +58,7 @@ def directionChoice(currentRoom):
         return 's'
     if 'e' in visited[currentRoom] and visited[currentRoom]['e'] == "?":
         return 'e'
-    if 'w' in visited[currentRoom] and visited[currentRoom]['n'] == "?":
+    if 'w' in visited[currentRoom] and visited[currentRoom]['w'] == "?":
         return 'w'
 
 inverse_directions = {'n': 's', 'w': 'e', 'e': 'w', 's': 'n'}
@@ -55,9 +69,40 @@ def exploreRooms():
     rooms = set()
     while True:
         rooms.add(currentRoom)
-        if len(rooms) > 0: 
+        #print(f"You are currently in room {currentRoom}")
+        if len(backtrack) == 0: 
             getDirection = directionChoice(currentRoom)
-            if direction is None:
+            if getDirection is None:
+                number_path = backtracker(currentRoom, visited)
+                #print(number_path)
+                backtrack = routeFinder(currentRoom, number_path, visited)
+                #print(backtrack)
+            else: 
+                traversalPath.append(getDirection)
+                next_room = roomGraph[currentRoom][1][getDirection]
+                prev_direction = inverse_directions[getDirection]
+                #update visited before changing rooms
+                visited[currentRoom][getDirection] = next_room
+                visited[next_room][prev_direction] = currentRoom
+                #then change rooms
+                currentRoom = next_room
+        else: 
+            getDirection = backtrack.pop(0)
+            traversalPath.append(getDirection)
+            next_room = roomGraph[currentRoom][1][getDirection]
+            prev_direction = inverse_directions[getDirection]
+            #take current room, get direction is current direction to next room
+            visited[currentRoom][getDirection] = next_room
+            #assigning next room moving to as current room
+            visited[next_room][prev_direction] = currentRoom
+            currentRoom = next_room
+        
+        if len(rooms) == 500: 
+            print(f"It took you {len(traversalPath)} moves to traverse all rooms")
+            print(f"This is your route {traversalPath}")
+            break
+exploreRooms()
+
 
 
 
