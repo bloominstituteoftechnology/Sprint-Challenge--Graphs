@@ -48,6 +48,17 @@ class Queue():
 
 # FILL THIS IN
 traversalPath = []
+graph = {0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}}
+rooms = {}
+rooms[player.currentRoom.id] = player.currentRoom.getExits()
+
+visited = []
+stack = Stack()
+
+
+    
+       
+
 
 
 
