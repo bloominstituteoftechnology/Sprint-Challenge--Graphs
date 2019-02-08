@@ -92,6 +92,28 @@ class Queue:
     def length(self):
         return self.size
 
+traversal = []
+reversePath = []
+visited = {}
+
+def reverse_direction(direction):
+    if direction is 'n':
+        return 's'
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
+
+
+
+
+
+
+
+
+
 ########## OLDER CODE ##########
 # adding a Graph class that will do general room tracking: rooms, adjacent rooms, exits, etc.
 
