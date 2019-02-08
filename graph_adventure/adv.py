@@ -116,7 +116,13 @@ add reversePath rooms to total traversal list as well
 
 visited[player.currentRoom.id] = player.currentRoom.getExits()
 
-
+while len(visited) < 499:
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+    while len(visited[player.currentRoom.id]) == 0:
+        reversed = reversePath.pop()
+        traversal.append(reversed)
+        player.travel(reversed)
 
 
 
