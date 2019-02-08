@@ -23,8 +23,43 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = [] # setting this up as empty to begin
+reversePath = []
+visited = {}
 
+def reverse_direction(direction):
+    if direction is 'n':
+        return 's'
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
 
+"""
+player will be started in one room
+we run the check against 499 rooms rather than 500 as a result
+rooms are added to the visited list once this occurs
+in the event of a dead end, we use reversePath to make our way back
+add reversePath rooms to total traversal list as well
+"""
+
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+while len(visited) < 499:
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(reversePath[-1])
+    while len(visited[player.currentRoom.id]) == 0:
+        reversed = reversePath.pop()
+        traversalPath.append(reversed)
+        player.travel(reversed)
+
+    move = visited[player.currentRoom.id].pop(0)
+    traversalPath.append(move)
+    reversePath.append(reverse_direction(move))
+    player.travel(move)
+    
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
@@ -91,43 +126,6 @@ class Queue:
     
     def length(self):
         return self.size
-
-traversal = []
-reversePath = []
-visited = {}
-
-def reverse_direction(direction):
-    if direction is 'n':
-        return 's'
-    elif direction is 's':
-        return 'n'
-    elif direction is 'e':
-        return 'w'
-    elif direction is 'w':
-        return 'e'
-
-"""
-player will be started in one room
-we run the check against 499 rooms rather than 500 as a result
-rooms are added to the visited list once this occurs
-in the event of a dead end, we use reversePath to make our way back
-add reversePath rooms to total traversal list as well
-"""
-
-visited[player.currentRoom.id] = player.currentRoom.getExits()
-
-while len(visited) < 499:
-    if player.currentRoom.id not in visited:
-        visited[player.currentRoom.id] = player.currentRoom.getExits()
-        visited[player.currentRoom.id].remove(reverse[-1])
-    while len(visited[player.currentRoom.id]) == 0:
-        reversed = reversePath.pop()
-        traversal.append(reversed)
-        player.travel(reversed)
-
-
-
-
 
 ########## OLDER CODE ##########
 # adding a Graph class that will do general room tracking: rooms, adjacent rooms, exits, etc.
