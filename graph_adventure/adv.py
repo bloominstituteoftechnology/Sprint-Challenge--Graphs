@@ -19,6 +19,7 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+# initial commit
 
 # FILL THIS IN
 traversalPath = ['n', 's']
