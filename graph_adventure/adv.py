@@ -91,3 +91,34 @@ class Queue:
     
     def length(self):
         return self.size
+
+# adding a Graph class that will do general room tracking: rooms, adjacent rooms, exits, etc.
+
+class Graph:
+    def __init__(self):
+        self.rooms = []
+        self.adjacentRooms = []
+    
+    def addRoom(self, roomID, possibleExits):
+        self.rooms.append(roomID)
+        self.adjacentRooms[roomID] = {}
+        exits = {}
+
+        for exit in possibleExits:
+            exits[exit] = '?'
+        self.adjacentRooms[roomID] = exits
+
+    def addAdjacentRoom(self, roomID, nextRoom, direction):
+        self.adjacentRooms[roomID][direction] = nextRoom
+    
+    # the travel() method will use stack/queue classes to track the rooms visited and the path
+    def travel(self, start):
+        stack = Stack()
+        queue = Queue
+        visited = set()
+        path = []
+
+        stack.push(start)
+        while len(stack.storage) > 0:
+            pass
+    
