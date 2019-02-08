@@ -97,7 +97,7 @@ class Queue:
 class Graph:
     def __init__(self):
         self.rooms = []
-        self.adjacentRooms = []
+        self.adjacentRooms = {}
     
     def addRoom(self, roomID, possibleExits):
         self.rooms.append(roomID)
@@ -122,3 +122,12 @@ class Graph:
         while len(stack.storage) > 0:
             pass
     
+# basic graph testing to see whether the class is doing what it's supposed to
+graph = Graph()
+print(player.currentRoom.id)
+
+graph.addRoom(player.currentRoom.id, player.currentRoom.getExits())
+print(graph.adjacentRooms)
+
+graph.travel(player.currentRoom.id)
+print(graph.adjacentRooms)
