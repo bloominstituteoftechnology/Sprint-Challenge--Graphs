@@ -1,4 +1,6 @@
-
+from random import random
+from random import shuffle
+import math
 
 class User:
     def __init__(self, name):
@@ -45,10 +47,19 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
-
         # Add users
-
+        for i in range(0, numUsers):
+            self.addUser(i)
         # Create friendships
+        possible_friendships=[] # Create array to hold friendships
+
+        #create friendship sets where user1_id is less than user2_id
+        # Call addFriendship() with those sets passed as arguments
+        # the number of times addFriendship will need to be called will equal
+            # numUsers * avgFriendships/2
+
+
+
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,6 +72,8 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        #Implemnet Bfs 
+        # Keep track of path for each friend 
         return visited
 
 
