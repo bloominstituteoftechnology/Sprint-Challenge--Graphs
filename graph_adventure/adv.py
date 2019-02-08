@@ -81,13 +81,14 @@ class Graph:
                             if next_room == '?':
                                 print("unexplored room: ",room)
 
-                                return next_room
+                                return room
 
                             if 'n' in self.vertices[room]:
                                 if self.vertices[room]['n'] == next_room:
                                     player.travel('n')
 
                                     traversalPath.append('n')
+                                    # traversalPath.pop()
                                     print("Traveled North")
 
                             if 'e' in self.vertices[room]:
@@ -95,19 +96,20 @@ class Graph:
                                     player.travel('e')
 
                                     traversalPath.append('e')
+                                    # traversalPath.pop()
                                     print("Traveled East")
 
                             if 's' in self.vertices[room]:
                                 if self.vertices[room]['s'] == next_room:
                                     player.travel('s')
-
+                                    # traversalPath.pop()
                                     traversalPath.append('s')
                                     print("Traveled South")
 
                             if 'w' in self.vertices[room]:
                                 if self.vertices[room]['w'] == next_room:
                                     player.travel('w')
-
+                                    # traversalPath.pop()
                                     traversalPath.append('w')
                                     print("Traveled West")
 
@@ -186,6 +188,7 @@ class Graph:
                     unexploredExits.append(direction)
             if len(unexploredExits) > 0:
                 randomExit = random.choice(unexploredExits)
+
                 traversalPath.append(randomExit)
                 print("randomExit: ",randomExit)
                 previous_room_id = player.currentRoom.id
@@ -196,16 +199,17 @@ class Graph:
                 self.vertices[previous_room_id][randomExit] = player.currentRoom.id
                 exitDictionary[inverse_directions[randomExit]] = previous_room_id
                 self.vertices[player.currentRoom.id] = exitDictionary
+                print("Exit dictionary: ", exitDictionary)
                 print("unexploredExits: ",unexploredExits)
                 print("current room id: ",player.currentRoom.id)
                 print("traversalPath Before bfs: ",traversalPath)
-
             else:
                 print("ID: ",player.currentRoom.id)
-                print(self.breadth_first_s(player.currentRoom.id, '?'))
+                # print(self.breadth_first_s(player.currentRoom.id, '?'))
+                unexploredExits.append(self.breadth_first_s(player.currentRoom.id, '?'))
                 print("traversalPath After bfs: ",traversalPath)
                 print(len(traversalPath))
-                
+
                 if len(self.vertices) == 500:
                     print(len(traversalPath))
                     break
