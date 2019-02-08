@@ -117,10 +117,23 @@ class Graph:
         queue = Queue
         visited = set()
         path = []
+        previous = None
 
         stack.push(start)
         while len(stack.storage) > 0:
-            pass
+            direction = None
+            room = stack.pop()
+            visited.add(room)
+            exits = player.currentRoom.getExits()
+            if len(exits) < 3:
+                for exit in exits:
+                    if exit != previous:
+                        direction = exit
+                        break
+            else:
+                direction = exits[random.randint(0, len(exits) - 1)]
+            print(direction)
+            print(room)
     
 # basic graph testing to see whether the class is doing what it's supposed to
 graph = Graph()
