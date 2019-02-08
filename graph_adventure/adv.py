@@ -21,7 +21,12 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+def fill_traversal():
+    visited = {}
+    # this sets current room in visited to {0: {'n':'?' }etc}
+    visited[player.currentRoom.id] = player.currentRoom.getExits()
+
 
 
 # TRAVERSAL TEST
