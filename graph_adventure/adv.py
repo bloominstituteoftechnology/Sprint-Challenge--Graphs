@@ -22,7 +22,7 @@ player = Player("Name", world.startingRoom)
 # initial commit
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = [] # setting this up as empty to begin
 
 
 # TRAVERSAL TEST
@@ -51,3 +51,24 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+# adding Queue and Stack classes for use with searches and traversals
+
+class Stack:
+    def __init__(self):
+        self.storage = []
+        self.size = 0
+
+    def push(self, value):
+        self.size += 1
+        self.storage.append(value)
+
+    def pop(self):
+        if len(self.storage) > 0:
+            self.size -= 1
+            return self.storage.pop()
+        else:
+            return None
+    
+    def length(self):
+        return self.size
