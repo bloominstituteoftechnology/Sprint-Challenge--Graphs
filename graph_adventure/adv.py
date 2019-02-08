@@ -106,7 +106,15 @@ def reverse_direction(direction):
     elif direction is 'w':
         return 'e'
 
+"""
+player will be started in one room
+we run the check against 499 rooms rather than 500 as a result
+rooms are added to the visited list once this occurs
+in the event of a dead end, we use reversePath to make our way back
+add reversePath rooms to total traversal list as well
+"""
 
+visited[player.currentRoom.id] = player.currentRoom.getExits()
 
 
 
@@ -189,11 +197,6 @@ def reverse_direction(direction):
 ###########################
     
 # basic graph testing to see whether the class is doing what it's supposed to
-graph = Graph()
+
 print(player.currentRoom.id)
 
-graph.addRoom(player.currentRoom.id, player.currentRoom.getExits())
-print(graph.adjacentRooms)
-
-graph.travel(player.currentRoom.id)
-print(graph.adjacentRooms)
