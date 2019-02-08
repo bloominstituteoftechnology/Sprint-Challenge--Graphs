@@ -59,7 +59,7 @@ while len(visited) < 499:
     traversalPath.append(move)
     reversePath.append(reverse_direction(move))
     player.travel(move)
-    
+
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
@@ -204,4 +204,5 @@ class Queue:
 # basic graph testing to see whether the class is doing what it's supposed to
 
 print(player.currentRoom.id)
-
+print(traversalPath)
+print(reversePath)
