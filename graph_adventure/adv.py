@@ -123,9 +123,10 @@ class Graph:
         x = getattr(self, attr)
         return x
 
-        
+
     # the travel() method will use stack/queue classes to track the rooms visited and the path
     def travel(self, start):
+        traversal = []
         stack = Stack()
         queue = Queue
         visited = set()
@@ -138,16 +139,29 @@ class Graph:
             room = stack.pop()
             visited.add(room)
             exits = player.currentRoom.getExits()
-            if len(exits) < 3:
+            if len(exits) == 1:
+                newPath = []
+                for room in path:
+                    player.travel(room)
+                    newPath.append(room)
+                    print(room)
+                    if player.currentRoom.getExits() > 2:
+                        traversal.append(newPath)
+                        return
+            elif len(exits) < 3:
                 for exit in exits:
                     if exit != previous:
                         direction = exit
                         break
             else:
-                direction = exits[random.randint(0, len(exits) - 1)]
-            print(direction)
-            print(room)
-            break
+                while True:
+                    direction = exits[random.randint(0, len(exits) - 1)]
+                    if self.adjacentRooms[room][direction] != '?':
+                        return
+                print(direction)
+                print(room)
+                print(traversal)
+            return traversal
     
 # basic graph testing to see whether the class is doing what it's supposed to
 graph = Graph()
