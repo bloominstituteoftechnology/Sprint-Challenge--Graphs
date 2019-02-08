@@ -98,6 +98,10 @@ class Graph:
     def __init__(self):
         self.rooms = []
         self.adjacentRooms = {}
+        self.oppositeN = 's'
+        self.oppositeS = 'n'
+        self.oppositeE = 'w'
+        self.oppositeW = 'e'
     
     def addRoom(self, roomID, possibleExits):
         self.rooms.append(roomID)
@@ -110,7 +114,16 @@ class Graph:
 
     def addAdjacentRoom(self, roomID, nextRoom, direction):
         self.adjacentRooms[roomID][direction] = nextRoom
+        reverse = self.reverseDirection(direction)
+        self.adjacentRooms[nextRoom][reverse] = roomID
     
+    def reverseDirection(self, direction):
+        direction = direction.upper()
+        attr = 'opp' + direction
+        x = getattr(self, attr)
+        return x
+
+        
     # the travel() method will use stack/queue classes to track the rooms visited and the path
     def travel(self, start):
         stack = Stack()
@@ -134,6 +147,7 @@ class Graph:
                 direction = exits[random.randint(0, len(exits) - 1)]
             print(direction)
             print(room)
+            break
     
 # basic graph testing to see whether the class is doing what it's supposed to
 graph = Graph()
