@@ -80,29 +80,34 @@ class Graph:
 
                             if next_room == '?':
                                 print("unexplored room: ",room)
+
                                 return next_room
 
                             if 'n' in self.vertices[room]:
                                 if self.vertices[room]['n'] == next_room:
                                     player.travel('n')
+
                                     traversalPath.append('n')
                                     print("Traveled North")
 
                             if 'e' in self.vertices[room]:
                                 if self.vertices[room]['e'] == next_room:
                                     player.travel('e')
+
                                     traversalPath.append('e')
                                     print("Traveled East")
 
                             if 's' in self.vertices[room]:
                                 if self.vertices[room]['s'] == next_room:
                                     player.travel('s')
+
                                     traversalPath.append('s')
                                     print("Traveled South")
 
                             if 'w' in self.vertices[room]:
                                 if self.vertices[room]['w'] == next_room:
                                     player.travel('w')
+
                                     traversalPath.append('w')
                                     print("Traveled West")
 
@@ -171,6 +176,7 @@ class Graph:
         inverse_directions = {"n": "s", "s": "n", "w": "e", "e": "w"}
         while True:
             print(self.vertices)
+            print(len(self.vertices))
             currentRoomExits = self.vertices[player.currentRoom.id]
             print("currentRoomExits: ",currentRoomExits)
             unexploredExits = []
@@ -193,12 +199,16 @@ class Graph:
                 print("unexploredExits: ",unexploredExits)
                 print("current room id: ",player.currentRoom.id)
                 print("traversalPath Before bfs: ",traversalPath)
+
             else:
                 print("ID: ",player.currentRoom.id)
                 print(self.breadth_first_s(player.currentRoom.id, '?'))
                 print("traversalPath After bfs: ",traversalPath)
-                break
-
+                print(len(traversalPath))
+                
+                if len(self.vertices) == 500:
+                    print(len(traversalPath))
+                    break
         return traversalPath
 
 
