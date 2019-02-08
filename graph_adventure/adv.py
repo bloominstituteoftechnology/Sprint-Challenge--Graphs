@@ -22,10 +22,43 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = []
+def oppositeDirection(direction):
+    # This function literally just reverses whatever direction you put into it
+    if direction is 'n':
+        return 's'
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
 def fill_traversal():
     visited = {}
     # this sets current room in visited to {0: {'n':'?' }etc}
     visited[player.currentRoom.id] = player.currentRoom.getExits()
+    # Checked will save the variables for back tracking later (uses the oppositeDirection function)
+    checked = []
+    returned_list = []
+    # Goes through the list until it hits 500
+    while len(list(visited)) < 499:
+        # Puts the current room in visited if it's not already
+        if player.currentRoom.id not in visited:
+            # Adds to visited dict with attributes
+            visited[player.currentRoom.id] = player.currentRoom.getExits()
+        # Will reverse the path once we hit the end of current path
+        while len(visited[player.currentRoom.id]) is 0 and len(checked) > 0:
+            # uses count to back track
+            prev_node = checked.pop()
+            returned_list.append(prev_node)
+            player.travel(prev_node)
+
+
+        step = visited[player.currentRoom.id].pop(0)
+        checked.append(oppositeDirection(step))
+        returned_list.append(step)
+        player.travel(step)
+    return returned_list
+traversalPath = fill_traversal()
 
 
 
