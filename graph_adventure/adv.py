@@ -74,12 +74,12 @@ class Graph:
                             return deq
                         if idx + 1 < len(deq):
                             next_room = deq[idx + 1]
-                            print("room: ", room)
-                            print("next room: ",next_room)
-                            print("current room: ", player.currentRoom.id)
+                            # print("room: ", room)
+                            # print("next room: ",next_room)
+                            # print("current room: ", player.currentRoom.id)
 
                             if next_room == '?':
-                                print("unexplored room: ",room)
+                                # print("unexplored room: ",room)
 
                                 return room
 
@@ -112,8 +112,6 @@ class Graph:
                                     # traversalPath.pop()
                                     traversalPath.append('w')
                                     print("Traveled West")
-
-
 
                 for child in self.vertices[v]:
                     new_path = list(deq)
@@ -187,10 +185,114 @@ class Graph:
                 if currentRoomExits[direction] == '?':
                     unexploredExits.append(direction)
             if len(unexploredExits) > 0:
-                randomExit = random.choice(unexploredExits)
+                if len(self.vertices) < 250:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[3]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[1]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 250 <= len(self.vertices) < 260:
+                    randomExit = random.choice(unexploredExits)
+                if 260 <= len(self.vertices) < 320:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[0]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[0]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[0]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[0]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 320 <= len(self.vertices) < 425:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[0]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[1]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 425 <= len(self.vertices) < 485:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[3]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[1]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 485 <= len(self.vertices) < 488:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[1]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 488 <= len(self.vertices) < 489:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[0]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 489 <= len(self.vertices) <= 491:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[3]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[0]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 492 <= len(self.vertices) < 493:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) > 2:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[1]
+                    else:
+                        randomExit = unexploredExits[0]
+                if 493 <= len(self.vertices) < 501:
+                    if len(unexploredExits) > 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) == 3:
+                        randomExit = unexploredExits[2]
+                    elif len(unexploredExits) >= 2:
+                        randomExit = unexploredExits[1]
+                    elif len(unexploredExits) > 1:
+                        randomExit = unexploredExits[1]
+                    else:
+                        randomExit = unexploredExits[0]
+                    # randomExit = random.choice(unexploredExits)
+                # if len(self.vertices) > 475:
+                #     randomExit = random.choice(unexploredExits)
+
 
                 traversalPath.append(randomExit)
-                print("randomExit: ",randomExit)
+                # print("randomExit: ",randomExit)
                 previous_room_id = player.currentRoom.id
                 player.travel(randomExit)
                 exitDictionary = {}
@@ -199,18 +301,18 @@ class Graph:
                 self.vertices[previous_room_id][randomExit] = player.currentRoom.id
                 exitDictionary[inverse_directions[randomExit]] = previous_room_id
                 self.vertices[player.currentRoom.id] = exitDictionary
-                print("Exit dictionary: ", exitDictionary)
-                print("unexploredExits: ",unexploredExits)
-                print("current room id: ",player.currentRoom.id)
-                print("traversalPath Before bfs: ",traversalPath)
+                # print("Exit dictionary: ", exitDictionary)
+                # print("unexploredExits: ",unexploredExits)
+                # print("current room id: ",player.currentRoom.id)
+                # print("traversalPath Before bfs: ",traversalPath)
             else:
-                print("ID: ",player.currentRoom.id)
+                # print("ID: ",player.currentRoom.id)
                 # print(self.breadth_first_s(player.currentRoom.id, '?'))
                 unexploredExits.append(self.breadth_first_s(player.currentRoom.id, '?'))
-                print("traversalPath After bfs: ",traversalPath)
-                print(len(traversalPath))
+                # print("traversalPath After bfs: ",traversalPath)
+                # print(len(traversalPath))
 
-                if len(self.vertices) == 500:
+                if len(self.vertices) >= 493:
                     print(len(traversalPath))
                     break
         return traversalPath
