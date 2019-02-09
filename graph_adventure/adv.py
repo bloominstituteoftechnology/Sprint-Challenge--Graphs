@@ -7,6 +7,102 @@ import random
 
 # Load world
 world = World()
+class Node:
+  def __init__(self, value=None, next_node=None):
+    self.value = value
+    self.next_node = next_node
+
+  def get_value(self):
+    return self.value
+
+  def get_next(self):
+    return self.next_node
+
+  def set_next(self, new_next):
+    self.next_node = new_next
+
+class LinkedList:
+  def __init__(self):
+    self.head = None
+    self.tail = None
+
+  def add_to_tail(self, value):
+    new_tail = Node(value)
+    if self.tail is not None:
+      self.tail.set_next(new_tail)
+    else:
+      self.head = new_tail
+    self.tail = new_tail
+
+  def add_to_head(self, value):
+    new_head = Node(value)
+    if self.head is not None:
+      new_head.next_node = self.head
+    if self.tail is None:
+      self.tail = new_head
+    self.head = new_head
+
+  def remove_head(self):
+    if self.head is not None:
+      cur_head = self.head.get_value()
+      new_head = self.head.get_next()
+      if new_head is not None:
+        self.head = new_head
+      else:
+        self.tail = None
+        self.head = None
+      return cur_head
+
+  def remove_tail(self):
+    node = self.head
+    node_after = node.next_node.next_node
+    while node is not None:
+      print(node_after.value)
+      if node_after == None:
+        node.next_node == None
+        self.tail = node
+        break
+      else:
+        node = node.next_node
+
+  def contains(self, value):
+    node = self.head
+    while node is not None:
+      if node.value == value:
+        return True
+      if node.next_node == None:
+        return False
+      else:
+        node = node.next_node
+    return False
+
+  def get_max(self):
+    node = self.head
+    maximum = float("-inf")
+    while node is not None:
+      if node.value > maximum:
+        maximum = node.value
+      node = node.next_node
+    return None if maximum == float("-inf") else maximum
+class Queue:
+  def __init__(self):
+    self.size = 0
+    self.storage = LinkedList()
+
+  def enqueue(self, item):
+    self.storage.add_to_tail(item)
+    self.size += 1
+    return item
+  
+  def dequeue(self):
+    if self.size == 0:
+      return None
+    else:
+      self.size -= 1
+      return self.storage.remove_head()   
+
+  def len(self):
+    return self.size
 
 # You may uncomment the smaller graphs for development and testing purposes.
 
@@ -25,31 +121,26 @@ player = Player("Name", world.startingRoom)
 traversalPath = []
 graph = {}
 
-def BFS(start, end):
-        d = deque()
-        visited = []
-        d.append(start)
-        if end in graph[start]:
-            visited.append(start)
-            visited.append(end)
-            return visited
-        while d:
-            vertex = d.popleft()
-            if "?" in list(graph[vertex].values()):
-                visited.append(vertex)
-                return visited
-            if vertex == end:
-                visited.append(vertex)
-                return visited
-            if end in visited:
-                return visited
-            if vertex not in visited:
-                visited.append(vertex)
-                next_nodes = graph[vertex]
-                for k, v in next_nodes.items():
-                    if v == "?":
-                        continue
-                    d.append(v)
+def bfs_path(starting_vertex_id):
+        q = Queue()
+        q.enqueue([starting_vertex_id])
+        visited = set()
+        while q.len() > 0:
+            path = q.dequeue()
+            v = path[-1]
+            print("v", v)
+            print("path", path)
+            if "?" in list(graph[v].values()):
+                new_path = list(path)
+                new_path.append(v)
+                return new_path
+            if v not in visited:
+                visited.add(v)
+                for k, v in graph[v].items():
+                    new_path = list(path)
+                    new_path.append(v)
+                    q.enqueue(new_path)
+        return None
 
 def populateGraph(roomId):
     exits = player.currentRoom.getExits()
@@ -95,10 +186,7 @@ def playerTravel():
             if "?" not in list(graph[player.currentRoom.id].values()):
                 for k, v in graph.items():
                     if "?" in v.values():
-                        target = k
-                        print(player.currentRoom.id, target)
-                        print(len(visited_rooms))
-                        path = BFS(player.currentRoom.id, target)
+                        path = bfs_path(player.currentRoom.id)
                         print(path)
                         for i in path:
                             for k, v in graph[player.currentRoom.id].items():
@@ -111,74 +199,7 @@ def playerTravel():
                                     lastRoom = player.currentRoom
                                     if "?" in list(graph[player.currentRoom.id].values()):
                                         break
-                            
-                
-
-                    
-
-                # queue = list(visited_rooms)
-                # ignore = []
-                # print("queue", queue)
-                # for k, v in graph[player.currentRoom.id].items():
-                #     print(player.currentRoom.id, graph[player.currentRoom.id], k)
-                #     print(queue)
-                #     print("ignore list",ignore)
-                #     if v in ignore:
-                        
-                #         continue
-                #     if queue[-1] == player.currentRoom.id:
-                #         ignore.append(queue[-1])
-                #         queue.pop()
-                #         print("ignore", queue)
-                #     if v == queue[-1]:
-                #         ignore.append(queue[-1])
-                #         queue.pop()
-                #         print("ignore", queue)
-                #         traversalPath += k
-                #         player.travel(k)
-                        
-
-                # reversedPath = []
-                # for i in traversalPath:
-                #     reversedPath.append(i)
-                # reversedPath.reverse()
-                # for idx, d in enumerate(reversedPath):
-                #     if d == "n":
-                #         reversedPath[idx] = "s"
-                #         continue
-                #     if d == "s":
-                #         reversedPath[idx] = "n"
-                #         continue
-                #     if d == "e":
-                #         reversedPath[idx] = "w"
-                #         continue
-                #     if d == "w":
-                #         reversedPath[idx] = "e"
-                #         continue
-                # for idx, i in enumerate(reversedPath):
-                #     print(player.currentRoom.id, graph[player.currentRoom.id], i)
-                #     player.travel(i)
-                #     if "?" in list(graph[player.currentRoom.id].values()):
-                        
-                #         if idx == 0:
-                #             print("rp", reversedPath[0])
-                #             traversalPath += reversedPath[0]
-                #         else:
-                #             print("rp", reversedPath[0:idx+1])
-                #             traversalPath += (reversedPath[0:idx+1])
-                #         break
-                break
-
-        # visited_rooms.add(player.currentRoom.id)
-        # populateGraph(player.currentRoom)
-        # updateGraph(lastRoom.id, player.currentRoom.id, move)
-        # lastRoom = player.currentRoom
-        
-        
-
 playerTravel()
-    
-
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -193,8 +214,6 @@ if len(visited_rooms) == len(roomGraph):
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
-
-
 
 #######
 # UNCOMMENT TO WALK AROUND
