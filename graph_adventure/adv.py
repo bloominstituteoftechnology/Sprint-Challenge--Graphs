@@ -36,44 +36,58 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 # traversalPath = ['n', 'n', 's', 's', 'e', 'e', 'w', 'w', 'w', 'w', 'e', 'e', 's', 's']
 traversalPath = []
-exits = {}
+# exits = {}
+graph = {0: {'n': '?', 'e': '?', 's': '?', 'w': '?'}}
 
-for room in roomGraph:
-    exits[room] = {}
-    for direction in roomGraph[room][1]:
-        exits[room][direction] = "?"
-print(exits)
+# needed when path is deadend
+opposite_direction = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 
-def find_direction(current_room):
-    # returns open direction or first direction
-    if 'n' in exits[current_room] and exits[current_room]['n'] == '?':
-        return 'n'
-    elif 'w' in exits[current_room] and exits[current_room]['w'] == '?':
-        return 'w'
-    elif 's' in exits[current_room] and exits[current_room]['s'] == '?':
-        return 's'
-    elif 'e' in exits[current_room] and exits[current_room]['e'] == '?':
-        return 'e'
-    else:
-        return None
+# for room in roomGraph:
+#     exits[room] = {}
+#     for direction in roomGraph[room][1]:
+#         exits[room][direction] = "?"
+# print(exits)
+
+# def find_direction(current_room):
+#     # returns open direction or first direction
+#     if 'n' in exits[current_room] and exits[current_room]['n'] == '?':
+#         return 'n'
+#     elif 'w' in exits[current_room] and exits[current_room]['w'] == '?':
+#         return 'w'
+#     elif 's' in exits[current_room] and exits[current_room]['s'] == '?':
+#         return 's'
+#     elif 'e' in exits[current_room] and exits[current_room]['e'] == '?':
+#         return 'e'
+#     else:
+#         return None
     
 
-def bfs_path(starting_vertex_id, target_value):
+def bfs_path(starting_vertex_id):
         q = Queue()
         q.enqueue([starting_vertex_id])
         visited = set()
         while q.size() > 0:
             path = q.dequeue()
-            v = travel.path_to_take[-1]
-            if v not in traversalPath:
-                if v == target_value:
-                    return path
-                traversalPath.add(v)
-                for next_vert in travel.path_to_take[v]:
+            v = path[-1]
+            if v not in visited:
+                for exit in graph[v]:
+                    if graph[v][exit] == '?':
+                        return path
+                visited.add(v)
+                for new_exit in graph[v]:
                     new_path = list(path)
-                    new_path.append(next_vert)
+                    new_path.append(graph[v][new_exit])
                     q.enqueue(new_path)
         return None
+
+def find_direction(path):
+    current_room = path[0]
+    directions = []
+    for room in path[1:]:
+        for exit in graph[current_room]:
+            if room == graph[current_room][exit]:
+                directions.append(exit)
+    return directions
 
 def travel():
     # travel through rooms
