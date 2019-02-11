@@ -4,6 +4,19 @@ from world import World
 
 import random
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 # Load world
 world = World()
 
@@ -19,9 +32,97 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+graph = {0: {"n": "?", "e": "?", "s": "?", "w": "?"}}
+# print(player.currentRoom.id)
+
+# when you reach a dead end turn around
+inverse_directions = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+
+# bfs
+def backtrack_to_unexplored(starting_vertex_id):
+    q = Queue()
+    q.enqueue([starting_vertex_id])
+    visited = set()
+    while q.size() > 0:
+        path = q.dequeue()
+        v = path[-1] # looking at last item which your current room
+        if v not in visited:
+            # graph[v] exit dictionary 
+            for exit in graph[v]: # all of the keys
+                if graph[v][exit] == '?': #look for ? mark here
+                    # check exit dictionary 
+                    return path # path to the room you haven't explored
+            # else add it to the back of the queue
+            visited.add(v)
+            for exit_direction in graph[v]: #exit_direction is the key
+                new_path = list(path)
+                new_path.append(graph[v][exit_direction]) # appends room number
+                q.enqueue(new_path)
+    return None # traveled through entire graph and explored it
+
+def path_to_directions(path):
+    #path is a list of room Ids to convert to a list direction( ex: [n, s, e])
+    current_room = path[0]
+    directions = []
+    for room in path[1:]:
+        for exit in graph[current_room]: #exit dictionary for current room
+            if room == graph[current_room][exit]: 
+                # room number is the same as a value in one the keys
+                directions.append(exit)
+    return directions
+
+
+
+
+while True: #dfs
+    print(f'This is the traversal path{traversalPath}')
+    currentRoomExits = graph[player.currentRoom.id] # get the value of all exits for current room
+    # print(player.currentRoom)
+    print(f'These are the current room exits {currentRoomExits}')
+    # makes dictionary set all directions to ?s
+    unExploredExits = [] #all unexplored exits
+
+    #this is for when you want to find '?' to explore
+    for direction in currentRoomExits:
+        if currentRoomExits[direction] == '?':
+            unExploredExits.append(direction)
+
+    if len(unExploredExits) > 0: #picking one the unexplored walk
+        firstExit = unExploredExits[0]
+        traversalPath.append(firstExit) #will walk in that direction to that exit
+        prev_room_id = player.currentRoom.id #so you can refer to inverse directions (n -> s)
+        
+        player.travel(firstExit)# walk in direction to the exit
+        # updates the current Room
+
+        # now we're in the next room
+        exitDict = {} #new room
+
+        # when you get to the new room and build the exit values
+        # creating a new dictionary and filling it out '?'
+        if player.currentRoom.id not in graph:
+            for exit in player.currentRoom.getExits():
+                exitDict[exit] = '?' #set every exit in getExits as the key to with '?'
+            # new room/ current room {1: {"n": "?", "e": "?", "s": 0, "w": "?"}}
+            graph[player.currentRoom.id] = exitDict
+        # graph[0]['n'] = '?'  --> 1 old room
+        graph[prev_room_id][firstExit] =  player.currentRoom.id
+        # new room 1: {'n': '?', 'e': '?', 's': 0, 'w': '?'}
+        graph[player.currentRoom.id][inverse_directions[firstExit]] = prev_room_id
+    else: 
+        # when you hit a dead end back track 
+        # to the nearest room with an unexplored exit bfs path finding
+        path_to_unexplored = backtrack_to_unexplored(player.currentRoom.id)
+        if path_to_unexplored is None:
+            break
+        print(f'This is the directions path{path_to_directions(path_to_unexplored)}')
+        for direction in path_to_directions(path_to_unexplored):
+            player.travel(direction) #player walks
+            traversalPath.append(direction) # directions that player will walk
+
+
 
 
 # TRAVERSAL TEST
