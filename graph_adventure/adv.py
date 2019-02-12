@@ -19,37 +19,105 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 
 # FILL THIS IN
 traversalPath = []
-def oppositeDirection(direction):
-    # This function literally just reverses whatever direction you put into it
-    if direction is 'n':
-        return 's'
-    elif direction is 's':
-        return 'n'
-    elif direction is 'e':
-        return 'w'
-    elif direction is 'w':
-        return 'e'
-def fill_traversal():
-    visited = {}
-    visited[player.currentRoom.id] = player.currentRoom.getExits()
-    checked = []
-    returned_list = []
-    while len(list(visited)) < 499:
-        if player.currentRoom.id not in visited:
-            visited[player.currentRoom.id] = player.currentRoom.getExits()
-        while len(visited[player.currentRoom.id]) is 0 and len(checked) > 0:
-            prev_node = checked.pop()
-            returned_list.append(prev_node)
-            player.travel(prev_node)
-        step = visited[player.currentRoom.id].pop(0)
-        checked.append(oppositeDirection(step))
-        returned_list.append(step)
-        player.travel(step)
-    return returned_list
-traversalPath = fill_traversal()
+graph = {0: {"n": "?", "e": "?", "s": "?", "w": "?"}}
+opposite = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+
+def bfs(starting_vertex_id):
+    q = Queue() # FIFO
+    q.enqueue([starting_vertex_id])
+    visited = set() 
+    while q.size() > 0:
+        path = q.dequeue()
+        x = path[-1] 
+        if x not in visited:
+            for exit in graph[x]: 
+                if graph[x][exit] == '?':        
+                    return path    
+            visited.add(x)
+            for exit_direction in graph[x]: 
+                new_path = list(path)
+                new_path.append(graph[x][exit_direction]) 
+                q.enqueue(new_path)
+    return None 
+
+def path(path):
+    current_room = path[0]  
+    directions = [] 
+    for room in path[1:]: 
+        for exit in graph[current_room]: 
+            if room == graph[current_room][exit]: 
+                directions.append(exit) 
+    return directions
+
+
+while True: 
+    currentRoom = graph[player.currentRoom.id] 
+    unexplored_rooms = [] 
+    for direction in currentRoom:
+        if currentRoom[direction] == '?':
+            unexplored_rooms.append(direction)
+    if len(unexplored_rooms) > 0: 
+        firstExit = unexplored_rooms[0] 
+        traversalPath.append(firstExit) 
+        prev_room = player.currentRoom.id 
+        player.travel(firstExit)
+        exitDict = {} 
+        if player.currentRoom.id not in graph:
+            for exit in player.currentRoom.getExits():
+                exitDict[exit] = '?' 
+            graph[player.currentRoom.id] = exitDict
+        graph[prev_room][firstExit] =  player.currentRoom.id
+        graph[player.currentRoom.id][opposite[firstExit]] = prev_room
+    else: 
+        path_to_unexplored_rooms = bfs(player.currentRoom.id)
+        if path_to_unexplored_rooms is None:
+            break
+        for direction in path(path_to_unexplored_rooms):
+            player.travel(direction) 
+            traversalPath.append(direction) 
+
+
+
+
+
+
+
+
+
+# def fill_traversal():
+#     visited = {}
+#     visited[player.currentRoom.id] = player.currentRoom.get()
+#     checked = []
+#     returned_list = []
+#     while len(list(visited)) < 499:
+#         if player.currentRoom.id not in visited:
+#             visited[player.currentRoom.id] = player.currentRoom.get()
+#         while len(visited[player.currentRoom.id]) is 0 and len(checked) > 0:
+#             prev_node = checked.pop()
+#             returned_list.append(prev_node)
+#             player.travel(prev_node)
+#         step = visited[player.currentRoom.id].pop(0)
+#         checked.append(oppositeDirection(step))
+#         returned_list.append(step)
+#         player.travel(step)
+#     return returned_list
+# traversalPath = fill_traversal()
 
 
 
