@@ -21,9 +21,12 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+# traversalPath = ['n', 's']
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+traversalPath = []
 
+# a visual aid
+world.printRooms()
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # TRAVERSAL TEST
