@@ -19,9 +19,17 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
-traversalPath = ['n', 's']
+# initialize mygraph
+myTraversalGraph = {}
+# wish to return traversal Path
+traversalPath = []
+
+# You know you are done when you have exactly 500 entries (0-499) in your graph and no '?' in the adjacency dictionaries. To do this, you will need to write a traversal algorithm that logs the path into traversalPath as it walks.
+
+while len(roomGraph) > len(myTraversalGraph):
+    # get current room id or room number
+    currentRoom = player.currentRoom.id
 
 
 # TRAVERSAL TEST

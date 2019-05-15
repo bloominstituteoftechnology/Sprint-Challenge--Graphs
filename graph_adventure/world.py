@@ -33,6 +33,8 @@ class World:
             if 'w' in roomGraph[roomID][1]:
                 self.rooms[roomID].connectRooms('w', self.rooms[roomGraph[roomID][1]['w']])
         self.startingRoom = self.rooms[0]
+        # print(f"self.roomGrid:{self.roomGrid}")
+        # print(f"lenght self.roomGrid:{len(self.roomGrid)}")
     def printRooms(self):
         rotatedRoomGrid = []
         for i in range(0, len(self.roomGrid)):
