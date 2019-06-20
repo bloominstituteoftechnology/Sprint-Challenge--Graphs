@@ -21,6 +21,8 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
+
+
 traversalPath = ['n', 's']
 
 
