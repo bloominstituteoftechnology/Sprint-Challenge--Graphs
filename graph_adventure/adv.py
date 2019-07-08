@@ -68,7 +68,7 @@ def traverse (room_id):
             if rooms[ind][dir] and rooms[ind][dir] == "?":
                 traversal_path.append(dir)
 
-                player.travel(dir)
+                player.travel(dir)  # TODO using this here is a problem. Need to fix.
                 visited_rooms[room_id][ind][dir] = player.currentRoom.id  # set where we came to the current room
                 if player.currentRoom.id not in visited_rooms:
                     # establish exits of new room if it doesn't exist
