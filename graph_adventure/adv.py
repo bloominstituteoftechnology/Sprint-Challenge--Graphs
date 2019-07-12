@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Queue, Stack
 
 import random
 
@@ -21,7 +22,77 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+
+# Find possible directions for each room
+traversalPath = []
+player.currentRoom = world.startingRoom
+# DFT
+explored_rooms = set()
+d_stack = Stack()
+d_stack.push([player.currentRoom.id])
+
+# create directions graph
+directions_graph = {}
+#initialize directions with questions marks
+dict = {}
+for room in world.rooms:
+	for exit in player.currentRoom.getExits():
+		dict[exit] = "?"
+	directions_graph[room.id] = dict
+
+while d_stack.size() > 0:
+	path = d_stack.pop()
+	vertex = path[-1]
+
+	print(f"{directions_graph}")
+
+	print(f"This is the directions_graph: {directions_graph}")
+	# check that vertex is not in explored_rooms
+	if vertex not in explored_rooms:
+		for direction in directions_graph[vertex]:
+			# find first non-explored direction
+			if directions_graph[vertex][direction] == "?":
+				# move player to room in direction
+				print(direction)
+
+				player.travel(direction)
+				# append path direction to traversal path
+				traversalPath.append(directions_graph[vertex][direction])
+				# assign room number to direction of first room and second room
+
+				directions_graph[vertex][direction] = player.currentRoom.id
+
+				opposite_direction = "?"
+
+				if direction == "n":
+					opposite_direction = "s"
+				elif direction == "s":
+					opposite_direction = "n"
+				elif direction == "e":
+					opposite_direction = "w"
+				elif direction == "w":
+					opposite_direction = "e"
+
+				directions_graph[player.currentRoom.id][opposite_direction] = vertex
+
+				d_stack.push(player.currentRoom.id)
+				break
+
+		explored_rooms.add(vertex)
+
+	# else:
+	# 	# BFS back to unexplored room
+
+	# 	r_queue = Queue()
+	# 	r_queue.enqueue([player.currentRoom.id])
+	# 	r_visited = set()
+
+	# 	while r_queue.size() > 0:
+	# 		# check if room is in explored rooms
+	# 		if player.currentRoom.id not in explored_rooms:
+	# 			return
+
+print(f"{traversalPath}")
 
 
 # TRAVERSAL TEST
