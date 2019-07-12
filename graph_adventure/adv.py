@@ -34,63 +34,118 @@ d_stack.push([player.currentRoom.id])
 # create directions graph
 directions_graph = {}
 #initialize directions with questions marks
-dict = {}
 for room in world.rooms:
-	for exit in player.currentRoom.getExits():
+	dict = {}
+	for exit in world.rooms[room].getExits():
 		dict[exit] = "?"
-	directions_graph[room.id] = dict
+	directions_graph[room] = dict
+
+print(directions_graph)
+
+nothing_to_check = True
 
 while d_stack.size() > 0:
 	path = d_stack.pop()
 	vertex = path[-1]
 
-	print(f"{directions_graph}")
-
-	print(f"This is the directions_graph: {directions_graph}")
 	# check that vertex is not in explored_rooms
 	if vertex not in explored_rooms:
+		
+		direction_to_check = "?"
+
 		for direction in directions_graph[vertex]:
-			# find first non-explored direction
+			# find last non-explored direction
 			if directions_graph[vertex][direction] == "?":
-				# move player to room in direction
-				print(direction)
+				direction_to_check = direction
+				nothing_to_check = False
 
-				player.travel(direction)
-				# append path direction to traversal path
-				traversalPath.append(directions_graph[vertex][direction])
-				# assign room number to direction of first room and second room
+		# move player to room in direction
+		player.travel(direction_to_check)
 
-				directions_graph[vertex][direction] = player.currentRoom.id
+		# append path direction to traversal path
+		traversalPath.append(direction)
 
-				opposite_direction = "?"
+		# assign room number to direction of first room and second room
+		directions_graph[vertex][direction] = player.currentRoom.id
 
-				if direction == "n":
-					opposite_direction = "s"
-				elif direction == "s":
-					opposite_direction = "n"
-				elif direction == "e":
-					opposite_direction = "w"
-				elif direction == "w":
-					opposite_direction = "e"
+		opposite_direction = "?"
 
-				directions_graph[player.currentRoom.id][opposite_direction] = vertex
+		if direction == "n":
+			opposite_direction = "s"
+		elif direction == "s":
+			opposite_direction = "n"
+		elif direction == "e":
+			opposite_direction = "w"
+		elif direction == "w":
+			opposite_direction = "e"
 
-				d_stack.push(player.currentRoom.id)
+		directions_graph[player.currentRoom.id][opposite_direction] = vertex
+		
+		#check if no direction was missing
+		if nothing_to_check is True:
+			explored_rooms.add(vertex)
+		else:
+			#copy path and push
+			path_copy = path.copy()
+			path_copy.append(player.currentRoom.id)
+			d_stack.push(path_copy)
+
+	if nothing_to_check is True:
+		# run bfs
+		b_queue = Queue()
+		b_queue.enqueue([player.currentRoom.id])
+		b_visited = set()
+
+		direction_path = []
+
+		while b_queue.size() > 0:
+			path = b_queue.dequeue()
+			b_vert = path[-1]
+
+			if b_vert not in explored_rooms:
+				print("Not in explored")
 				break
 
-		explored_rooms.add(vertex)
+			if b_vert not in b_visited:
+				b_visited.add(b_vert)
 
-	# else:
-	# 	# BFS back to unexplored room
+			for exit in player.currentRoom.getExits():
+				path_c = path.copy()
+				path_c.append(exit)
+				player.travel(exit)
+				if player.currentRoom.id not in explored_rooms:
+					direction_path.append(exit)
 
-	# 	r_queue = Queue()
-	# 	r_queue.enqueue([player.currentRoom.id])
-	# 	r_visited = set()
+					# convert path to directions
+					
 
-	# 	while r_queue.size() > 0:
-	# 		# check if room is in explored rooms
-	# 		if player.currentRoom.id not in explored_rooms:
-	# 			return
+
+
+
+					traversalPath += path_c
+					print("Found it!")
+					break
+				b_queue.enqueue(path_c)
+				direction_path.append(exit)
+
+				#find opposite direction and append to direction path
+
+				# array = [22,21,19,17]
+				# for i in range(len(array)-1)
+					# if array[i] == array[-1]:
+					#	break
+					# else:
+						# selection = array[i]
+						# room = directions_graph[selection]
+						# for exit_direction in room
+							# if room[exit_direction] == array[i+1]:
+								# traversalPath.append(exit_direction)
+	else:
+		nothing_to_check = True
+
+
+
+print(f"This is the directions_graph: {directions_graph}")
 
 print(f"{traversalPath}")
 
