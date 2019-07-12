@@ -26,6 +26,7 @@ player = Player("Name", world.startingRoom)
 # Find possible directions for each room
 traversalPath = []
 player.currentRoom = world.startingRoom
+
 # DFT
 explored_rooms = set()
 d_stack = Stack()
@@ -40,115 +41,169 @@ for room in world.rooms:
 		dict[exit] = "?"
 	directions_graph[room] = dict
 
-print(directions_graph)
+last_direction = "?"
 
-nothing_to_check = True
+# setup visited tracking
+
+track_back_visited = set()
 
 while d_stack.size() > 0:
+	print(traversalPath)
+	# Setup DFS
+	# ///// initialize Stack ///////
+
 	path = d_stack.pop()
 	vertex = path[-1]
 
-	# check that vertex is not in explored_rooms
+	nothing_to_check = True # ???
+
+
+
+	# check that room (vertex) is not in explored_rooms
+
 	if vertex not in explored_rooms:
 		
 		direction_to_check = "?"
 
 		for direction in directions_graph[vertex]:
+
 			# find last non-explored direction
+
 			if directions_graph[vertex][direction] == "?":
+
+				# set direction to check and that there is something to check
+
 				direction_to_check = direction
+				last_direction = direction
 				nothing_to_check = False
 
-		# move player to room in direction
-		player.travel(direction_to_check)
+		# If there is a direction to check...
 
-		# append path direction to traversal path
-		traversalPath.append(direction)
+		if direction_to_check != "?":
+	
+			# move player to room in direction
+			player.travel(direction_to_check)
 
-		# assign room number to direction of first room and second room
-		directions_graph[vertex][direction] = player.currentRoom.id
+			# append path direction to traversal path
+			traversalPath.append(direction_to_check)
 
-		opposite_direction = "?"
+			# assign room number to direction of first room and second room
+			directions_graph[vertex][direction_to_check] = player.currentRoom.id
 
-		if direction == "n":
-			opposite_direction = "s"
-		elif direction == "s":
-			opposite_direction = "n"
-		elif direction == "e":
-			opposite_direction = "w"
-		elif direction == "w":
-			opposite_direction = "e"
+			opposite_direction = "?"
 
-		directions_graph[player.currentRoom.id][opposite_direction] = vertex
-		
-		#check if no direction was missing
+			if direction_to_check == "n":
+				opposite_direction = "s"
+			elif direction_to_check == "s":
+				opposite_direction = "n"
+			elif direction_to_check == "e":
+				opposite_direction = "w"
+			elif direction_to_check == "w":
+				opposite_direction = "e"
+
+			directions_graph[player.currentRoom.id][opposite_direction] = vertex
+
 		if nothing_to_check is True:
 			explored_rooms.add(vertex)
-		else:
-			#copy path and push
-			path_copy = path.copy()
-			path_copy.append(player.currentRoom.id)
-			d_stack.push(path_copy)
+		# else:
+		# 	#copy path and push
+		# 	path_copy = path.copy()
+		# 	path_copy.append(player.currentRoom.id)
+		# 	d_stack.push(path_copy)
 
 	if nothing_to_check is True:
-		# run bfs
-		b_queue = Queue()
-		b_queue.enqueue([player.currentRoom.id])
-		b_visited = set()
 
+		# Setup BFS
+		# ///// initialize Queue and direction path /////
+
+		b_queue = Queue()
+		b_queue.enqueue(path)
 		direction_path = []
 
+		# Begin loop, and continue while path is queued
+
 		while b_queue.size() > 0:
-			path = b_queue.dequeue()
-			b_vert = path[-1]
+
+		# Dequeue path and select Vertex
+
+			bfs_path = b_queue.dequeue()
+			b_vert = bfs_path[-1]
+			
+			# If vertex room has not been fully explored, push to d_stack
 
 			if b_vert not in explored_rooms:
-				print("Not in explored")
-				break
 
-			if b_vert not in b_visited:
-				b_visited.add(b_vert)
+				#copy path and push to d_stack
 
-			for exit in player.currentRoom.getExits():
-				path_c = path.copy()
-				path_c.append(exit)
-				player.travel(exit)
-				if player.currentRoom.id not in explored_rooms:
-					direction_path.append(exit)
+				path_copy = bfs_path.copy()
+				d_stack.push(path_copy)
+				
+			else:
 
-					# convert path to directions
+				# b_vert is fully explored, check rooms at exits to see if any unexplored
+
+				# loop through rooms at exits
+
+				for exit in player.currentRoom.getExits():
+
+					# check if visited
+
+					check_room_visited = directions_graph[player.currentRoom.id][exit]
 					
+					if check_room_visited not in track_back_visited:
 
+						# travel to exit room
 
+						player.travel(exit)
 
+						# check if exit room is not fully explored
 
-					traversalPath += path_c
-					print("Found it!")
-					break
-				b_queue.enqueue(path_c)
-				direction_path.append(exit)
+						if player.currentRoom.id not in explored_rooms:
 
-				#find opposite direction and append to direction path
+							# if the room has NOT been explored...
 
-				# array = [22,21,19,17]
-				# for i in range(len(array)-1)
-					# if array[i] == array[-1]:
-					#	break
-					# else:
-						# selection = array[i]
-						# room = directions_graph[selection]
-						# for exit_direction in room
-							# if room[exit_direction] == array[i+1]:
-								# traversalPath.append(exit_direction)
+							# append room to d_stack path
+
+							bfs_path_copy = bfs_path.copy()
+							bfs_path_copy.append(player.currentRoom.id)
+							d_stack.push(bfs_path_copy)
+
+							# add direction to traversal path
+
+							traversalPath.append(exit)
+						else:
+
+							# if the room HAS been fully explored...
+
+							# mark as visited
+
+							track_back_visited.add(player.currentRoom.id)
+
+							# re-enqueue prior path
+
+							b_queue.enqueue(bfs_path)
+
+							# travel backwards
+
+							if exit == "n":
+								player.travel("s")
+								traversalPath.append("s")
+							elif exit == "s":
+								player.travel("n")
+								traversalPath.append("n")
+							elif exit == "e":
+								player.travel("w")
+								traversalPath.append("w")
+							elif exit == "w":
+								player.travel("e")
+								traversalPath.append("e")			
 	else:
-		nothing_to_check = True
-
-
-
-print(f"This is the directions_graph: {directions_graph}")
+		#copy path and push
+		path_copy = path.copy()
+		path_copy.append(player.currentRoom.id)
+		d_stack.push(path_copy)
 
 print(f"{traversalPath}")
-
 
 # TRAVERSAL TEST
 visited_rooms = set()
