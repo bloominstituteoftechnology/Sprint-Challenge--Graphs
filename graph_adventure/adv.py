@@ -51,14 +51,15 @@ while len(explored_rooms) < 12:
 	# **** D STack loop ****
 
 	while d_stack.size() > 0:
-		print(len(explored_rooms))
+		print(traversalPath)
+		print(explored_rooms)
 		# Setup DFS
 		# ///// initialize Stack ///////
 
 		path = d_stack.pop()
 		vertex = path[-1]
 
-		nothing_to_check = True # ???
+		# nothing_to_check = True # ???
 
 		# check that room (vertex) is not in explored_rooms
 
@@ -71,9 +72,7 @@ while len(explored_rooms) < 12:
 				# find last non-explored direction
 
 				if directions_graph[vertex][direction] == "?":
-
 					# set direction to check and that there is something to check
-
 					direction_to_check = direction
 					last_direction = direction
 					nothing_to_check = False
@@ -81,7 +80,7 @@ while len(explored_rooms) < 12:
 			# If there is a direction to check...
 
 			if direction_to_check != "?":
-		
+
 				# move player to room in direction
 				player.travel(direction_to_check)
 
@@ -104,6 +103,7 @@ while len(explored_rooms) < 12:
 
 				directions_graph[player.currentRoom.id][opposite_direction] = vertex
 
+				# push path copy to stack to check next room
 				d_path_copy = path.copy()
 				d_path_copy.append(player.currentRoom.id)
 				d_stack.push(d_path_copy)
@@ -116,94 +116,76 @@ while len(explored_rooms) < 12:
 	b_queue = Queue()
 	b_queue.enqueue(path)
 	direction_path = []
+	b_visited = set()
 
 	# Begin loop, and continue while path is queued
 
 	while b_queue.size() > 0:
-		print(len(explored_rooms))
 
 		# Dequeue path and select Vertex
 
 		bfs_path = b_queue.dequeue()
 		b_vert = bfs_path[-1]
 		
-		# If vertex room has not been fully explored, push to d_stack
+		# If vertex room has not been visited...
 
-		if b_vert not in explored_rooms:
+		# loop through rooms at exits
 
-			#copy path and push to d_stack
+		for exit in player.currentRoom.getExits():
 
-			path_copy = bfs_path.copy()
-			d_stack.push(path_copy)
+			# check if visited
+
+			player.travel(exit)
+			traversalPath.append(exit)
 			
-		else:
+			# check if exit room is not fully explored
 
-			# b_vert is fully explored, check rooms at exits to see if any unexplored
+			if player.currentRoom.id not in b_visited:
 
-			# loop through rooms at exits
+				b_visited.add(player.currentRoom.id)
 
-			for exit in player.currentRoom.getExits():
-
-				# check if visited
-
-				check_room_visited = directions_graph[player.currentRoom.id][exit]
-				
-				# if check_room_visited not in explored_rooms:
-
-				
-				# check if exit room is not fully explored
-
-				if check_room_visited not in explored_rooms:
-
-					# travel to exit room
-
-					player.travel(exit)
-
-					# if the room has NOT been explored...
-
-					# append room to d_stack path
+				if player.currentRoom.id not in explored_rooms:
 
 					bfs_path_copy = bfs_path.copy()
 					bfs_path_copy.append(player.currentRoom.id)
 					d_stack.push(bfs_path_copy)
-
-					# add direction to traversal path
-
-					traversalPath.append(exit)
 				else:
 
-					# if the room HAS been fully explored...
+					
+					bfs_path_copy = bfs_path.copy()
+					bfs_path_copy.append(player.currentRoom.id)
+					b_queue.enqueue(bfs_path_copy)
 
-					# mark as visited
+					if exit == "n":
+						player.travel("s")
+						traversalPath.append("s")
+					elif exit == "s":
+						player.travel("n")
+						traversalPath.append("n")
+					elif exit == "e":
+						player.travel("w")
+						traversalPath.append("w")
+					elif exit == "w":
+						player.travel("e")
+						traversalPath.append("e")
 
-					track_back_visited.add(check_room_visited)
 
-					# re-enqueue prior path
+			# else:
 
-					d_stack.push(bfs_path)
+		# 	# if the room HAS been fully explored...
 
-					# b_queue.enqueue(bfs_path)
+		# 	# mark as explored
 
-					# travel backwards
+		# 	explored_rooms.add(player.currentRoom.id)
 
-					# if exit == "n":
-					# 	player.travel("s")
-					# 	traversalPath.append("s")
-					# elif exit == "s":
-					# 	player.travel("n")
-					# 	traversalPath.append("n")
-					# elif exit == "e":
-					# 	player.travel("w")
-					# 	traversalPath.append("w")
-					# elif exit == "w":
-					# 	player.travel("e")
-					# 	traversalPath.append("e")		
+		# 	# mark as visited
 
-	# else:
-	# 	#copy path and push
-	# 	path_copy = path.copy()
-	# 	path_copy.append(player.currentRoom.id)
-	# 	d_stack.push(path_copy)
+		# 	track_back_visited.add(player.currentRoom.id)
+
+		# 	# re-enqueue prior path
+
+		# 	d_stack.push(bfs_path)
+
 
 print(f"{traversalPath}")
 
