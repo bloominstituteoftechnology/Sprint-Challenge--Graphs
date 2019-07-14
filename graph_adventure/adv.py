@@ -42,18 +42,18 @@ for room in world.rooms:
 		dict[exit] = "?"
 	directions_graph[room] = dict
 
+
 while len(explored_rooms) < len(roomGraph):
 
 	while d_stack.size() > 0:
+		print(directions_graph)
 		direction = d_stack.pop()
 		start_room = player.currentRoom.id
-		print(directions_graph)
+	
 		if direction in accepted_directions:
 
 			player.travel(direction)
 			traversalPath.append(direction)
-
-			explored_rooms.add(player.currentRoom.id)
 
 			opposite_direction = "?"
 
@@ -74,15 +74,21 @@ while len(explored_rooms) < len(roomGraph):
 			if opposite_direction in directions_graph[player.currentRoom.id]:
 				directions_graph[player.currentRoom.id][opposite_direction] = start_room
 
-		# unknown = False
+			explored_rooms.add(player.currentRoom.id)
+
+			for e in player.currentRoom.getExits():
+				if directions_graph[player.currentRoom.id][e] == "?":
+					if player.currentRoom.id in explored_rooms:
+						explored_rooms.remove(player.currentRoom.id)
 
 		for exit in player.currentRoom.getExits():
 
-			if directions_graph[player.currentRoom.id][exit] not in explored_rooms:
+			ex_room = directions_graph[player.currentRoom.id][exit]
+
+			if ex_room == "?":
 				d_stack.push(exit)
 
 	# Setup BFS
-	# ///// initialize Queue and direction path /////
 
 	b_queue = Queue()
 	b_queue.enqueue([player.currentRoom.id])
@@ -100,26 +106,20 @@ while len(explored_rooms) < len(roomGraph):
 
 		if bfs_room not in explored_rooms:
 
-			# clean path...
-
-			copy_path = bfs_path.copy()
-			clean_path = []
-
-			if bfs_room == "?":
-				clean_path = copy_path[:-1]
-
 			# loop through bfs path
 
-			for i in range(len(clean_path)-1):
+			for i in range(len(bfs_path)-1):
 
-				current_room = clean_path[i]
+				current_room = bfs_path[i]
 
-				for direction in directions_graph[current_room]:
+				if i != (len(bfs_path)-1):
 
-					if directions_graph[current_room][direction] == clean_path[i+1]:
+					for direction in directions_graph[current_room]:
 
-						player.travel(direction)
-						traversalPath.append(direction)
+						if directions_graph[current_room][direction] == bfs_path[i+1]:
+
+							player.travel(direction)
+							traversalPath.append(direction)
 
 			d_stack.push(player.currentRoom.id)
 
@@ -137,7 +137,6 @@ while len(explored_rooms) < len(roomGraph):
 					bfs_path_copy.append(exit_room)
 					b_queue.enqueue(bfs_path_copy)
 		
-
 print(f"{traversalPath}")
 
 # TRAVERSAL TEST
