@@ -26,6 +26,23 @@ traversalPath = ['n', 's']
 roomPath = {} 
 
 # Create stack class
+class Stack(): 
+    #Define Self
+    def __init__(self):
+        self.queue = []
+    #Enqueue value and append stack
+    def enqueue(self, value):
+        self.queue.append(value)
+    # Dequeue room and move off the end of the stack
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    #Return length of Queue
+    def size(self):
+        return len(self.queue)
+
 
 # Create Queue class
 
