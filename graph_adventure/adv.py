@@ -26,6 +26,8 @@ traversalPath = ['n', 's']
 roomPath = {} 
 # Create a return path
 returnPath = []
+# Available path
+available_path = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
 
 
 #Begin at room 0
@@ -97,6 +99,10 @@ while len(roomPath) < len(roomGraph)-1:
     move_forward = roomPath[player.currentRoom.id].pop(0)
     #Append traversal Path with destination
     traversalPath.append(move_forward)
+    # Put latest into return path
+    returnPath.append(available_path[move_forward])
+    # Make your move 
+    player.travel(move_forward)
 
 
 ##
