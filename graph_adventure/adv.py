@@ -25,6 +25,10 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = ['n', 's']
 
+myGraph = MapGraph()
+
+myGraph.exploreMap(player)
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
