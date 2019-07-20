@@ -70,7 +70,7 @@ direction_inverse = {'n':'s', 's':'n', 'e':'w', 'w':'e'} # reverses directions
 roomPath[player.currentRoom.id] = player.currentRoom.getExits()
 
 # Traversing Graph -> Loop as long number of rooms visited is < number of rooms in graph
-while len(roomPath) < len(roomGraph)1:
+while len(roomPath) < len(roomGraph)-1:
 
     # Begin to track rooms visited -> (if the current room is not in "roomPath" above^^ (not visited)
     if player.currentRoom.id not in roomPath:
