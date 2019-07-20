@@ -81,8 +81,16 @@ while len(roomPath) < len(roomGraph)-1:
     # Remove direction/exit where came from (since we explored it)
     roomPath[player.currentRoom.id].remove(last_room_direction)
 
-# Rooms w/ no un-explored dstinations/exits -> loop until land in room with exits ( only if room ran out of unexplored exits) {may edit this one later}
-# ** We need to reverse
+    # Rooms w/ no un-explored dstinations/exits -> loop until land in room with exits ( only if room ran out of unexplored exits) {may edit this one later}
+    while len(roomPath[player.currentRoom.id]) == 0: # (all room exits explored)
+        # ** We need to reverse
+        reverse_direction = reversedPath.pop()
+        # 
+        # ** Add reverse_direction to traversalPath -> track traveled path
+        traversalPath.append(reverse_direction)
+        # ** Travel to reverse direction
+        player.travel(reverse_direction)
+
 # Travel steps when available destinations/exits are available-> to travel to 1st available destination/exit for thecurrent room
 
 # TRAVERSAL TEST
