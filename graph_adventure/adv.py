@@ -64,10 +64,23 @@ direction_inverse = {'n':'s', 's':'n', 'e':'w', 'w':'e'} # reverses directions
 # traversalPath = ['n', 's']
 
 # --PLANNING IT OUT--
+
+
 # Add starting room (room 0) with its exits to "roomPath" 
+roomPath[player.currentRoom.id] = player.currentRoom.getExits()
+
 # Traversing Graph -> Loop as long number of rooms visited is < number of rooms in graph
-# Begin to track rooms visited -> (if the current room is not in "roomPath" above^^ (not visited)
-# ** Use room id (the key) pass it's exits as values to "roomPath"
+while len(roomPath) < len(roomGraph)1:
+
+    # Begin to track rooms visited -> (if the current room is not in "roomPath" above^^ (not visited)
+    if player.currentRoom.id not in roomPath:
+    # ** Use room id (the key) pass it's exits as values to "roomPath"
+    roomPath[player.currentRoom.id] = player.currentRoom.getExits()
+    # Directions explored - to be removed from "roomPath"
+    last_room_direction = reversedPath[-1] # <-- previous exit is last index
+    # Remove direction/exit where came from (since we explored it)
+    roomPath[player.currentRoom.id].remove(last_room_direction)
+
 # Rooms w/ no un-explored dstinations/exits -> loop until land in room with exits ( only if room ran out of unexplored exits) {may edit this one later}
 # ** We need to reverse
 # Travel steps when available destinations/exits are available-> to travel to 1st available destination/exit for thecurrent room
