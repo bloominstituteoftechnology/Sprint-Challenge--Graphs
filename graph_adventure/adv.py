@@ -28,6 +28,8 @@ roomPath = {}
 returnPath = []
 
 
+
+
 # Create queue class
 class Queue(): 
     #Define Self
@@ -79,6 +81,14 @@ while len(roomPath) < len(roomGraph)-1:
         last_room_direction = returnPath[-1]
 
 ## Move to unexplored directions or exit paths
+    # Loop to find room exit
+    while len(roomPath[player.currentRoom.id]) == 0:
+        #Go back the way you came if there are no exits
+        backward_direction = returnPath.pop()
+        #Append traversalPath to log where we are
+        traversalPath.append(backward_direction)
+        #Move backwards
+        player.travel(backward_direction)
 
 
 
