@@ -45,7 +45,22 @@ class Queue():
 
 
 # Create stack class
-
+class Stack():
+    #Define Self
+    def __init__(self):
+        self.stack = []
+    #Append stack and add value
+    def push(self, value)
+        self.stack.append(value)
+    #Remove value of the end of stack
+    def pop(self):
+        if self.size() >= 0:
+            return self.stack.pop()
+        else: 
+            return None
+    #Return length of Stack
+    def size(self):
+        return len(self.stack)
 
 ##
 # TRAVERSAL TEST
