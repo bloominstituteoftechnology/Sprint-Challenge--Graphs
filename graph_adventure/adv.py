@@ -90,7 +90,11 @@ while len(roomPath) < len(roomGraph)-1:
         #Move backwards
         player.travel(backward_direction)
 
-
+    #Move to available room or exit starting at the current room
+    move_forward = roomPath[player.currentRoom.id].pop(0)
+    #Append traversal Path with destination
+    traversalPath.append(move_forward)
+    
 
 ##
 # TRAVERSAL TEST
