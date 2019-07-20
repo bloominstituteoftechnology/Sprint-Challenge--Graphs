@@ -49,12 +49,26 @@ You will need to CONVERT this to a list of n/s/e/w directions before you can add
 
 world.loadGraph(roomGraph)
 world.printRooms()
+
+# player will start in room 0
 player = Player("Name", world.startingRoom)
+
+#Paths Tracking
+traversalPath = [] # paths traversed
+roomPath = {}      # rooms visited
+reversedPath = []  #reversed (traversalPath) directions 
+direction_inverse = {'n':'s', 's':'n', 'e':'w', 'w':'e'} # reverses directions
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+# traversalPath = ['n', 's']
 
+# --PLANNING IT OUT--
+# Add starting room (room 0) with its exits to "roomPath" 
+# Traversing Graph -> Loop as long number of rooms visited is < number of rooms in graph
+# Begin to track rooms visited -> (if the current room is not in "roomPath" above^^ (not visited)
+# Rooms w/ no un-explored dstinations/exits -> loop until land in room with exits ( only if room ran out of unexplored exits) {may edit this one later}
+# Travel steps when available destinations/exits are available-> to travel to 1st available destination/exit for thecurrent room
 
 # TRAVERSAL TEST
 visited_rooms = set()
