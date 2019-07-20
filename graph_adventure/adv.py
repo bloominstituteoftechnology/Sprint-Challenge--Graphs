@@ -28,7 +28,8 @@ roomPath = {}
 returnPath = []
 
 
-
+#Begin at room 0
+roomPath[player.currentRoom.id] = player.currentRoom.getExits()
 
 # Create queue class
 class Queue(): 
@@ -78,7 +79,9 @@ while len(roomPath) < len(roomGraph)-1:
     if player.currentRoom.id not in roomPath:
         roomPath[player.currentRoom.id] = player.currentRoom.getExits()
         #Remove explore rooms from the roomPath
-        last_room_direction = returnPath[-1]
+        last_room = returnPath[-1]
+        #Remove where we came from, from room Path
+        roomPath[player.currentRoom.id].remove(last_room)
 
 ## Move to unexplored directions or exit paths
     # Loop to find room exit
