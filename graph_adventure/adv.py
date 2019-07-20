@@ -67,7 +67,9 @@ direction_inverse = {'n':'s', 's':'n', 'e':'w', 'w':'e'} # reverses directions
 # Add starting room (room 0) with its exits to "roomPath" 
 # Traversing Graph -> Loop as long number of rooms visited is < number of rooms in graph
 # Begin to track rooms visited -> (if the current room is not in "roomPath" above^^ (not visited)
+# ** Use room id (the key) pass it's exits as values to "roomPath"
 # Rooms w/ no un-explored dstinations/exits -> loop until land in room with exits ( only if room ran out of unexplored exits) {may edit this one later}
+# ** We need to reverse
 # Travel steps when available destinations/exits are available-> to travel to 1st available destination/exit for thecurrent room
 
 # TRAVERSAL TEST
