@@ -25,8 +25,8 @@ traversalPath = ['n', 's']
 # Keep a log of rooms visited.
 roomPath = {} 
 
-# Create stack class
-class Stack(): 
+# Create queue class
+class Queue(): 
     #Define Self
     def __init__(self):
         self.queue = []
@@ -44,7 +44,7 @@ class Stack():
         return len(self.queue)
 
 
-# Create Queue class
+# Create stack class
 
 
 ##
