@@ -55,11 +55,11 @@ class Stack():
     def __init__(self):
         self.stack = []
     #Append stack and add value
-    def push(self, value)
+    def push(self, value):
         self.stack.append(value)
     #Remove value of the end of stack
     def pop(self):
-        if self.size() >= 0:
+        if self.size() > 0:
             return self.stack.pop()
         else: 
             return None
@@ -94,7 +94,7 @@ while len(roomPath) < len(roomGraph)-1:
     move_forward = roomPath[player.currentRoom.id].pop(0)
     #Append traversal Path with destination
     traversalPath.append(move_forward)
-    
+
 
 ##
 # TRAVERSAL TEST
