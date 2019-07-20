@@ -2,6 +2,8 @@ from room import Room
 from player import Player
 from world import World
 
+from MapGraph import MapGraph
+
 import random
 
 # Load world
