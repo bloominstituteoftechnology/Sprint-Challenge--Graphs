@@ -24,6 +24,9 @@ player = Player("Name", world.startingRoom)
 traversalPath = ['n', 's']
 # Keep a log of rooms visited.
 roomPath = {} 
+# Create a return path
+returnPath = []
+
 
 # Create queue class
 class Queue(): 
@@ -64,9 +67,16 @@ class Stack():
 
 # Traverse Graph
 
+
 # While some of the rooms in the graph remain unvisited keep looping
+while len(roomPath) < len(roomGraph)-1:
 
 ## Keep note of all the rooms visited
+### If room is has not been visited explore its
+    if player.currentRoom.id not in roomPath:
+        roomPath[player.currentRoom.id] = player.currentRoom.getExits()
+        #Remove explore rooms from the roomPath
+        last_room_direction = returnPath[-1]
 
 ## Move to unexplored directions or exit paths
 
