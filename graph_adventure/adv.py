@@ -22,8 +22,15 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 traversalPath = ['n', 's']
+# Keep a log of rooms visited.
+roomPath = {} 
+
+# Create stack class
+
+# Create Queue class
 
 
+##
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
