@@ -62,6 +62,16 @@ class Stack():
     def size(self):
         return len(self.stack)
 
+# Traverse Graph
+
+# While some of the rooms in the graph remain unvisited keep looping
+
+## Keep note of all the rooms visited
+
+## Move to unexplored directions or exit paths
+
+
+
 ##
 # TRAVERSAL TEST
 visited_rooms = set()
