@@ -43,6 +43,7 @@ def find_unexplored(cur_room):
 		dir = rooms[r_int(0, len(rooms) - 1)]
 		if to_room(pcr, dir):
 			path.append(dir)
+			vertices[pcr.id].update({str(dir):to_room(pcr, dir).id})
 			# print('dir is: ',type(dir))
 			# last_room = pcr
 			# print('dir is: ',dir)
@@ -91,21 +92,21 @@ def find_unexplored(cur_room):
 find_unexplored(player.currentRoom)
 #
 # # TRAVERSAL TEST
-# visited_rooms = set()
-# player.currentRoom = world.startingRoom
-# visited_rooms.add(player.currentRoom)
-#
-# for move in traversalPath:
-#     player.travel(move)
-#     visited_rooms.add(player.currentRoom)
-#
-# if len(visited_rooms) == len(roomGraph):
-#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
-#
-#
+visited_rooms = set()
+player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
+
+for move in traversalPath:
+    player.travel(move)
+    visited_rooms.add(player.currentRoom)
+
+if len(visited_rooms) == len(roomGraph):
+    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
+
+
 #
 # #######
 # # UNCOMMENT TO WALK AROUND
