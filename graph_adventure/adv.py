@@ -57,6 +57,7 @@ def find_unexplored(cur_room):
 				dir = new_rooms[r_int(0, len(new_rooms) - 1)]
 				if to_room(pcr, dir):
 					path.append(dir)
+					vertices[pcr.id].update({str(dir): to_room(pcr, dir).id})
 					player.travel(dir)
 				elif not to_room(pcr, dir) and len(new_rooms) > 0:
 					new_rooms.remove(dir)
