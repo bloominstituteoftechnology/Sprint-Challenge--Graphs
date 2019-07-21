@@ -22,6 +22,12 @@ player = Player("Name", world.startingRoom)
 print(f"My Starting Room{player.currentRoom}")
 
 
+# To solve this path, you'll want to construct your own traversal graph. You start in room 0, which contains exits ['n', 's', 'w', 'e']. Your starting graph should look something like this:
+
+# {
+#   0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+# }
+
 # FILL THIS IN
 traversalPath = []
 
@@ -40,11 +46,7 @@ rooms = {}
 # walk to the exit
 # if there are no unexplored exit backtrack to the nearest room that has unexplored exits and move there
 # if no unexplored exits, map is traversed and completed
-direction_to_move = 'n'
-player.travel(direction_to_move)
-player.travel(direction_to_move)
 print(player.currentRoom)
-print(f"Moved {direction_to_move}")
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
