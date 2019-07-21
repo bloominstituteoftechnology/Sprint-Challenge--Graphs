@@ -47,14 +47,17 @@ def bfs(newList, room, start_node, end_node):
             visited.add(currentId)
             for item in newList[currentId]:
                 node = newList[currentId][item]
+                # make a copy of the path
                 ids_copy = ids.copy()
+                # insert the copy
                 ids_copy.insert(0,node)
+                # add copy to the queue
                 que.put(ids_copy)
-        node = path[-1]
+    
         
-        if node not in visited:
-            if node == end_node:
-                return path
+      #  if node not in visited:
+        #    if node == end_node:
+        #        return path
             visited.add(node)
             for exits in Room.getExits(node):
                 path_copy = path[:]
