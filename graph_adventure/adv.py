@@ -58,7 +58,9 @@ def bfs(newList, room, start_node, end_node):
     while len(path) > 1:
        
         last_room = path.pop()
-       
+        #  if node not in visited:
+        #    if node == end_node:
+        #        return path      
         for list_item in newList[last_room]:
             if newList[last_room][list_item] == path[-1]:
                 directions.append(list_item)
@@ -68,14 +70,14 @@ def bfs(newList, room, start_node, end_node):
       #  if node not in visited:
         #    if node == end_node:
         #        return path
-          visited.add(node)
-            for exits in Room.getExits(node):
-                path_copy = path[:]
-                path_copy.append(exits)
-                q.enqueue(path_copy)
-    return path 
+     #     visited.add(node)
+       #     for exits in Room.getExits(node):
+       #         path_copy = path[:]
+       #         path_copy.append(exits)
+        #        q.enqueue(path_copy)
+    #return path 
 
-
+visited_dft = {} 
 #*** Then do a dft going backwards till i find an unvisited path. like I did in the Robot Sprint Challenge
 #*** except this time i should be able to stop it. ****
 
