@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Queue
 
 import random
 
@@ -24,12 +25,9 @@ print(f"My Starting Room{player.currentRoom}")
 # FILL THIS IN
 traversalPath = []
 
-map = {
-    0: {'n':'1' , 's':'?', 'w':'?', 'e':'?'},
-    1: {'n': '2', 's': '0', 'w': '?', 'e': '?'},
-    2: {'s':'1'},
-    15: {'e':1, 'w': '?'}
-}
+rooms = {}
+
+
 # hint # 1 
 # for exit in player.currentRoom.getExits():
 # graph[player.currentRoom.id] = '?'
