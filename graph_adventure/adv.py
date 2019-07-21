@@ -78,6 +78,23 @@ def bfs(newList, room, start_node, end_node):
     #return path 
 
 visited_dft = {} 
+
+#***** starting the dft here in order to find an unvisited direction (room) *******
+# make sure our roomGraph is not empty
+while len(visited_dft) < len(roomGraph):
+    #use built in function to get player current room
+    room = player.currentRoom.id
+    #check for question marks
+    if room not in visited_dft:
+        visited_dft[room] = {direction: '?' for direction in player.currentRoom.getExits()}
+          
+    unVisited = [direction for direction in visited_dft[room] if visited_dft[room][direction] == '?']
+    if len(unVisited) > 0:
+        # use random to generate a direction
+        direction = unVisited[(random.randint(0, len(unVisited)-1))]
+        # use player.travel to go in the new direction
+        player.travel(direction)
+
 #*** Then do a dft going backwards till i find an unvisited path. like I did in the Robot Sprint Challenge
 #*** except this time i should be able to stop it. ****
 
