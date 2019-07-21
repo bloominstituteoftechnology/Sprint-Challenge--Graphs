@@ -3,7 +3,7 @@ from player import Player
 from world import World
 from utils import Stack, Queue, Graph
 import random
-from typing import Dict
+# from typing import Dict
 # You may uncomment the smaller graphs for development and testing purposes.
 # roomGraph={0: [(3, 5), {'n': 1}], 1: [(3, 6), {'s': 0, 'n': 2}], 2: [(3, 7), {'s': 1}]}
 # roomGraph={0: [(3, 5), {'n': 1, 's': 5, 'e': 3, 'w': 7}], 1: [(3, 6), {'s': 0, 'n': 2}], 2: [(3, 7), {'s': 1}], 3: [(4, 5), {'w': 0, 'e': 4}], 4: [(5, 5), {'w': 3}], 5: [(3, 4), {'n': 0, 's': 6}], 6: [(3, 3), {'n': 5}], 7: [(2, 5), {'w': 8, 'e': 0}], 8: [(1, 5), {'e': 7}]}
@@ -32,21 +32,33 @@ def find_unexplored(cur_room):
 	pcr = player.currentRoom
 	to_room = Room.getRoomInDirection
 	last_room = ''
-	vertices[pcr.id] = Dict
-	print(vertices)
-	while path.length() is not len(roomGraph) - 1:
+	vertices[pcr.id] = {}
+	print('vertices: ',vertices)
+	for x in path:
+		print(x)
+	while len(path) is not len(roomGraph) - 1:
 	# Use base case from test, exit recursive loop when len(traversal-path) == num of rooms
 		rooms = pcr.getExits()
-		_dir = rooms[r_int(1, len(rooms) - 1)]
+		dir = rooms[r_int(1, len(rooms) - 1)]
 		if to_room(pcr, dir):
-			path.enqueue(dir)
+			path.append(dir)
 			# print('dir is: ',type(dir))
 			# last_room = pcr
+			# print('dir is: ',dir)
 			player.travel(dir)
-
+			last_room = pcr
+			find_unexplored(player.currentRoom)
 		elif not to_room(pcr, dir):
-			print('Placeholder')
-
+			new_rooms = pcr.getExits()
+			while len(new_rooms) - 1 > 0:
+				new_rooms.remove(dir)
+				dir = new_rooms[r_int(1, len(new_rooms) - 1)]
+				if to_room(pcr, dir):
+					path.append(dir)
+					player.travel(dir)
+				else:
+					find_unexplored(last_room)
+				# print(rooms)
 # use the getRoomInDirection method from the room obj.
 	# maybe extract line 33 into mini function to reset current room?
 	# how do we take advantage of numeric ID? to track rooms checked, preview adjacent rooms, etc.
@@ -65,12 +77,12 @@ def find_unexplored(cur_room):
 
 	# honestly we should put the traversal path IN the graph.
 
-	traversalPath.append(player.currentRoom.id)
-	print(player.currentRoom.getExitsString())
+	# traversalPath.append(player.currentRoom.id)
+	# print(player.currentRoom.getExitsString())
 # print(rooms[r_int(1, len(rooms) - 1)])
 
 # print(traversalPath)
-print('Room graph length: ', len(roomGraph))
+# print('Room graph length: ', len(roomGraph))
 # print(traversalGraph.show_verts())
 
 # print('Current room: ',player.currentRoom.id)
