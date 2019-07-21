@@ -37,12 +37,21 @@ def bfs(newList, room, start_node, end_node):
     while que.empty() is False:
         # create a list of room ids
         ids = que.get() 
-        currentId = ids[0]       
-        path = [start_node] # if not visited slice path
+        currentId = ids[0]
+        # if not visited slice path
         if currentId == '?':
             path = ids[1:]
             break
+
+        if currentId not in visited:
+            visited.add(currentId)
+            for item in newList[currentId]:
+                node = newList[currentId][item]
+                ids_copy = ids.copy()
+                ids_copy.insert(0,node)
+                que.put(ids_copy)
         node = path[-1]
+        
         if node not in visited:
             if node == end_node:
                 return path
@@ -52,8 +61,6 @@ def bfs(newList, room, start_node, end_node):
                 path_copy.append(exits)
                 q.enqueue(path_copy)
     return path 
-
-#*** Continue until reach a dead end ****
 
 
 #*** Then do a dft going backwards till i find an unvisited path. like I did in the Robot Sprint Challenge
