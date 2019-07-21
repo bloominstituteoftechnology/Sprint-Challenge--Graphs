@@ -1,9 +1,9 @@
 from room import Room
 from player import Player
 from world import World
-from queue import Queue
+#from queue import Queue
 import random
-#from util import Queue, Stack
+from util import Queue, Stack
 import networkx as nx
 
 
@@ -26,11 +26,15 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 #traversalPath = ['n', 's']
-
+traversalPath = []
 #**** Start with a bfs ********
-def bfs(graph, start_node, end_node):
-    q = Queue()
+def bfs(graph, room, start_node, end_node):
     visited = set()
+    q = Queue()
+    path = [room]
+    q.put([room])
+  
+
     path = [start_node]
     while q.size():
         path = q.dequeue()
