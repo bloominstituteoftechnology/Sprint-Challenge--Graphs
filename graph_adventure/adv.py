@@ -39,7 +39,7 @@ def find_unexplored(cur_room):
 	while len(path) is not len(roomGraph) - 1:
 	# Use base case from test, exit recursive loop when len(traversal-path) == num of rooms
 		rooms = pcr.getExits()
-		dir = rooms[r_int(1, len(rooms) - 1)]
+		dir = rooms[r_int(0, len(rooms) - 1)]
 		if to_room(pcr, dir):
 			path.append(dir)
 			# print('dir is: ',type(dir))
@@ -52,10 +52,12 @@ def find_unexplored(cur_room):
 			new_rooms = pcr.getExits()
 			while len(new_rooms) - 1 > 0:
 				new_rooms.remove(dir)
-				dir = new_rooms[r_int(1, len(new_rooms) - 1)]
+				dir = new_rooms[r_int(0, len(new_rooms) - 1)]
 				if to_room(pcr, dir):
 					path.append(dir)
 					player.travel(dir)
+				elif not to_room(pcr, dir) and len(new_rooms) > 0:
+					new_rooms.remove(dir)
 				else:
 					find_unexplored(last_room)
 				# print(rooms)
