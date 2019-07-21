@@ -37,28 +37,38 @@ def bfs(newList, room, start_node, end_node):
     while que.empty() is False:
         # create a list of room ids
         ids = que.get() 
-        currentId = ids[0]
+        current_dir = ids[0]
         # if not visited slice path
-        if currentId == '?':
+        # check current direction
+        if current_dir == '?':
             path = ids[1:]
             break
 
-        if currentId not in visited:
-            visited.add(currentId)
-            for item in newList[currentId]:
-                node = newList[currentId][item]
-                # make a copy of the path
+        if current_dir not in visited:
+            visited.add(current_dir)
+            for item in newList[current_dir]:
+                node = newList[current_dir][item]
+                # copy the path
                 ids_copy = ids.copy()
-                # insert the copy
                 ids_copy.insert(0,node)
-                # add copy to the queue
                 que.put(ids_copy)
     
+    directions = []
+        
+    while len(path) > 1:
+       
+        last_room = path.pop()
+       
+        for list_item in newList[last_room]:
+            if newList[last_room][list_item] == path[-1]:
+                directions.append(list_item)
+    
+    return directions
         
       #  if node not in visited:
         #    if node == end_node:
         #        return path
-            visited.add(node)
+          visited.add(node)
             for exits in Room.getExits(node):
                 path_copy = path[:]
                 path_copy.append(exits)
@@ -72,6 +82,8 @@ def bfs(newList, room, start_node, end_node):
 #** Use the built in functions for player travel
 
 #** use player.currentRoom
+
+# *** Remember to make HELPERS when necessary!
 
 # TRAVERSAL TEST
 visited_rooms = set()
