@@ -34,8 +34,9 @@ def find_unexplored(cur_room):
 	last_room = ''
 	vertices[pcr.id] = {}
 	print('vertices: ',vertices)
-	for x in path:
-		print(x)
+	print('vertices length', len(vertices))
+	print('path: ', path)
+	print('path length: ',len(path))
 	while len(path) is not len(roomGraph) - 1:
 	# Use base case from test, exit recursive loop when len(traversal-path) == num of rooms
 		rooms = pcr.getExits()
@@ -60,7 +61,6 @@ def find_unexplored(cur_room):
 					new_rooms.remove(dir)
 				else:
 					find_unexplored(last_room)
-				# print(rooms)
 # use the getRoomInDirection method from the room obj.
 	# maybe extract line 33 into mini function to reset current room?
 	# how do we take advantage of numeric ID? to track rooms checked, preview adjacent rooms, etc.
