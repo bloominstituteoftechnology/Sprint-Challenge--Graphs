@@ -25,21 +25,31 @@ player = Player("Name", world.startingRoom)
 #Building of queue and methods for bfs
 traversalPath = []
 reversedPath = []
-visitedRooms = {}
-reversedDirections = {'n':'s', 's':'n','e':'w', 'w': 'e'}
+roomPath = {}
+oppositeDirections = {'n':'s', 's':'n','e':'w', 'w': 'e'}
 
 roomId = player.currentRoom.id
 roomExits = player.currentRoom.getExits()
 
-#loop condition: while rooms visited is less than total graph rooms
+
 # print(len(roomGraph) - 1)
-# print(visitedRooms)
-# visitedRooms[roomId] = roomExits
-# print(visitedRooms)
-while len(visitedRooms) < len(roomGraph) - 1:
-    if roomId not in visitedRooms:
-        #key:value in visited dictionary
-        visitedRooms[roomId] = roomExits
+# print(roomPath)
+# roomPath[roomId] = roomExits
+# print(roomPath)
+
+#loop condition: while rooms visited is less than total graph rooms
+while len(roomPath) < len(roomGraph) - 1:
+    if roomId not in roomPath:
+        #key:value in roomPath dictionary
+        roomPath[roomId] = roomExits
+        prevRoom = reversedPath[-1]
+        roomPath[roomId].remove(prevRoom)
+    
+    while len(roomPath[roomId]) == 0:
+        reverseDirection = reversedPath.pop()
+        traversalPath.append(reverseDirection)
+        player.travel(reverseDirection)
+
 
 
 
