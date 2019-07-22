@@ -24,12 +24,24 @@ player = Player("Name", world.startingRoom)
 # print(player.currentRoom.getExits)
 #Building of queue and methods for bfs
 traversalPath = []
-visited_rooms = set()
+reversedPath = []
+visitedRooms = {}
+reversedDirections = {'n':'s', 's':'n','e':'w', 'w': 'e'}
+
+roomId = player.currentRoom.id
+roomExits = player.currentRoom.getExits()
 
 #loop condition: while rooms visited is less than total graph rooms
+# print(len(roomGraph) - 1)
+# print(visitedRooms)
+# visitedRooms[roomId] = roomExits
+# print(visitedRooms)
+while len(visitedRooms) < len(roomGraph) - 1:
+    if roomId not in visitedRooms:
+        #key:value in visited dictionary
+        visitedRooms[roomId] = roomExits
 
-while len(visited_rooms) < len(roomGraph) - 1:
-    
+
 
 
 
