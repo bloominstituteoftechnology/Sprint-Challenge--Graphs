@@ -33,7 +33,7 @@ player = Player("Name", world.startingRoom)
 
 # # FILL THIS IN
 traversalPath = []
-# traversed = []
+copy_traversed = []
 visited = set()
 rooms ={}
 
@@ -43,11 +43,30 @@ def dft_path(startRoom):
         for exit in roomGraph[id][1]:
             rooms[id][exit] = '?'
     while len(visited) < len(roomGraph):
-        # traversed.append([startRoom.id])
-        # while len(traversed):
+        # copy_traversed = [*visited]
+        # path = copy_traversed.pop()
+        # node= path[-1]
         if startRoom not in visited:
             inRoomId = startRoom.id
             visited.add(inRoomId)
+            # way # 2
+            # copy_traversed = [[*visited]]
+            # path = copy_traversed.pop()
+            # node= path[-1]
+            # print('node',node)
+            # print('room[node]1', rooms[node])
+            # if rooms[node]['n']== '?':
+            #     player.travel('n')
+            #     traversalPath.append('n')
+            #     visited.add(node)
+            #     print('room[node]["n"]', rooms[node]['n'])
+            #     print('roomGraph', roomGraph[node][1]['n'])
+            #     rooms[node]['n'] = roomGraph[node][1]['n']
+            #     print('line 64', rooms[node]['n'])
+            #     startRoom = player.currentRoom.id
+            #     print((rooms[node][exit]))
+            # break
+            # original way
             for r in roomGraph[inRoomId][1]:
                 print('r',r)
                 print('roomGraph[inRoomId][1]', roomGraph[inRoomId][1])
@@ -59,6 +78,7 @@ def dft_path(startRoom):
                     print('roomGraph[inRoomId][1][r]',roomGraph[inRoomId][1][r])
                     inRoomId = player.currentRoom.id
                     print('inRoomId', inRoomId)
+            break
     # if startRoom and roomGraph[startRoom.id][1]['n'] not in visited:
     #     player.travel('n')
     #     traversalPath.append('n')
@@ -82,7 +102,7 @@ def dft_path(startRoom):
     #     print('vistied', visited)
     #     print('traversalPath',traversalPath)
     # else:
-    break
+        
 
 
 dft_path(player.currentRoom)
@@ -125,3 +145,10 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+
+            # for direction in rooms[id]:
+            #     print('direction', direction)
+            #     player.travel(direction)
+            #     rooms[id][direction] = player.currentRoom.id
+            #     dft_path(player.currentRoom.id, vr)
