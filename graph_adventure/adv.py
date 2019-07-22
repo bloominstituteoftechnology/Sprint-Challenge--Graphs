@@ -23,28 +23,21 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 # print(player.currentRoom.getExits)
 #Building of queue and methods for bfs
-class Queue():
-    def __init__(self):
-        self.queue = []
-    def enqueue(self, value):
-        self.queue.append(value)   
-    def dequeue(self,value):
-        if self.size() > 0:
-            self.queue.pop(0)
-        else:
-            return None
-    def size(self):
-        return len(self.queue) 
-
-
-
-
-
-
-
-
-
 traversalPath = []
+visited_rooms = set()
+
+#loop condition: while rooms visited is less than total graph rooms
+
+while len(visited_rooms) < len(roomGraph) - 1:
+    
+
+
+
+
+
+
+
+
 
 
 
