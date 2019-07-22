@@ -19,56 +19,27 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
-class Graph:
-    def __init__(self):
-        self.nodes = {}
-    def add_edge(self, node, direction, value):
-        self.nodes[node][direction] = value
+print(f"My starting room: {player.currentRoom}")
 
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = ['n', 'n']
 
-player.currentRoom = world.startingRoom
-print(player.currentRoom.getExits())
-['n', 's', 'e']
-{
-  0: {'n': '?', 's': 5, 'w': '?', 'e': '?'},
-  5: {'n': 0, 's': '?', 'e': '?'},
-  3: {'n': 1, 's': 2}
-}
-
-graph.add_node(player.currentRoom.id)
-# graph.add_edge(player.currentRoom.id, edge, '?')
-graph.add_edge(5, 'e', '?')
-
-player.travel(edge)
-# populate your graph with the correct exits (unknown)
-while len(mygraph) < len(roomGraph):
-
-# from the exit of your current room, choose a random unknown ext
-## go in there
-    ## update your new node and the old node
-## do it again
-
-## when you get to a room with all known exits
-## do a BFS for an unknown exit
-    
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
-# for move in traversalPath:  UNCOMMENT TESTS!
-#     player.travel(move)
-#     visited_rooms.add(player.currentRoom)
+for move in traversalPath:  
+    player.travel(move)
+    visited_rooms.add(player.currentRoom)
 
-# if len(visited_rooms) == len(roomGraph):
-#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == len(roomGraph):
+    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
 
 
 # #######
