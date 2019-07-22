@@ -67,7 +67,17 @@ class Graph:
         @param {Vertex} start: The starting vertex
         """
         # !!!! IMPLEMENT ME
-        pass
+        queue = Queue()
+        start.color = "black"
+        queue.enqueue(start)
+        while queue.size() > 0:
+            vertex = queue.dequeue()
+            for edge in vertex.edges:
+                destination = edge.destination
+                if destination.color == "white":
+                    destination.color = "black"
+                    destination.parent = vertex
+                    queue.enqueue(destination)
 
     def output_route(self, start):
         """
