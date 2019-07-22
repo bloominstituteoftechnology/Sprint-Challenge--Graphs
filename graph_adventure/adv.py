@@ -24,7 +24,7 @@ print(f"My starting room: {player.currentRoom}")
 
 
 # FILL THIS IN
-traversalPath = ['n', 'n', 's', 's', 's', 's', 'n', 'n', 'e', 'e', 'w', 'w', 'w', 'w', 'e', 'e']
+traversalPath = ['n', 'n', 's', 's', 's', 's', 'n', 'n', 'e', 'e', 'w', 'w', 'w', 'w']
 
 
 # TRAVERSAL TEST
