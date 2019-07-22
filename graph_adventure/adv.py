@@ -43,18 +43,51 @@ def dft_path(startRoom):
         for exit in roomGraph[id][1]:
             rooms[id][exit] = '?'
     while len(visited) < len(roomGraph):
+        # traversed.append([startRoom.id])
+        # while len(traversed):
         if startRoom not in visited:
-            visited.add(startRoom.id)
-        for exit in roomGraph[startRoom.id][1]:
-            # rooms[startRoom.id][exit] = '?'
-            print("exit",exit)
-        break
+            inRoomId = startRoom.id
+            visited.add(inRoomId)
+            for r in roomGraph[inRoomId][1]:
+                print('r',r)
+                print('roomGraph[inRoomId][1]', roomGraph[inRoomId][1])
+                if roomGraph[inRoomId][1][r] in rooms:
+                    player.travel(r)
+                    traversalPath.append(r)
+                    visited.add(roomGraph[inRoomId][1][r])
+                    rooms[inRoomId][r] = roomGraph[inRoomId][1][r]
+                    print('roomGraph[inRoomId][1][r]',roomGraph[inRoomId][1][r])
+                    inRoomId = player.currentRoom.id
+                    print('inRoomId', inRoomId)
+    # if startRoom and roomGraph[startRoom.id][1]['n'] not in visited:
+    #     player.travel('n')
+    #     traversalPath.append('n')
+    #     visited.add(roomGraph[startRoom.id][1]['n'])
+    #     rooms[startRoom.id]['n'] = startRoom.id
+    # elif startRoom and roomGraph[startRoom.id][1]['s'] not in visited:
+    #     player.travel('s')
+    #     traversalPath.append('s')
+    #     visited.add(roomGraph[startRoom.id][1]['s'])
+    #     rooms[startRoom.id]['s'] = startRoom.id
+    # elif startRoom and roomGraph[startRoom.id][1]['e'] not in visited:
+    #     player.travel('e')
+    #     traversalPath.append('e')
+    #     visited.add(roomGraph[startRoom.id][1]['e'])
+    #     rooms[startRoom.id]['e'] = startRoom.id
+    # elif startRoom and roomGraph[startRoom.id][1]['w'] not in visited:
+    #     player.travel('w')
+    #     traversalPath.append('w')
+    #     visited.add(roomGraph[startRoom.id][1]['w'])
+    #     rooms[startRoom.id]['w'] = startRoom.id
+    #     print('vistied', visited)
+    #     print('traversalPath',traversalPath)
+    # else:
+    break
 
-            # if exit not in visited:
-            #     traversed.append(exit)
 
 dft_path(player.currentRoom)
 print("visited", visited)
+print('traversalPath', traversalPath)
 print('room', rooms)
 
     
