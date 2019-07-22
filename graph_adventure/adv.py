@@ -23,7 +23,9 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+# not sure if this is correct method
 def reversalPath(dir):
+    # this just reverses our directionn so we walk backwards
     if dir == 's':
         return 'n'
     elif dir == 'n':
@@ -51,6 +53,7 @@ def bfs(newList, room):
         # check current direction
         if current_dir == '?':
             path = ids[1:]
+            # need to get out of loop
             break
 
         if current_dir not in visited:
@@ -73,14 +76,14 @@ def bfs(newList, room):
             if newList[last_room][list_item] == path[-1]:
                 directions.append(list_item)
     
-    return directions
-        
-    #return path 
+    return directions   
+    # return path 
 
+# create new storge, like a visited2
 visited_dft = {} 
 
 #***** starting the dft here in order to find an unvisited direction (room) *******
-# make sure our roomGraph is not empty
+# make sure our roomGraph is not empty and make sure length of dft list is less than length of roomGraph
 while len(visited_dft) < len(roomGraph):
     #use built in function to get player current room
     room = player.currentRoom.id
@@ -105,6 +108,7 @@ while len(visited_dft) < len(roomGraph):
             visited_dft[new_room] = { direction: '?' for direction in player.currentRoom.getExits()}
         #use backward path to find last room
         reverse = reversalPath(direction)
+        #use the new room id and the reverse path
         visited_dft[new_room][reverse] = room
 
     else:
@@ -113,11 +117,7 @@ while len(visited_dft) < len(roomGraph):
         traversalPath = traversalPath + directions
         for direction in directions:
             player.travel(direction)
-
-       
-      
-
-    
+  
 #*** Then do a dft going backwards till i find an unvisited path. like I did in the Robot Sprint Challenge
 #*** except this time i should be able to stop it. ****
 
