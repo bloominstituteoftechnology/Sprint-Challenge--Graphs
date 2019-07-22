@@ -83,6 +83,9 @@ class Graph:
             self.vertices[player.currentRoom.id].update({lastRoom:self.lastRoomVisited})
         else:
             pass
+    
+    def lastRoom(self, id):
+        self.lastRoomVisited = id
         
 
     # def add_edge(self, n='?', s='?', e='?', w='?'):
@@ -90,9 +93,10 @@ class Graph:
 
 graph = Graph()
 graph.add_vertex(player.currentRoom.id)
+graph.lastRoom(player.currentRoom.id)
 player.travel('n')
-graph.add_edge('n')
 graph.add_vertex(player.currentRoom.id)
+graph.add_edge('n')
 
 
 print(graph.vertices)
