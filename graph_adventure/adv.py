@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from utils import Queue
 
 import random
 
@@ -19,10 +20,115 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+def bfs(start_room, map):
+    visited = set()
+    q = Queue()
+
+    q.enqueue([start_room])
+
+    while q.size() > 0:
+        # dequeue the path
+        path = q.dequeue()
+        node = path[-1]
+
+        if node not in visited:
+            visited.add(node)
+            # Check if it contains a "?"
+            if "?" in map[node].values():
+                return path
+
+            for neighbor in map[node].values():
+                # print(f"Neighbor found: {neighbor}")
+                copy_path = path.copy()
+                copy_path.append(neighbor)
+                q.enqueue(copy_path)
+
+    return None
+
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+revDirs = {"n": "s", "s": "n", "e": "w", "w": "e"}
+visited = set()
+map = {}
+roomId = None
+prevRoom = None
+dir = None
 
+# Setup starting room in map graph
+# roomId = player.currentRoom.id
+# map[roomId] = {}
+
+while len(visited) < len(roomGraph):
+    roomId = player.currentRoom.id
+    # print(f"Current room: {roomId}")
+
+    # If current room is NOT in the map queue, set it up
+    if roomId not in map:
+        map[roomId] = {}
+        # print("New map:", end=" ")
+        # print(map)
+
+        # Get exits
+        exits = player.currentRoom.getExits()
+
+        # Add exits to map queue
+        for ex in exits:
+            map[roomId][ex] = "?"
+
+        # print("Exits added:", end=" ")
+        # print(map[roomId])
+        visited.add(roomId)
+
+    # If prevRoom is set, update map
+    if prevRoom is not None:
+        map[prevRoom][dir] = roomId
+        map[roomId][revDirs[dir]] = prevRoom
+        # print("Updated map:", end=" ")
+        # print(map)
+
+    # Find a direction to move in
+    dir = next((dir for dir, val in map[roomId].items() if val == "?"), None)
+    
+    # Is there a direction to move in?
+    if dir is not None:
+        prevRoom = roomId
+        traversalPath.append(dir)
+        player.travel(dir)
+    else:
+        # Find nearest ? to backtrack to
+        bfs_rooms = bfs(roomId, map)
+        if bfs_rooms is None:
+            break
+        
+        # print("bfs_rooms:", end=" ")
+        # print(bfs_rooms)
+        # Translate room id's to path.
+        # [2, 1, 0]
+        for i in range(len(bfs_rooms)-1):
+            # print(bfs_rooms[i])
+            # print(map[bfs_rooms[i]])
+            newpath = []
+            next((newpath.append(dir) for dir, val in map[bfs_rooms[i]].items() if val == bfs_rooms[i+1]))
+            traversalPath = traversalPath + newpath
+
+            for move in newpath:
+                player.travel(move)
+
+            prevRoom = None
+        # print("Newpath:", end=" ")
+        # print(traversalPath)
+        
+
+
+    # break
+
+# print("End map:", end=" ")
+# print(map)
+# print("Visited:", end=" ")
+# print(visited)
+print("Path:", end=" ")
+print(traversalPath)
 
 # TRAVERSAL TEST
 visited_rooms = set()
