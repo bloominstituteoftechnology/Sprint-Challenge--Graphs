@@ -31,9 +31,11 @@ def findPath ():
     while roomsVisited < totalRooms:
         currentRoom = player.currentRoom.id
         exits = player.currentRoom.getExits()
+        visited[currentRoom] = {}
         for dir in exits:
-            visited[currentRoom].update({ dir : '?'})
+            visited[currentRoom][dir] = '?'
             
+        print(visited[currentRoom]) 
         break
        
 
