@@ -67,6 +67,7 @@ class Graph:
         self.vertices = {}
         self.lastRoomVisited = None
         self.lastMove = None
+        self.lastUnknown = None
 
     def add_vertex(self, vertex):
         currentExits = {}
@@ -75,8 +76,8 @@ class Graph:
         self.vertices[vertex] = currentExits
 
     def add_edge(self, move):
-        oppositeDirections = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
-        lastRoom = oppositeDirections[move]
+        oppositeDirections = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}   
+        lastRoom = oppositeDirections[move]     ## Let's us look back at the last room
         if self.lastRoomVisited in self.vertices:
             self.vertices[self.lastRoomVisited][move] = player.currentRoom.id
             self.vertices[player.currentRoom.id].update(
@@ -86,13 +87,23 @@ class Graph:
 
     def lastRoom(self, id):
         self.lastRoomVisited = id
+    
+    def checkExits(self, id):
+        allExits = []
+        for exit in self.vertices[id]:
+            allExits.append(self.vertices[id][exit])
+        if '?' not in allExits:
+            return True
+        else:
+            return False
+            
 
     def dft(self, vertex):
         print("CURRENT ROOM IN DFT: ", vertex)
         i = 0
-        if vertex not in graph.vertices:
+        if vertex not in graph.vertices:    ## Check if vertex is in vertices: if not, add.
             self.add_vertex(player.currentRoom.id)
-            if self.lastMove != None:
+            if self.lastMove != None:       ## Check if there have been any moves. If there have, call addEdge()
                 self.add_edge(self.lastMove)
         else:
             print("No moves yet")
@@ -129,11 +140,14 @@ class Graph:
     #                 q.enqueue(copy_path)
 
 
-graph = Graph()
+graph = Graph()  ## Instantiate the graph
 
-while len(graph.vertices) < 3:
-    graph.dft(player.currentRoom.id)
-
+while len(graph.vertices) < 3: ## While all rooms haven't been visited
+    graph.dft(player.currentRoom.id)  ## call DFT.
+    if player.currentRoom.id in graph.vertices: ## 
+        ## 
+        if graph.checkExits(player.currentRoom.id):
+            print("no unexplored exits in this room")
 
 print("VERTICES", graph.vertices)
 
