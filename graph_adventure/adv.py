@@ -66,36 +66,50 @@ class Graph:
     def __init__(self):
         self.vertices = {}
         self.lastRoomVisited = None
+        self.lastMove = None
 
     def add_vertex(self, vertex):
         currentExits = {}
         for exits in player.currentRoom.getExits():
             currentExits.update({exits: '?'})
-        self.vertices[vertex] = currentExits    
-        
+        self.vertices[vertex] = currentExits
 
     def add_edge(self, move):
         oppositeDirections = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
         lastRoom = oppositeDirections[move]
-        if player.currentRoom.id in self.vertices:
+        if self.lastRoomVisited in self.vertices:
             self.vertices[self.lastRoomVisited][move] = player.currentRoom.id
-            self.vertices[player.currentRoom.id].update({lastRoom:self.lastRoomVisited})
+            self.vertices[player.currentRoom.id].update(
+                {lastRoom: self.lastRoomVisited})
         else:
-            print("The vertex you're looking for doesn't exist in the graph")
-    
+            print("The vertex you're looking for does not exist")
+
     def lastRoom(self, id):
         self.lastRoomVisited = id
 
     def dft(self, vertex):
-        print("CURRENT ROOM", vertex)
-        for exit in self.vertices[vertex]:
-            print("EXITS FOR CURRRENT ROOM",exit)
-            if self.vertices[vertex][exit]=='?':
-                traversalPath.append(exit)
-                return player.travel(exit)
-            
-        
+        print("CURRENT ROOM IN DFT: ", vertex)
+        i = 0
+        if vertex not in graph.vertices:
+            self.add_vertex(player.currentRoom.id)
+            if self.lastMove != None:
+                self.add_edge(self.lastMove)
+        else:
+            print("No moves yet")
 
+        for exit in self.vertices[vertex]:
+            print(f"EXIT {i} FOR CURRENT ROOM: ", exit)
+            if self.vertices[vertex][exit] == '?':
+                if self.lastRoomVisited != vertex:
+                    self.lastRoomVisited = vertex
+                player.travel(exit)
+                self.lastMove = exit
+                return traversalPath.append(exit)
+            else:
+                i += 1
+
+    def bfs(self, starting_vertex, destination_vertex):
+        pass
 
     # def bfs(self, starting_vertex, destination_vertex):
     #     q = Queue()
@@ -118,18 +132,10 @@ class Graph:
 graph = Graph()
 
 while len(graph.vertices) < 3:
-    if player.currentRoom.id not in graph.vertices:
-        graph.add_vertex(player.currentRoom.id)
-        graph.lastRoom(player.currentRoom.id)
     graph.dft(player.currentRoom.id)
 
 
-
-
-    
-
-
-print(graph.vertices)
+print("VERTICES", graph.vertices)
 
 
 # # TRAVERSAL TEST
