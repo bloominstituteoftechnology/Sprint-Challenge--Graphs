@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Stack, Queue
 
 import random
 
@@ -18,28 +19,85 @@ roomGraph={0: [(3, 5), {'n': 1, 's': 5, 'e': 3, 'w': 7}], 1: [(3, 6), {'s': 0, '
 world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
-print(player)
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
 #dfs to traverse
+
+stack = Stack()
+visited = {}
+
 def findPath ():
-    visited = {}
-    totalRooms = len(roomGraph)
-    roomsVisited = 0
+    currentRoomId = player.currentRoom.id
+    for key in visited:
+        if key == currentRoomId:
+            return
+    visited[currentRoomId] = {}     
+    exits = player.currentRoom.getExits()
+
+    for dir in exits:
+        if dir == 'n':
+            player.travel('n')
+            traversalPath.append('n')
+            findPath()
+            player.travel('s')
+            traversalPath.append('s')
+        elif dir == 's':
+            player.travel('s')
+            traversalPath.append('s')
+            findPath()
+            player.travel('n')
+            traversalPath.append('n')
+        elif dir == 'e':
+            player.travel('e')
+            traversalPath.append('e')
+            findPath()
+            player.travel('w')
+            traversalPath.append('w')
+        elif dir == 'w':
+            player.travel('w')
+            traversalPath.append('w')
+            findPath()
+            player.travel('e')
+            traversalPath.append('e')
+
+    # print(exits)
+    # player.travel('n')
+    # exits = player.currentRoom.getExits()
+    # print(exits)
+
+    # player.travel('n')
+    # exits = player.currentRoom.getExits()
+    # print(exits)
+
+    # totalRooms = len(roomGraph)
+    # roomsVisited = 0
+    # while roomsVisited < totalRooms:
+    # exits = player.currentRoom.getExits()
+    # for dir in exits:
+    #     if dir = 'n' and dir
+    # print('exits', exits)
+    #if visited skip this
+    # visited[currentRoom] = {}
+    # for dir in exits:
+    #     visited[currentRoom][dir] = '?'
+    # for key in visited[currentRoom]:
+    #     if visited[currentRoom][key] == '?':
+    #         pass
+    # print(player.currentRoom.id)
+    # print('visited:', visited)
     
-    while roomsVisited < totalRooms:
-        currentRoom = player.currentRoom.id
-        exits = player.currentRoom.getExits()
-        visited[currentRoom] = {}
-        for dir in exits:
-            visited[currentRoom][dir] = '?'
-            
-        print(visited[currentRoom]) 
-        break
+        
        
 
+
+
+
+
 findPath()
+
+
+
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
