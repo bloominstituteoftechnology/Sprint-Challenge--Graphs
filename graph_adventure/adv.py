@@ -29,7 +29,7 @@ myGraph = MapGraph()
 
 myGraph.exploreMap(player)
 
-
+print(myGraph.rooms)
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
