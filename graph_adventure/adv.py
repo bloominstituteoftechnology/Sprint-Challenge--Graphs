@@ -124,7 +124,14 @@ class Graph:
                 i += 1
 
     def bfs(self, starting_vertex, destination_vertex):
-        pass
+        backMoves = Queue()
+        for exit in self.vertices[starting_vertex]:
+            print("Exits in BFS", self.vertices[starting_vertex][exit])
+            print("Compare exits to last unexplored room",
+                  self.lastUnknown[len(self.lastUnknown)-1])
+            if self.vertices[starting_vertex][exit] == self.lastUnknown[len(self.lastUnknown) - 1]:
+                print("Player travels on")
+                return player.travel(self.vertices[starting_vertex][exit])
 
 
 graph = Graph()  # Instantiate the graph
@@ -137,7 +144,7 @@ while len(graph.vertices) < 3:  # While all rooms haven't been visited
             graph.lastUnknown.pop(player.currentRoom.id)
             print("no unexplored exits in this room")
             print("LAST UNKNOWN", graph.lastUnknown)
-            # call BFS here
+            graph.bfs(player.currentRoom.id, graph.lastUnknown)
 
 
 print("VERTICES", graph.vertices)
