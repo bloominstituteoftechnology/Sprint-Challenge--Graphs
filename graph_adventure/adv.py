@@ -50,21 +50,40 @@ direction = random.choice(['n', 's', 'e', 'w'])
 def updateExit():
     exits = player.currentRoom.getExits()
     for exit in exits:
-        m.map[player.currentRoom.id].update({f"{exit}" : "?"})
+        #if m.map[player.currentRoom.id][exit] == "?" or m.map[player.currentRoom.id][exit] == None:
+        #m.map[player.currentRoom.id].update({f"{exit}" : "?"})
+        m.map[player.currentRoom.id].setdefault(exit, "?")
+    print("updated")
 
+def dft(currentRoom, visited = None):
+    if visited is None:
+        visited = set()
+    s = Stack()
+    s.push(currentRoom)
+    while s.size():
+        v = s.pop()
+        print("v", v)
+        if v not in visited:
+            visited.add(v)
+            updateExit()
+            if player.currentRoom.getRoomInDirection(direction) is not None:
+                player.travel(direction)
+                updateExit()
+                m.map[v].update({direction: player.currentRoom.id})
+                if direction =="n":
+                    m.map[player.currentRoom.id].update({"s": v})
+                elif direction == "s":
+                    m.map[player.currentRoom.id].update({"n": v})
+                elif direction == "e":
+                    m.map[player.currentRoom.id].update({"w": v})
+                elif direction == "w":
+                    m.map[player.currentRoom.id].update({"e": v})
+                dft(player.currentRoom.id, visited)
+            else:
+                
+        
 
-visited = set()
-s = Stack()
-s.push(player.currentRoom.id)
-while s.size():
-    v = s.pop()
-    print("v", v)
-    if v not in visited:
-        visited.add(v)
-        updateExit()
-        for child in roomGraph[v]:
-            s.push(child)
-
+dft(player.currentRoom.id)
 print("updatemap", m.map)
 
 # TRAVERSAL TEST
