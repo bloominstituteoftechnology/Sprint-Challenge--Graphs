@@ -22,15 +22,15 @@ player = Player("Name", world.startingRoom)
 
 # FILL THIS IN
 # print(player.currentRoom.getExits)
-#Building of queue and methods for bfs
+
 traversalPath = []
-reversedPath = []
+reversedPath = [None]
 roomPath = {}
-oppositeDirections = {'n':'s', 's':'n','e':'w', 'w': 'e'}
+oppositeDirection = {'n':'s', 's':'n','e':'w', 'w': 'e'}
 
-roomId = player.currentRoom.id
-roomExits = player.currentRoom.getExits()
 
+#Initial adding of first room
+roomPath[player.currentRoom.id] = player.currentRoom.getExits()
 
 # print(len(roomGraph) - 1)
 # print(roomPath)
@@ -39,26 +39,21 @@ roomExits = player.currentRoom.getExits()
 
 #loop condition: while rooms visited is less than total graph rooms
 while len(roomPath) < len(roomGraph) - 1:
-    if roomId not in roomPath:
+    if player.currentRoom.id not in roomPath:
         #key:value in roomPath dictionary
-        roomPath[roomId] = roomExits
+        roomPath[player.currentRoom.id] = player.currentRoom.getExits()
         prevRoom = reversedPath[-1]
-        roomPath[roomId].remove(prevRoom)
+        roomPath[player.currentRoom.id].remove(prevRoom)
     
-    while len(roomPath[roomId]) == 0:
+    while len(roomPath[player.currentRoom.id]) == 0:
         reverseDirection = reversedPath.pop()
         traversalPath.append(reverseDirection)
         player.travel(reverseDirection)
 
-
-
-
-
-
-
-
-
-
+    direction = roomPath[player.currentRoom.id].pop(0)
+    traversalPath.append(direction)
+    reversedPath.append(oppositeDirection[direction])
+    player.travel(direction)
 
 
 
@@ -67,7 +62,6 @@ while len(roomPath) < len(roomGraph) - 1:
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
-
 for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
@@ -77,8 +71,6 @@ if len(visited_rooms) == len(roomGraph):
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
-
-
 
 #######
 # UNCOMMENT TO WALK AROUND
