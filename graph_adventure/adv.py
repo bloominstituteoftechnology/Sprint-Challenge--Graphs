@@ -80,7 +80,24 @@ def dft(currentRoom, visited = None):
                     m.map[player.currentRoom.id].update({"e": v})
                 dft(player.currentRoom.id, visited)
             else:
-                
+                bfsVisited = {}
+                path = [player.currentRoom.id]
+                q = Queue()
+                q.enqueue(path)
+                while q.size():
+                    path = q.dequeue()
+                    node = path[-1]
+                    print("node", node)
+                    if node == "?":
+                        print("path", path)
+                    elif node not in bfsVisited:
+                        bfsVisited[node] = path
+                        for room in list(m(node)):
+                            path_copy = path[:]
+                            path_copy.append(room)
+                            q.enqueue(path_copy)
+
+
         
 
 dft(player.currentRoom.id)
