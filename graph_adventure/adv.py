@@ -35,7 +35,7 @@ def the_other_side(direction_traveled):
         return 'w'
 
 
-walkingPath = ['n', 's']
+traversalPath = ['n', 's']
 
 
 def bfs(dictionary, room):
@@ -101,7 +101,7 @@ while len(visited) < len(roomGraph):
         player.travel(direction)
 
         # update the path with the direction you are randomly going.
-        walkingPath.append(direction)
+        traversalPath.append(direction)
 
         # update visited
         current_room = player.currentRoom.id
@@ -120,7 +120,7 @@ while len(visited) < len(roomGraph):
         # generate a list of directions to get to the nearest unexplored node using a BFS, loop through and send the player in those directions in order.
 
         directions = bfs(visited, room)
-        walkingPath = walkingPath + directions
+        traversalPath = traversalPath + directions
         
         for direction in directions:
             player.travel(direction)
@@ -130,13 +130,13 @@ while len(visited) < len(roomGraph):
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
-for move in walkingPath:
+for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == len(roomGraph):
     print(
-        f"TESTS PASSED: {len(walkingPath)} moves, {len(visited_rooms)} rooms visited")
+        f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
