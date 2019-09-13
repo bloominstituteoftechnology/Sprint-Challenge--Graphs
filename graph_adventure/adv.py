@@ -69,6 +69,40 @@ deepBFSVisited = set()
 directionTakenCount = [0,0,0,0]
 # n 0, s 1, e, 2, w, 3
 
+
+roomsWithQuestionMarks = set()
+
+def simpleTraversal(player, world, graph):
+    stack = []
+    stack.append(player.currentRoom.id)
+    visited = set()
+    mazePath = []
+    
+    while len(visited) != len(world.rooms):
+        current = stack[-1]
+        visited.add(current)
+        rooms = graph[current][1]
+        travelToRoom = []
+        print("Room to move to: " + str(travelToRoom))
+
+        for current, room in rooms.items():
+            if room not in visited:
+                travelToRoom.append(room)
+
+        if len(travelToRoom) == 0:
+            room = stack[-2]
+            stack.pop()
+        else:
+            room = travelToRoom[0]
+            stack.append(travelToRoom[0])
+
+        for room1, room2 in rooms.items():
+            if room2 == room:
+                mazePath.append(room1)
+                print(mazePath)
+
+    return mazePath
+
 def traverseMaze(player, world):
     # Build graph
 
@@ -187,7 +221,8 @@ def findUnexploredRoom(player, world, roomExits):
             exits = mazeGraph[current]
             #print("BFS ROOM EXITS: " + str(exits))
             #if len(prevRoom) > 2:
-            badDirection = getOppositeDirection(prevRoom[-1][0])
+            #badDirection = getOppositeDirection(prevRoom[-1][0])
+            badDirection = 'm'
             #print("BAD DIRECTION: " + str(badDirection))
             for exit in exits:
                 #print("THIS IS THE EXIT: " + str(exit))
@@ -197,9 +232,9 @@ def findUnexploredRoom(player, world, roomExits):
                     if player.currentRoom.id is None:
                         print("********* *  * ** * * * ****FATAL ERROR ROOM ID IS NONE, PREVE MOVE: " + str(prevRoom[0]))
                     return player.currentRoom.id
-                if exit is not badDirection:
-                    if exit not in deepBFSVisited:
-                        bestPossibleExits.append(exit)
+                #if exit is not badDirection:
+                if exit not in deepBFSVisited:
+                    bestPossibleExits.append(exit)
                 else: bestPossibleExits.append(exit)
         if len(bfsPossibleExits) > 0 or len(bestPossibleExits) > 0:
            # print("BFS POSSIBLE EXITS: " + str(bfsPossibleExits))
@@ -263,7 +298,9 @@ def getOppositeDirection(direction):
 #print("The players current exits: " + str(player.currentRoom.getExits()))
 #print(player.currentRoom)
 
-traverseMaze(player, world)
+#traverseMaze(player, world)
+traversalPath = simpleTraversal(player, world, roomGraph)
+
 #print("Players position after traversal: " + str(player.currentRoom))
 
 # TRAVERSAL TEST
