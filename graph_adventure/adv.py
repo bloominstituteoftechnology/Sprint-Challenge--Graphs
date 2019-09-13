@@ -142,11 +142,9 @@ def traverseMaze(player, world):
 
 
 
-    print("History of moves: " + str(prevRoom))
+    #print("History of moves: " + str(prevRoom))
     for move in prevRoom:
         traversalPath.append(move[0])
-
-    print(mazeGraph)
 
 def updateDirectionCount(direction):
     if direction == 'n':
@@ -231,7 +229,7 @@ def getRandomDirection(roomExits):
     # print(player.currentRoom.id)
     #print("Room Exits to choose from" + str(roomExits))
     directionIndex = 0
-    counts = []
+    #counts = []
     if len(roomExits) > 1:
         #for room in roomExits:
         #counts.append(getDirectionCount(room))
