@@ -19,9 +19,37 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = [] # paths traversed
+reversePath = [] # paths traversed in reverse
+inversed_direction = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
+
+room_paths = {}
+
+room_paths[player.currentRoom.id] = player.currentRoom.getExits()
+
+while len(room_paths) < len(roomGraph)-1:
+    if player.currentRoom.id not in room_paths:
+        room_paths[player.currentRoom.id] = player.currentRoom.getExits()
+
+        last_room_visited = reversePath[-1]
+
+        room_paths[player.currentRoom.id].remove(last_room_visited)
+
+    while len(room_paths[player.currentRoom.id]) == 0:
+        reverse = reversePath.pop()
+
+        traversalPath.append(reverse)
+
+        player.travel(reverse)
+
+    movement_direction = room_paths[player.currentRoom.id].pop(0)
+
+    traversalPath.append(movement_direction)
+
+    reversePath.append(inversed_direction[movement_direction])
+
+    player.travel(movement_direction)
 
 
 # TRAVERSAL TEST
