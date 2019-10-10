@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Queue, Stack
 
 import random
 
@@ -19,10 +20,103 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
-
 # FILL THIS IN
-traversalPath = ['n', 's']
 
+# Find possible directions for each room
+traversalPath = []
+roomPath = []
+player.currentRoom = world.startingRoom
+
+# DFT
+d_stack = Stack()
+d_stack.push(player.currentRoom.id)
+
+accepted_directions = {"n", "s", "e", "w"}
+
+# create directions graph
+directions_graph = {}
+#initialize directions with questions marks
+for room in world.rooms:
+	dict = {}
+	for exit in world.rooms[room].getExits():
+		dict[exit] = "?"
+	directions_graph[room] = dict
+
+direction = ["?"]
+directions_inverse = {"n": "s", "s": "n", "e": "w", "w": "e"}
+
+last_from_direction = "?"
+
+recently_visited = set()
+
+explored_rooms = set()
+
+while len(explored_rooms) < len(roomGraph):
+
+	print(len(explored_rooms))
+
+	while len(direction) > 0:
+
+		pop_direction = direction.pop()
+
+		initial_room = player.currentRoom.id
+
+		# if have a direction in accepted directions
+
+		if pop_direction in accepted_directions:
+
+			player.travel(pop_direction) # travel in that direction
+			traversalPath.append(pop_direction) # add direction to traversal path
+
+			# assign room numbers to applicable directions of travel
+
+			directions_graph[initial_room][pop_direction] = player.currentRoom.id
+			
+			opposite_direction = directions_inverse[pop_direction]
+			directions_graph[player.currentRoom.id][opposite_direction] = initial_room
+
+		# Add rooms to explored rooms if true...
+
+		for exit in directions_graph[player.currentRoom.id]:
+
+			if directions_graph[player.currentRoom.id][exit] not in recently_visited:
+
+				if directions_graph[player.currentRoom.id][exit] == "?": 
+					direction = [exit]
+
+		explored_rooms.add(player.currentRoom.id)
+
+
+	back_path = traversalPath.copy()
+	recently_visited = set()
+
+	while len(back_path) > 0:
+
+		forward_direction = back_path.pop()
+
+		back_direction = directions_inverse[forward_direction]
+
+		avoid = False
+
+		recently_visited.add(player.currentRoom.id)
+
+		for go in directions_graph[player.currentRoom.id]:
+
+			if directions_graph[player.currentRoom.id][go] == "?":
+				avoid = True
+				direction = [go]
+
+		if avoid == False:
+
+			if back_direction in accepted_directions:
+
+				player.travel(back_direction)
+				traversalPath.append(back_direction)
+	
+
+		
+print(f"{traversalPath}")
+print(f"\n\n\n{directions_graph}")
 
 # TRAVERSAL TEST
 visited_rooms = set()
