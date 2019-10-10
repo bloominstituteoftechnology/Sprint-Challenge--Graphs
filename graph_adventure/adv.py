@@ -48,62 +48,60 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ["n", "s"]
+traversalPath = []
 
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
+visited_rooms.add(player.currentRoom)
 
-
-queue = Queue()
 stack = Stack()
 
 
 
 while len(visited_rooms) < 500:
-    visited_rooms.add(player.currentRoom)
+    
     exits = player.currentRoom.getExits()
+    #print(f"exits------------------{exits}")
     unexplored_list = []
 
-    if exits[0] is not None and player.currentRoom.getRoomInDirection(exits[0]) not in visited_rooms:
-        unexplored_list.append(exits[0])    
-    elif len(exits) > 1 and exits[1] is not None and player.currentRoom.getRoomInDirection(exits[1]) not in visited_rooms:
-        unexplored_list.append(exits[1])
-    elif len(exits) > 2 and exits[2] is not None and player.currentRoom.getRoomInDirection(exits[2]) not in visited_rooms:
-        unexplored_list.append(exits[2])
-    elif len(exits) > 3 and exits[3] is not None and player.currentRoom.getRoomInDirection(exits[3]) not in visited_rooms:
-        unexplored_list.append(exits[3])
+    for i in range(len(exits)):
+        if player.currentRoom.getRoomInDirection(exits[i]) not in visited_rooms:
+            unexplored_list.append(exits[i])
 
+        
     if len(unexplored_list) > 0:
-        direction = random.randint(0, len(unexplored_list) - 1)
-        stack.push(unexplored_list[direction])
-        #print(stack.size())
-        player.travel(unexplored_list[direction])
-        traversalPath.append(exits[direction])
+        random.shuffle(unexplored_list)
+        direction = unexplored_list[0]
+        player.travel(direction)
+        stack.push(direction)
+        traversalPath.append(direction)
+        visited_rooms.add(player.currentRoom)
         continue
     
     last_move = stack.pop()
+    #print(f"STACK POPPED ---------------- DIRECTION {last_move}")
     if last_move == "n":
-        player.travel("s")
-        traversalPath.append("s")
+        if player.currentRoom.getRoomInDirection("s") is not None:
+            player.travel("s")
+            traversalPath.append("s")
     elif last_move == "s":
-        player.travel("n")
-        traversalPath.append("n")
+        if player.currentRoom.getRoomInDirection("n") is not None:
+            player.travel("n")
+            traversalPath.append("n")
     elif last_move == "e":
-        player.travel("w")
-        traversalPath.append("w")
+        if player.currentRoom.getRoomInDirection("w") is not None:
+            player.travel("w")
+            traversalPath.append("w")
     elif last_move == "w":
-        player.travel("e")
-        traversalPath.append("e")
-    print(len(traversalPath))
-    #print(last_move)
+        if player.currentRoom.getRoomInDirection("e") is not None:
+            player.travel("e")
+            traversalPath.append("e")
+
+
           
 
-
-for move in traversalPath:
-    player.travel(move)
-    visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == len(roomGraph):
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
