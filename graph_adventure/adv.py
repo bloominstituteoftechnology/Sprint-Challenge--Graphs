@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Queue, Stack
 
 import random
 
@@ -21,8 +22,37 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+visited = {}
+path = []
+direction = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
 
+#add starting room to visited
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+#while visited list is less than the amount of rooms on the graph
+while len(visited) < len(roomGraph) - 1:
+    #if not visited
+    #add to visited and remove previous direction from potential paths to explore
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        previous_direction = path[-1]
+        visited[player.currentRoom.id].remove(previous_direction)
+
+    #while all paths have been explored
+    #backtrack to previous room until a room with optional paths is found
+    while len(visited[player.currentRoom.id]) == 0: # (when all room's exits explored)
+        previous_direction = path.pop()
+        traversalPath.append(previous_direction)
+        player.travel(previous_direction)
+
+    #if there is an unexplored direction
+    #add the direction to the traversalPath
+    #explore the new room
+    move = visited[player.currentRoom.id].pop(0)
+    traversalPath.append(move)
+    path.append(direction[move])
+    player.travel(move)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -48,5 +78,7 @@ else:
 #     cmds = input("-> ").lower().split(" ")
 #     if cmds[0] in ["n", "s", "e", "w"]:
 #         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
 #     else:
 #         print("I did not understand that command.")
