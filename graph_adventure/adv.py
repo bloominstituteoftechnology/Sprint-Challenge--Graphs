@@ -19,10 +19,62 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+# Open `adv.py`. There are four parts to the provided code:
 
-# FILL THIS IN
-traversalPath = ['n', 's']
+# * World generation code. Do not modify this!
+# * An incomplete list of directions. Your task is to fill this with valid traversal directions.
+# * Test code. Run the tests by typing `python3 adv.py` in your terminal.
+# * REPL code. You can uncomment this and run `python3 adv.py` to walk around the map.
 
+
+# Dictionary to reverse direction
+reverseDictionary = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w' }
+# Traversal Path
+traversalPath = []
+# Track all rooms visited
+roomsPath = {}
+# Need to be able to reverse back out
+reversePath = []
+# Dictionary for rooms
+roomsDictionary = {}
+
+#  player.currentRoom.id starts at 0 and stores current room ID
+#  player.currentRoom.getExits() - Should return possible exits
+#  player.travel(direction) - Move through rooms
+
+# Populate with the first value with current Room of 0
+roomsPath[player.currentRoom.id] = player.currentRoom.getExits()
+roomsDictionary[player.currentRoom.id] = player.currentRoom.getExits()
+
+#  While loop runs while all rooms haven't been visited
+while len(roomsPath) < len(roomGraph)-1:
+    #  If current room hasn't been visited
+    if player.currentRoom.id not in roomsPath:
+    #  Add current Room to roomsPath and roomsDictionary
+        roomsPath[player.currentRoom.id] = player.currentRoom.getExits()
+        roomsDictionary[player.currentRoom.id] = player.currentRoom.getExits()
+    #  Get the previous direction traveled
+        previousDirection = reversePath[-1]
+    #  Remove previous direction from room Dictionary
+        roomsDictionary[player.currentRoom.id].remove(previousDirection)
+
+#  While loop to reverse out
+    while len(roomsDictionary[player.currentRoom.id]) < 1: 
+    #  Pop off reversePath
+        reverse = reversePath.pop()
+    #  Add to traversalPath
+        traversalPath.append(reverse)
+    #  Travel reverse
+        player.travel(reverse)
+
+    #  Grab first room exit
+    exitDirection = roomsDictionary[player.currentRoom.id].pop()
+    #  Add to traversalPath
+    traversalPath.append(exitDirection)
+    # Add exitDirection to reversePath
+    reversePath.append(reverseDictionary[exitDirection])
+    # travel exitDirection
+    player.travel(exitDirection)
 
 # TRAVERSAL TEST
 visited_rooms = set()
