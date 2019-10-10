@@ -7,6 +7,33 @@ import random
 # Load world
 world = World()
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
+
 # You may uncomment the smaller graphs for development and testing purposes.
 
 # roomGraph={0: [(3, 5), {'n': 1}], 1: [(3, 6), {'s': 0, 'n': 2}], 2: [(3, 7), {'s': 1}]}
@@ -21,13 +48,59 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = ["n", "s"]
 
 
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
+
+
+queue = Queue()
+stack = Stack()
+
+
+
+while len(visited_rooms) < 500:
+    visited_rooms.add(player.currentRoom)
+    exits = player.currentRoom.getExits()
+    unexplored_list = []
+
+    if exits[0] is not None and player.currentRoom.getRoomInDirection(exits[0]) not in visited_rooms:
+        unexplored_list.append(exits[0])    
+    elif len(exits) > 1 and exits[1] is not None and player.currentRoom.getRoomInDirection(exits[1]) not in visited_rooms:
+        unexplored_list.append(exits[1])
+    elif len(exits) > 2 and exits[2] is not None and player.currentRoom.getRoomInDirection(exits[2]) not in visited_rooms:
+        unexplored_list.append(exits[2])
+    elif len(exits) > 3 and exits[3] is not None and player.currentRoom.getRoomInDirection(exits[3]) not in visited_rooms:
+        unexplored_list.append(exits[3])
+
+    if len(unexplored_list) > 0:
+        direction = random.randint(0, len(unexplored_list) - 1)
+        stack.push(unexplored_list[direction])
+        #print(stack.size())
+        player.travel(unexplored_list[direction])
+        traversalPath.append(exits[direction])
+        continue
+    
+    last_move = stack.pop()
+    if last_move == "n":
+        player.travel("s")
+        traversalPath.append("s")
+    elif last_move == "s":
+        player.travel("n")
+        traversalPath.append("n")
+    elif last_move == "e":
+        player.travel("w")
+        traversalPath.append("w")
+    elif last_move == "w":
+        player.travel("e")
+        traversalPath.append("e")
+    print(len(traversalPath))
+    #print(last_move)
+          
+
+
 for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
