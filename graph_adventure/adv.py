@@ -4,6 +4,19 @@ from world import World
 
 import random
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 # Load world
 world = World()
 
@@ -21,8 +34,123 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+# traversalPath = ['n', 'n', 's', 's', 'e', 'e', 'w', 'w', 'w', 'w', 'e', 'e', 's', 's']
+traversalPath = []
+# exits = {}
+graph = {0: {'n': '?', 'e': '?', 's': '?', 'w': '?'}}
 
+# needed when path is deadend
+opposite_direction = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+
+# for room in roomGraph:
+#     exits[room] = {}
+#     for direction in roomGraph[room][1]:
+#         exits[room][direction] = "?"
+# print(exits)
+
+# def find_direction(current_room):
+#     # returns open direction or first direction
+#     if 'n' in exits[current_room] and exits[current_room]['n'] == '?':
+#         return 'n'
+#     elif 'w' in exits[current_room] and exits[current_room]['w'] == '?':
+#         return 'w'
+#     elif 's' in exits[current_room] and exits[current_room]['s'] == '?':
+#         return 's'
+#     elif 'e' in exits[current_room] and exits[current_room]['e'] == '?':
+#         return 'e'
+#     else:
+#         return None
+    
+
+def bfs_path(starting_vertex_id):
+        q = Queue()
+        q.enqueue([starting_vertex_id])
+        visited = set()
+        while q.size() > 0:
+            path = q.dequeue()
+            v = path[-1]
+            if v not in visited:
+                for exit in graph[v]:
+                    if graph[v][exit] == '?':
+                        return path
+                visited.add(v)
+                for new_exit in graph[v]:
+                    new_path = list(path)
+                    new_path.append(graph[v][new_exit])
+                    q.enqueue(new_path)
+        return None
+
+def find_direction(path):
+    current_room = path[0]
+    directions = []
+    for room in path[1:]:
+        for exit in graph[current_room]:
+            if room == graph[current_room][exit]:
+                directions.append(exit)
+    return directions
+
+# def travel():
+#     # travel through rooms
+#     current_room = 0
+#     rooms = set()
+#     moves = []
+#     direction = None
+#     path_to_take = []
+#     opposites = {'n' : 's', 's': 'n', 'e': 'w', 'w':'e'}
+    
+while True:
+    # print(f'Current room is {current_room}')
+    current_exit = graph[player.currentRoom.id]
+   
+    unvisited_rooms = []
+
+    for direction in current_exit:
+        if current_exit[direction] == '?':
+            unvisited_rooms.append(direction)
+    
+    if len(unvisited_rooms) > 0:
+        first_exit = unvisited_rooms[0]
+        traversalPath.append(first_exit)
+        prev_room_id = player.currentRoom.id
+
+        player.travel(first_exit)
+
+        new_room = {}
+
+        if player.currentRoom.id not in graph:
+            for exit in player.currentRoom.getExits():
+                new_room[exit] = '?'
+            graph[player.currentRoom.id] = new_room
+        graph[prev_room_id][first_exit] = player.currentRoom.id  
+        graph[player.currentRoom.id][opposite_direction[first_exit]] = prev_room_id
+    else:
+        unvisited_paths = bfs_path(player.currentRoom.id)
+        if unvisited_paths is None:
+            break
+        for direction in find_direction(unvisited_paths):
+            player.travel(direction)
+            traversalPath.append(direction)
+    
+
+# travel()
+
+# print(traversalPath)
+# directions = ['n', 's', 'e', 'w']
+
+# visited = []
+
+# while len(visited) <= len(roomGraph):
+#     exits = player.currentRoom.getExits()
+#     player_id = player.currentRoom.id 
+#     print(f'Player is in room {player_id}. The exits are {exits}')
+    
+#     if player_id not in visited:
+#         if len(exits) != 0:
+#             player.travel('n')
+#             visited.append('n')
+
+
+# print(player.travel('n'))
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -43,10 +171,10 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
+player.currentRoom.printRoomDescription(player)
+while True:
+    cmds = input("-> ").lower().split(" ")
+    if cmds[0] in ["n", "s", "e", "w"]:
+        player.travel(cmds[0], True)
+    else:
+        print("I did not understand that command.")
