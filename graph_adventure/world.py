@@ -90,4 +90,3 @@ class World:
         print(str)
         print("#####")
 
-
