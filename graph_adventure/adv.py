@@ -1,8 +1,8 @@
 from room import Room
 from player import Player
 from world import World
-from dungeon_lib import roomGraph3 as roomGraph # examination will be on number 5
-from datastructures import graph
+from dungeon_lib import roomGraph2 as roomGraph # examination will be on number 5
+from datastructures import Graph, load_graph
 
 import random
 from typing import List, Dict, Any
@@ -11,17 +11,20 @@ world = World()
 
 world.loadGraph(roomGraph)
 world.printRooms()
-player = Player("Name", world.startingRoom)
+player = Player("Quinn", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+#traversalPath = ['n', 's']
 
-def load_graph(room_graph: Dict[int, List[Any]]) -> Graph:
-    graph = Graph()
-    rooms = dict()
-    for key, value in room_graph.items():
-        pass
+graph = load_graph(roomGraph)
+#print("player.currentRoom", player.currentRoom, dir(player.currentRoom))
+#print(world.startingRoom)
+print(player.currentRoom.id)
+traversalPath = graph.walk(player.currentRoom.id)
+
+print(traversalPath)
+
 
 
 # TRAVERSAL TEST
