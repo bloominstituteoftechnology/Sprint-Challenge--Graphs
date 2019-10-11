@@ -2,6 +2,7 @@ from room import Room
 from player import Player
 from world import World
 
+
 import random
 
 # Load world
@@ -21,8 +22,50 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+reverse_path = []
+visited = {}
 
+
+def reverse(direction):
+    if direction is 's':
+        return 'n'
+    elif direction is 'n':
+        return 's'
+    elif direction is 'w':
+        return 'e'
+    elif direction is 'e':
+        return 'w'
+    
+
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+
+while len(visited) < 499:
+
+    if player.currentRoom.id not in visited:
+
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+        visited[player.currentRoom.id].remove(reverse_path[-1])
+
+
+    while len(visited[player.currentRoom.id]) == 0:
+
+        reversed = reverse_path.pop()
+
+        traversalPath.append(reversed)
+
+        player.travel(reversed)
+    
+
+    move = visited[player.currentRoom.id].pop(0)
+
+    traversalPath.append(move)
+
+    reverse_path.append(reverse(move))
+
+    player.travel(move)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -32,12 +75,14 @@ for move in traversalPath:
     player.travel(move)
     visited_rooms.add(player.currentRoom)
 
+# print(traversalPath)
+
 if len(visited_rooms) == len(roomGraph):
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+    print(
+        f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
-
 
 
 #######
