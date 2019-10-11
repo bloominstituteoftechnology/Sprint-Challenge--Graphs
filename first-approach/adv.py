@@ -1,18 +1,18 @@
 from room import Room
 from player import Player
 from world import World
-from dungeon_lib import roomGraph2 as roomGraph # examination will be on number 5
-from datastructures import Graph, load_graph
+from dungeon_lib import roomGraph4 as roomGraph # examination will be on number 5
+from datastructures import Walker, load_graph
 
 import random
 from typing import List, Dict, Any
+
 # Load world
 world = World()
 
 world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Quinn", world.startingRoom)
-
 
 # FILL THIS IN
 #traversalPath = ['n', 's']
