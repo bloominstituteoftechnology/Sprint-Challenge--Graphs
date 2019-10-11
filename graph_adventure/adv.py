@@ -19,10 +19,46 @@ world.loadGraph(roomGraph)
 world.printRooms()
 player = Player("Name", world.startingRoom)
 
+# initial commit
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = [] # setting this up as empty to begin
+reversePath = []
+visited = {}
 
+def reverse_direction(direction):
+    if direction is 'n':
+        return 's'
+    elif direction is 's':
+        return 'n'
+    elif direction is 'e':
+        return 'w'
+    elif direction is 'w':
+        return 'e'
+
+"""
+player will be started in one room
+we run the check against 499 rooms rather than 500 as a result
+rooms are added to the visited list once this occurs
+in the event of a dead end, we use reversePath to make our way back
+add reversePath rooms to total traversal list as well
+"""
+
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+while len(visited) < 499:
+    if player.currentRoom.id not in visited:
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        visited[player.currentRoom.id].remove(reversePath[-1])
+    while len(visited[player.currentRoom.id]) == 0:
+        reversed = reversePath.pop()
+        traversalPath.append(reversed)
+        player.travel(reversed)
+
+    move = visited[player.currentRoom.id].pop(0)
+    traversalPath.append(move)
+    reversePath.append(reverse_direction(move))
+    player.travel(move)
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -50,3 +86,124 @@ else:
 #         player.travel(cmds[0], True)
 #     else:
 #         print("I did not understand that command.")
+
+# adding Queue and Stack classes for use with searches and traversals
+
+class Stack:
+    def __init__(self):
+        self.storage = []
+        self.size = 0
+
+    def push(self, value):
+        self.size += 1
+        self.storage.append(value)
+
+    def pop(self):
+        if len(self.storage) > 0:
+            self.size -= 1
+            return self.storage.pop()
+        else:
+            return None
+    
+    def length(self):
+        return self.size
+
+class Queue:
+    def __init__(self):
+        self.storage = []
+        self.size = 0
+
+    def enqueue(self, value):
+        self.size += 1
+        self.storage.append(value)
+    
+    def dequeue(self):
+        if len(self.storage) > 0:
+            self.size -= 1
+            return self.storage.pop(0)
+        else:
+            return None
+    
+    def length(self):
+        return self.size
+
+########## OLDER CODE ##########
+# adding a Graph class that will do general room tracking: rooms, adjacent rooms, exits, etc.
+
+# class Graph:
+#     def __init__(self):
+#         self.rooms = []
+#         self.adjacentRooms = {}
+#         self.oppositeN = 's'
+#         self.oppositeS = 'n'
+#         self.oppositeE = 'w'
+#         self.oppositeW = 'e'
+    
+#     def addRoom(self, roomID, possibleExits):
+#         self.rooms.append(roomID)
+#         self.adjacentRooms[roomID] = {}
+#         exits = {}
+
+#         for exit in possibleExits:
+#             exits[exit] = '?'
+#         self.adjacentRooms[roomID] = exits
+
+#     def addAdjacentRoom(self, roomID, nextRoom, direction):
+#         self.adjacentRooms[roomID][direction] = nextRoom
+#         reverse = self.reverseDirection(direction)
+#         self.adjacentRooms[nextRoom][reverse] = roomID
+    
+#     def reverseDirection(self, direction):
+#         direction = direction.upper()
+#         attr = 'opp' + direction
+#         x = getattr(self, attr)
+#         return x
+
+
+#     # the travel() method will use stack/queue classes to track the rooms visited and the path
+#     def travel(self, start):
+#         traversal = []
+#         stack = Stack()
+#         queue = Queue
+#         visited = set()
+#         path = []
+#         previous = None
+
+#         stack.push(start)
+#         while len(stack.storage) > 0:
+#             direction = None
+#             room = stack.pop()
+#             visited.add(room)
+#             exits = player.currentRoom.getExits()
+#             if len(exits) == 1:
+#                 newPath = []
+#                 for room in path:
+#                     player.travel(room)
+#                     newPath.append(room)
+#                     print(room)
+#                     if player.currentRoom.getExits() > 2:
+#                         traversal.append(newPath)
+#                         return
+#             elif len(exits) < 3:
+#                 for exit in exits:
+#                     if exit != previous:
+#                         direction = exit
+#                         break
+#             else:
+#                 while True:
+#                     direction = exits[random.randint(0, len(exits) - 1)]
+#                     if self.adjacentRooms[room][direction] != '?':
+#                         return
+#                 print(direction)
+#                 print(room)
+#                 print(traversal)
+#             return traversal
+
+###########################
+    
+# print tests
+
+print(player.currentRoom.id)
+print(traversalPath)
+print(reversePath)
+print(visited)
