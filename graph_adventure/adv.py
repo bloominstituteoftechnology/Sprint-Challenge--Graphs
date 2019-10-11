@@ -6,6 +6,7 @@ from graph import Graph
 from stack import Stack
 
 import random
+import re
 
 # Load world
 world = World()
@@ -23,7 +24,7 @@ world.loadGraph(roomGraph)
 # world.printRooms()
 player = Player("Name", world.startingRoom)
 
-rooms = Graph()
+
 """
 we want a graph of all the room IDs and their connections
 """
@@ -55,20 +56,45 @@ visited = set()
 
 def explore(player, trackBack):
     while len(visited) < len(roomGraph):
-        currLoc = player.currentRoom.id # where we are currently standing
-        exits = roomGraph[currLoc][1]  #initialize our list of exits for this room
+        currLoc = player.currentRoom # where we are currently standing
+        exits = []
+        for attr,value in currLoc.__dict__.items():
+            if attr == 'n_to' and value is not None:
+                thisExit = []
+                thisExit.append('n')
+                x = re.search(r"\nRoom (\d+)",str(value))
+                thisExit.append(x.group(1))
+                exits.append(thisExit)
+            if attr == 's_to' and value is not None:
+                thisExit = []
+                thisExit.append('s')
+                x = re.search(r"\nRoom (\d+)",str(value))
+                thisExit.append(x.group(1))
+                exits.append(thisExit)
+            if attr == 'e_to' and value is not None:
+                thisExit = []
+                thisExit.append('e')
+                x = re.search(r"\nRoom (\d+)",str(value))
+                thisExit.append(x.group(1))
+                exits.append(thisExit)
+            if attr == 'w_to' and value is not None:
+                thisExit = []
+                thisExit.append('w')
+                x = re.search(r"\nRoom (\d+)", str(value))
+                thisExit.append(x.group(1))
+                exits.append(thisExit)
+        print(exits)
         exitsToCheck = []  # our list of exits unexplored
         for e in exits:
-            if e not in visited:
-                exitsToCheck.append(e)
+            if e[1] not in visited:
+                exitsToCheck.append(e[0])
         while exitsToCheck:
             if len(exitsToCheck) > 1:
                 #initialize new trackback stack
                 trackBack = Stack()
             #pick a direction to move randomly based upon available exits
             direction = random.randint(0, len(exitsToCheck)-1)
-            moveDir = f"\"{exitsToCheck[direction]}\""
-            print(moveDir)
+            moveDir = exitsToCheck[direction]
             trackBackDir = ''
             if moveDir == 'n':
                 trackBackDir = 's'
@@ -97,8 +123,8 @@ def goBack(player, trackBack):
     
 # while len(visited) < len(roomGraph):
 #     explore(player)
-
-
+trackBack = Stack()
+explore(player, trackBack)
 
 """
 HERE IS WHERE WE print THE traversalPath...
@@ -108,20 +134,20 @@ HERE IS WHERE WE print THE traversalPath...
 
 
 # TRAVERSAL TEST
-visited_rooms = set()
-trackBack = Stack()
-player.currentRoom = world.startingRoom
-visited_rooms.add(player.currentRoom)
-explore(player, trackBack)
-for move in traversalPath:
-    player.travel(move)
-    visited_rooms.add(player.currentRoom)
+# visited_rooms = set()
+# trackBack = Stack()
+# player.currentRoom = world.startingRoom
+# visited_rooms.add(player.currentRoom)
+# explore(player, trackBack)
+# for move in traversalPath:
+#     player.travel(move)
+#     visited_rooms.add(player.currentRoom)
 
-if len(visited_rooms) == len(roomGraph):
-    print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
+# if len(visited_rooms) == len(roomGraph):
+#     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
+# else:
+#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+#     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
 
 
 
