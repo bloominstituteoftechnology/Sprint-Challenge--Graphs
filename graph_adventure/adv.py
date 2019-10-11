@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from helper import Queue, Stack
 
 import random
 
@@ -21,7 +22,79 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+traversalPath = []
+roomPath = []
+player.currentRoom = world.startingRoom
+
+# Create a stack
+stack = Stack()
+# Push current position into the stack
+stack.push(player.currentRoom.id)
+# Direction player can move
+playerMoves = {"n", "s", "e", "w"}
+# Store directions
+directions = {}
+
+# Instatiate exits with ?s
+for room in world.rooms:
+	dict = {}
+	for exit in world.rooms[room].getExits():
+		dict[exit] = "?"
+	directions[room] = dict
+
+direction = ["?"]
+reversed_path = {"n": "s", "s": "n", "e": "w", "w": "e"}
+visited = set()
+explored = set()
+
+while len(explored) < len(roomGraph):
+	print(len(explored))
+	while len(direction) > 0:
+        #Get unexplored room
+		unexplored = direction.pop()
+		new_room = player.currentRoom.id
+
+		# If player can move in an unxplored direction
+
+		if unexplored in playerMoves:
+			player.travel(unexplored) 
+			traversalPath.append(unexplored) 
+			directions[new_room][unexplored] = player.currentRoom.id
+			opposite_direction = reversed_path[unexplored]
+			directions[player.currentRoom.id][opposite_direction] = new_room
+
+		#Add room to explored
+		for exit in directions[player.currentRoom.id]:
+			if directions[player.currentRoom.id][exit] not in visited:
+				if directions[player.currentRoom.id][exit] == "?": 
+					direction = [exit]
+
+		explored.add(player.currentRoom.id)
+
+
+	back_track = traversalPath.copy()
+	recently_visited = set()
+
+    # Back track steps
+	while len(back_track) > 0:
+		forward_direction = back_track.pop()
+		back_direction = reversed_path[forward_direction]
+		avoid = False
+		visited.add(player.currentRoom.id)
+
+		for step in directions[player.currentRoom.id]:
+			if directions[player.currentRoom.id][step] == "?":
+				avoid = True
+				direction = [step]
+
+		if avoid == False:
+			if back_direction in playerMoves:
+				player.travel(back_direction)
+				traversalPath.append(back_direction)
+
+# Print path
+print(f"{traversalPath}")
+print(f"\n\n\n{directions}")
 
 
 # TRAVERSAL TEST
@@ -37,16 +110,3 @@ if len(visited_rooms) == len(roomGraph):
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(roomGraph) - len(visited_rooms)} unvisited rooms")
-
-
-
-#######
-# UNCOMMENT TO WALK AROUND
-#######
-# player.currentRoom.printRoomDescription(player)
-# while True:
-#     cmds = input("-> ").lower().split(" ")
-#     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
-#     else:
-#         print("I did not understand that command.")
