@@ -4,7 +4,9 @@ from world import World
 from queue import Queue
 from graph import Graph
 from stack import Stack
+from checkexits import checkExits
 
+import itertools
 import random
 import re
 
@@ -51,95 +53,97 @@ We want to keep track of rooms we have visited
 """
 visited = set()
 """
-1. We want to walk in a direction we haven't walked yet, and once we get to a room with more than one exit we haven't explored, we want to start keeping track of our reverse path. Whenever we get to another room with more than one exit we haven't explored, we reset our reverse path.
+1. We want to walk in a direction we haven't walked yet, and once we get to a room with more than one exit we haven't explored, we want to start keeping track of our reverse path. Whenever we get to another room with more than one exit we haven't explored, we start adding a reverse path to that room.
 """
 
-def explore(player, trackBack):
-    while len(visited) < len(roomGraph):
-        currLoc = player.currentRoom # where we are currently standing
-        exits = []
-        for attr,value in currLoc.__dict__.items():
-            if attr == 'n_to' and value is not None:
-                thisExit = []
-                thisExit.append('n')
-                x = re.search(r"\nRoom (\d+)",str(value))
-                thisExit.append(x.group(1))
-                exits.append(thisExit)
-            if attr == 's_to' and value is not None:
-                thisExit = []
-                thisExit.append('s')
-                x = re.search(r"\nRoom (\d+)",str(value))
-                thisExit.append(x.group(1))
-                exits.append(thisExit)
-            if attr == 'e_to' and value is not None:
-                thisExit = []
-                thisExit.append('e')
-                x = re.search(r"\nRoom (\d+)",str(value))
-                thisExit.append(x.group(1))
-                exits.append(thisExit)
-            if attr == 'w_to' and value is not None:
-                thisExit = []
-                thisExit.append('w')
-                x = re.search(r"\nRoom (\d+)", str(value))
-                thisExit.append(x.group(1))
-                exits.append(thisExit)
-        print(exits)
-        exitsToCheck = []  # our list of exits unexplored
-        for e in exits:
-            if e[1] not in visited:
-                exitsToCheck.append(e[0])
-        while exitsToCheck:
-            if len(exitsToCheck) > 1:
-                #initialize new trackback stack
-                trackBack = Stack()
-            #pick a direction to move randomly based upon available exits
-            direction = random.randint(0, len(exitsToCheck)-1)
-            moveDir = exitsToCheck[direction]
-            trackBackDir = ''
-            if moveDir == 'n':
-                trackBackDir = 's'
-            if moveDir == 's':
-                trackBackDir = 'n'
-            if moveDir == 'e':
-                trackBackDir = 'w'
-            if moveDir == 'w':
-                trackBackDir = 'e'
-            # add trackBack direction to stack
-            trackBack.push(trackBackDir)
-            # print(moveDir)
-            # player.travel(moveDir)
-            traversalPath.append(moveDir)
-            # print(traversalPath)
-        goBack(player, trackBack)
     
-def goBack(player, trackBack):
-    while trackBack:
-        move = trackBack.pop()
+    
+def explore(player, trackBackPaths, traversalPath):
+    world.printRooms()
+    visited.add(player.currentRoom.id)
+    pathBack= []
+    trackBackPaths.push(pathBack)
+    
+    exits = checkExits(player)
+    #see if there are any unexplored exits
+    exitsToCheck = []
+    for exit in exits:
+        if int(exit[1]) not in visited:
+            exitsToCheck.append(exit[0])
+    print(f"exits to check: {exitsToCheck}")
+    print(visited)
+    if len(exitsToCheck) == 0:
+        print(f"going back")
+        print(f"number of paths in stack: {trackBackPaths.size()}")
+        goBack(player, trackBackPaths, traversalPath)
+    if len(exitsToCheck)>0:
+        #pick a direction to move randomly based upon exits to check
+        direction = random.randint(0, len(exitsToCheck)-1)
+        moveDir = exitsToCheck[direction][0]
+        print(f"moveDirection: {moveDir}")
+        trackBackDir = ''
+        if moveDir == 'n':
+            trackBackDir = 's'
+        if moveDir == 's':
+            trackBackDir = 'n'
+        if moveDir == 'e':
+            trackBackDir = 'w'
+        if moveDir == 'w':
+            trackBackDir = 'e'
+            
+            
+        #if there are more than one exit to this room, then we want to start a new trackBack path to get back to this node
+        if len(exitsToCheck)>1:
+            pathBack = []
+            trackBackPaths.push(pathBack)
+        # add trackBack direction to stack
+        pathBack.append(trackBackDir)
+        player.travel(moveDir, False)
+        traversalPath.append(moveDir)
+    
+
+    # print(f"this is the trackBackDir: {trackBackDir}")
+    # print(f"this is the pathBack length: {pathBack.size()}")
+    # print(moveDir)
+    exits = []
+        
+    return traversalPath, trackBackPaths
+
+
+def goBack(player, trackBackPaths, traversalPath):
+    pathBack = trackBackPaths.pop()
+    print(f"Pathback list: {pathBack}")
+    while len(pathBack) > 0:
+        move = pathBack[-1]
+        del pathBack[-1]
+        print(f"pathBack move: {move}")
         traversalPath.append(move)
         player.travel(move)
     
     
     
     
-# while len(visited) < len(roomGraph):
-#     explore(player)
-trackBack = Stack()
-explore(player, trackBack)
+#Move Engine
+num_walks = 3
+shortestPath = [None] * 100000
+for _ in itertools.repeat(shortestPath, num_walks):
+    traversalPath = []
+    visited = set()
+    player.currentRoom = world.startingRoom
+    trackBackPaths = Stack()
+    pathBack= []
+    while len(visited) < len(roomGraph):
+        explore(player, trackBackPaths, traversalPath)
+    if len(traversalPath) < len(shortestPath):
+        shortestPath = traversalPath  
 
-"""
-HERE IS WHERE WE print THE traversalPath...
-"""
-# print(traversalPath)
-
-
-
+print(len(shortestPath))
+print(len(traversalPath))
 # TRAVERSAL TEST
 # visited_rooms = set()
-# trackBack = Stack()
 # player.currentRoom = world.startingRoom
 # visited_rooms.add(player.currentRoom)
-# explore(player, trackBack)
-# for move in traversalPath:
+# for move in shortestPath:
 #     player.travel(move)
 #     visited_rooms.add(player.currentRoom)
 
