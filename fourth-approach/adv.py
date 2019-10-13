@@ -99,8 +99,9 @@ def unvisited() -> Set[int]:
     global roomGraph
     return list(set(roomGraph.keys()) - visited)
 # while len(visited) != len(roomGraph):
+nears = {room for room in room_graph[curr_room].values()}
 while len(unvisited()) > 0:
-
+    # print(curr_room)
     paths__ = bf_paths(room_graph, curr_room)
     paths_ = get_ord_list_items_from_dict_paths(paths__)
     paths = [(key, value) for key, value in paths_ if key[1] in unvisited()]
@@ -108,38 +109,58 @@ while len(unvisited()) > 0:
     start_end, path = paths.pop(0)
 
     start, end = start_end
-    if end not in visited: #and len(room_graph[end]) == 1:
 
-        midpoint = sorted(unvisited()).pop() # choice(unvisited()
+    if end not in visited:
 
-        backtracking = bf_paths(room_graph, end)[(end, midpoint)]
 
-        for move in path + backtracking: # REV_PATHS[(end, start)]:
-            nextroom = room_graph[curr_room][move]
-            visited.add(nextroom)
-            traversal.append(move)
+        if len(room_graph[end])==1:
 
-            curr_room = nextroom
-            if len(visited)==len(roomGraph):
-                break
-    #break
+            try:
+                midpoint = sorted(nears - visited).pop()# choice(unvisited())#
+            except:
+                midpoint = sorted(unvisited()).pop()
 
-#hile len(visited) != len(roomGraph):
-#
-#   Paths = df_paths(room_graph, curr_room)
-#
-#   random = choice(unvisited())
-#   path = Paths[(curr_room, random)]
-#
-#   for move in path + bf_paths(room_graph, random)[(random, curr_room)]:
-#       nextroom = room_graph[curr_room][move]
-#       visited.add(nextroom)
-#       traversal.append(move)
-#       curr_room = nextroom
-#
-#       if len(visited) == len(roomGraph):
-#           break
-#   # break
+            backtracking = bf_paths(room_graph, end)[(end, midpoint)]
+
+            for move in path + backtracking:
+                nextroom = room_graph[curr_room][move]
+                visited.add(nextroom)
+                traversal.append(move)
+                curr_room = nextroom
+                for room in room_graph[curr_room].values():
+                    nears.add(room)
+
+
+                # break early if possibel to save the rest of the iterable
+                if len(visited)==len(roomGraph):
+                    break
+
+        else:
+            start_end, path = paths.pop(0)
+            start, end = start_end
+
+            try:
+                midpoint = sorted(nears - visited).pop() # choice(unvisited())#
+            except:
+                midpoint = sorted(unvisited()).pop()
+
+            backtracking = bf_paths(room_graph, end)[(end, midpoint)]
+
+            for move in path + backtracking:
+                nextroom = room_graph[curr_room][move]
+                visited.add(nextroom)
+                traversal.append(move)
+                curr_room = nextroom
+
+                for room in room_graph[curr_room].values():
+                    nears.add(room)
+
+                # break early if possible to save the rest of the iterable
+                if len(visited)==len(roomGraph):
+                    break
+
+    else:
+        continue
 
 traversalPath = traversal
 # TRAVERSAL TEST
