@@ -23,7 +23,7 @@ build_up = {k: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
 }
 
 room_graph = {key: value[1] for key, value in roomGraph.items()}
-reverse = {'n': 's', 'e': 'w'}
+reverse = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}
 
 #print(room_graph)
 
@@ -50,24 +50,42 @@ visited_rooms.add(player.currentRoom)
 traversalPath = list()
 ss = Stack()
 qq = Queue()
+
 while len(visited_rooms) != len(roomGraph.keys()):
     move = random.choice(player.currentRoom.getExits())
-    ss.push(move)
-    while ss.size > 0:
-        dir_move: str = ss.pop()
-       
-        if dir_move in room_graph[player.currentRoom.id].keys():
-            player.travel(dir_move)
-            traversalPath.append(dir_move)
-            visited_rooms.add(player.currentRoom.id)
 
-            if room_graph[player.currentRoom.id][dir_move] not in visited_rooms:
+    if room_graph[player.currentRoom.id][move] not in visited_rooms:
+        ss.push(move)
+        while ss.size > 0:
+            dir_move: str = ss.pop()
 
-                for mv in player.currentRoom.getExits():
+            if dir_move in room_graph[player.currentRoom.id].keys():
 
-                    ss.push(mv)
+                if room_graph[player.currentRoom.id][dir_move] not in visited_rooms:
+                    print(dir_move)
+                    player.travel(dir_move)
+                    traversalPath.append(dir_move)
+                    visited_rooms.add(player.currentRoom.id)
+                    for mv in player.currentRoom.getExits():
 
-           
+                        if mv in room_graph[player.currentRoom.id].keys():
+                            print("     ", mv)
+                            if room_graph[player.currentRoom.id][mv] not in visited_rooms:
+                                ss.push(mv)
+                                continue
+                            else:
+                                ss.push(reverse[mv])
+                                continue
+                        else:
+                            continue
+                else:
+                    continue
+
+
+            else:
+                continue
+    else:
+        ss.push(reverse[move])
 
 
 
