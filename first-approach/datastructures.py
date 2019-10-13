@@ -49,10 +49,16 @@ class Edge:
         return None
 
     def __repr__(self) -> str:
-        return f"Edge: {self.tail}={self.label}=>{self.head}"
+        return f"Edge: {self.tail}-{self.label}->{self.head}"
 
     def __str__(self) -> str:
-        return f"{self.tail}={self.label}=>{self.head}"
+        return f"{self.tail}-{self.label}->{self.head}"
+
+    def __eq__(self, e) -> bool:
+        return self.tail==e.tail and self.label==e.label and self.head==e.head
+
+    def __hash__(self) -> int:
+        return hash((self.tail, self.label, self.head))
 
 class BaseGraph:
     """ an edge-labeled, directed graph. """
@@ -137,35 +143,74 @@ class Walker(BaseGraph):
             vertex: int = ss.pop()
             traversal.append(vertex)
             if vertex not in visited_vertices:
+
                 visited_vertices.add(vertex)
-                for edge in self.get_neighbors(vertex):
-                    # print(edge.head)
-                    if edge.head not in visited_vertices:
+               
+                for edge in self.get_neighbors(vertex): #(e for e in self.get_neighbors(vertex) if e.head not in visited_vertices):
 
-                        # deadend logic
+                    if edge not in visited_vertices:
+                        neighbors = self.get_neighbors(edge.head)
+                        unvisited_neighbs = [e for e in neighbors if e.head not in visited_vertices]
+                        ss.push(edge.head)
+                        traversal.append(edge.head)
+                        # if dead end
+                        if len(neighbors)==1:
+                            # go back
+                            bf_path_return = self.bf_path(edge.head, starting_vertex)
+                            traversal.extend(bf_path_return)
+                            bf_path_continue = self.bf_path(starting_vertex, vertex)
+                            ss.push(starting_vertex)
 
-                        neighbs = self.get_neighbors(edge.head)
-                        unvisited_neighbs = [e for e in neighbs if e.head not in visited_vertices]
-                        if len(unvisited_neighbs) > 1: # new "intermediary root"
-                            intermediary_root = vertex
-                        # dead-end
-                        if len(unvisited_neighbs)==0: # then its a deadend
-                            bf_path = self.bf_path(edge.head, intermediary_root)
-                            traversal.extend(bf_path[:-1])
-                            ss.push(intermediary_root)
-                        else:
-                            ss.push(edge.head)
-                            # traversal.append(edge.head)
-                            continue
+
+                    # if len(unvisited_neighbs) > 1:
+                    #   intermediary_root = vertex
+                    #    ss.push(edge.head)
+                    #    ss.push(intermediary_root)
+
                     else:
-                        #traversal.extend(self.bf_path(starting_vertex, edge.head))
                         continue
+                        # ss.push(edge.head)
+        # return traversal
+                        #\
+#
+#                   # print(edge.head)
+#                   if edge.head not in visited_vertices:
+#                       # visited_vertices.add(vertex)
+#                       # deadend logic
+#                       neighbs = self.get_neighbors(edge.head)
+#                       unvisited_neighbs = [e for e in neighbs if e.head not in visited_vertices]
+#
+#                       if len(neighbs) == 1: # dead end
+#                           bf_path = self.bf_path(edge.head, intermediary_root)
+#                           traversal.extend(bf_path[:-1])
+#                           ss.push(intermediary_root)
+#                       elif len(unvisited_neighbs) > 1:
+#                           intermediary_root = vertex
+#                           ss.push(intermediary_root)
+#                           ss.push(edge.head)
+#                       else:
+#                           ss.push(edge.head)
+#                   else:
+#                       continue
+                        #traversal.extend(self.bf_path(starting_vertex, edge.head))
             else:
                 # ss.pop()
                 continue
            
         return traversal
-
+    ## IDEA -- let it return the one w the extra zero and use something like the checkvalid logic to get rid of the bad node
+    def check_valid(self, traversal: List[int]) -> bool:
+        """ takes a traversal of ints and verifies that there is an edge between each step"""
+        bool_list: List[bool] = list()
+        edges = [(e.tail, e.head) for e in self.edges]
+        while traversal:
+            prospective_tail = traversal.pop(0)
+            prospective_head = traversal[0]
+            if (prospective_tail, prospective_head) in edges:
+                continue
+            else:
+                return False
+        return True
 
     def walk_by_edges(self, starting_vertex: int) -> List[int]:
         """ hacked together combination of bft and dft
@@ -213,10 +258,13 @@ class Walker(BaseGraph):
         path_by_moves = list()
         while traversal:
             first = traversal.pop(0)
-            edges = self.get_neighbors(first)
-            edge = [e for e in edges if e.tail==traversal[0]]
-            assert len(edge)==1
-            path_by_moves.append(edge[0].label)
+            if first ==traversal[0]:
+                continue
+            else:
+                edges = self.get_neighbors(first)
+                edge = [e for e in edges if e.tail==traversal[0]]
+                assert len(edge)==1
+                path_by_moves.append(edge[0].label)
         return path_by_moves
 
 def load_graph(room_graph: Dict[int, List[Any]]) -> Walker:
@@ -242,11 +290,13 @@ if __name__=='__main__':
     print()
     # print(roomGraph)
     print()
-    print(graph.edges)
+    # print(graph.edges)
     print([edge for edge in graph.edges if edge.head==8])
     #print()
     print()
     traversal = graph.walk(0)
+    print(graph.check_valid(traversal))
+
     #print(traversals)
     #print(max(len(path) for key, path in traversals.items()))
     print(traversal)
