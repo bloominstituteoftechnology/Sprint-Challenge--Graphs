@@ -1,12 +1,12 @@
 from room import Room
 from player import Player
 from world import World
-from dungeon_lib import roomGraph4 as roomGraph # examination will be on number 5
+from dungeon_lib import roomGraph5 as roomGraph # examination will be on number 5
 # from datastructures import Walker, load_graph
 from logic import load_graph, walk
 import random
 from typing import List, Dict, Any
-
+from datastructures import Queue, Stack
 # Load world
 world = World()
 
@@ -17,26 +17,68 @@ player = Player("Quinn", world.startingRoom)
 # FILL THIS IN
 traversalPath = ['n', 's']
 
-# print(roomGraph)
-# graph = load_graph(roomGraph)
-
-# visitation_order, traversalPath = walk(graph, 0)
-
-build_up = {
-    0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+build_up = {k: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+            for k
+            in range(len(roomGraph.keys()))
 }
 
-print(roomGraph)
+room_graph = {key: value[1] for key, value in roomGraph.items()}
+reverse = {'n': 's', 'e': 'w'}
 
+#print(room_graph)
 
-
-# TRAVERSAL TEST
+#traversal = list()
+#
+#ooms_neighbs = list(room_graph.items())
+#oom, neighbs = rooms_neighbs.pop(0)
+#hile rooms_neighbs:
+#
+#   nsew = list(neighbs.keys())
+#   random_dir = random.choice(nsew)
+#   random_neighb = neighbs[random_dir]
+#   #print(random_dir, random_neighb)
+#   if random_neighb != '?':
+#       build_up[room][random_dir] = random_neighb
+#       traversal.append(random_dir)
+#       room, neighbs = rooms_neighbs.pop(0)
+   
+#print(build_up)
+#print(traversal)
 visited_rooms = set()
 player.currentRoom = world.startingRoom
 visited_rooms.add(player.currentRoom)
-for move in traversalPath:
-    player.travel(move)
-    visited_rooms.add(player.currentRoom)
+traversalPath = list()
+ss = Stack()
+qq = Queue()
+while len(visited_rooms) != len(roomGraph.keys()):
+    move = random.choice(player.currentRoom.getExits())
+    ss.push(move)
+    while ss.size > 0:
+        dir_move: str = ss.pop()
+       
+        if dir_move in room_graph[player.currentRoom.id].keys():
+            player.travel(dir_move)
+            traversalPath.append(dir_move)
+            visited_rooms.add(player.currentRoom.id)
+
+            if room_graph[player.currentRoom.id][dir_move] not in visited_rooms:
+
+                for mv in player.currentRoom.getExits():
+
+                    ss.push(mv)
+
+           
+
+
+
+# traversalPath = traversal.copy()
+# # TRAVERSAL TEST
+# visited_rooms = set()
+# player.currentRoom = world.startingRoom
+# visited_rooms.add(player.currentRoom)
+# for move in traversalPath:
+#     player.travel(move)
+#     visited_rooms.add(player.currentRoom)
 
 if len(visited_rooms) == len(roomGraph):
     print(f"TESTS PASSED: {len(traversalPath)} moves, {len(visited_rooms)} rooms visited")
