@@ -23,204 +23,109 @@ player = Player("Name", world.startingRoom)
 
 # --- HELPERS ---
 
-
-# def the_other_side(direction_traveled):
-#     if direction_traveled == 'n':
-#         return 's'
-#     elif direction_traveled == 's':
-#         return 'n'
-#     elif direction_traveled == 'w':
-#         return 'e'
-#     elif direction_traveled == 'e':
-#         return 'w'
-
-
-# traversalPath = ['n', 's']
+def the_other_side(direction_traveled):
+    if direction_traveled == 'n':
+        return 's'
+    elif direction_traveled == 's':
+        return 'n'
+    elif direction_traveled == 'w':
+        return 'e'
+    elif direction_traveled == 'e':
+        return 'w'
 
 
-# def bfs(dictionary, room):
-#     visited = set()
-#     q = Queue()
-#     path = [room]
-#     q.put([room])
-#     while q.empty() is False:
-#         # get list of room id's
-#         placeholder = q.get()
-#         # get first item off list of id's
-#         v = placeholder[0]
-
-#         if v == '?':
-#             path = placeholder[1:]
-#             break
-
-#         if v not in visited:
-#             visited.add(v)
-#             for e in dictionary[v]:
-#                 node = dictionary[v][e]
-#                 c = placeholder.copy()
-#                 # put node in list
-#                 c.insert(0, node)
-#                 # add list to queue
-#                 q.put(c)
-
-#     directions = []
-#     # go backwards
-#     while len(path) > 1:
-#         # get the last room in the path
-#         location = path.pop()
-#         # find the direction that'll take you to the new last room in the path and append to directions
-#         for route in dictionary[location]:
-#             if dictionary[location][route] == path[-1]:
-#                 directions.append(route)
-
-#     return directions
+traversalPath = ['n', 's']
 
 
-# # create dictionary for visited
-# visited = {}
-
-# # run Depth First Traversal
-# while len(visited) < len(roomGraph):
-
-#     # get room number of where you are.
-#     room = player.currentRoom.id
-
-#     # if not in visited, create entry and add exits.
-#     if room not in visited:
-#         visited[room] = {
-#             direction: '?' for direction in player.currentRoom.getExits()}
-        
-
-#     # Are there ? in the exits
-#     unexplored = [direction for direction in visited[room]
-#                 if visited[room][direction] == '?']
-    
-#     print("----------------------------------------------")
-#     print (unexplored)
-#     print("----------------------------------------------")
-#     break
-#     # if so, pick one and go for it.
-
-#     if len(unexplored) > 0:
-#         # go down a random pathway
-#         direction = unexplored[(random.randint(0, len(unexplored)-1))]
-#         player.travel(direction)
-
-#         # update the path with the direction you are randomly going.
-#         traversalPath.append(direction)
-
-#         # update visited
-#         current_room = player.currentRoom.id
-
-#         visited[room][direction] = current_room
-
-#         # if current_room is not in visited, add it.:
-#         if current_room not in visited:
-#             visited[current_room] = {
-#                 direction: '?' for direction in player.currentRoom.getExits()}
-#         # update current_room entry with old room data (the direction of the old room):
-#         op_dir = the_other_side(direction)
-#         visited[current_room][op_dir] = room
-
-#     else:
-#         # generate a list of directions to get to the nearest unexplored node using a BFS, loop through and send the player in those directions in order.
-
-#         directions = bfs(visited, room)
-#         traversalPath = traversalPath + directions
-        
-#         for direction in directions:
-#             player.travel(direction)
-
-
-def backtrack_to_unexplored(player, movesQueue):
-    q = Queue()
+def bfs(dictionary, room):
     visited = set()
-    q.enqueue([player.currentRoom.id])
-    while q.size() > 0:
-        path = q.dequeue()
-        last_room = path[-1]
-        if last_room not in visited:
-            visited.add(last_room)
-            for exit in graph[last_room]:
-                if graph[last_room][exit] == "?":
-                    return path
-                else:
-                    dup_path = list(path)
-                    dup_path.append(graph[last_room][exit])
-                    q.enqueue(dup_path)
-    return []  # Algorithm done!
+    q = Queue()
+    path = [room]
+    q.put([room])
+    while q.empty() is False:
+        # get list of room id's
+        placeholder = q.get()
+        # get first item off list of id's
+        v = placeholder[0]
+
+        if v == '?':
+            path = placeholder[1:]
+            break
+
+        if v not in visited:
+            visited.add(v)
+            for e in dictionary[v]:
+                node = dictionary[v][e]
+                c = placeholder.copy()
+                # put node in list
+                c.insert(0, node)
+                # add list to queue
+                q.put(c)
+
+    directions = []
+    # go backwards
+    while len(path) > 1:
+        # get the last room in the path
+        location = path.pop()
+        # find the direction that'll take you to the new last room in the path and append to directions
+        for route in dictionary[location]:
+            if dictionary[location][route] == path[-1]:
+                directions.append(route)
+
+    return directions
 
 
-def enqueue_moves(player, movesQueue):
-    currentRoomExits = graph[player.currentRoom.id]
-    unexploredExits = []
-    for direction in currentRoomExits:
-        if currentRoomExits[direction] == "?":
-            unexploredExits.append(direction)
-    if len(unexploredExits) == 0:
-        path_to_unexplored = backtrack_to_unexplored(player, movesQueue)
-        room_on_path = player.currentRoom.id
-        for next_room in path_to_unexplored:
-            for direction in graph[room_on_path]:
-                if graph[room_on_path][direction] == next_room:
-                    movesQueue.enqueue(direction)
-                    room_on_path = next_room
-                    break
+# create dictionary for visited
+visited = {}
+
+# run Depth First Traversal
+while len(visited) < len(roomGraph):
+
+    # get room number of where you are.
+    room = player.currentRoom.id
+
+    # if not in visited, create entry and add exits.
+    if room not in visited:
+        visited[room] = {
+            direction: '?' for direction in player.currentRoom.getExits()}
+
+    # Are there ? in the exits
+    unexplored = [direction for direction in visited[room]
+                if visited[room][direction] == '?']
+    # if so, pick one and go for it.
+
+    if len(unexplored) > 0:
+        # go down a random pathway
+        direction = unexplored[(random.randint(0, len(unexplored)-1))]
+        player.travel(direction)
+
+        # update the path with the direction you are randomly going.
+        traversalPath.append(direction)
+
+        # update visited
+        current_room = player.currentRoom.id
+
+        visited[room][direction] = current_room
+
+        # if current_room is not in visited, add it.:
+        if current_room not in visited:
+            visited[current_room] = {
+                direction: '?' for direction in player.currentRoom.getExits()}
+        # update current_room entry with old room data (the direction of the old room):
+        op_dir = the_other_side(direction)
+        visited[current_room][op_dir] = room
+
     else:
-        movesQueue.enqueue(unexploredExits[random.randint(0, len(unexploredExits) - 1)])
+        # generate a list of directions to get to the nearest unexplored node using a BFS, loop through and send the player in those directions in order.
+
+        directions = bfs(visited, room)
+        traversalPath = traversalPath + directions
+        
+        for direction in directions:
+            player.travel(direction)
 
 
-# Current best solution
-# 957
-# ['s', 'e', 'e', 'e', 'n', 'e', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 's', 'e', 's', 'n', 'w', 'n', 'n', 's', 'e', 'e', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 's', 'w', 'w', 'w', 'w', 'w', 'w', 's', 'w', 'w', 's', 'e', 'e', 'e', 's', 'n', 'e', 's', 'n', 'e', 'e', 'w', 's', 'e', 's', 'n', 'e', 'e', 'n', 'e', 'e', 'e', 'w', 'w', 's', 'e', 's', 'n', 'e', 'w', 'w', 'n', 'w', 's', 'w', 's', 'e', 'e', 'w', 'w', 'n', 'w', 'w', 's', 'w', 's', 's', 'e', 'e', 'w', 's', 's', 'w', 'e', 'n', 'e', 'e', 's', 'n', 'w', 's', 's', 'n', 'n', 'w', 'n', 'w', 's', 'n', 'n', 'e', 'e', 'e', 'e', 's', 's', 'e', 'w', 'n', 'e', 'w', 'n', 'w', 's', 'n', 'w', 'w', 'w', 'n', 'e', 'n', 'n', 'w', 'w', 'w', 's', 's', 'e', 's', 'w', 'e', 's', 'n', 'n', 'w', 'n', 'n', 'w', 'w', 's', 'e', 's', 'n', 'w', 's', 'n', 'n', 'n', 'w', 's', 's', 's', 'n', 'w', 's', 's', 's', 's', 'n', 'e', 'w', 'n', 'e', 'e', 's', 's', 'w', 's', 'n', 'e', 's', 's', 'w', 'w', 'w', 'w', 'n', 'n', 'n', 'e', 's', 's', 'e', 'w', 'n', 'n', 'w', 'w', 's', 's', 's', 's', 'e', 's', 'n', 'w', 'n', 'w', 's', 'n', 'e', 'n', 'n', 'w', 's', 'n', 'e', 'n', 'w', 'e', 'e', 'n', 'w', 'e', 'n', 'n', 'e', 's', 'n', 'n', 'e', 'n', 'n', 'e', 'n', 'w', 'w', 'n', 'n', 'n', 'w', 'n', 's', 'e', 's', 's', 'w', 'n', 's', 'w', 'n', 'n', 'n', 'n', 'w', 'w', 'e', 'e', 's', 's', 's', 's', 'w', 'n', 'w', 'n', 'n', 's', 's', 'w', 'n', 'n', 's', 's', 'e', 'e', 'n', 'n', 's', 's', 's', 'e', 'e', 'e', 's', 'w', 'e', 'e', 'n', 'n', 's', 's', 'e', 'e', 'e', 'e', 'e', 'n', 'e', 'w', 's', 'e', 'e', 'n', 'e', 'n', 'e', 'w', 's', 'e', 'e', 'e', 'w', 'n', 'e', 'e', 'n', 'e', 'n', 's', 'e', 'n', 's', 'w', 'w', 'n', 's', 's', 's', 'n', 'e', 's', 'n', 'e', 's', 'n', 'w', 'w', 'w', 'w', 's', 'w', 's', 'n', 'w', 'w', 's', 'w', 'w', 'w', 'n', 's', 'w', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 'n', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'n', 'e', 'e', 'n', 'e', 'e', 'w', 'w', 's', 'w', 'w', 's', 'w', 'w', 'w', 'n', 'n', 'e', 'e', 'n', 'n', 'n', 'e', 'n', 'w', 'n', 'n', 'n', 'w', 's', 'n', 'n', 's', 'e', 'n', 's', 's', 'e', 'n', 'n', 'n', 's', 's', 's', 'w', 's', 's', 'e', 'e', 's', 'e', 'n', 's', 's', 'e', 'w', 'n', 'w', 'n', 'w', 'n', 'e', 'e', 'e', 'n', 's', 's', 'e', 'w', 'n', 'w', 'w', 'n', 'e', 'n', 's', 'w', 'n', 'n', 's', 's', 's', 'w', 's', 's', 'w', 's', 's', 'e', 'n', 'e', 's', 's', 'n', 'e', 'e', 'e', 'e', 's', 'n', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 'w', 'w', 'w', 'n', 'w', 'e', 'e', 'w', 's', 's', 'w', 'w', 'w', 'n', 'w', 's', 'w', 's', 'e', 'w', 'w', 'w', 'n', 'e', 'n', 'n', 'n', 'w', 'e', 'n', 'w', 'n', 'w', 'e', 's', 'e', 's', 's', 's', 's', 'w', 'n', 'n', 's', 'w', 'n', 'n', 'n', 's', 's', 's', 'w', 'e', 'e', 's', 's', 's', 'e', 'e', 'w', 'w', 's', 's', 'e', 'e', 'w', 'w', 'n', 'w', 'n', 'n', 'n', 'w', 'e', 's', 's', 's', 's', 'w', 'w', 'n', 'n', 'n', 'n', 'n', 'n', 'w', 'e', 'e', 'n', 'n', 's', 's', 'w', 'n', 'n', 'n', 's', 's', 'w', 'w', 'n', 'n', 's', 's', 'w', 'n', 'n', 'n', 'n', 's', 'e', 'n', 's', 'w', 's', 's', 's', 's', 's', 'w', 'n', 'n', 'n', 'w', 's', 'n', 'n', 'n', 'e', 'n', 's', 'w', 's', 's', 'e', 'n', 's', 's', 's', 's', 's', 'w', 'n', 'n', 'w', 'e', 's', 's', 'w', 'n', 's', 'e', 'e', 'e', 's', 'w', 'e', 's', 'e', 'n', 's', 's', 'e', 'n', 'n', 'n', 'w', 'e', 'n', 'w', 'n', 's', 'e', 's', 's', 's', 's', 's', 'e', 'n', 'e', 'n', 'n', 's', 's', 'w', 's', 'w', 's', 's', 's', 'e', 'e', 'w', 'w', 'w', 'w', 's', 'w', 's', 'n', 'w', 's', 's', 'w', 'e', 's', 'w', 's', 'w', 'w', 'e', 's', 'w', 's', 's', 'n', 'w', 'e', 'n', 'w', 'e', 'e', 's', 's', 's', 's', 'n', 'n', 'n', 'n', 'n', 'e', 'n', 'e', 'n', 'n', 'w', 'e', 'n', 'w', 'w', 's', 'w', 'w', 'e', 'n', 'w', 'e', 's', 'e', 's', 's', 'w', 'e', 'n', 'w', 'w', 's', 's', 'n', 'w', 'w', 'w', 'e', 'e', 's', 'w', 's', 'w', 'w', 'e', 'e', 'e', 's', 'n', 'w', 'n', 'w', 'w', 'e', 'e', 'e', 'n', 'e', 'n', 'w', 'w', 'w', 'e', 'e', 'e', 'e', 'e', 'n', 'n', 'n', 's', 'e', 'n', 's', 'e', 'e', 'e', 'n', 'w', 'w', 'n', 'w', 'w', 'w', 'w', 'w', 'n', 'n', 'n', 'e', 'n', 's', 'w', 'n', 's', 's', 'w', 'w', 'e', 'n', 'n', 'n', 'e', 'e', 'w', 'n', 'w', 'e', 's', 'w', 's', 's', 'w', 'w', 's', 'n', 'n', 'n', 's', 's', 'w', 'e', 'e', 'n', 'n', 'n', 'n', 's', 's', 's', 's', 'e', 's', 'e', 's', 'w', 'w', 'w', 'w', 'n', 'w', 'w', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'w', 'w', 's', 'w', 'w', 'e', 'e', 'n', 'w', 'w', 'e', 'e', 'e', 'e', 'e', 'n', 'e', 'w', 'n', 's', 's', 's', 'w', 's', 'w', 'w', 'e', 'e', 's', 'w', 'w', 'e', 'e', 'n', 'n', 'w', 'e', 'e', 'n', 'e', 's', 'n', 'e', 'n', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 's', 's', 'w', 's', 's', 'w', 'e', 'e', 'e', 'e', 's', 'e', 's', 's', 'n', 'e', 's', 's', 'n', 'n', 'w', 'n', 'w', 's', 's', 's', 'e', 's', 'w', 'w', 'e', 's']
 
-
-numTrials = 100
-
-bestLen = 99999999999
-bestPath = []
-for i in range(numTrials):
-    player = Player("Name", world.startingRoom)
-    graph = {}
-
-    newRoom = {}
-    for direction in player.currentRoom.getExits():
-        newRoom[direction] = "?"
-    graph[world.startingRoom.id] = newRoom
-
-    movesQueue = Queue()
-    totalMoves = []
-    enqueue_moves(player, movesQueue)
-
-    inverse_directions = {"n": "s", "s": "n", "e": "w", "w": "e"}
-
-    while movesQueue.size() > 0:
-        startRoom = player.currentRoom.id
-        nextMove = movesQueue.dequeue()
-        player.travel(nextMove)
-        totalMoves.append(nextMove)
-        endRoom = player.currentRoom.id
-        graph[startRoom][nextMove] = endRoom
-        if endRoom not in graph:
-            graph[endRoom] = {}
-            for exit in player.currentRoom.getExits():
-                graph[endRoom][exit] = "?"
-        graph[endRoom][inverse_directions[nextMove]] = startRoom
-        if movesQueue.size() == 0:
-            enqueue_moves(player, movesQueue)
-    if len(totalMoves) < bestLen:
-        bestPath = totalMoves
-        bestLen = len(totalMoves)
-
-
-# print(bestPath)
-# print(bestLen)
-
-# totalMoves = bestPath
-
-# bestPath = ['s', 'e', 'e', 'e', 'n', 'e', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 's', 'e', 's', 'n', 'w', 'n', 'n', 's', 'e', 'e', 's', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 's', 'w', 'w', 'w', 'w', 'w', 'w', 's', 'w', 'w', 's', 'e', 'e', 'e', 's', 'n', 'e', 's', 'n', 'e', 'e', 'w', 's', 'e', 's', 'n', 'e', 'e', 'n', 'e', 'e', 'e', 'w', 'w', 's', 'e', 's', 'n', 'e', 'w', 'w', 'n', 'w', 's', 'w', 's', 'e', 'e', 'w', 'w', 'n', 'w', 'w', 's', 'w', 's', 's', 'e', 'e', 'w', 's', 's', 'w', 'e', 'n', 'e', 'e', 's', 'n', 'w', 's', 's', 'n', 'n', 'w', 'n', 'w', 's', 'n', 'n', 'e', 'e', 'e', 'e', 's', 's', 'e', 'w', 'n', 'e', 'w', 'n', 'w', 's', 'n', 'w', 'w', 'w', 'n', 'e', 'n', 'n', 'w', 'w', 'w', 's', 's', 'e', 's', 'w', 'e', 's', 'n', 'n', 'w', 'n', 'n', 'w', 'w', 's', 'e', 's', 'n', 'w', 's', 'n', 'n', 'n', 'w', 's', 's', 's', 'n', 'w', 's', 's', 's', 's', 'n', 'e', 'w', 'n', 'e', 'e', 's', 's', 'w', 's', 'n', 'e', 's', 's', 'w', 'w', 'w', 'w', 'n', 'n', 'n', 'e', 's', 's', 'e', 'w', 'n', 'n', 'w', 'w', 's', 's', 's', 's', 'e', 's', 'n', 'w', 'n', 'w', 's', 'n', 'e', 'n', 'n', 'w', 's', 'n', 'e', 'n', 'w', 'e', 'e', 'n', 'w', 'e', 'n', 'n', 'e', 's', 'n', 'n', 'e', 'n', 'n', 'e', 'n', 'w', 'w', 'n', 'n', 'n', 'w', 'n', 's', 'e', 's', 's', 'w', 'n', 's', 'w', 'n', 'n', 'n', 'n', 'w', 'w', 'e', 'e', 's', 's', 's', 's', 'w', 'n', 'w', 'n', 'n', 's', 's', 'w', 'n', 'n', 's', 's', 'e', 'e', 'n', 'n', 's', 's', 's', 'e', 'e', 'e', 's', 'w', 'e', 'e', 'n', 'n', 's', 's', 'e', 'e', 'e', 'e', 'e', 'n', 'e', 'w', 's', 'e', 'e', 'n', 'e', 'n', 'e', 'w', 's', 'e', 'e', 'e', 'w', 'n', 'e', 'e', 'n', 'e', 'n', 's', 'e', 'n', 's', 'w', 'w', 'n', 's', 's', 's', 'n', 'e', 's', 'n', 'e', 's', 'n', 'w', 'w', 'w', 'w', 's', 'w', 's', 'n', 'w', 'w', 's', 'w', 'w', 'w', 'n', 's', 'w', 'w', 'w', 'n', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 'n', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'n', 'e', 'e', 'n', 'e', 'e', 'w', 'w', 's', 'w', 'w', 's', 'w', 'w', 'w', 'n', 'n', 'e', 'e', 'n', 'n', 'n', 'e', 'n', 'w', 'n', 'n', 'n', 'w', 's', 'n', 'n', 's', 'e', 'n', 's', 's', 'e', 'n', 'n', 'n', 's', 's', 's', 'w', 's', 's', 'e', 'e', 's', 'e', 'n', 's', 's', 'e', 'w', 'n', 'w', 'n', 'w', 'n', 'e', 'e', 'e', 'n', 's', 's', 'e', 'w', 'n', 'w', 'w', 'n', 'e', 'n', 's', 'w', 'n', 'n', 's', 's', 's', 'w', 's', 's', 'w', 's', 's', 'e', 'n', 'e', 's', 's', 'n', 'e', 'e', 'e', 'e', 's', 'n', 'e', 'w', 'w', 'n', 'e', 'e', 'e', 'w', 'w', 'w', 'n', 'w', 'e', 'e', 'w', 's', 's', 'w', 'w', 'w', 'n', 'w', 's', 'w', 's', 'e', 'w', 'w', 'w', 'n', 'e', 'n', 'n', 'n', 'w', 'e', 'n', 'w', 'n', 'w', 'e', 's', 'e', 's', 's', 's', 's', 'w', 'n', 'n', 's', 'w', 'n', 'n', 'n', 's', 's', 's', 'w', 'e', 'e', 's', 's', 's', 'e', 'e', 'w', 'w', 's', 's', 'e', 'e', 'w', 'w', 'n', 'w', 'n', 'n', 'n', 'w', 'e', 's', 's', 's', 's', 'w', 'w', 'n', 'n', 'n', 'n', 'n', 'n', 'w', 'e', 'e', 'n', 'n', 's', 's', 'w', 'n', 'n', 'n', 's', 's', 'w', 'w', 'n', 'n', 's', 's', 'w', 'n', 'n', 'n', 'n', 's', 'e', 'n', 's', 'w', 's', 's', 's', 's', 's', 'w', 'n', 'n', 'n', 'w', 's', 'n', 'n', 'n', 'e', 'n', 's', 'w', 's', 's', 'e', 'n', 's', 's', 's', 's', 's', 'w', 'n', 'n', 'w', 'e', 's', 's', 'w', 'n', 's', 'e', 'e', 'e', 's', 'w', 'e', 's', 'e', 'n', 's', 's', 'e', 'n', 'n', 'n', 'w', 'e', 'n', 'w', 'n', 's', 'e', 's', 's', 's', 's', 's', 'e', 'n', 'e', 'n', 'n', 's', 's', 'w', 's', 'w', 's', 's', 's', 'e', 'e', 'w', 'w', 'w', 'w', 's', 'w', 's', 'n', 'w', 's', 's', 'w', 'e', 's', 'w', 's', 'w', 'w', 'e', 's', 'w', 's', 's', 'n', 'w', 'e', 'n', 'w', 'e', 'e', 's', 's', 's', 's', 'n', 'n', 'n', 'n', 'n', 'e', 'n', 'e', 'n', 'n', 'w', 'e', 'n', 'w', 'w', 's', 'w', 'w', 'e', 'n', 'w', 'e', 's', 'e', 's', 's', 'w', 'e', 'n', 'w', 'w', 's', 's', 'n', 'w', 'w', 'w', 'e', 'e', 's', 'w', 's', 'w', 'w', 'e', 'e', 'e', 's', 'n', 'w', 'n', 'w', 'w', 'e', 'e', 'e', 'n', 'e', 'n', 'w', 'w', 'w', 'e', 'e', 'e', 'e', 'e', 'n', 'n', 'n', 's', 'e', 'n', 's', 'e', 'e', 'e', 'n', 'w', 'w', 'n', 'w', 'w', 'w', 'w', 'w', 'n', 'n', 'n', 'e', 'n', 's', 'w', 'n', 's', 's', 'w', 'w', 'e', 'n', 'n', 'n', 'e', 'e', 'w', 'n', 'w', 'e', 's', 'w', 's', 's', 'w', 'w', 's', 'n', 'n', 'n', 's', 's', 'w', 'e', 'e', 'n', 'n', 'n', 'n', 's', 's', 's', 's', 'e', 's', 'e', 's', 'w', 'w', 'w', 'w', 'n', 'w', 'w', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'w', 'w', 's', 'w', 'w', 'e', 'e', 'n', 'w', 'w', 'e', 'e', 'e', 'e', 'e', 'n', 'e', 'w', 'n', 's', 's', 's', 'w', 's', 'w', 'w', 'e', 'e', 's', 'w', 'w', 'e', 'e', 'n', 'n', 'w', 'e', 'e', 'n', 'e', 's', 'n', 'e', 'n', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 's', 's', 'w', 's', 's', 'w', 'e', 'e', 'e', 'e', 's', 'e', 's', 's', 'n', 'e', 's', 's', 'n', 'n', 'w', 'n', 'w', 's', 's', 's', 'e', 's', 'w', 'w', 'e', 's']
-
-totalMoves = bestPath
 # TRAVERSAL TEST
 visited_rooms = set()
 player.currentRoom = world.startingRoom
