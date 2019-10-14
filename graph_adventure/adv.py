@@ -4,7 +4,7 @@ from world import World
 
 from stack import Stack
 
-
+import multiprocessing
 
 import random
 
@@ -118,11 +118,26 @@ def mainLoop(attempts, world):
     return traversalPath
         
 
-    
+# def multiP(procnum, return_dict):
+#     '''worker function'''
+#     print str(procnum) + ' represent!'
+#     return_dict[procnum] = procnum
+
+# def runMultiP():
+#     manager = multiprocessing.Manager()
+#     return_dict = manager.dict()
+#     jobs = []
+#     for i in range(5):
+#         p = multiprocessing.Process(target=mainLoop, args=(i, return_dict))
+#         jobs.append(p)
+#         p.start()
+
+#     for proc in jobs:
+#         proc.join()
+#     print return_dict.values()
 
 
-
-traversalPath = mainLoop(200000, world)
+traversalPath = mainLoop(10, world)
 
 # TRAVERSAL TEST
 visited_rooms = set()
