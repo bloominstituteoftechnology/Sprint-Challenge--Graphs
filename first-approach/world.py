@@ -8,6 +8,7 @@ class World:
         self.rooms = {}
         self.roomGrid = []
         self.gridSize = 0
+
     def loadGraph(self, roomGraph):
         numRooms = len(roomGraph)
         rooms = [None] * numRooms
