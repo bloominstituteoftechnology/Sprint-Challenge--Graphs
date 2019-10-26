@@ -2,6 +2,7 @@ from room import Room
 from player import Player
 from world import World
 
+
 import random
 
 # Load world
@@ -21,8 +22,51 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+# so this is more or less a BFT since we want to visit every room and by doing so we are going by depth frist since we want to visit every room by level.  We have to visit ALL the rooms not just the shortest path
+# set this to an empty array since we want to append the path direction since we sort of want to keep track of the len of our movement or how long it took it's in the "traversal test" print the "len(traversalPath)"
+traversalPath = []
+# then we need to have a dictionary of all the rooms we have visited as a record so we don't revisit and loop forever we don't have all day here also the test wants us to keep track of it so it can spit out the length
+visited = {}
+# then we create a path array for when we Queue we have the current location of where we are
+path = []
+# in the room.py we have a "getExits" function from the class Room BUT we have to be able to back out if there is no direction to get back to the origional room for example if a room has no directions we're stuck! so we set an dictionary for just that we have those "reverse" commands
+directions = {'n':'s', 's':'n', 'e':'w', 'w':'e'}
 
+# now we get the current room that we are in append it to the visited dictionary and then get the "getExists" so we can navigate throughout the world
+visited[player.currentRoom.id] = player.currentRoom.getExits()
+
+# so we start the loop if the length of the current generated rooms are greater then the visited then we haven't visited all the rooms
+while len(visited) < len(roomGraph) - 1:
+    # so now we check if the player's room is not in visited
+    if player.currentRoom.id not in visited:
+        # we then add it to the visited dictionary so we don't go there again
+        # we then remove the previous direction so we don't confuse the algorithm with multiple directions for example if the first room has "n,s,e" but the current room for getExists has "n,s,e, AND w" then it'll confuse itself and go in EVERY other direction so we remove the previous set of exists and replace it with the current rooms exists
+        visited[player.currentRoom.id] = player.currentRoom.getExits()
+        previous_direction = path[-1]
+        visited[player.currentRoom.id].remove(previous_direction)
+
+    # up until this point we have a BFT but it's going to try to find the shortest path rather then find ALL the rooms which is what we want.  SO we have to now make a way for this function to check if ALL the rooms are visited so we find the capacity of the world if we haven't found all the rooms we ahve to backtrack and explore all the unvisited rooms until we found them all meaing len(visted) >= len(rooms)
+
+    # so while the len of the visited rooms directions are 0 meaning we have potentionally have reached the end here since there is no more way to move could be the end but also could just be a room where there is not direction
+    while len(visited[player.currentRoom.id]) == 0:
+        # we have to backtrack, and with POP we remove and return the last set of getexits here and return it into the previous direction variable adding it to the traversalPath
+        previous_direction = path.pop()
+        traversalPath.append(previous_direction)
+        # the player class has a function called travel so in here we can actually move around with it much like the commented out move around function at the bottom.  this allows us to move to the next room so we find the most recent direction in where we moved, move to that rooom we potentially haven't visited check if we visited
+        player.travel(previous_direction)
+
+    # so we find the current rooms getExits and then we find the last value on that list with pop and we return it into the "move" here
+    move = visited[player.currentRoom.id].pop(0)
+    # we then append it to the path since its the direction we want to go
+    traversalPath.append(move)
+    # we append it to the path so we can record the room we just visited
+    path.append(directions[move])
+    # and we then move it that direction with the players function travel
+    # now rember at the top we set a new direction dictionary with the opposite direction movement so we set taht and move with "travel"
+    player.travel(move)
+    # if we haven't HORRAY add it to the visited list
+    # if we HAVE then booo we backtrack some more and until we find a room we havne't visited yet
+    # we the break of the while loop and keep going until we have visted all the rooms hopefully with less the number of rooms that is generated so we don't visted the same room multiple times :/
 
 # TRAVERSAL TEST
 visited_rooms = set()
