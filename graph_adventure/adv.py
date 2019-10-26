@@ -23,6 +23,51 @@ player = Player("Name", world.startingRoom)
 # FILL THIS IN
 traversalPath = ['n', 's']
 
+# fetch the opposite direction for when we're moving bacward
+opposites = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}
+
+# back to room with exit
+previousRoom = [None]
+
+roomTrack = {}
+visited = {}
+
+# Check each direction and make sure there is an exit
+def checkDirections(roomId):
+    directions = []
+    if 'n' in roomGraph[roomId][1].keys():
+        directions.append('n')
+    if 'e' in roomGraph[roomId][1].keys():
+        directions.append('e')
+    if 's' in roomGraph[roomId][1].keys():
+        directions.append('s')
+    if 'w' in roomGraph[roomId][1].keys():
+        directions.append('w')
+    return directions
+
+while len(visited) < len(roomGraph):
+    roomid = player.currentRoom.id
+    if roomid not in roomTrack:
+        # Put an array of room directions into roomTracking dict
+        # append/add to visited so we can know when we have to visited all rooms
+        visited[roomid] = roomid
+        # add all directions using our direction finding algo
+        roomTrack[roomid] = checkDirections(roomid)
+    
+    # check whethere any more directions to traverse
+    if len(roomTrack[roomid]) < 1:
+        previousDirection = previousRoom.pop()
+        traversalPath.append(previousDirection)
+        # send player obj. into that direction
+        player.travel(previousDirection)
+    
+    else:
+        # New direction to travel into. Pulled from master list of directions
+        nextDirection = roomTrack[roomid].pop(0)
+        traversalPath.append(nextDirection)
+        # Keep track in oppositie direction
+        previousRoom.append(opposites[nextDirection])
+        player.travel(nextDirection)
 
 # TRAVERSAL TEST
 visited_rooms = set()
