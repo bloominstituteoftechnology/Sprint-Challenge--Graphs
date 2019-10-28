@@ -47,7 +47,7 @@ lastRoom = player.currentRoom.id
 while len(list(visited)) < 499:
     if player.currentRoom.id not in tracking:
         tracking[player.currentRoom.id] = {}
-
+        
     if player.currentRoom.id not in visited:
         visited[player.currentRoom.id] = player.currentRoom.getExits()
         visited[player.currentRoom.id].remove(reversep[-1])
@@ -89,9 +89,7 @@ else:
 
 
 
-#######
-# UNCOMMENT TO WALK AROUND
-#######
+
 # player.currentRoom.printRoomDescription(player)
 # while True:
 #     cmds = input("-> ").lower().split(" ")
