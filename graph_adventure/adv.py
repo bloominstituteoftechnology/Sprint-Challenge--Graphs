@@ -21,7 +21,46 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
+
 traversalPath = ['n', 's']
+
+go_back = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}
+
+previous_option = [None]
+room_flow = {}
+covered = {}
+
+def avail_option(roomId):
+   option = []
+   if 'n' in roomGraph[roomId][1].keys():
+       option.append('n')
+   if 'e' in roomGraph[roomId][1].keys():
+       option.append('e')
+   if 's' in roomGraph[roomId][1].keys():
+       option.append('s')
+   if 'w' in roomGraph[roomId][1].keys():
+       option.append('w')
+   return option
+while len(covered) < len(roomGraph):
+   roomid = player.currentRoom.id
+   if roomid not in room_flow:
+      
+       covered[roomid] = roomid
+       
+       room_flow[roomid] = avail_option(roomid)
+   
+   if len(room_flow[roomid]) < 1:
+       previousDirection = previous_option.pop()
+       traversalPath.append(previousDirection)
+      
+       player.travel(previousDirection)
+   else:
+  
+       nextDirection = room_flow[roomid].pop(0)
+       traversalPath.append(nextDirection)
+      
+       previous_option.append(go_back[nextDirection])
+       player.travel(nextDirection)
 
 
 # TRAVERSAL TEST
