@@ -20,8 +20,36 @@ world.printRooms()
 player = Player("Name", world.startingRoom)
 
 
-# FILL THIS IN
-traversalPath = ['n', 's']
+def runTraversal(graph):
+    maze = []
+    rooms = []
+    visited = set()
+    maze.append(0)
+
+    while len(visited) < len(graph):
+        currRoom = maze[-1]
+        visited.add(currRoom)
+        connections = graph[currRoom][1] 
+        availConnections = []
+
+        for checked, unchecked in connections.items():
+            if unchecked not in visited:
+                availConnections.append(unchecked)
+
+        if len(availConnections) > 0:
+            room = availConnections[0]
+            maze.append(availConnections[0])
+        else:
+            room = maze[-2]
+            maze.pop()
+            
+        for prevRoom, exits in connections.items():
+            if exits == room:
+                rooms.append(prevRoom)
+
+    return rooms
+
+traversalPath = runTraversal(roomGraph)
 
 
 # TRAVERSAL TEST
