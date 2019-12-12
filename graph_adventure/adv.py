@@ -10,7 +10,7 @@ import sys
 # from graph import Graph
 from util import Queue, Stack
 sys.setrecursionlimit(5000)
-# Load world
+## Load world
 world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
