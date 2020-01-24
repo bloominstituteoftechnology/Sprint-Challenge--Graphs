@@ -31,23 +31,44 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-def dft_recursive(room, traveled, visited = None):
+def dft_recursive(room, traveled, visited = None, revisited = None):
   if visited is None:
     visited = set()
   visited.add(room)
+  if revisited is None:
+    revisited = set()
   print(room)
+  if len(visited) == len(room_graph):
+    return traveled
   if room.n_to is not None and room.n_to not in visited:
     traveled.append('n')
-    dft_recursive(room.n_to, traveled, visited)
-  if room.s_to is not None and room.s_to not in visited:
+    dft_recursive(room.n_to, traveled, visited, revisited)
+  elif room.s_to is not None and room.s_to not in visited:
     traveled.append('s')
-    dft_recursive(room.s_to, traveled, visited)
-  if room.e_to is not None and room.e_to not in visited:
+    dft_recursive(room.s_to, traveled, visited, revisited)
+  elif room.e_to is not None and room.e_to not in visited:
     traveled.append('e')
-    dft_recursive(room.e_to, traveled, visited)
-  if room.w_to is not None and room.w_to not in visited:
+    dft_recursive(room.e_to, traveled, visited, revisited)
+  elif room.w_to is not None and room.w_to not in visited:
     traveled.append('w')
-    dft_recursive(room.w_to, traveled, visited)
+    dft_recursive(room.w_to, traveled, visited, revisited)
+  elif room.w_to is not None and room.w_to not in revisited:
+    revisited.add(room)
+    traveled.append('w')
+    dft_recursive(room.w_to, traveled, visited, revisited)
+  elif room.e_to is not None and room.e_to not in revisited:
+    revisited.add(room)
+    traveled.append('e')
+    dft_recursive(room.e_to, traveled, visited, revisited)
+  elif room.s_to is not None and room.s_to not in revisited:
+    revisited.add(room)
+    traveled.append('s')
+    dft_recursive(room.s_to, traveled, visited, revisited)
+  elif room.n_to is not None and room.n_to not in revisited:
+    revisited.add(room)
+    traveled.append('n')
+    dft_recursive(room.n_to, traveled, visited, revisited)
+  
 
 dft_recursive(world.starting_room, traversal_path)
 
