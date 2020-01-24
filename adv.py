@@ -127,7 +127,7 @@ traverse(traversal_path)
 print(player.current_room)
 for r, p in gr.rooms.items():
     if '?' in p.values():
-        traverse(traversal_path)
+        print(r.id, p)
 
 # print(traversal_path)
 
