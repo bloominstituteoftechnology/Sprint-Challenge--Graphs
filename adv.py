@@ -14,8 +14,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
@@ -109,8 +109,8 @@ def traverse(traversal_path):
         unexplored_dir = s.pop()
         linear_dir = gr.go_in_direction_until_dead_end(
             player.current_room, unexplored_dir)
-        traversal_path += linear_dir
         get_current_room(linear_dir)
+        traversal_path += linear_dir
         dirs_in_current_room = gr.get_unexplored_dir(player.current_room)
         if len(dirs_in_current_room):
             for d in dirs_in_current_room:
@@ -124,13 +124,12 @@ def traverse(traversal_path):
 
 traverse(traversal_path)
 
-
 print(player.current_room)
 for r, p in gr.rooms.items():
     if '?' in p.values():
-        find_unex(player.current_room, traversal_path)
+        traverse(traversal_path)
 
-print(traversal_path)
+# print(traversal_path)
 
 # TRAVERSAL TEST
 visited_rooms = set()

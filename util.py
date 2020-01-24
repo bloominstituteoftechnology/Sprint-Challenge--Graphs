@@ -61,7 +61,7 @@ class Graph:
             next_room = room.get_room_in_direction(direction)
             path.append(direction)
             self.rooms[room][direction] = next_room
-            self.rooms[next_room][direction] = room
+            self.rooms[next_room][reverse_dirs[direction]] = room
             return self.go_in_direction_until_dead_end(next_room, direction, path)
         else:
             return path
