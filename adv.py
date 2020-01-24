@@ -26,8 +26,37 @@ world.print_rooms()
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-traversal_path = []
+
+def runTraversal(graph):
+    maze = []
+    rooms = []
+    visited = set()
+    maze.append(0)
+
+    while len(visited) < len(graph):
+        current_room = maze[-1]
+        visited.add(current_room)
+        connections = graph[current_room][1] 
+        available_connections = []
+
+        for checked, unchecked in connections.items():
+            if unchecked not in visited:
+                available_connections.append(unchecked)
+
+        if len(available_connections) > 0:
+            room = available_connections[0]
+            maze.append(available_connections[0])
+        else:
+            room = maze[-2]
+            maze.pop()
+            
+        for previous_room, exits in connections.items():
+            if exits == room:
+                rooms.append(previous_room)
+
+    return rooms
+
+traversal_path = runTraversal(room_graph)
 
 
 
@@ -50,7 +79,7 @@ else:
 
 #######
 # UNCOMMENT TO WALK AROUND
-#######
+######
 player.current_room.print_room_description(player)
 while True:
     cmds = input("-> ").lower().split(" ")
