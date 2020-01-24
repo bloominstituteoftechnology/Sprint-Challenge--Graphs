@@ -31,8 +31,24 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+def dft_recursive(starting_vertex, visited = None):
+  if visited is None:
+    visited = []
+  print(starting_vertex)
+  if starting_vertex.n_to is not None:
+    visited.add('n')
+    dft_recursive(starting_vertex.n_to, visited)
+  if starting_vertex.s_to is not None:
+    visited.add('s')
+    dft_recursive(starting_vertex.n_to, visited)
+  if starting_vertex.e_to is not None:
+    visited.add('e')
+    dft_recursive(starting_vertex.n_to, visited)
+  if starting_vertex.w_to is not None:
+    visited.add('w')
+    dft_recursive(starting_vertex.n_to, visited)
 
-
+dft_recursive(world.starting_room, traversal_path)
 
 # TRAVERSAL TEST
 visited_rooms = set()
