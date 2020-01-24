@@ -14,9 +14,9 @@ world = World()
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
+map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -31,22 +31,23 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-def dft_recursive(starting_vertex, visited = None):
+def dft_recursive(room, traveled, visited = None):
   if visited is None:
-    visited = []
-  print(starting_vertex)
-  if starting_vertex.n_to is not None:
-    visited.add('n')
-    dft_recursive(starting_vertex.n_to, visited)
-  if starting_vertex.s_to is not None:
-    visited.add('s')
-    dft_recursive(starting_vertex.n_to, visited)
-  if starting_vertex.e_to is not None:
-    visited.add('e')
-    dft_recursive(starting_vertex.n_to, visited)
-  if starting_vertex.w_to is not None:
-    visited.add('w')
-    dft_recursive(starting_vertex.n_to, visited)
+    visited = set()
+  visited.add(room)
+  print(room)
+  if room.n_to is not None and room.n_to not in visited:
+    traveled.append('n')
+    dft_recursive(room.n_to, traveled, visited)
+  if room.s_to is not None and room.s_to not in visited:
+    traveled.append('s')
+    dft_recursive(room.s_to, traveled, visited)
+  if room.e_to is not None and room.e_to not in visited:
+    traveled.append('e')
+    dft_recursive(room.e_to, traveled, visited)
+  if room.w_to is not None and room.w_to not in visited:
+    traveled.append('w')
+    dft_recursive(room.w_to, traveled, visited)
 
 dft_recursive(world.starting_room, traversal_path)
 
