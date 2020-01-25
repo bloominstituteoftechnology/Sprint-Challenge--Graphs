@@ -102,8 +102,9 @@ def traverse(base_path):
             for d in gr.get_unexplored_dir(player.current_room):
                 s.push(d)
         else:
+            go_back_to_unexplored_room(base_path, base_path)
             for d in gr.get_unexplored_dir(player.current_room):
-                s.push(d)
+                    s.push(d)
 
 
 traverse(traversal_path)
