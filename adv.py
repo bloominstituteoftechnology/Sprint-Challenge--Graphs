@@ -63,6 +63,22 @@ def go_back_to_unexplored_room(path, base_path):
         return True
 
 
+def find_unexplored_room():
+    q = Queue()
+    visited = set()
+    q.enqueue([player.current_room])
+    while q.size:
+        path = q.dequeue()
+        curr_room = path[-1]
+        if curr_room not in visited:
+            if len(gr.get_unexplored_dir(curr_room)):
+                return path
+            visited.add(curr_room)
+            for direction in curr_room.get_exits():
+                q.enqueue(path + [gr.rooms[curr_room][direction]])
+    return None
+
+
 s = Stack()
 s.push(player.current_room)
 world_map = {}
@@ -104,7 +120,7 @@ def traverse(base_path):
         else:
             go_back_to_unexplored_room(base_path, base_path)
             for d in gr.get_unexplored_dir(player.current_room):
-                    s.push(d)
+                s.push(d)
 
 
 traverse(traversal_path)
