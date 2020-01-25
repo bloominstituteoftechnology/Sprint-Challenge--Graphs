@@ -58,13 +58,18 @@ class Graph:
         if path == None:
             path = []
         if direction in room.get_exits():
-            next_room = room.get_room_in_direction(direction)
+            self.explore(room, direction)
             path.append(direction)
-            self.rooms[room][direction] = next_room
-            self.rooms[next_room][reverse_dirs[direction]] = room
+            next_room = room.get_room_in_direction(direction)
             return self.go_in_direction_until_dead_end(next_room, direction, path)
         else:
             return path
 
     def get_unexplored_dir(self, room):
         return [direction for direction, value in self.rooms[room].items() if value == '?']
+
+    def explore(self, room, direction):
+        if direction in room.get_exits():
+            next_room = room.get_room_in_direction(direction)
+            self.rooms[room][direction] = next_room
+            self.rooms[next_room][reverse_dirs[direction]] = room
