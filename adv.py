@@ -94,29 +94,19 @@ def traverse(base_path):
             player.current_room, unexplored_dir)
         get_current_room(linear_dir)
         base_path += linear_dir
-        print('after dead end', player.current_room.id)
         dirs_in_current_room = gr.get_unexplored_dir(player.current_room)
         if len(dirs_in_current_room):
             for d in dirs_in_current_room:
                 s.push(d)
         elif go_back_to_unexplored_room(linear_dir, base_path):
-            print('after go back', player.current_room.id)
             for d in gr.get_unexplored_dir(player.current_room):
                 s.push(d)
         else:
-            go_back_to_unexplored_room(base_path, base_path)
             for d in gr.get_unexplored_dir(player.current_room):
                 s.push(d)
-            print('after second go back', player.current_room.id)
 
 
 traverse(traversal_path)
-#     print(any('?' in d.values() for d in gr.rooms.values()))
-#     rev_path = [reverse_dirs[d] for d in traversal_path]
-#     rev_path.reverse()
-#     traversal_path += rev_path
-#     get_current_room(rev_path)
-#     traverse(traversal_path)
 
 print('last room:', player.current_room.id)
 
