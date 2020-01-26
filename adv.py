@@ -35,7 +35,6 @@ traversal_path = []
 
 def get_current_room(path):
     for d in path:
-        gr.explore(player.current_room, d)
         player.travel(d)
 
 
@@ -57,26 +56,6 @@ def go_back_to_unexplored_room(path, base_path):
     reverse_path.reverse()
     path_to_unex = check_for_unex_in_path(reverse_path)
     base_path += path_to_unex
-    if path_to_unex == reverse_path:
-        return False
-    else:
-        return True
-
-
-def find_unexplored_room():
-    q = Queue()
-    visited = set()
-    q.enqueue([player.current_room])
-    while q.size:
-        path = q.dequeue()
-        curr_room = path[-1]
-        if curr_room not in visited:
-            if len(gr.get_unexplored_dir(curr_room)):
-                return path
-            visited.add(curr_room)
-            for direction in curr_room.get_exits():
-                q.enqueue(path + [gr.rooms[curr_room][direction]])
-    return None
 
 
 s = Stack()
@@ -110,15 +89,14 @@ def traverse(base_path):
             player.current_room, unexplored_dir)
         get_current_room(linear_dir)
         base_path += linear_dir
+        print('after dead end', player.current_room.id)
         dirs_in_current_room = gr.get_unexplored_dir(player.current_room)
         if len(dirs_in_current_room):
             for d in dirs_in_current_room:
                 s.push(d)
-        elif go_back_to_unexplored_room(linear_dir, base_path):
-            for d in gr.get_unexplored_dir(player.current_room):
-                s.push(d)
         else:
             go_back_to_unexplored_room(base_path, base_path)
+            print('after go back', player.current_room.id)
             for d in gr.get_unexplored_dir(player.current_room):
                 s.push(d)
 
