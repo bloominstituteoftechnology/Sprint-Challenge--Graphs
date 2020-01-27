@@ -59,20 +59,22 @@ def go_back_to_unexplored_room(path, base_path):
 
 
 def find_unex():
-    q = Queue
+    q = Queue()
     for d in player.current_room.get_exits():
         q.enqueue([(player.current_room, d)])
     visited = set()
-    while q.size():
-        curr_room_and_dir = q.dequeue()
-        curr_room = curr_room_and_dir[-1][0]
-        curr_dir = curr_room_and_dir[-1][1]
-        if '?' in d.values for d in gr.rooms[curr_room]:
-            return [d for _, d in curr_room_and_dir]
+    while q.size:
+        path = q.dequeue()
+        curr_room = path[-1][0]
+        if '?' in gr.rooms[curr_room].values():
+            return [d for _, d in path][1:]
         elif curr_room not in visited:
             visited.add(curr_room)
             for direction in curr_room.get_exits():
-                q.enqueue(direction)
+                next_room = curr_room.get_room_in_direction(direction)
+                q.enqueue(
+                    path + [(next_room, direction)])
+    return None
 
 
 s = Stack()
@@ -112,11 +114,17 @@ def traverse(base_path):
             for d in dirs_in_current_room:
                 s.push(d)
         else:
-            print(find_unex)
+            unex = find_unex()
+            if unex is not None:
+                base_path += unex
+                get_current_room(unex)
+                print('after unex', player.current_room.id)
             # go_back_to_unexplored_room(base_path, base_path)
             # print('after go back', player.current_room.id)
-            # for d in gr.get_unexplored_dir(player.current_room):
-            #     s.push(d)
+                for d in gr.get_unexplored_dir(player.current_room):
+                    s.push(d)
+            else:
+                print('None')
 
 
 traverse(traversal_path)
