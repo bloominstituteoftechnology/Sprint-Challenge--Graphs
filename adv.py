@@ -91,16 +91,96 @@ def dft_rec(room, traveled, visited = None):
   
   if len(visited.vertices) == len(room_graph):
     return traveled
-  
-  # if(100 > len(traveled) > 50):
-    # print(check2, room.id)
-    # print(check3)
+
   if len(check3) > 0:
     if len(check) == 3 and check2 != set() and room.id not in check3[0]:
-      if room.n_to.id in check2:
-        print(visited.get_neighbors(room.n_to.n_to.id))
-        if len(visited.get_neighbors(room.n_to.id)) < len(room.n_to.get_exits()):
-
+      if room.n_to is not None:
+        if room.n_to.id in check2:
+          destination = room.n_to
+          if destination.n_to is not None:
+            if len(visited.get_neighbors(destination.n_to.id)) < len(destination.n_to.get_exits()):
+              arrival = destination.n_to
+              traveled.append('n')
+              traveled.append('n')
+              dft_rec(arrival, traveled, visited)
+          elif destination.e_to is not None:
+            if len(visited.get_neighbors(destination.e_to.id)) < len(destination.e_to.get_exits()):
+              arrival = destination.e_to
+              traveled.append('n')
+              traveled.append('e')
+              dft_rec(arrival, traveled, visited)
+          elif destination.w_to is not None:
+            if len(visited.get_neighbors(destination.w_to.id)) < len(destination.w_to.get_exits()):
+              arrival = destination.w_to
+              traveled.append('n')
+              traveled.append('w')
+              dft_rec(arrival, traveled, visited)
+      elif room.e_to is not None:
+        if room.e_to.id in check2:
+          destination = room.e_to
+          if destination.n_to is not None:
+            if len(visited.get_neighbors(destination.n_to.id)) < len(destination.n_to.get_exits()):
+              arrival = destination.n_to
+              traveled.append('e')
+              traveled.append('n')
+              dft_rec(arrival, traveled, visited)
+          if destination.e_to is not None:
+            if len(visited.get_neighbors(destination.e_to.id)) < len(destination.e_to.get_exits()):
+              arrival = destination.e_to
+              traveled.append('e')
+              traveled.append('e')
+              dft_rec(arrival, traveled, visited)
+          if destination.s_to is not None:
+            if len(visited.get_neighbors(destination.s_to.id)) < len(destination.s_to.get_exits()):
+              arrival = destination.s_to
+              traveled.append('e')
+              traveled.append('s')
+              dft_rec(arrival, traveled, visited)
+      elif room.s_to is not None:
+        if room.s_to.id in check2:
+          destination = room.s_to
+          if destination.w_to is not None:
+            if len(visited.get_neighbors(destination.w_to.id)) < len(destination.w_to.get_exits()):
+              arrival = destination.w_to
+              traveled.append('s')
+              traveled.append('w')
+              dft_rec(arrival, traveled, visited)
+          if destination.e_to is not None:
+            if len(visited.get_neighbors(destination.e_to.id)) < len(destination.e_to.get_exits()):
+              arrival = destination.e_to
+              traveled.append('s')
+              traveled.append('e')
+              dft_rec(arrival, traveled, visited)
+          if destination.s_to is not None:
+            if len(visited.get_neighbors(destination.s_to.id)) < len(destination.s_to.get_exits()):
+              arrival = destination.s_to
+              traveled.append('s')
+              traveled.append('s')
+              dft_rec(arrival, traveled, visited)
+      elif room.w_to is not None:
+        if room.w_to.id in check2:
+          destination = room.w_to
+          if destination.n_to is not None:
+            if len(visited.get_neighbors(destination.n_to.id)) < len(destination.n_to.get_exits()):
+              arrival = destination.n_to
+              traveled.append('w')
+              traveled.append('n')
+              dft_rec(arrival, traveled, visited)
+          if destination.w_to is not None:
+            if len(visited.get_neighbors(destination.w_to.id)) < len(destination.w_to.get_exits()):
+              arrival = destination.w_to
+              traveled.append('w')
+              traveled.append('w')
+              dft_rec(arrival, traveled, visited)
+          if destination.s_to is not None:
+            if len(visited.get_neighbors(destination.s_to.id)) < len(destination.s_to.get_exits()):
+              arrival = destination.s_to
+              traveled.append('w')
+              traveled.append('s')
+              dft_rec(arrival, traveled, visited)
+        
+  if len(visited.vertices) == len(room_graph):
+    return traveled
 
   if room.w_to is not None and room.w_to.id not in check2:
     traveled.append('w')
