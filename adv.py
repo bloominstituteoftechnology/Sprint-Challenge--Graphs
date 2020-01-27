@@ -57,58 +57,21 @@ def find_unexplored_room():
     return None
 
 
-s = Stack()
-s.push(player.current_room)
-world_map = {}
-while s.size:
-    curr_room = s.pop()
-    if curr_room not in world_map:
-        world_map[curr_room] = {}
-        for direction in curr_room.get_exits():
-            room_in_dir = curr_room.get_room_in_direction(direction)
-            world_map[curr_room][direction] = room_in_dir
-            s.push(room_in_dir)
-
 gr = Graph()
-for room, directions in world_map.items():
+for room in world.rooms.values():
     gr.add_vertex(room)
-    for direction in directions:
-        gr.add_vertex(room.get_room_in_direction(direction))
 
 
-def traverse(base_path):
-    s = Stack()
-    initial_dirs = gr.get_unexplored_dir(player.current_room)
-    for _ in range(2):
-        first = initial_dirs.pop(0)
-        initial_dirs.append(first)
-    for direction in initial_dirs:
-        s.push(direction)
-    while s.size:
-        if not any('?' in d.values() for d in gr.rooms.values()):
-            break
-        unexplored_dir = s.pop()
-        linear_dir = gr.go_in_direction_until_dead_end(player.current_room)
-        get_current_room(linear_dir)
-        base_path += linear_dir
-        dirs_in_current_room = gr.get_unexplored_dir(player.current_room)
-        if len(dirs_in_current_room):
-            first = dirs_in_current_room.pop(0)
-            dirs_in_current_room.append(first)
-            for d in dirs_in_current_room:
-                s.push(d)
-        else:
-            unexplored_room = find_unexplored_room()
-            if unexplored_room is not None:
-                base_path += unexplored_room
-                get_current_room(unexplored_room)
-                for d in gr.get_unexplored_dir(player.current_room):
-                    s.push(d)
-
-
-traverse(traversal_path)
-
-print(traversal_path)
+while True:
+    if not any('?' in d.values() for d in gr.rooms.values()):
+        break
+    linear_dir = gr.go_in_direction_until_dead_end(player.current_room)
+    get_current_room(linear_dir)
+    traversal_path += linear_dir
+    path_to_unexplored_room = find_unexplored_room()
+    if path_to_unexplored_room is not None:
+        traversal_path += path_to_unexplored_room
+        get_current_room(path_to_unexplored_room)
 
 # TRAVERSAL TEST
 visited_rooms = set()
