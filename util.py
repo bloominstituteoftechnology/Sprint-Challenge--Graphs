@@ -1,3 +1,6 @@
+from random import choice
+
+
 class Queue:
     def __init__(self):
         self.storage = []
@@ -54,14 +57,16 @@ class Graph:
         if room not in self.rooms:
             self.rooms[room] = {d: '?' for d in room.get_exits()}
 
-    def go_in_direction_until_dead_end(self, room, direction, path=None):
+    def go_in_direction_until_dead_end(self, room, path=None):
         if path == None:
             path = []
-        if direction in room.get_exits():
-            self.explore(room, direction)
+        next_dirs = self.get_unexplored_dir(room)
+        if len(next_dirs):
+            direction = choice(next_dirs)
             path.append(direction)
+            self.explore(room, direction)
             next_room = room.get_room_in_direction(direction)
-            return self.go_in_direction_until_dead_end(next_room, direction, path)
+            return self.go_in_direction_until_dead_end(next_room, path)
         else:
             return path
 
