@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from room import Room
 from player import Player
 from world import World
@@ -14,11 +16,14 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+map_file = "maps/test_loop_fork2.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
+
+print(world.rooms)
 
 # Print an ASCII map
 world.print_rooms()
@@ -26,6 +31,20 @@ world.print_rooms()
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
+
+# note direction came from
+# if at an intersection
+#   calculate shortest route (in directions not explored)
+#       check to see if contains intersections, loop with intersections, or simple dead end
+#       if has intersections, sum all child costs
+#       if a single dead end, cost is 2x
+#       if a simple loop, cost is 1x
+#   follow shortest route
+#   if there are still unvisited rooms
+#       if route was simple dead end
+#           retrace steps back to previous intersection first
+#       find closest unvisited room (bfs)
+
 # traversal_path = ['n', 'n']
 traversal_path = []
 
