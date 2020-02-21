@@ -15,41 +15,6 @@ class PathGenerator():
 
     def generatePath(self):
         superPath = [0]
-        # playerVisited = set(superPath)
-        # while len(playerVisited) != len(self.worldmap.rooms):
-        #     print(superPath)
-        #     # get lowest complexity path that hasn't been explored
-        #     potentialDirections = self.intersectionComplexity(superPath[-1], playerVisited)
-        #     lowest = None
-        #     lowestComplexity = math.inf
-        #     print(potentialDirections)
-        #     for roomID in potentialDirections:
-        #         complexity = potentialDirections[roomID]
-        #         # breakpoint()
-        #         if complexity < lowestComplexity and roomID not in playerVisited:
-        #             lowest = roomID
-        #             lowestComplexity = complexity
-        #     print(lowest)
-        #     # traverse it (add it to super path)
-        #     newPath = self.shortestAbsolutePath(superPath[-1], lowest)
-        #     if newPath is not None:
-        #         superPath += newPath[1:]
-        #     playerVisited = set(superPath)
-        #     # if done, exit while loop and convert to relative path
-        #     if len(set(superPath)) == len(self.worldmap.rooms):
-        #         break
-        #     # find closest untraveled intersection and origin
-        #     pathToOrigin = self.shortestAbsolutePath(superPath[-1], 0)
-        #     pathToNearestValidIntersection = self.findNearestUnfinishedIntersection(superPath[-1], playerVisited)
-        #     # print(f"path to orig: {pathToOrigin}")
-        #     # print(f"path to nearest int: {pathToNearestValidIntersection}")
-        #     if len(pathToNearestValidIntersection) <= len(pathToOrigin):
-        #         superPath += pathToNearestValidIntersection[1:]
-        #     else:
-        #         superPath += pathToOrigin[1:]
-        #     playerVisited = set(superPath)
-        #     # travel to closer of the two
-        #     # repeat
 
         playerVisited = set(superPath)
         # while len(playerVisited) != len(self.worldmap.rooms):
@@ -69,24 +34,19 @@ class PathGenerator():
 
         thisPath = [startingIntersection]
 
-        # print(f"complexities for {startingIntersection}: {complexities}")
-
         for complexity in complexities:
             direction = complexity[0]
             furthest = self.furthestStopInDirection(startingIntersection, direction, playerVisited)
             if furthest in playerVisited:
                 continue
 
-            # print("foooo", startingIntersection, furthest, playerVisited)
             thisPath += self.shortestAbsolutePath(startingIntersection, furthest)[1:]
             visited = set(thisPath)
             playerVisited = playerVisited.union(visited)
             if self.isRoomIntersection(furthest):
-                # print(furthest, "is an intersection")
                 thisPath += self.traverseAllIntersectionPaths(furthest, playerVisited)[1:]
                 thisPath += self.shortestAbsolutePath(furthest, startingIntersection)[1:]
             else:
-                # print(furthest, "is an dead end")
                 thisPath += self.shortestAbsolutePath(furthest, startingIntersection)[1:]
 
         # check for any remaining connections to this intersection
@@ -129,8 +89,6 @@ class PathGenerator():
                 break
 
         return nextRoomID
-
-
 
     def isRoomIntersection(self, roomID):
         room = self.worldmap.getRoom(roomID)
@@ -200,9 +158,6 @@ class PathGenerator():
                 # print(f"{destRoomID} from {roomID} = {direction}")
         return relPath
 
-    def shortestDirectionRouteFromRoom(self, roomID):
-        pass
-
     def deadEndPathsFromRoom(self, roomID=0, visited=None):
         q = Queue()
         q.enqueue([roomID])
@@ -247,33 +202,6 @@ class PathGenerator():
         
         return pathsList
 
-    # def complexitiesFromRoom(self, roomID, visited=None):
-    #     # if dead end
-    #         # return 1
-    #     # if straightthrough
-    #         # return recurse on next
-    #     # if intersection
-    #         # check if each connection is loop
-    #             # if have a loop
-    #                 # sum recurse on only one of the loop directions
-    #                 # sum recurse on remaining single path(s)
-    #                 # double any SIMPLE dead ends
-    #             # else
-    #                 # sum recurse on all paths
-    #                 # double lowest SIMPLE dead end (if there is one)
-    #             # return sum
-        
-    #     room = self.worldmap.getRoom(roomID)
-    #     connections = room.allConnections
-    #     if len(connections) == 1:
-    #         return 1
-    #     if len(connections) == 2:
-    #         return 
-
-    # def complexityFromRoom(self, roomID, towardsRoomID, visited=None):
-    #     if visited is None:
-    #         visited = set()
-        
     def closestIntersections(self, startRoomID, visited=None):
         if visited is None:
             visited = set()
@@ -355,13 +283,11 @@ class PathGenerator():
         while len(loopIDs) > 0:
             loopID = loopIDs.pop()
             loopPath = self.roomLoopDestinationFrom(intersectionID, loopID)
-            # print(loopPath)
             if loopPath is not None:
                 loops.append(loopPath)
                 if loopPath[-2] in loopIDs:
                     loopIDs.remove(loopPath[-2])
 
-        # print(f"loops: {loops}")
 
         # check for closest dead ends
         deadEnds = self.closestDeadEnds(intersectionID, visited)
@@ -370,22 +296,8 @@ class PathGenerator():
         # check for closest intersections
         intersections = self.closestIntersections(intersectionID, visited.copy())
         visited.add(intersectionID)
-        # consolidate any loops
-        # removeFromIntersections = []
-        # for intersectionA in intersections:
-        #     for intersectionB in intersections:
-        #         # print(intersectionA, intersectionB)
-        #         if intersectionA == intersectionB:
-        #             continue
-        #         loopCompletion = self.shortestAbsolutePath(intersectionA[-1], intersectionB[-1], visited)
-        #         if loopCompletion is not None:
-        #             loops.append(intersectionA)
-        #             removeFromIntersections.append(intersectionA)
-        #             removeFromIntersections.append(intersectionB)
-        #     # check for shortest path between paths' end rooms without going through `intersectionID`
-        # for removal in removeFromIntersections:
-        #     if removal in intersections:
-        #         intersections.remove(removal)
+
+        # remove intersections that are actually parts of loops
         for loop in loops:
             loopStart = loop[0]
             loopEnd = loop[-2]

@@ -40,51 +40,7 @@ pathGen = PathGenerator(world)
 traversal_path = pathGen.generatePath()
 
 print(traversal_path)
-# def getLength(elem):
-#     return len(elem)
 
-# paths = pathGen.deadEndPathsFromRoom()
-# print(pathGen.roomCountFrom(1, 5, set([3, 4])))
-
-# paths.sort(key=getLength)
-
-# for path in paths:
-#     print(path)
-
-# loop = pathGen.roomLoopDestinationFrom(0, 3)
-# print(loop)
-# loop = pathGen.roomLoopDestinationFrom(0, 1)
-# print(loop)
-# loop = pathGen.roomLoopDestinationFrom(0, 5)
-# print(loop)
-# loop = pathGen.roomLoopDestinationFrom(0, 7)
-# print(loop)
-
-
-# intersects = pathGen.closestIntersections(0)
-# print(intersects)
-# intersects = pathGen.closestDeadEnds(0)
-# print(intersects)
-
-# complexity = pathGen.intersectionComplexity(0)
-# print(complexity)
-# complexity = pathGen.intersectionComplexity(8, set([0, 3, 4]))
-# print(complexity)
-# complexity = pathGen.intersectionComplexity(10, set([0, 3, 4, 7, 8, 25]))
-# complexity = pathGen.intersectionComplexity(6, set([0, 3, 4, 7, 8, 25, 9, 10]))
-# complexity = pathGen.intersectionComplexity(20, set([0, 3, 4, 7, 8, 25, 9, 10, 11, 6]))
-
-# nearestInter = pathGen.findNearestUnfinishedIntersection(4, set([0, 3, 4]))
-# print(nearestInter)
-# nearestInter = pathGen.findNearestUnfinishedIntersection(25, set([0, 7, 8]))
-# print(nearestInter)
-# nearestInter = pathGen.findNearestUnfinishedIntersection(24, set([0, 7, 8, 25, 9, 10, 11, 6, 20, 21, 22, 23, 24]))
-# print(nearestInter)
-
-# print(pathGen.isRoomIntersection(6))
-
-
-# exit()
 
 # TRAVERSAL TEST
 visited_rooms = set()
