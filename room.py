@@ -71,5 +71,17 @@ class Room:
         else:
             return None
 
+    def allConnections(self):
+        conns = {}
+        if self.n_to is not None:
+            conns['n'] = self.n_to
+        if self.e_to is not None:
+            conns['e'] = self.e_to
+        if self.s_to is not None:
+            conns['s'] = self.s_to
+        if self.w_to is not None:
+            conns['w'] = self.w_to
+        return conns
+
     def get_coords(self):
         return [self.x, self.y]

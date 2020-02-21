@@ -37,19 +37,21 @@ pathGen = PathGenerator(world)
 
 
 # traversal_path = pathGen.shortestRelativePath(0, 4) + pathGen.shortestRelativePath(4, 0) + pathGen.shortestRelativePath(0, 24) + pathGen.shortestRelativePath(24, 18) + pathGen.shortestRelativePath(18, 11) + pathGen.shortestRelativePath(11, 8) + pathGen.shortestRelativePath(8, 0) + pathGen.shortestRelativePath(0, 2) + pathGen.shortestRelativePath(2, 14) + pathGen.shortestRelativePath(14, 17)
-traversal_path = []
+traversal_path = pathGen.generatePath()
 
-# print(traversal_path)
+print(traversal_path)
 # def getLength(elem):
 #     return len(elem)
 
-paths = pathGen.deadEndPathsFromRoom()
+# paths = pathGen.deadEndPathsFromRoom()
+# print(pathGen.roomCountFrom(1, 5, set([3, 4])))
+
 # paths.sort(key=getLength)
 
-for path in paths:
-    print(path)
+# for path in paths:
+#     print(path)
 
-exit()
+# exit()
 
 # TRAVERSAL TEST
 visited_rooms = set()

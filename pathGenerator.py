@@ -13,7 +13,20 @@ class PathGenerator():
         self.worldmap = worldmap
 
     def generatePath(self):
-        return ['n', 's'] # temporary, obvs
+        superPath = [0]
+        paths = self.deadEndPathsFromRoom(0)
+        for path in paths:
+            superPath += self.shortestAbsolutePath(superPath[-1], path[-1])[1:]
+            location = path[-1]
+        print(superPath)
+
+        return self.absolutePathToRelative(superPath)
+
+    def unvisitedRooms(self, visited):
+        rooms = self.worldmap.rooms.copy()
+        for room in visited:
+            del rooms[room]
+        return rooms.keys
 
     def shortestRelativePath(self, fromRoom, toRoom):
         path = self.shortestAbsolutePath(fromRoom, toRoom)
@@ -36,7 +49,7 @@ class PathGenerator():
             if roomID not in visited:
                 visited.add(roomID)
                 room = self.worldmap.getRoom(roomID)
-                # print(room)
+                # print(roomID, room)
                 adjacentRooms = [x for x in [room.n_to, room.e_to, room.s_to, room.w_to] if x is not None]
                 if len(path) > 1:
                     prevID = path[-2]
@@ -55,7 +68,11 @@ class PathGenerator():
         if path is not None:
             for index in range(len(path) - 1):
                 roomID = path[index]
-                destRoomID = path[index + 1]
+                destRoomID = roomID
+                offset = 1
+                while destRoomID == roomID:
+                    destRoomID = path[index + offset]
+                    offset += 1
                 originRoom = self.worldmap.getRoom(roomID)
                 destRoom = self.worldmap.getRoom(destRoomID)
                 direction = originRoom.directionOfRoom(destRoom)
@@ -67,10 +84,11 @@ class PathGenerator():
     def shortestDirectionRouteFromRoom(self, roomID):
         pass
 
-    def deadEndPathsFromRoom(self, roomID=0):
+    def deadEndPathsFromRoom(self, roomID=0, visited=None):
         q = Queue()
         q.enqueue([roomID])
-        visited = set()
+        if visited is None:
+            visited = set()
 
         paths = set()
         while q.size() > 0:
@@ -109,6 +127,24 @@ class PathGenerator():
         pathsList.sort(key=mySort)
         
         return pathsList
+
+    def complexityFromRoomGoingToward(self, roomID, towardRoomID, visited=None):
+        towardRoom = self.worldmap.getRoom(towardRoomID)
+        room = self.worldmap.getRoom(roomID)
+        connections = towardRoom.connections()
+        for direction, room in connections.items():
+            if room.id == roomID:
+                del connections[direction]
+
+        if len(connections) == 0:
+            return 1
+        if len(connections) == 1:
+            nextRoomID = connections.keys[0].id
+            return self.complexityFromRoomGoingToward(towardRoomID, nextRoomID, visited)
+        
+
+
+
 # note direction came from
 # if at an intersection
 #   calculate shortest route (in directions not explored)
