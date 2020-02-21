@@ -34,6 +34,9 @@ class World:
                 self.rooms[room_id].connect_rooms('w', self.rooms[room_graph[room_id][1]['w']])
         self.starting_room = self.rooms[0]
 
+    def getRoom(self, roomID):
+        return self.rooms.get(roomID, None)
+
     def print_rooms(self):
         rotated_room_grid = []
         for i in range(0, len(self.room_grid)):

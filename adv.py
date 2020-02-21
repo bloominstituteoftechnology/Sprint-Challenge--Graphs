@@ -3,7 +3,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from pathGenerator import PathGenerator
 import random
 from ast import literal_eval
 
@@ -23,7 +23,7 @@ map_file = "maps/test_loop_fork2.txt"
 room_graph=literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
-print(world.rooms)
+# print(world.rooms)
 
 # Print an ASCII map
 world.print_rooms()
@@ -32,21 +32,30 @@ player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 
-# note direction came from
-# if at an intersection
-#   calculate shortest route (in directions not explored)
-#       check to see if contains intersections, loop with intersections, or simple dead end
-#       if has intersections, sum all child costs
-#       if a single dead end, cost is 2x
-#       if a simple loop, cost is 1x
-#   follow shortest route
-#   if there are still unvisited rooms
-#       if route was simple dead end
-#           retrace steps back to previous intersection first
-#       find closest unvisited room (bfs)
+pathGen = PathGenerator(world)
 
-# traversal_path = ['n', 'n']
-traversal_path = []
+
+# absPath = pathGen.shortestAbsolutePath(0, 0)
+# relPath = pathGen.absolutePathToRelative(absPath)
+# print(f"0 -> 0 {relPath}")
+# absPath = pathGen.shortestAbsolutePath(0, 1)
+# relPath = pathGen.absolutePathToRelative(absPath)
+# print(f"0 -> 1 {relPath}")
+# absPath = pathGen.shortestAbsolutePath(0, 6)
+# relPath = pathGen.absolutePathToRelative(absPath)
+# print(f"0 -> 6 {relPath}")
+# absPath = pathGen.shortestAbsolutePath(0, 18)
+# relPath = pathGen.absolutePathToRelative(absPath)
+# print(f"0 -> 18 {relPath}")
+# absPath = pathGen.shortestAbsolutePath(0, 24)
+# relPath = pathGen.absolutePathToRelative(absPath)
+# print(f"0 -> 24 {relPath}")
+# absPath = pathGen.shortestAbsolutePath(24, 0)
+# relPath = pathGen.absolutePathToRelative(absPath)
+# print(f"24 -> 0 {relPath}")
+
+
+traversal_path = pathGen.shortestRelativePath(0, 4) + pathGen.shortestRelativePath(4, 0) + pathGen.shortestRelativePath(0, 24) + pathGen.shortestRelativePath(24, 18) + pathGen.shortestRelativePath(18, 11) + pathGen.shortestRelativePath(11, 8) + pathGen.shortestRelativePath(8, 0) + pathGen.shortestRelativePath(0, 2) + pathGen.shortestRelativePath(2, 14) + pathGen.shortestRelativePath(14, 17)
 
 
 

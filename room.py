@@ -58,5 +58,18 @@ class Room:
             return self.w_to
         else:
             return None
+
+    def directionOfRoom(self, room):
+        if self.n_to is not None and room.id == self.n_to.id:
+            return "n"
+        elif self.s_to is not None and room.id == self.s_to.id:
+            return "s"
+        elif self.e_to is not None and room.id == self.e_to.id:
+            return "e"
+        elif self.w_to is not None and room.id == self.w_to.id:
+            return "w"
+        else:
+            return None
+
     def get_coords(self):
         return [self.x, self.y]
