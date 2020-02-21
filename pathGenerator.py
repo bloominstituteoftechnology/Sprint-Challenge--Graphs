@@ -18,7 +18,12 @@ class PathGenerator():
         for path in paths:
             superPath += self.shortestAbsolutePath(superPath[-1], path[-1])[1:]
             location = path[-1]
-        print(superPath)
+        visited = set(superPath)
+        remaining = self.unvisitedRooms(visited)
+        while len(remaining) > 0:
+            superPath += self.shortestAbsolutePath(superPath[-1], remaining[0])[1:]
+            visited = set(superPath)
+            remaining = self.unvisitedRooms(visited)
 
         return self.absolutePathToRelative(superPath)
 
@@ -26,7 +31,7 @@ class PathGenerator():
         rooms = self.worldmap.rooms.copy()
         for room in visited:
             del rooms[room]
-        return rooms.keys
+        return list(rooms.keys())
 
     def shortestRelativePath(self, fromRoom, toRoom):
         path = self.shortestAbsolutePath(fromRoom, toRoom)
