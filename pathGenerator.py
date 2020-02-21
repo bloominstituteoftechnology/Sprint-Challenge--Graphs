@@ -51,7 +51,7 @@ class PathGenerator():
 
     def absolutePathToRelative(self, path):
         relPath = []
-        
+
         for index in range(len(path) - 1):
             roomID = path[index]
             destRoomID = path[index + 1]
@@ -63,6 +63,40 @@ class PathGenerator():
             relPath.append(direction)
         return relPath
 
+    def shortestDirectionRouteFromRoom(self, roomID):
+        pass
+
+    def bftTest(self):
+        q = Queue()
+        q.enqueue([self.worldmap.starting_room.id])
+        visited = set()
+
+        paths = set()
+        while q.size() > 0:
+            path = q.dequeue()
+            roomID = path[-1]
+            if roomID not in visited:
+                paths.add(tuple(path))
+                visited.add(roomID)
+                room = self.worldmap.getRoom(roomID)
+                adjacentRooms = [x for x in [room.n_to, room.e_to, room.s_to, room.w_to] if x is not None]
+                for adjacent in adjacentRooms:
+                    newPath = path.copy()
+                    newPath.append(adjacent.id)
+                    q.enqueue(newPath)
+
+        pathsList = list(paths)
+        pathsList.sort(key=len, reverse=True)
+
+        for pathTup in pathsList:
+            path = list(pathTup)
+            while len(path) > 0:
+                path.pop()
+                tTuple = tuple(path)
+                if tTuple in paths:
+                    paths.remove(tuple(path))
+        
+        return paths
 # note direction came from
 # if at an intersection
 #   calculate shortest route (in directions not explored)
