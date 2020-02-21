@@ -9,6 +9,32 @@ sys.path.append('structs/')
 from Queue import Queue
 from Stack import Stack
 
+
+class PathWrapper():
+    def __init__(self, path=None, returnPath=None):
+        if path is None:
+            path = []
+        if returnPath is None:
+            returnPath = []
+        self.path = path
+        self.returnPath = returnPath
+
+    def appendToPath(self, newPath):
+        if self.path[-1] == newPath[0]:
+            self.path += newPath[1:]
+        else:
+            self.path += newPath
+
+    def setReturnPath(self, returnPath):
+        if self.path[-1] == returnPath[0]:
+            self.returnPath = returnPath[1:]
+        else:
+            self.returnPath = returnPath
+    
+    def totalPath(self):
+        return self.path + self.returnPath
+
+
 class PathGenerator():
     def __init__(self, worldmap):
         self.worldmap = worldmap
@@ -19,6 +45,7 @@ class PathGenerator():
 
         playerVisited = set(superPath)
         # while len(playerVisited) != len(self.worldmap.rooms):
+        
         superPath = self.traverseAllIntersectionPaths(0, playerVisited)
         # print(superPath)
         # remove rooms from the end of thisPath until playerVisited is not the same size as total rooms, then undo one step
@@ -31,7 +58,6 @@ class PathGenerator():
 
     def traverseAllIntersectionPaths(self, startingIntersection, playerVisited):
         intersectionRoom = self.worldmap.getRoom(startingIntersection)
-        finalizedConnections = intersectionRoom.allConnections()
 
         playerVisited = playerVisited.copy()
 
@@ -42,26 +68,33 @@ class PathGenerator():
         while len(self.unexploredConnectionsToRoom(startingIntersection, playerVisited)) > 0:
             # establish proposedPaths[direction: totalPathInDirection]
             proposedPaths = {}
+            proposedFurthestRooms = {}
             # while proposed connections still has unexplored paths
             unexplored = self.unexploredConnectionsToRoom(startingIntersection, playerVisited)
             # explore every unexplored path
             for direction in unexplored:
-                # traverse furthest stop
                 proposedFurthest = self.furthestStopInDirection(startingIntersection, direction, playerVisited)
-                proposedPaths[direction] = self.shortestAbsolutePath(
-                    startingIntersection, proposedFurthest)[1:]
-                proposedVisited = playerVisited.union(proposedPaths[direction])
+                proposedFurthestRooms[direction] = proposedFurthest
+
+            for direction in unexplored:
+                # traverse furthest stop
+                proposedFurthest = proposedFurthestRooms[direction]
+                proposedPaths[direction] = PathWrapper(self.shortestAbsolutePath(direction, proposedFurthest))
+                proposedVisited = playerVisited.union(proposedPaths[direction].path)
                 # if intersection, recurse with traverseall
-                if self.isRoomIntersection(proposedPaths[direction][-1]):
-                    proposedPaths[direction] += self.traverseAllIntersectionPaths(proposedPaths[direction][-1], proposedVisited)[1:]
+                if self.isRoomIntersection(proposedPaths[direction].path[-1]):
+                    proposedPaths[direction].appendToPath(self.traverseAllIntersectionPaths(proposedPaths[direction].path[-1], proposedVisited))
                 # if dead end, traverse back to intersection
-                proposedPaths[direction] += self.shortestAbsolutePath(proposedPaths[direction][-1], startingIntersection)[1:]
+                proposedPaths[direction].setReturnPath(self.shortestAbsolutePath(proposedPaths[direction].path[-1], startingIntersection))
             # compare each proposedPath
             proposedArray = [proposedPaths[direction] for direction in proposedPaths]
-            proposedArray.sort(key=len)
+            def sorter(elem):
+                return len(elem.path)
+
+            proposedArray.sort(key=sorter)
 
             # add shortest path to thisPath
-            thisPath += proposedArray[0]
+            thisPath += proposedArray[0].totalPath()
             playerVisited = playerVisited.union(thisPath)
 
         self.completion = max(len(playerVisited) / len(self.worldmap.rooms), self.completion)
