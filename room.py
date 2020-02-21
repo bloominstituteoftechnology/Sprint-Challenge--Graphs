@@ -12,12 +12,13 @@ class Room:
         self.x = x
         self.y = y
     def __str__(self):
+        return repr(self)
         return f"\n-------------------\n\n{self.name}\n\n   {self.description}\n\n{self.get_exits_string()}\n"
     def __repr__(self):
         connectedRooms = [x.id for x in [self.n_to, self.e_to, self.s_to, self.w_to] if x is not None]
         return f"Room {self.id}: ({self.x}, {self.y}) {connectedRooms}"
     def print_room_description(self, player):
-        print(str(self))
+        print(repr(self))
     def get_exits(self):
         exits = []
         if self.n_to is not None:
@@ -74,14 +75,26 @@ class Room:
     def allConnections(self):
         conns = {}
         if self.n_to is not None:
-            conns['n'] = self.n_to
+            conns["n"] = self.n_to
         if self.e_to is not None:
-            conns['e'] = self.e_to
+            conns["e"] = self.e_to
         if self.s_to is not None:
-            conns['s'] = self.s_to
+            conns["s"] = self.s_to
         if self.w_to is not None:
-            conns['w'] = self.w_to
+            conns["w"] = self.w_to
         return conns
+
+    def roomsOtherThan(self, room):
+        otherRooms = []
+        if self.n_to is not None and room.id != self.n_to.id:
+            otherRooms.append(self.n_to)
+        if self.s_to is not None and room.id != self.s_to.id:
+            otherRooms.append(self.s_to)
+        if self.e_to is not None and room.id != self.e_to.id:
+            otherRooms.append(self.e_to)
+        if self.w_to is not None and room.id != self.w_to.id:
+            otherRooms.append(self.w_to)
+        return otherRooms
 
     def get_coords(self):
         return [self.x, self.y]
