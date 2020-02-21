@@ -52,15 +52,16 @@ class PathGenerator():
     def absolutePathToRelative(self, path):
         relPath = []
 
-        for index in range(len(path) - 1):
-            roomID = path[index]
-            destRoomID = path[index + 1]
-            originRoom = self.worldmap.getRoom(roomID)
-            destRoom = self.worldmap.getRoom(destRoomID)
-            direction = originRoom.directionOfRoom(destRoom)
-            if direction is None:
-                raise IndexError(f"Room {originRoom.id} not connected to Room {destRoom.id}")
-            relPath.append(direction)
+        if path is not None:
+            for index in range(len(path) - 1):
+                roomID = path[index]
+                destRoomID = path[index + 1]
+                originRoom = self.worldmap.getRoom(roomID)
+                destRoom = self.worldmap.getRoom(destRoomID)
+                direction = originRoom.directionOfRoom(destRoom)
+                if direction is None:
+                    raise IndexError(f"Room {originRoom.id} not connected to Room {destRoom.id}")
+                relPath.append(direction)
         return relPath
 
     def shortestDirectionRouteFromRoom(self, roomID):

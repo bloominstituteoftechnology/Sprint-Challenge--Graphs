@@ -16,7 +16,8 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/test_loop_fork2.txt"
+# map_file = "maps/test_loop_fork2.txt"
+map_file = "maps/test_loop_fork3.txt"
 # map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
@@ -35,27 +36,8 @@ player = Player(world.starting_room)
 pathGen = PathGenerator(world)
 
 
-# absPath = pathGen.shortestAbsolutePath(0, 0)
-# relPath = pathGen.absolutePathToRelative(absPath)
-# print(f"0 -> 0 {relPath}")
-# absPath = pathGen.shortestAbsolutePath(0, 1)
-# relPath = pathGen.absolutePathToRelative(absPath)
-# print(f"0 -> 1 {relPath}")
-# absPath = pathGen.shortestAbsolutePath(0, 6)
-# relPath = pathGen.absolutePathToRelative(absPath)
-# print(f"0 -> 6 {relPath}")
-# absPath = pathGen.shortestAbsolutePath(0, 18)
-# relPath = pathGen.absolutePathToRelative(absPath)
-# print(f"0 -> 18 {relPath}")
-# absPath = pathGen.shortestAbsolutePath(0, 24)
-# relPath = pathGen.absolutePathToRelative(absPath)
-# print(f"0 -> 24 {relPath}")
-# absPath = pathGen.shortestAbsolutePath(24, 0)
-# relPath = pathGen.absolutePathToRelative(absPath)
-# print(f"24 -> 0 {relPath}")
-
-
-traversal_path = pathGen.shortestRelativePath(0, 4) + pathGen.shortestRelativePath(4, 0) + pathGen.shortestRelativePath(0, 24) + pathGen.shortestRelativePath(24, 18) + pathGen.shortestRelativePath(18, 11) + pathGen.shortestRelativePath(11, 8) + pathGen.shortestRelativePath(8, 0) + pathGen.shortestRelativePath(0, 2) + pathGen.shortestRelativePath(2, 14) + pathGen.shortestRelativePath(14, 17)
+# traversal_path = pathGen.shortestRelativePath(0, 4) + pathGen.shortestRelativePath(4, 0) + pathGen.shortestRelativePath(0, 24) + pathGen.shortestRelativePath(24, 18) + pathGen.shortestRelativePath(18, 11) + pathGen.shortestRelativePath(11, 8) + pathGen.shortestRelativePath(8, 0) + pathGen.shortestRelativePath(0, 2) + pathGen.shortestRelativePath(2, 14) + pathGen.shortestRelativePath(14, 17)
+traversal_path = []
 
 # print(traversal_path)
 # def getLength(elem):
