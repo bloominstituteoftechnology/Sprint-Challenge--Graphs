@@ -61,7 +61,7 @@ traversal_path = pathGen.shortestRelativePath(0, 4) + pathGen.shortestRelativePa
 # def getLength(elem):
 #     return len(elem)
 
-paths = pathGen.bftTest()
+paths = pathGen.deadEndPathsFromRoom()
 # paths.sort(key=getLength)
 
 for path in paths:

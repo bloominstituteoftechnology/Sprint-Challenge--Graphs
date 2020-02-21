@@ -66,9 +66,9 @@ class PathGenerator():
     def shortestDirectionRouteFromRoom(self, roomID):
         pass
 
-    def bftTest(self):
+    def deadEndPathsFromRoom(self, roomID=0):
         q = Queue()
-        q.enqueue([self.worldmap.starting_room.id])
+        q.enqueue([roomID])
         visited = set()
 
         paths = set()
@@ -95,8 +95,19 @@ class PathGenerator():
                 tTuple = tuple(path)
                 if tTuple in paths:
                     paths.remove(tuple(path))
+
+        def mySort(elem):
+            value = 0
+            for i in range(len(elem)):
+                div = 0.1 / ((10 * i) + 1)
+                value += div
+            total = elem[1] + value
+            # print(elem[1], "value: ", value, total)
+            return total
+        pathsList = list(paths)
+        pathsList.sort(key=mySort)
         
-        return paths
+        return pathsList
 # note direction came from
 # if at an intersection
 #   calculate shortest route (in directions not explored)
