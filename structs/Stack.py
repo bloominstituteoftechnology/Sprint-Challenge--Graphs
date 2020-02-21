@@ -4,7 +4,6 @@ from LinkedList import LinkedList
 
 class Stack:
     def __init__(self):
-        self.size = 0
         # Why is our DLL a good choice to store our elements?
         self.storage = LinkedList()
 
@@ -15,4 +14,7 @@ class Stack:
         return self.storage.remove_from_tail()
 
     def len(self):
+        return len(self.storage)
+
+    def size(self):
         return len(self.storage)

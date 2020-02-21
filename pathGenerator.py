@@ -6,7 +6,7 @@ from world import World
 import sys
 sys.path.append('structs/')
 from Queue import Queue
-
+from Stack import Stack
 
 class PathGenerator():
     def __init__(self, worldmap):
@@ -37,12 +37,14 @@ class PathGenerator():
         path = self.shortestAbsolutePath(fromRoom, toRoom)
         return self.absolutePathToRelative(path)
 
-    def shortestAbsolutePath(self, fromRoom, toRoom):
+    def shortestAbsolutePath(self, fromRoom, toRoom, visited=None):
         # bfs
         q = Queue()
         q.enqueue([fromRoom])
 
-        visited = set()
+        if visited is None:
+            visited = set()
+        visited = visited.copy()
 
         while q.size() > 0:
             # print(visited)
@@ -84,6 +86,7 @@ class PathGenerator():
                 if direction is None:
                     raise IndexError(f"Room {originRoom.id} not connected to Room {destRoom.id}")
                 relPath.append(direction)
+                # print(f"{destRoomID} from {roomID} = {direction}")
         return relPath
 
     def shortestDirectionRouteFromRoom(self, roomID):
@@ -133,20 +136,170 @@ class PathGenerator():
         
         return pathsList
 
-    def complexityFromRoomGoingToward(self, roomID, towardRoomID, visited=None):
-        towardRoom = self.worldmap.getRoom(towardRoomID)
-        room = self.worldmap.getRoom(roomID)
-        connections = towardRoom.connections()
-        for direction, room in connections.items():
-            if room.id == roomID:
-                del connections[direction]
-
-        if len(connections) == 0:
-            return 1
-        if len(connections) == 1:
-            nextRoomID = connections.keys[0].id
-            return self.complexityFromRoomGoingToward(towardRoomID, nextRoomID, visited)
+    # def complexitiesFromRoom(self, roomID, visited=None):
+    #     # if dead end
+    #         # return 1
+    #     # if straightthrough
+    #         # return recurse on next
+    #     # if intersection
+    #         # check if each connection is loop
+    #             # if have a loop
+    #                 # sum recurse on only one of the loop directions
+    #                 # sum recurse on remaining single path(s)
+    #                 # double any SIMPLE dead ends
+    #             # else
+    #                 # sum recurse on all paths
+    #                 # double lowest SIMPLE dead end (if there is one)
+    #             # return sum
         
+    #     room = self.worldmap.getRoom(roomID)
+    #     connections = room.allConnections
+    #     if len(connections) == 1:
+    #         return 1
+    #     if len(connections) == 2:
+    #         return 
+
+    # def complexityFromRoom(self, roomID, towardsRoomID, visited=None):
+    #     if visited is None:
+    #         visited = set()
+        
+    def closestIntersections(self, startRoomID, visited=None):
+        if visited is None:
+            visited = set()
+        visited = visited.copy()
+
+        q = Queue()
+        q.enqueue([startRoomID])
+
+        pathsToIntersections = []
+
+        while q.size() > 0:
+            path = q.dequeue()
+            roomID = path[-1]
+            if roomID not in visited or roomID == startRoomID:
+                visited.add(roomID)    
+                room = self.worldmap.getRoom(roomID)
+                adjacentRooms = [x for x in [room.n_to, room.e_to, room.s_to, room.w_to] if x is not None]
+                if len(adjacentRooms) > 2 and roomID != startRoomID:
+                    pathsToIntersections.append(path)
+                    continue
+                else:
+                    for adjacent in adjacentRooms:
+                        newPath = path.copy()
+                        newPath.append(adjacent.id)
+                        q.enqueue(newPath)
+        return pathsToIntersections
+
+    def closestDeadEnds(self, startRoomID, visited=None):
+        if visited is None:
+            visited = set()
+        visited = visited.copy()
+
+        s = Stack()
+        s.push([startRoomID])
+
+        deadEnds = []
+
+        while s.size() > 0:
+            path = s.pop()
+            roomID = path[-1]
+            if roomID not in visited:
+                visited.add(roomID)
+                room = self.worldmap.getRoom(roomID)
+                adjacentRooms = [x for x in [room.n_to, room.e_to, room.s_to, room.w_to] if x is not None]
+                if len(adjacentRooms) == 1:
+                    deadEnds.append(path)
+                    continue
+                if len(adjacentRooms) > 2 and roomID != startRoomID:
+                    continue
+                else:
+                    for adjacent in adjacentRooms:
+                        newPath = path.copy()
+                        newPath.append(adjacent.id)
+                        s.push(newPath)
+        return deadEnds
+        
+
+    def intersectionComplexityValue(self, intersectionID, visited=None):
+        connections = self.intersectionComplexity(intersectionID, visited)
+        value = 0
+        for id in connections:
+            value += connections[id]
+        return value
+    
+    def intersectionComplexity(self, intersectionID, visited=None):
+        if visited is None:
+            visited = set()
+
+        if intersectionID in visited:
+            visited.remove(intersectionID)
+
+        connections = self.worldmap.getRoom(intersectionID).allConnections()
+        connectionIDs = [room.id for id, room in connections.items()]
+        connections = {}
+
+        # check for closest dead ends
+        deadEnds = self.closestDeadEnds(intersectionID, visited)
+        for deadEnd in deadEnds:
+            connections[deadEnd[1]] = (len(deadEnd) - 1) * 2
+        # check for closest intersections
+        intersections = self.closestIntersections(intersectionID, visited.copy())
+        visited.add(intersectionID)
+        # consolidate any loops
+        loops = []
+        removeFromIntersections = []
+        for intersectionA in intersections:
+            for intersectionB in intersections:
+                # print(intersectionA, intersectionB)
+                if intersectionA == intersectionB:
+                    continue
+                loopCompletion = self.shortestAbsolutePath(intersectionA[-1], intersectionB[-1], visited)
+                if loopCompletion is not None:
+                    loops.append(intersectionA)
+                    removeFromIntersections.append(intersectionA)
+                    removeFromIntersections.append(intersectionB)
+            # check for shortest path between paths' end rooms without going through `intersectionID`
+        for removal in removeFromIntersections:
+            if removal in intersections:
+                intersections.remove(removal)
+
+        for intersection in intersections:
+            connections[intersection[1]] = 2 * len(intersection) + self.intersectionComplexityValue(intersection[-1], visited)
+
+        # loopComplex = 0
+        if len(loops) > 0:
+            baseLoopBranch = loops[0][1]
+            connections[baseLoopBranch] = len(self.roomLoopDestinationFrom(intersectionID, baseLoopBranch))
+            # for loop in loops:
+            #     connections[baseLoopBranch] = connections.get(baseLoopBranch, 0) + len(loop)
+        
+        return connections
+
+    def typeOfIntersectionConnection(self, intersectionID, directionRoomID):
+        pass
+
+    # def intersectionComplexityInDirectionOfLoop(self, intersectionID, directionRoomID, originID, visited=None):
+        
+    def roomLoopDestinationFrom(self, intersectionRoomID, directionRoomID):
+        # dfs
+        s = Stack()
+        s.push([directionRoomID])
+        visited = set([intersectionRoomID])
+
+        while s.size() > 0:
+            path = s.pop()
+            roomID = path[-1]
+            if roomID == intersectionRoomID and len(path) > 3:
+                return path
+            if roomID not in visited:
+                visited.add(roomID)
+                room = self.worldmap.getRoom(roomID)
+                adjacentRooms = [x for x in [room.n_to, room.e_to, room.s_to, room.w_to] if x is not None]
+                for adjacent in adjacentRooms:
+                    newPath = path.copy()
+                    newPath.append(adjacent.id)
+                    s.push(newPath)
+        return None
 
 
 
