@@ -20,6 +20,11 @@ class PathGenerator():
         # while len(playerVisited) != len(self.worldmap.rooms):
         superPath = self.traverseAllIntersectionPaths(0, playerVisited)
         # print(superPath)
+        # remove rooms from the end of thisPath until playerVisited is not the same size as total rooms, then undo one step
+        choppedValue = superPath.pop()
+        while len(set(superPath)) == len(self.worldmap.rooms):
+            choppedValue = superPath.pop()
+        superPath.append(choppedValue)
 
         return self.absolutePathToRelative(superPath)
 
