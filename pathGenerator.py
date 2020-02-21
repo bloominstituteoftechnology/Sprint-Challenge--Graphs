@@ -57,8 +57,6 @@ class PathGenerator():
         return self.absolutePathToRelative(superPath)
 
     def traverseAllIntersectionPaths(self, startingIntersection, playerVisited):
-        intersectionRoom = self.worldmap.getRoom(startingIntersection)
-
         playerVisited = playerVisited.copy()
 
         # establish thisPath
