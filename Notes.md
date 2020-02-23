@@ -1,25 +1,54 @@
 
 A) IMPORTS
 1. Stack & Queue from Utils
+    - Stack = DFS
+    - Queue = BFS (to get back to a room with unused exits)
 2. Random
+    - To pick a random direction out of available unused exits for DFS 
 
 B) SETUP
-1. Make Reverse Direction Dictionary
+1. Make Backtrack Dictionary
+2. Initialize Visited_Rooms Dictionary
 
-C) STEPS
+C) Helpers
+1. ```unused_exits()``` => Find Valid Moves
+    - Input: Current_Room, Visited_Rooms
+    - Output:
+        - all valid directional options (n / s / e / w) from the current room 
+        - FALSE if none => triggers backtracing
+2. ```random_direction``` => picks randomly from ```unused_exits```
+
+D) STEPS
 1. Initialize Stack
-2. Add Players current room to stack
-3. Initialize Visited_rooms dictionary
+2. Add current room (starting room) to the stack
 
-4. WHILE loop w/ conditions 
-- condition_1 = s.size() > 0
+3. __Main__ WHILE loop
+    - Goal: visit every room!
+    - While loop translation: len(visited_rooms) < len(world.rooms)
 
-4.1. Get curr_room from Stack
+    A1. Pop next room from stack
+    A2. Add current_room to ```visited_rooms``` dict
+    A3. Add all adjacent rooms connections to current_room in ```visited_rooms```
 
-4.2. Add curr_room to visited rooms
-4.3 Get all available exit directions
-4.4. Get all rooms in those available exit directions
-4.5 Update the current room in the visited rooms dictionary w/ the apporpriate adjacent rooms
+    B1. CALL: ```unused_exits()``` on current room
+        - Output:
+            - Filtered directional moved
+            - False (if all adjacent rooms have already been visited)
+
+    B1 != FALSE: ```CONTINUE DFS```
+        A. CALL: ```random_direction()```
+        B. Update ```traversal_path``` dict
+        C. Move player in chosen_direction
+        D. Add new current_room to stack
+
+
+    B1 = FALSE: ```START BACKTRACKING```
+
+
+
+    
+
+
 
 4.6 Pick random direction to move to
 4.7 Update traversal path

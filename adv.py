@@ -13,9 +13,9 @@ import random
 world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt" 
+map_file = "maps/test_line.txt" 
 # map_file = "maps/test_cross.txt"
-map_file = "maps/test_loop.txt"
+# map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
 
@@ -35,117 +35,164 @@ traversal_path = []
 # -- START CODE -- #
 # -- START CODE -- #
 
-# -1- SETUP
-# Initialize Reverse Distionary 
+#### #### #### #### #### #### #### #### 
+##          Sunday Clean Up          ##
+#### #### #### #### #### #### #### ####
+
+# - A - SETUP
 reverse_direction = {'n':'s', 'e':'w', 's':'n', 'w':'e'}
+visited_rooms = {}
 
-# Helper Functions
-def check_for_question(graph):
-    for key in graph:
-        if '?' in graph[key].values():
-            return True
-    return False
+# - B - HELPERS
+def unused_exits(visited_rooms, current_room):
+    result = []
+    available_exit_directions = current_room.get_exits()
+    print(f'-*- AVAILABLE EXIT DIRECTIONS: {available_exit_directions}')
 
-# -2- STEPS
+    for direction in available_exit_directions:
+        if current_room.get_room_in_direction(direction) not in visited_rooms:
+            result.append(direction)
+
+    if len(result) == 0:
+        return False
+    else:
+        return result
+
+def random_direction(filtered_moves):
+    return filtered_moves[
+        random.randint(0, len(filtered_moves) - 1)
+    ]
+        
+# - C - STEPS
 s = Stack()
 s.push(player.current_room)
 
-visited_rooms = {}
-
-# while s.size() > 0:
 while len(visited_rooms) < len(world.rooms):
-    curr_room = s.pop()
-    print(f'-*- CURRENT ROOM: {curr_room}')
+    current_room = s.pop()
+    print(f'-*- CURRENT ROOM: {current_room}')
 
-    visited_rooms[curr_room.id] = {}
 
-    available_exits = curr_room.get_exits()
-    print(f'-*- AVAILABLE EXITS: {available_exits}')
-    filtered_exit_options = []
+    visited_rooms[current_room.id] = {}
+    available_exits = current_room.get_exits()
     for direction in available_exits:
-        next_room_option = curr_room.get_room_in_direction(direction)
-        print(f'-*- NEXT ROOM OPTION: {next_room_option}')
-        
-        # visited_rooms[curr_room.id][direction] = '?'
-        visited_rooms[curr_room.id][direction] = next_room_option.id
-        
-        if next_room_option.id not in visited_rooms:
-            filtered_exit_options.append(direction)
-            print(f'-*- FILTERED AVAILABLE EXITS: {filtered_exit_options}')
-    
+        connected_room = current_room.get_room_in_direction(direction)
+        visited_rooms[current_room.id][direction] = connected_room.id
     print(f'-*- VISITED ROOMS: {visited_rooms}')
-    print(f'-*- LENGTH VISITED ROOMS: {len(visited_rooms)}')
-    print(f'-*- LENGTH WORLD ROOMS: {len(world.rooms)}')
-
-    if len(filtered_exit_options) == 0 and len(visited_rooms) < len(world.rooms):
-        print('NEED TO BACKTRACK')
-        #  FIND SHORTEST PATH BACK TO A ROOM WITH VALID EXIT OPTIONS
-        i = -1
-        keep_backtracking = True
-
-        # V2 -- USE TRAVERSAL PATH
-        while keep_backtracking:
-
-            backtrack_direction = reverse_direction[traversal_path[i]]
-            print(f'-*- BACKTRACK DIRECTION: {backtrack_direction}')
-
-            traversal_path.append(backtrack_direction)
-            print(f'-*- TRAVERSAL PATH: {traversal_path}')
-
-            player.travel(backtrack_direction)
-            print(player.current_room)
-
-            for direction in player.current_room.get_exits():
-                print(direction)
-
-                if player.current_room.get_room_in_direction(direction).id not in visited_rooms:
-                    print(f'STAY IN THIS ROOM')
-                    keep_backtracking = False
-                    break
-                else:
-                    print(f'ALREADY EXPLORED')
-            i -= 1
-
-        s.push(player.current_room)
-            
-        # exit()
-
-        # V1 -- USE A QUEUE
-        # q = Queue()
-
-        # for exit_option in available_exits:
-        #     q.enqueue(exit_option)
-        
-        # back_track_room = q.dequeue()
-        # print(back_track_room)
-
-
-        # exit()
-    elif len(visited_rooms) < len(world.rooms): 
     
-        # Pick Movement Direction
-        chosen_direction = filtered_exit_options[
-            random.randint(0, len(filtered_exit_options) -1 )
-        ]
-        print(f'-*- CHOSEN DIRECTOIN: {chosen_direction}')
 
-        # Update Travesal Path
+    filtered_moves = unused_exits(visited_rooms, current_room)
+    print(f'-*- FILTERED ROOMS: {filtered_moves}')
+    if filtered_moves is not False:
+        print('-!- CONTINUE w/ DFS')
+
+        chosen_direction = random_direction(filtered_moves)
+        print(f'-*- CHOSEN DIRECTOIN: {chosen_direction}')
         traversal_path.append(chosen_direction)
         print(f'-*- TRAVERSAL PATH: {traversal_path}')
 
-        # Move Player
         player.travel(chosen_direction)
         s.push(player.current_room)
 
-    # else: 
-    #     print('ERROR')
-    #     exit()
+    else: 
+        print('-!- BACKTRACK w/ BFS')
+
+    # exit()
+
+
+
+
+
+# # while s.size() > 0:
+# while len(visited_rooms) < len(world.rooms):
+#     curr_room = s.pop()
+#     print(f'-*- CURRENT ROOM: {curr_room}')
+
+#     visited_rooms[curr_room.id] = {}
+
+#     available_exits = curr_room.get_exits()
+#     print(f'-*- AVAILABLE EXITS: {available_exits}')
+#     filtered_exit_options = []
+#     for direction in available_exits:
+#         next_room_option = curr_room.get_room_in_direction(direction)
+#         print(f'-*- NEXT ROOM OPTION: {next_room_option}')
+        
+#         # visited_rooms[curr_room.id][direction] = '?'
+#         visited_rooms[curr_room.id][direction] = next_room_option.id
+        
+#         if next_room_option.id not in visited_rooms:
+#             filtered_exit_options.append(direction)
+#             print(f'-*- FILTERED AVAILABLE EXITS: {filtered_exit_options}')
+    
+#     print(f'-*- VISITED ROOMS: {visited_rooms}')
+#     print(f'-*- LENGTH VISITED ROOMS: {len(visited_rooms)}')
+#     print(f'-*- LENGTH WORLD ROOMS: {len(world.rooms)}')
+
+#     if len(filtered_exit_options) == 0 and len(visited_rooms) < len(world.rooms):
+#         print('NEED TO BACKTRACK')
+#         #  FIND SHORTEST PATH BACK TO A ROOM WITH VALID EXIT OPTIONS
+#         i = -1
+#         keep_backtracking = True
+
+#         # V2 -- USE TRAVERSAL PATH
+#         while keep_backtracking:
+
+#             backtrack_direction = reverse_direction[traversal_path[i]]
+#             print(f'-*- BACKTRACK DIRECTION: {backtrack_direction}')
+
+#             traversal_path.append(backtrack_direction)
+#             print(f'-*- TRAVERSAL PATH: {traversal_path}')
+
+#             player.travel(backtrack_direction)
+#             print(player.current_room)
+
+#             for direction in player.current_room.get_exits():
+#                 print(direction)
+
+#                 if player.current_room.get_room_in_direction(direction).id not in visited_rooms:
+#                     print(f'STAY IN THIS ROOM')
+#                     keep_backtracking = False
+#                     break
+#                 else:
+#                     print(f'ALREADY EXPLORED')
+#             i -= 1
+
+#         s.push(player.current_room)
+            
+#         # exit()
+
+#         # V1 -- USE A QUEUE
+#         # q = Queue()
+
+#         # for exit_option in available_exits:
+#         #     q.enqueue(exit_option)
+        
+#         # back_track_room = q.dequeue()
+#         # print(back_track_room)
+
+
+#         # exit()
+#     elif len(visited_rooms) < len(world.rooms): 
+    
+#         # Pick Movement Direction
+#         chosen_direction = filtered_exit_options[
+#             random.randint(0, len(filtered_exit_options) -1 )
+#         ]
+#         print(f'-*- CHOSEN DIRECTOIN: {chosen_direction}')
+
+#         # Update Travesal Path
+#         traversal_path.append(chosen_direction)
+#         print(f'-*- TRAVERSAL PATH: {traversal_path}')
+
+#         # Move Player
+#         player.travel(chosen_direction)
+#         s.push(player.current_room)
+
+#     # else: 
+#     #     print('ERROR')
+#     #     exit()
 
 
     
-
-
-
 
 # -- END CODE -- #
 # -- END CODE -- #
