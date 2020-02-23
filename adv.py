@@ -13,11 +13,11 @@ import random
 world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt" 
+# map_file = "maps/test_line.txt" 
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -50,7 +50,7 @@ def unused_exits(visited_rooms, current_room):
     print(f'-*- AVAILABLE EXIT DIRECTIONS: {available_exit_directions}')
 
     for direction in available_exit_directions:
-        if current_room.get_room_in_direction(direction) not in visited_rooms:
+        if current_room.get_room_in_direction(direction).id not in visited_rooms:
             result.append(direction)
 
     if len(result) == 0:
@@ -62,26 +62,121 @@ def random_direction(filtered_moves):
     return filtered_moves[
         random.randint(0, len(filtered_moves) - 1)
     ]
+
+def backtrack(visited_rooms, current_room):
+    queue_of_PATHS = Queue()
+
+    available_backtrack_directions = current_room.get_exits()
+    print(f'-*- AVAILABLE BACKTRACK EXIT DIRECTIONS: {available_backtrack_directions}')
+
+    for direction in available_backtrack_directions:
+        queue_of_PATHS.enqueue(direction)
+    print(f'-*- CURRENT QUEUE OF PATHS: {queue_of_PATHS.print_queue()}')
+
+    while queue_of_PATHS.size() > 0 and len(visited_rooms) < len(world.rooms):
+        path = queue_of_PATHS.dequeue()
+        print(f'-*- CURRENT PATH: {path}')
+
+        player.current_room = current_room
+        print(f'LOOOOOOOOOOOOOK: -*- PLAYER CURRENT ROOM: {player.current_room}')
+        # print(f'LOOOOOOOOOOOOOK: -*- PLAYER CURRENT ROOM: {player.current_room}')
+
+        for move in path:
+            player.travel(move)
+            # print(player.current_room)
+        print(f'-*- CURRENT TEST ROOM: {player.current_room}')
         
+        filtered_backtrack_moves = unused_exits(visited_rooms, player.current_room)
+        print(f'-*- FILTERED BACKTRACK MOVES FROM CURRENT TEST ROOM: {filtered_backtrack_moves}')
+
+        if filtered_backtrack_moves is not False:
+            print('-!- Return Path')
+            print(f'-*- SHORTEST PATH: {path}')
+            return path
+
+        else: 
+            print('-!- ADD ALL NEW PATH OPTIONS')
+
+            for direction in player.current_room.get_exits():
+                print(direction)
+                DUPLICATE_path = list(path)
+                DUPLICATE_path.append(direction)
+                queue_of_PATHS.enqueue(DUPLICATE_path)
+            print(f'-*- CURRENT QUEUE OF PATHS: {queue_of_PATHS.print_queue()}')
+    
+    return [] # NO UNUSED EXITS --> ALGO FINISHED :) 
+    # exit()
+
+
+
+
+
+
+
+
+    # q = Queue()
+    # q.enqueue(current_room)
+    # #?? Known Distances?
+    # # array the length of all the nodes 
+    # # for room world.rooms:
+    #     # known_distance = [-1 for i in world.rooms ]
+    # backtrack_traversal_path = []
+
+    # while q.size() > 0:
+    #     current_room = q.dequeue()
+    #     available_backtrack_directions = current_room.get_exits()
+    #     print(f'-*- AVAILABLE BACKTRACK EXIT DIRECTIONS: {available_backtrack_directions}')
+    #     # print(f'------ TEST ROOM IN THAT DIRECTION ------')
+
+
+    #     for direction in available_backtrack_directions:
+    #         q.enqueue(current_room.get_room_in_direction(direction))
+
+    #     test_room = q.dequeue()
+    #     print(f'------ DEQUEUED TEST ROOM ------ : {test_room}')
+    #     # test_direction = q.dequeue()
+        
+    #     filtered_moves = unused_exits(
+    #         visited_rooms,
+    #         test_room
+    #         # current_room.get_room_in_direction(test_direction)
+    #     )
+    #     print(f'-*- FILTERED MOVES: {filtered_moves}')
+
+    #     if filtered_moves is not False:
+    #         print('-!- STOP BACKTRACKING')
+    #         break
+
+    #     else:
+    #         print('-!- CONTINUE BACKTRACKING')
+            
+
+ 
 # - C - STEPS
 s = Stack()
 s.push(player.current_room)
+print(f'-*- PLAYER CURRENT ROOM: {player.current_room}')
 
 while len(visited_rooms) < len(world.rooms):
     current_room = s.pop()
     print(f'-*- CURRENT ROOM: {current_room}')
 
+    if current_room.id not in visited_rooms:
+        visited_rooms[current_room.id] = {}
 
-    visited_rooms[current_room.id] = {}
     available_exits = current_room.get_exits()
     for direction in available_exits:
         connected_room = current_room.get_room_in_direction(direction)
         visited_rooms[current_room.id][direction] = connected_room.id
     print(f'-*- VISITED ROOMS: {visited_rooms}')
+    print(f'-*- # VISITED ROOMS vs # ROOM IN WORLD: {len(visited_rooms)} / {len(world.rooms)}')
+
+    if len(visited_rooms) == len(world.rooms):
+        break
     
 
     filtered_moves = unused_exits(visited_rooms, current_room)
-    print(f'-*- FILTERED ROOMS: {filtered_moves}')
+    print(f'-*- FILTERED MOVES: {filtered_moves}')
     if filtered_moves is not False:
         print('-!- CONTINUE w/ DFS')
 
@@ -95,8 +190,23 @@ while len(visited_rooms) < len(world.rooms):
 
     else: 
         print('-!- BACKTRACK w/ BFS')
+        result = backtrack(visited_rooms, current_room)
+        print(f'BACKTRACK RESULT: {result}')
 
-    # exit()
+        for direction in result:
+            traversal_path.append(direction)
+        print(f'-*- UPDATED TRAVERSAL PATH w/ BACKTRACK RESULT: {traversal_path}')
+
+        print(f'-*- PLAYER CURRENT ROOM: {player.current_room}')
+
+        # for move in traversal_path:
+        #     player.travel(move)
+        #     print(player.current_room)
+
+        # current_room = player.current_room
+        s.push(player.current_room)
+
+# exit()
 
 
 

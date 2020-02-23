@@ -16,7 +16,8 @@ C) Helpers
     - Output:
         - all valid directional options (n / s / e / w) from the current room 
         - FALSE if none => triggers backtracing
-2. ```random_direction``` => picks randomly from ```unused_exits```
+2. ```random_direction()``` => picks randomly from ```unused_exits```
+3. ```backtrack()``` => BFS to get back to a room with ```unused_exits```
 
 D) STEPS
 1. Initialize Stack
@@ -42,7 +43,59 @@ D) STEPS
         D. Add new current_room to stack
 
 
-    B1 = FALSE: ```START BACKTRACKING```
+    B1 == FALSE: ```START BACKTRACKING```
+        A. Initialize Queue for directional path generation
+        B. Get all available moves from the current_room
+        C. Enqueue all available moves
+        D. __MAIN__ WHILE loop
+            - Goal: generate all paths until room has ```unused_exits```
+            - While loop translation: queue.size() > 0
+
+            D1. Dequeue to get current Path
+            D2. Travel to end of that path from current room
+            D3. CALL: ```unused_exits()```
+                D3 != FALSE
+                    - return path
+
+                D3 == FALSE
+                    - For each possible move from current test room
+                        - copy current path
+                        - append filtered backtrack move
+                        - enqueue the updated paths
+
+
+
+
+
+
+
+
+
+<!-- OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD
+OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD
+OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD
+OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD
+OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD OLD -->
+
+        A. Initialize Queue
+        B. Add current room (starting room) to the queue
+        C. Initialize ```backtrack_traversal_path```
+        D. __MAIN__ WHILE loop
+            - Goal: Continue backtracking until the current_room has `unused_exits``` => then BREAK out of while loop and return path from backtrack
+            - While loop translation: q.size() > 0
+
+            D1. Dequeue next room from queue
+            D2. CALL: ```get_exits()```
+            D3. Add ```available_backtrack_directions``` to queue
+
+            D4. Dequeue a direction => test_direction
+            D5. CALL: ```unused_exits()``` on ```current_room.get_room_in_direction()```
+
+            D5 != FALSE: ```STOP BACKTRACKING```
+
+            D5 == FALSE: ```CONTINUE BACKTRACKING```
+
+
 
 
 
