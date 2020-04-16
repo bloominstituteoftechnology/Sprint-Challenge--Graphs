@@ -91,3 +91,38 @@ else:
 #         break
 #     else:
 #         print("I did not understand that command.")
+    def get_all_social_paths(self, user_id):
+    # Note: This Queue class is sub-optimal. Why?
+        """
+        Takes a user's user_id as an argument
+
+        Returns a dictionary containing every user in that user's
+        extended network with the shortest friendship path between them.
+
+        The key is the friend's ID and the value is the path.
+        """
+        visited = {}  # Note that this is a dictionary, not a set
+        # !!!! IMPLEMENT ME
+        for friend_id in self.users:
+            connection = self.bfs(user_id, friend_id)
+            if connection:
+                visited[friend_id] = connection
+        return visited
+
+    def bft_find_furthest(self, starting_vertex):
+        qq= Queue()
+        qq.enqueue(starting_vertex)
+        visited = set()
+        while qq.size() > 0:
+            v = qq.dequeue()
+            if v not in visited:
+                visited.add(v)
+                for n in self.get_neighbors(v):
+                    qq.enqueue(n)
+            if qq.size() == 0:
+                # return furthest:
+                if v == starting_vertex:
+                    return -1 
+                else:
+                    return v
+    
