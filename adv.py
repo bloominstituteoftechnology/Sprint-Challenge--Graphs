@@ -25,9 +25,15 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+# because player moves in both drections n-s e-w 
+reversed_path = []
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+
+# You may find the commands `player.current_room.id`, - gettting ids of every room
+# `player.current_room.get_exits()` - gets all possible exits
+# and `player.travel(direction)` useful. - travels in that direction 
 
 
 
