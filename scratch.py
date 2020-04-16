@@ -61,6 +61,22 @@ reversed_path = []
 # and `player.travel(direction)` useful. - travels in that direction 
 
 
+path = {} # dict for the rooms 
+# where is the player , starting point 0
+path[0] = player.current_room.get_exits()
+print(path[0])
+print(len(path))
+def bft(starting_room, rooms):
+    # set traveled to
+    traveled = set()
+    traveled.add(rooms.id)
+    # find the exit
+    exit = rooms.get_exits()
+    s = Stack()
+    for e in exit:
+        s.push(rooms.get_room_in_direction(e))
+
+
 
 # TRAVERSAL TEST
 visited_rooms = set()
@@ -77,7 +93,8 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
-
+print(len(room_graph) -1)
+print(len(room_graph))
 
 #######
 # UNCOMMENT TO WALK AROUND
@@ -91,38 +108,38 @@ else:
 #         break
 #     else:
 #         print("I did not understand that command.")
-    def get_all_social_paths(self, user_id):
-    # Note: This Queue class is sub-optimal. Why?
-        """
-        Takes a user's user_id as an argument
+    # def get_all_social_paths(self, user_id):
+    # # Note: This Queue class is sub-optimal. Why?
+    #     """
+    #     Takes a user's user_id as an argument
 
-        Returns a dictionary containing every user in that user's
-        extended network with the shortest friendship path between them.
+    #     Returns a dictionary containing every user in that user's
+    #     extended network with the shortest friendship path between them.
 
-        The key is the friend's ID and the value is the path.
-        """
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
-        for friend_id in self.users:
-            connection = self.bfs(user_id, friend_id)
-            if connection:
-                visited[friend_id] = connection
-        return visited
+    #     The key is the friend's ID and the value is the path.
+    #     """
+    #     visited = {}  # Note that this is a dictionary, not a set
+    #     # !!!! IMPLEMENT ME
+    #     for friend_id in self.users:
+    #         connection = self.bfs(user_id, friend_id)
+    #         if connection:
+    #             visited[friend_id] = connection
+    #     return visited
 
-    def bft_find_furthest(self, starting_vertex):
-        qq= Queue()
-        qq.enqueue(starting_vertex)
-        visited = set()
-        while qq.size() > 0:
-            v = qq.dequeue()
-            if v not in visited:
-                visited.add(v)
-                for n in self.get_neighbors(v):
-                    qq.enqueue(n)
-            if qq.size() == 0:
-                # return furthest:
-                if v == starting_vertex:
-                    return -1 
-                else:
-                    return v
+    # def bft_find_furthest(self, starting_vertex):
+    #     qq= Queue()
+    #     qq.enqueue(starting_vertex)
+    #     visited = set()
+    #     while qq.size() > 0:
+    #         v = qq.dequeue()
+    #         if v not in visited:
+    #             visited.add(v)
+    #             for n in self.get_neighbors(v):
+    #                 qq.enqueue(n)
+    #         if qq.size() == 0:
+    #             # return furthest:
+    #             if v == starting_vertex:
+    #                 return -1 
+    #             else:
+    #                 return v
     
