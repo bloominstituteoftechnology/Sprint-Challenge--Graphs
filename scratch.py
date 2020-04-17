@@ -4,6 +4,9 @@ from world import World
 
 import random
 from ast import literal_eval
+
+
+# queue is used for searching for exits: 
 class Queue():
     def __init__(self):
         self.queue = []
@@ -17,6 +20,7 @@ class Queue():
     def size(self):
         return len(self.queue)
 
+# stack is for stacking the rooms together:
 class Stack():
     def __init__(self):
         self.stack = []
@@ -62,22 +66,86 @@ reversed_path = []
 
 
 path = {} # dict for the rooms 
+reverse = {'n' :'s', 's': 'n', 'e': 'w' ,'w' :'e'}
 # where is the player , starting point 0
 path[0] = player.current_room.get_exits()
+complete_path = []
 print(path[0])
 print(len(path))
-def bft(starting_room, rooms):
+def bft(rooms, num_rooms):
     # set traveled to
     traveled = set()
     traveled.add(rooms.id)
-    # find the exit
-    exit = rooms.get_exits()
+    # find the exits
+    exits = rooms.get_exits()
+    # 
     s = Stack()
-    for e in exit:
+    # (build)stack all possible directions:
+    for e in exits:
         s.push(rooms.get_room_in_direction(e))
+    # if there are rooms that havent been visited yet
+    while len(traveled) < num_rooms:
+        next_room = s.pop()
+        if next_room.id in traveled:
+            # continue because we need the exit to next room
+            continue
+        # now que (because we are searching) the exits:
+        q = Queue()
+        # now search for exit:
+        for e in exits:
+            q.enqueue([e])
+    
+    # initialize visited
+        visited = set()
+    # search for the rooms with an exit:
+        while q.size() > 0: 
+            path = q.dequeue()
+            for e in path:
+                rooms = rooms.get_room_in_direction(e)
+            new_exits = rooms.get_exits()
+            if rooms.id not in visited:
+                visited.add(rooms.id)
+            # if you reach the destination room, stop
+                if rooms == next_room:
+                    break
+                for e in new_exits:
+                
+                    def reverse(direction):
+                        if direction == 'w':
+                            return 'e'
+                        elif direction == 'e':
+                            return 'w'
+                        elif direction == 'n':
+                            return 's'
+                        else:
+                            return 'n'
+                    if e  == reverse(path[-1]):
+                        return
+                    new_path = list(path)
+                    new_path.append(e)
+                    q.enqueue(new_path)
+    
+    for e in path:
+        rooms = rooms.get_room_in_direction(e)
+        complete_path.append(e)
 
+        # finally marked the next room traveled:
+        traveled.add(rooms.id)
+    exits = rooms.get_exits()
 
+    for e in exits:
+        final_room = rooms.get_room_in_direction(e)
+        if final_room.id not in traveled:
+            s.push(final_room)
+        
+    return complete_path
 
+traversal_path = bft(world.starting_room, len(room_graph))
+
+# while True:
+#     if traversal_path < 980:
+#         break
+#     traversal_path = bft(world.starting_room, len(room_graph))
 # TRAVERSAL TEST
 visited_rooms = set()
 player.current_room = world.starting_room
