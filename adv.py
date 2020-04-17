@@ -31,7 +31,7 @@ traversal_path = []
 
 
 
-# TRAVERSAL TEST
+# TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
