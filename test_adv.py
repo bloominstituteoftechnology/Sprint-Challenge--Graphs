@@ -35,5 +35,13 @@ class Test(unittest.TestCase):
     def test_mvp(self):
         self.assertLessEqual(len(traversal_path), 2000)
 
+    @unittest.skipIf(
+      len(traversal_path) >= 960,
+      "Traversal is longer than stretch threshold"
+    )
+    def test_stretch(self):
+        length = len(traversal_path)
+        self.assertLessEqual(length, 960)
+
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
