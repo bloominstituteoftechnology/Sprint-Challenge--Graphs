@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+from util import Stack, Queue
 
 import random
 from ast import literal_eval
@@ -29,7 +30,23 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-
+class Graph:
+    def __init__(self):
+        self.vertices = {}
+    
+    def dfs(self, starting_vertex):
+        visited_rooms = set()
+        stack = Stack()
+        stack.push([starting_vertex])
+        while stack.size() > 0:
+            current_room = stack.pop()
+            room = current_room[-1]
+        if room not in visited_rooms:
+            self.vertices[room.id] = {}
+        for direction in room.get_exits():
+            self.vertices[room.id][room.get_room_in_direction(direction).id] = direction
+        visited_rooms.add(room)
+        
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
