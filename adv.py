@@ -24,12 +24,6 @@ world.load_graph(room_graph)
 # Print an ASCII map
 world.print_rooms()
 
-player = Player(world.starting_room)
-
-# Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-traversal_path = []
-
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -46,7 +40,74 @@ class Graph:
         for direction in room.get_exits():
             self.vertices[room.id][room.get_room_in_direction(direction).id] = direction
         visited_rooms.add(room)
-        
+        exits = room.get_exits()
+        while len(exits) > 0:
+            selected = exits[0]
+            neighbor_exit = list(current_room)
+            stack.push(neighbor_exit)
+            exits.remove(exits)
+        return self.vertices
+
+    def bfs(self, starting_vertex, destination_vertex):
+        # Create an empty queue, and enqueue a PATH to the starting vertex
+        daQueue = Queue()
+        daQueue.enqueue([starting_vertex])
+        # create a set for visited vertices
+        visited_vertices = set()
+        # while the queue is not empty
+        while daQueue.size() > 0:
+            # dequeue the first PATH
+            path = daQueue.dequeue()
+            # grab the last vertex in the path
+
+            # of it hasnt been visited
+            if path[-1] not in visited_vertices:
+                # check if its the target
+                if path[-1] == destination_vertex:
+                    # return the path if it is
+                    return path
+                # mark it as visited
+                visited_vertices.add(path[-1])
+                # make new versions fo the current path, with each neighbor added to them
+                for next_vert in self.get_neighbors(path[-1]):
+                    # duplicate the path
+                    new_path = list(path)
+                    # add the neighbor
+                    new_path.append(next_vert)
+                    # add the new path to the queue
+                    daQueue.enqueue(new_path)
+player = Player(world.starting_room)
+g = Graph()
+room_dfs = g.dfs(player.current_room)
+room_list = [room_id for room_id in room_dfs.keys()]
+# Fill this out with directions to walk
+# traversal_path = ['n', 'n']
+traversal_path = []
+
+while(len(room_list) > 1):
+    # set current room position
+    current_room = room_list[0]
+    next_room = room_list[1]
+    current_room_neighbors = room_dfs[current_room]
+    # if they are neighbor, add to traversal_path
+    if next_room in current_room_neighbors.keys():
+        traversal_path.append(current_room_neighbors[next_room])
+    else:
+        # if they are not neighbor, use bfs to find shortest path between them
+        short_path = g.bfs(current_room,next_room)
+        while len(short_path) > 1:
+            current_room_neighbors = room_dfs[short_path[0]]
+            next_room = short_path[1]
+            # if they are neighbor, add to traversal_path
+            if next_room in current_room_neighbors.keys():
+                traversal_path.append(current_room_neighbors[next_room])
+            else:
+                traversal_path.append('?')
+            short_path.pop(0)
+    room_dfs.pop(0)
+
+
+
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
