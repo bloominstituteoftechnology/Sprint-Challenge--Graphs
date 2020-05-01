@@ -32,7 +32,7 @@ player = Player(world.starting_room)
 traversal_path = []
 
 
-def random_move():
+def first_pass():
     map_graph = {}
     explored = set()
     to_explore = Queue()
@@ -42,20 +42,25 @@ def random_move():
     map_graph[current_room] = {}
     for exit in exits:
         to_explore.enqueue(exit)
+        map_graph[current_room].update({f'{exit}': '?'})
     while to_explore.size() > 0:
+        prev_room = current_room
         direction = to_explore.dequeue()
         print(direction)
         player.travel(direction)
         current_room = player.current_room.id
-        if current_room not in explored:
+        if current_room not in explored and current_room != prev_room:
             explored.add(current_room)
+            map_graph[current_room] = {}
             traversal_path.append(direction)
             exits = player.current_room.get_exits()
             for exit in exits:
                 to_explore.enqueue(exit)
+                map_graph[current_room].update({f'{exit}': '?'})
+    print(map_graph)
 
 
-random_move()
+first_pass()
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
