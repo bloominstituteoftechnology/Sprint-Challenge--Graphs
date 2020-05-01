@@ -45,7 +45,7 @@ class Graph:
             selected = exits[0]
             neighbor_exit = list(current_room)
             stack.push(neighbor_exit)
-            exits.remove(exits)
+            exits.remove(selected)
         return self.vertices
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -129,12 +129,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
