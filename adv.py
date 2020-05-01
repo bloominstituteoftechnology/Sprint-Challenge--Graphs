@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from world import World
+import time
 
 import random
 from ast import literal_eval
@@ -52,33 +53,43 @@ graph[player.current_room.id] = {
 way_back = []
 while len(visited_rooms) < len(room_graph):
     last_room = player.current_room.id
-
-    print("current graph:", graph)
-
+    print("way back list:", way_back)
     exits_list = player.current_room.get_exits()
     print("current_room_id:", player.current_room.id)
+    print("exits_list:", exits_list)
     last_room = player.current_room.id
     q = []
+    counter = 0
     # loop over dictionary entry for current room, since visited rooms will be True, anything else will be False. That way rooms we don't need to visit can be kept ?
     for direction in exits_list:
-        counter = 0
+        dead_end = True
         if graph[player.current_room.id][direction] != True:
             graph[player.current_room.id][direction] = False
+            dead_end = False
             counter += 1
-
+    print("current graph:", graph)
     # check to see if it's a dead end
-    if counter > 0:
+    if dead_end == True:
         # make your way back to last not dead end
         while len(way_back) > 0:
             next_move = way_back.pop()
             player.travel(next_move)
+            print("current_room_ID:", player.current_room.id)
 
     # if the dictionary value for the current room is false, add that direction to the q
     for direction in graph[player.current_room.id]:
         if graph[player.current_room.id][direction] == False:
             q.append(direction)
     # to keep it in line with BFT, pop the way to move off the end
-    way_to_move = q.pop()
+    print("current q:", q)
+    if len(q) == 0:
+        continue
+    if len(q) > 0:
+        # append the inverse cardinal direction to the way_back list
+        way_to_move = q.pop()
+        way_back.append(cardinal_inverse(way_to_move))
+        print("way_back list being appended to")
+        time.sleep(1)
     print('Way to move:', way_to_move)
     # move in the direction
     player.travel(way_to_move)
@@ -86,14 +97,12 @@ while len(visited_rooms) < len(room_graph):
     if player.current_room.id not in graph:
         graph[player.current_room.id] = {
             'n': '?', 's': '?', 'w': '?', 'e': '?'}
-    # append the inverse cardinal direction to the way_back list
-    way_back.append(cardinal_inverse(way_to_move))
+
     # add room to visited rooms
     visited_rooms.add(player.current_room)
     # add path to traversed list
     traversal_path.append(way_to_move)
     # update dictionary entries on both ends
-    print('dict entry:', graph[last_room][way_to_move])
     graph[last_room][way_to_move] = True
     graph[player.current_room.id][cardinal_inverse(way_to_move)] = True
 
