@@ -6,24 +6,6 @@ from util import Stack, Queue
 import random
 from ast import literal_eval
 
-# Load world
-world = World()
-
-
-# You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
-# map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
-
-# Loads the map into a dictionary
-room_graph=literal_eval(open(map_file, "r").read())
-world.load_graph(room_graph)
-
-# Print an ASCII map
-world.print_rooms()
-
 class Graph:
     def __init__(self):
         self.vertices = {}
@@ -35,17 +17,17 @@ class Graph:
         while stack.size() > 0:
             current_room = stack.pop()
             room = current_room[-1]
-        if room not in visited_rooms:
-            self.vertices[room.id] = {}
-        for direction in room.get_exits():
-            self.vertices[room.id][room.get_room_in_direction(direction).id] = direction
-        visited_rooms.add(room)
-        exits = room.get_exits()
-        while len(exits) > 0:
-            selected = exits[0]
-            neighbor_exit = list(current_room)
-            stack.push(neighbor_exit)
-            exits.remove(selected)
+            if room not in visited_rooms:
+                self.vertices[room.id] = {}
+            for direction in room.get_exits():
+                self.vertices[room.id][room.get_room_in_direction(direction).id] = direction
+            visited_rooms.add(room)
+            exits = room.get_exits()
+            while len(exits) > 0:
+                selected = exits[0]
+                neighbor_exit = list(current_room)
+                stack.push(neighbor_exit)
+                exits.remove(selected)
         return self.vertices
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -76,6 +58,26 @@ class Graph:
                     new_path.append(next_vert)
                     # add the new path to the queue
                     daQueue.enqueue(new_path)
+
+# Load world
+world = World()
+
+
+# You may uncomment the smaller graphs for development and testing purposes.
+# map_file = "maps/test_line.txt"
+# map_file = "maps/test_cross.txt"
+# map_file = "maps/test_loop.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
+
+# Loads the map into a dictionary
+room_graph=literal_eval(open(map_file, "r").read())
+world.load_graph(room_graph)
+
+# Print an ASCII map
+world.print_rooms()
+
+
 player = Player(world.starting_room)
 g = Graph()
 room_dfs = g.dfs(player.current_room)
