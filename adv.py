@@ -5,6 +5,7 @@ from world import World
 import random
 from random import randint
 from util import Queue, Stack
+from graph import Graph
 from ast import literal_eval
 
 # Load world
@@ -12,8 +13,8 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
+# map_file = "maps/test_line.txt"
+map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -37,10 +38,12 @@ def traversal():
     map_graph = {}
     to_explore = []
     current_room = player.current_room.id
+    exits = player.current_room.get_exits()
+    prev_room = None
+    map_graph[current_room] = {exit: '?' for exit in exits}
 
     while len(map_graph) < len(room_graph):
         prev_room = current_room
-
         current_room = player.current_room.id
         exits = player.current_room.get_exits()
 
@@ -50,8 +53,8 @@ def traversal():
             exit for exit in map_graph[current_room] if map_graph[current_room][exit] == '?'
         ]
         # print(current_room)
-        while len(to_explore) > 0:
-            print(to_explore)
+        if len(to_explore) > 0:
+            # print(to_explore)
             to_travel = to_explore.pop(0)
             reverse = ''
             if to_travel == 'n':
@@ -62,13 +65,35 @@ def traversal():
                 reverse = 'w'
             if to_travel == 'w':
                 reverse = 'e'
+
             player.travel(to_travel)
             traversal_path.append(to_travel)
-            map_graph[prev_room][to_travel] = current_room
+            # map_graph[current_room][reverse] = prev_room
+            # map_graph[prev_room][to_travel] = current_room
+
             print(map_graph)
 
 
-traversal()
+# traversal()
+
+def graph_solution():
+    map_graph = Graph()
+    explored = {}
+    to_explore = []
+
+    current_room = player.current_room.id
+    map_graph.add_vertex(current_room)
+
+    while len(explored) < len(room_graph):
+        current_room = player.current_room.id
+        exits = player.current_room.get_exits()
+
+        if current_room not in explored:
+            map_graph.add_vertex(current_room)
+            explored[current_room] = {exit: '?' for exit in exits}
+
+
+graph_solution()
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
