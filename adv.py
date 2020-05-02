@@ -11,53 +11,62 @@ class Graph:
         self.vertices = {}
     
     def dfs(self, starting_vertex):
+        # stack stepup
         visited_rooms = set()
         stack = Stack()
         stack.push([starting_vertex])
+        # not empty...
         while stack.size() > 0:
+            # pop the current room onto the stack
             current_room = stack.pop()
+            # set the starting room
             room = current_room[-1]
+            # have we visited this room?
             if room not in visited_rooms:
                 self.vertices[room.id] = {}
-            for direction in room.get_exits():
-                self.vertices[room.id][room.get_room_in_direction(direction).id] = direction
-            visited_rooms.add(room)
-            exits = room.get_exits()
-            while len(exits) > 0:
-                selected = exits[0]
-                neighbor_exit = list(current_room)
-                stack.push(neighbor_exit)
-                exits.remove(selected)
+                for direction in room.get_exits():
+                    self.vertices[room.id][room.get_room_in_direction(direction).id] = direction
+                # add the room to visited
+                visited_rooms.add(room)
+                # add the neighbors
+                exits = room.get_exits()
+                while len(exits) > 0:
+                    direction = exits[0]
+                    # make neighbor
+                    neighbor_exit = list(current_room)
+                    # add the exits
+                    neighbor_exit.append(room.get_room_in_direction(direction))
+                    stack.push(neighbor_exit)
+                    # remove and continue
+                    exits.remove(direction)
         return self.vertices
 
     def bfs(self, starting_vertex, destination_vertex):
-        # Create an empty queue, and enqueue a PATH to the starting vertex
-        daQueue = Queue()
-        daQueue.enqueue([starting_vertex])
-        # create a set for visited vertices
-        visited_vertices = set()
-        # while the queue is not empty
-        while daQueue.size() > 0:
-            # dequeue the first PATH
-            path = daQueue.dequeue()
-            # grab the last vertex in the path
-
-            # of it hasnt been visited
-            if path[-1] not in visited_vertices:
-                # check if its the target
-                if path[-1] == destination_vertex:
-                    # return the path if it is
-                    return path
-                # mark it as visited
-                visited_vertices.add(path[-1])
-                # make new versions fo the current path, with each neighbor added to them
-                for next_vert in self.get_neighbors(path[-1]):
-                    # duplicate the path
-                    new_path = list(path)
-                    # add the neighbor
-                    new_path.append(next_vert)
-                    # add the new path to the queue
-                    daQueue.enqueue(new_path)
+            # new queue
+            q = Queue()
+            # enqueue starting vertex
+            q.enqueue([starting_vertex])
+            # new set to track visited vertices
+            visited_vertex = set()
+            # as long as the queue isnt empty
+            while q.size() > 0:
+                # dequeue first path
+                path = q.dequeue()
+                # grab last vertex from path
+                last_vertex = path[-1]
+                # if we have not visited this vertex
+                if last_vertex not in visited_vertex:
+                    if last_vertex == destination_vertex:
+                        return path
+                    # put it in visited
+                    visited_vertex.add(last_vertex)
+                    # enqueue neightbors
+                    for room_id in self.vertices[last_vertex].keys():
+                        neighbor_exit = list(path)
+                        # add neighbor room id
+                        neighbor_exit.append(room_id)
+                        # enqueue and continue
+                        q.enqueue(neighbor_exit)
 
 # Load world
 world = World()
@@ -87,7 +96,7 @@ room_list = [room_id for room_id in room_dfs.keys()]
 traversal_path = []
 
 while(len(room_list) > 1):
-    # set current room position
+    # set room
     current_room = room_list[0]
     next_room = room_list[1]
     current_room_neighbors = room_dfs[current_room]
@@ -95,18 +104,18 @@ while(len(room_list) > 1):
     if next_room in current_room_neighbors.keys():
         traversal_path.append(current_room_neighbors[next_room])
     else:
-        # if they are not neighbor, use bfs to find shortest path between them
+        # not neighbor? bfs for shortest path between them
         short_path = g.bfs(current_room,next_room)
         while len(short_path) > 1:
             current_room_neighbors = room_dfs[short_path[0]]
             next_room = short_path[1]
-            # if they are neighbor, add to traversal_path
+            # neighbor? add to traversal_path
             if next_room in current_room_neighbors.keys():
                 traversal_path.append(current_room_neighbors[next_room])
             else:
                 traversal_path.append('?')
             short_path.pop(0)
-    room_dfs.pop(0)
+    room_list.pop(0)
 
 
 
