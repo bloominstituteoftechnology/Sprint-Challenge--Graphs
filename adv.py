@@ -12,8 +12,8 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+map_file = "maps/test_line.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -32,35 +32,43 @@ player = Player(world.starting_room)
 traversal_path = []
 
 
-def first_pass():
+# Use EXPLORED set to store rooms in map_graph that have NO REMAINING ? ROOMS
+def traversal():
     map_graph = {}
-    explored = set()
-    to_explore = Queue()
-    exits = player.current_room.get_exits()
+    to_explore = []
     current_room = player.current_room.id
-    explored.add(current_room)
-    map_graph[current_room] = {}
-    for exit in exits:
-        to_explore.enqueue(exit)
-        map_graph[current_room].update({f'{exit}': '?'})
-    while to_explore.size() > 0:
+
+    while len(map_graph) < len(room_graph):
         prev_room = current_room
-        direction = to_explore.dequeue()
-        print(direction)
-        player.travel(direction)
+
         current_room = player.current_room.id
-        if current_room not in explored and current_room != prev_room:
-            explored.add(current_room)
-            map_graph[current_room] = {}
-            traversal_path.append(direction)
-            exits = player.current_room.get_exits()
-            for exit in exits:
-                to_explore.enqueue(exit)
-                map_graph[current_room].update({f'{exit}': '?'})
-    print(map_graph)
+        exits = player.current_room.get_exits()
+
+        if current_room not in map_graph:
+            map_graph[current_room] = {exit: '?' for exit in exits}
+        to_explore = [
+            exit for exit in map_graph[current_room] if map_graph[current_room][exit] == '?'
+        ]
+        # print(current_room)
+        while len(to_explore) > 0:
+            print(to_explore)
+            to_travel = to_explore.pop(0)
+            reverse = ''
+            if to_travel == 'n':
+                reverse = 's'
+            if to_travel == 's':
+                reverse = 'n'
+            if to_travel == 'e':
+                reverse = 'w'
+            if to_travel == 'w':
+                reverse = 'e'
+            player.travel(to_travel)
+            traversal_path.append(to_travel)
+            map_graph[prev_room][to_travel] = current_room
+            print(map_graph)
 
 
-first_pass()
+traversal()
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
