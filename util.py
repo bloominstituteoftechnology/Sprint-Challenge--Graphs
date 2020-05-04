@@ -164,3 +164,100 @@ class Queue():
 
     def size(self):
         return len(self.queue)
+
+
+class Stack():
+    def __init__(self):
+        self.stack = DoublyLinkedList()
+
+    def push(self, value):
+        self.stack.add_to_tail(value)
+
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.remove_from_tail()
+        else:
+            return None
+
+    def size(self):
+        return len(self.stack)
+
+
+class Graph:
+
+    """Represent a graph as a dictionary of vertices mapping labels to edges."""
+
+    def __init__(self):
+        self.vertices = {}
+
+    def add_vertex(self, vertex_id):
+        """
+        Add a vertex to the graph.
+        """
+        self.vertices[vertex_id] = set()
+
+    def add_edge(self, v1, v2):
+        """
+        Add a directed edge to the graph.
+        """
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2)
+        else:
+            raise IndexError('that vertex does not exist')
+
+    def get_neighbors(self, vertex_id):
+        """
+        Get all neighbors (edges) of a vertex.
+        """
+        return self.vertices[vertex_id]
+
+    def bft(self, starting_vertex):
+        """
+        Print each vertex in breadth-first order
+        beginning from starting_vertex.
+        """
+        # create a plan_to_visit queue and add starting_vertex
+        plan_to_visit = Queue()
+        plan_to_visit.enqueue(starting_vertex)
+        # create set for visiting verticies
+        visited_vertices = set()
+        # while plan_to_visit is not empty:
+        while plan_to_visit.size() > 0:
+            # dequeue the first vertex on the queue
+            current_vertex = plan_to_visit.dequeue()
+            # if it has not been visited
+            if current_vertex not in visited_vertices:
+                # print the vertex
+                print(current_vertex)
+                # mark as visited, (add to visited_vertices)
+                visited_vertices.add(current_vertex)
+                # add all unvisited neghbors to the queue
+                for neighbor in self.get_neighbors(current_vertex):
+                    if neighbor not in visited_vertices:
+                        plan_to_visit.enqueue(neighbor)
+
+    def dft(self, starting_vertex):
+        # """
+        # Print each vertex in depth-first order
+        # beginning from starting_vertex.
+        # """
+        # create a plan_to_visit stack and add starting_vertex
+        # print('DFT')
+        plan_to_visit = Stack()
+        plan_to_visit.push(starting_vertex)
+        # create set for visiting verticies
+        visited_vertices = set()
+        # while plan_to_visit is not empty:
+        while plan_to_visit.size() > 0:
+            # pop the first vertex on the stack
+            current_vertex = plan_to_visit.pop()
+            # if it has not been visited
+            if current_vertex not in visited_vertices:
+                # print the vertex
+                print(current_vertex)
+                # mark as visited, (add to visited_vertices)
+                visited_vertices.add(current_vertex)
+                # add all unvisited neghbors to the stack
+                for neighbor in self.get_neighbors(current_vertex):
+                    if neighbor not in visited_vertices:
+                        plan_to_visit.push(neighbor)
