@@ -98,21 +98,27 @@ traversal_path = []
 while(len(room_list) > 1):
     # set room
     current_room = room_list[0]
+    # set next room
     next_room = room_list[1]
+    # grab the neighbors, store it here
     current_room_neighbors = room_dfs[current_room]
-    # if they are neighbor, add to traversal_path
+    # if they are neighbor then its the next path, add to traversal_path
     if next_room in current_room_neighbors.keys():
         traversal_path.append(current_room_neighbors[next_room])
     else:
-        # not neighbor? bfs for shortest path between them
+        # not neighbor? bfs will give use the shortest path between them
         short_path = g.bfs(current_room,next_room)
+        # as long as it isnt empty
         while len(short_path) > 1:
+            # store these neighbors
             current_room_neighbors = room_dfs[short_path[0]]
+            # the next room is the next place in the array, store it!
             next_room = short_path[1]
             # neighbor? add to traversal_path
             if next_room in current_room_neighbors.keys():
                 traversal_path.append(current_room_neighbors[next_room])
             else:
+                # get rid of the path
                 traversal_path.append('?')
             short_path.pop(0)
     room_list.pop(0)
