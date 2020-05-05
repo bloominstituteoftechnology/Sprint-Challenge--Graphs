@@ -44,7 +44,6 @@ reverse_dirs = {
 
 
 class Graph:
-
     """Represent the world as a dictionary of rooms mapping (room, dir) as edge."""
 
     def __init__(self):
@@ -58,8 +57,7 @@ class Graph:
             self.rooms[room] = {d: '?' for d in room.get_exits()}
 
     def go_in_direction_until_dead_end(self, room, path=None):
-        if path == None:
-            path = []
+        path = path if path else []
         next_dirs = self.get_unexplored_dir(room)
         if len(next_dirs):
             direction = choice(next_dirs)

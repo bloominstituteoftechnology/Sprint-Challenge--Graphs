@@ -23,7 +23,7 @@ room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
-world.print_rooms()
+# world.print_rooms()
 
 player = Player(world.starting_room)
 
@@ -61,10 +61,7 @@ gr = Graph()
 for room in world.rooms.values():
     gr.add_vertex(room)
 
-
-while True:
-    if not any('?' in d.values() for d in gr.rooms.values()):
-        break
+while any('?' in d.values() for d in gr.rooms.values()):
     linear_dir = gr.go_in_direction_until_dead_end(player.current_room)
     get_current_room(linear_dir)
     traversal_path += linear_dir
