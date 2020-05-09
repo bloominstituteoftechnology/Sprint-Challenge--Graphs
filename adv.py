@@ -25,6 +25,8 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+# These are the things that i pulled out of the problem to focus on
+
 # First pass solution: 
 # Record the room in visited
 # Get all the exits with the room.
