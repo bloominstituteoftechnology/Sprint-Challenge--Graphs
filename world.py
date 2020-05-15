@@ -8,6 +8,7 @@ class World:
         self.rooms = {}
         self.room_grid = []
         self.grid_size = 0
+
     def load_graph(self, room_graph):
         num_rooms = len(room_graph)
         rooms = [None] * num_rooms
@@ -33,6 +34,9 @@ class World:
             if 'w' in room_graph[room_id][1]:
                 self.rooms[room_id].connect_rooms('w', self.rooms[room_graph[room_id][1]['w']])
         self.starting_room = self.rooms[0]
+
+    def get_room_with_id(self, room_id):
+        return self.rooms[room_id]
 
     def print_rooms(self):
         rotated_room_grid = []
