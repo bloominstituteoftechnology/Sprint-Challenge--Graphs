@@ -38,7 +38,6 @@ def run_maze():
     visited = set()
     graph = Graph()
     travel_path = []
-    player = Player(world.starting_room)
     dfs_rooms = graph.dfs(player.current_room)
     rooms = [room for room in dfs_rooms]
     while(len(visited) < len(room_graph) - 1):
@@ -56,6 +55,8 @@ def run_maze():
         visited.add(current_room)
 
     return travel_path
+
+traversal_path = []
 
 def test_traversal(test_traversal_path):
     visited_rooms = set()
@@ -80,7 +81,7 @@ def get_low():
     if len(traversal_path) < 960:
         print("Less than 960!")
         return
-    itera = 0
+    
     prev_traversal = len(traversal_path)
     travel_count = 0
     while len(traversal_path) > 946:
@@ -95,7 +96,7 @@ def get_low():
 
     print('Total runs:', travel_count)
 
-get_low
+get_low()
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
