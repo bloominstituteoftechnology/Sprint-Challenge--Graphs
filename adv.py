@@ -100,14 +100,14 @@ while stack.size > 0:
 class Stack():
     def __init__(self):
         self.stack = []
-    def push(self, value):
+    def push(self, value) -> None:
         self.stack.append(value)
     def pop(self):
         if self.size() > 0:
             return self.stack.pop()
         else:
             return None
-    def size(self):
+    def size(self) -> int:
         return len(self.stack)     
     def peek(self):
         return self.stack[-1]
@@ -115,7 +115,7 @@ class Stack():
 # dictionary to hold inverse directions for backing up part         
 reverse_directions = {'n':'s', 's':'n', 'w':'e', 'e':'w'}
 
-def traverse_graph():
+def traverse_graph() -> List[str]:
     traversal_path = []        
     s = Stack() # hold rooms and direction tuples that got us there so can reverse
     visited_graph = {} # holds k,v pairs of rooms and directions we've gone so far
