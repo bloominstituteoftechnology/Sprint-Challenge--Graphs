@@ -2,6 +2,8 @@ from room import Room
 from player import Player
 from world import World
 
+from graph import Graph
+
 import random
 from ast import literal_eval
 
@@ -29,7 +31,13 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+traversal_graph = Graph(player)
+traversal_graph.dfs()
+traversal_path = traversal_graph.graph
 
+print('===')
+print('Rooms:', traversal_graph.rooms)
+print('Traversal PATH:', traversal_path)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -46,17 +54,25 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
+def dfs(visited_rooms, graph, node):
+    if node not in visited_rooms:
+        print(node)
+        visited_rooms.add(node)
+        for neighbor in graph[node]:
+            dfs(visited_rooms, graph, neighbor)
 
+
+dfs(visited_rooms, room_graph, player.current_room)
 
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
