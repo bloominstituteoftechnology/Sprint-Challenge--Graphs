@@ -58,6 +58,47 @@ It is very difficult to calculate the shortest possible path that traverses the 
 My best path is 957 moves. Can you find a shorter path?
 
 
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+## UPER:
+# Understand:
+        Graph contains 500 rooms. must visit every room once and with the fewest moves (at least 2000 or less for MVP)
+        run a traversal and build a graph
+# Plan:
+BFT, use a dictionary as visited
+building graph as we go
+
+        nodes: Rooms  (room)
+        edges: connected n/s/e/w
+        
+        dictionary: 
+            key = room
+            values = direction with its ? default then room num or none
+
+        finished when graph has no ? (that means not explored) and 0-499 rooms
+
+Has it been explored?
+    if no: preform BFS with this as starting node
+    yes: next node
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Rubric
 | OBJECTIVE | TASK | 1 - DOES NOT MEET Expectations | 2 - MEETS Expectations | 3 - EXCEEDS Expectations | SCORE |
 | ---------- | ----- | ------- | ------- | ------- | -- |
