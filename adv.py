@@ -51,7 +51,6 @@ while len(visited) < len(room_graph):
         reverse_path.append(o[d])
         player.travel(d)
 
-# TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
