@@ -10,9 +10,9 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
+# map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
+map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
 
@@ -62,12 +62,36 @@ class Queue():
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+def bfs(self, start, end):
+
+    q = Queue()
+    q.enqueue([start])
+    visited = set()
 
 
+    while q.size() > 0:
+        current_path= q.dequeue()
+        current_node = current_path[-1]
+
+        if current_node not in visited:
+            if current_node == end:
+                return current_path
+             
+            visited.add(current_node)
+
+            neighbors = self.get_neighbors(current_node)
+            for neighbor in neighbors:
+                path_copy = current_path.copy()
+                path_copy.append(neighbor)
+                q.enqueue(neighbor)
+
+    return visited
+#--------------------------------------------------
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
+
 
 for move in traversal_path:
     player.travel(move)
