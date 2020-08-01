@@ -10,8 +10,8 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+map_file = "maps/test_line.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -69,18 +69,18 @@ def bfs(self, start, end):
 
     q = Queue()
     q.enqueue([start])
-    visited = set()
+    visited_rooms = set()
 
 
     while q.size() > 0:
         current_path= q.dequeue()
         current_node = current_path[-1]
 
-        if current_node not in visited:
+        if current_node not in visited_rooms:
             if current_node == end:
                 return current_path
              
-            visited.add(current_node)
+            visited_rooms.add(current_node)
 
             neighbors = self.get_neighbors(current_node)
             for neighbor in neighbors:
@@ -111,12 +111,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
