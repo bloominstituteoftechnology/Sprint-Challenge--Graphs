@@ -11,8 +11,8 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
-map_file = "maps/test_loop.txt"
+map_file = "maps/test_cross.txt"
+# map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
 
@@ -59,7 +59,10 @@ class Queue():
         return len(self.queue)
 
 # Fill this out with directions to walk
-# traversal_path = ['n', 'n']
+# traversal_path = ['n', 'n'] # line
+# traversal_path = ['n', 'n', 's', 's', 's', 's', 'n', 'n', 'e', 'e', 'w', 'w', 'w', 'w']
+# traversal_path = ['n','n','s','s','s','s', 'w', 'w', 'n', 'n', 'e', 'e', 'e', 'e']  # loop
+# traversal_path = ['e', 'e', 'w', 'w', 'w', 'w', 's', 's', 'e', 'e', 'n', 'n', 'n', 'n', 's', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'w', 'n'] # loop_fork
 traversal_path = []
 
 def bfs(self, start, end):
@@ -85,7 +88,7 @@ def bfs(self, start, end):
                 path_copy.append(neighbor)
                 q.enqueue(neighbor)
 
-    return visited
+    return None
 #--------------------------------------------------
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
