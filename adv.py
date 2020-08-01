@@ -10,11 +10,11 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
+map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -24,6 +24,39 @@ world.load_graph(room_graph)
 world.print_rooms()
 
 player = Player(world.starting_room)
+
+
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_room(self, room):
+        if room not in self.graph:
+            self.graph[room] = set()
+    
+    def add_edge(self, room1, room2):
+        self.graph[room1].add(room2)
+    
+    def get_neighbors(self, room):
+        return self.graph[room]
+    
+    def size(self):
+        return len(self.graph)
+
+
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']

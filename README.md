@@ -65,3 +65,4 @@ My best path is 957 moves. Can you find a shorter path?
 | **FINAL SCORE** | | **0-1** | **2** | **3** |  |
 
 
+START
