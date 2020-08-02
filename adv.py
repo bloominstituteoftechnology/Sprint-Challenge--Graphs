@@ -5,16 +5,84 @@ from world import World
 import random
 from ast import literal_eval
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+def random_direction():
+    directions = ['n','s','e','w']
+
+    # generated random integers betwee -1 and 5
+    random_index = random.randint(-1,5)
+
+    return directions[random_index]
+
+def get_edges(room):
+    edges = {}
+    print(room)
+    next_rooms = room.get_exits()
+
+    for direction in next_rooms:
+
+        # clear existing edges
+        room = room.get_room_in_direction(direction)
+        edges[direction] = room
+
+    return edges
+
+def create_path(world):
+
+    q = Queue()
+    visited = set()
+    q.enqueue(world.rooms[0])
+
+    while q.size() > 0:
+        # dequeue
+        current_room = q.dequeue()
+        visited.add(current_room)        
+        edges = get_edges(current_room)
+
+
+        #  check if visited
+        if current_room not in visited:
+            # print(current_room)
+            visited.add(current_room)
+
+            # check each exit 
+
+            ### map rooms to current directions 
+            
+
+
+        for edge in edges:
+            q.enqueue(edge)
+
+        print(q.queue)
+
+
+            
+        
+
+
 # Load world
 world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
+map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -30,7 +98,7 @@ player = Player(world.starting_room)
 traversal_path = []
 
 
-
+create_path(world)
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
@@ -51,12 +119,16 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# print(random_direction())
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
+
+
+
