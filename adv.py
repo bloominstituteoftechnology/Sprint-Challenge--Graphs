@@ -12,8 +12,8 @@ world = World()
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
+map_file = "maps/test_loop.txt"
+# map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
@@ -83,33 +83,10 @@ class Stack():
 # traversal_path = ['n','n','s','s','s','s', 'w', 'w', 'n', 'n', 'e', 'e', 'e', 'e']  # loop
 # traversal_path = ['e', 'e', 'w', 'w', 'w', 'w', 's', 's', 'e', 'e', 'n', 'n', 'n', 'n', 's', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'w', 'n'] # loop_fork
 traversal_path = []
-##################################################################################
-
-# opposite = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}
-
-# path = []
-# print(path)
-# print("room_graph: ", room_graph)
-# print(player.current_room.id)
-# print(player.current_room.get_exits())
-
-# player.travel("n")
-# print(player.current_room.id)
-# print(player.current_room.get_exits())
-# path.append("n")
-# print(path)
-
-# player.travel("n")
-# print(player.current_room.id)
-# print(player.current_room.get_exits())
-# path.append("n")
-# print(path)
-# print(opposite["n"])
-# path.append(opposite["n"])
-# print(path)
-
 
 ###########################################################################
+# First Attempt:  Could not figure out how to implement BFS 
+
 # def bfs(self, start, end):
 
 #     q = Queue()
@@ -135,9 +112,46 @@ traversal_path = []
 
 #     return None
 
-##############################################################################
+##################################################################################
+# My Practice
 
-#Second Attempt:
+# opposite = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}
+
+# print("STEP 1:")
+# path = []
+# print(path)
+# # print("room_graph: ", room_graph)
+# print(player.current_room.id)
+# print(player.current_room.get_exits())
+
+# print("STEP 2:")
+# player.travel("n")
+# print(player.current_room.id)
+# print(player.current_room.get_exits())
+# path.append("n")
+# print(path)
+
+# print("STEP 3:")
+# player.travel("n")
+# print(player.current_room.id)
+# print(player.current_room.get_exits())
+# path.append("n")
+# print(path)
+
+# print("STEP 4:")
+# print(opposite["n"])
+# path.append(opposite["n"])
+# print(path)
+
+# print("STEP 5:")
+# previous = path[-1]
+# print(previous)
+# path.append(previous)
+# print(path)
+############################################################################
+
+
+# Second Attempt: Did not use Stack or Queue classes
 
 visited = {}
 reverse = []  ### to backtrack
@@ -150,23 +164,25 @@ while len(visited) < len(room_graph):
     if player.current_room.id not in visited:
         
         visited[player.current_room.id] = player.current_room.get_exits()  ## adds players current room to visited
-        print("player.current_room.get_exits(): ",player.current_room.get_exits())
+        # print("player.current_room.get_exits(): ",player.current_room.get_exits())
         previous = reverse[-1]
-        print("previous room direction: ", previous)
+        # print("previous room direction: ", previous)
         visited[player.current_room.id].remove(previous)
-        print("CURRENT ROOM: ", player.current_room)
+        # print("CURRENT ROOM: ", player.current_room)
        
-    if len(visited[player.current_room.id]) > 0:
-        direction = visited[player.current_room.id][-1]
-        visited[player.current_room.id].pop()
-        traversal_path.append(direction)
-        reverse.append(opposite[direction])
-        player.travel(direction) 
-        print("player.travel(direction): ", direction)  
+    if len(visited[player.current_room.id]) > 0:            ## number of rooms not visited is greater than 0
+        direction = visited[player.current_room.id][-1]     ## grab and assigns the first available exit direction for the room
+        visited[player.current_room.id].pop()               ## pop the direction from the list
+        traversal_path.append(direction)                    ## put the direction into traversal_path
+        reverse.append(opposite[direction])                 ## put the opposite[direction] into reverse
+        player.travel(direction)                            ## move the player in the direction
+        # print("player.travel(direction): ", direction)  
     else:
-        previous = reverse[-1]
-        traversal_path.append(previous)
-        player.travel(previous)
+        previous = reverse[-1]                              ## backup until an unvisited room is found (opposite direction)
+        traversal_path.append(previous)                     ## put the opposite direction into traversal_path 
+        player.travel(previous)                             ## move the player in the opposite direction
+
+        
 #--------------------------------------------------
 # # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
