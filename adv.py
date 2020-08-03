@@ -6,15 +6,6 @@ import random
 from ast import literal_eval
 
 
-def random_direction():
-    directions = ['n','s','e','w']
-
-    # generated random integers betwee -1 and 5
-    random_index = random.randint(-1,5)
-
-    return directions[random_index]
-
-
 class Stack():
     def __init__(self):
         self.stack = []
