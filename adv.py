@@ -59,52 +59,78 @@ class Queue():
         return len(self.queue)
 
 # Fill this out with directions to walk
-# traversal_path = ['n', 'n'] # line
+#traversal_path = ['n', 'n'] # line
 # traversal_path = ['n', 'n', 's', 's', 's', 's', 'n', 'n', 'e', 'e', 'w', 'w', 'w', 'w']
 # traversal_path = ['n','n','s','s','s','s', 'w', 'w', 'n', 'n', 'e', 'e', 'e', 'e']  # loop
 # traversal_path = ['e', 'e', 'w', 'w', 'w', 'w', 's', 's', 'e', 'e', 'n', 'n', 'n', 'n', 's', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'w', 'n'] # loop_fork
 traversal_path = []
+##################################################################################
 
-def bfs(self, start, end):
+opposite = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}
 
-    q = Queue()
-    q.enqueue([start])
-    visited_rooms = set()
+path = []
+print(path)
+print("room_graph: ", room_graph)
+print(player.current_room.id)
+print(player.current_room.get_exits())
+
+player.travel("n")
+print(player.current_room.id)
+print(player.current_room.get_exits())
+path.append("n")
+print(path)
+
+player.travel("n")
+print(player.current_room.id)
+print(player.current_room.get_exits())
+path.append("n")
+print(path)
+print(opposite["n"])
+path.append(opposite["n"])
+print(path)
 
 
-    while q.size() > 0:
-        current_path= q.dequeue()
-        current_node = current_path[-1]
+###########################################################################
+# def bfs(self, start, end):
 
-        if current_node not in visited_rooms:
-            if current_node == end:
-                return current_path
+#     q = Queue()
+#     q.enqueue([start])
+#     visited_rooms = set()
+
+
+#     while q.size() > 0:
+#         current_path= q.dequeue()
+#         current_node = current_path[-1]
+
+#         if current_node not in visited_rooms:
+#             if current_node == end:
+#                 return current_path
              
-            visited_rooms.add(current_node)
+#             visited_rooms.add(current_node)
 
-            neighbors = self.get_neighbors(current_node)
-            for neighbor in neighbors:
-                path_copy = current_path.copy()
-                path_copy.append(neighbor)
-                q.enqueue(neighbor)
+#             neighbors = self.get_neighbors(current_node)
+#             for neighbor in neighbors:
+#                 path_copy = current_path.copy()
+#                 path_copy.append(neighbor)
+#                 q.enqueue(neighbor)
 
-    return None
+#     return None
 #--------------------------------------------------
-# TRAVERSAL TEST - DO NOT MODIFY
-visited_rooms = set()
-player.current_room = world.starting_room
-visited_rooms.add(player.current_room)
+# # TRAVERSAL TEST - DO NOT MODIFY
+# visited_rooms = set()
+# player.current_room = world.starting_room
+# visited_rooms.add(player.current_room)
 
 
-for move in traversal_path:
-    player.travel(move)
-    visited_rooms.add(player.current_room)
+# for move in traversal_path:
+#     player.travel(move)
+#     visited_rooms.add(player.current_room)
 
-if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+# if len(visited_rooms) == len(room_graph):
+#     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+# else:
+#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
 
