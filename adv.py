@@ -12,9 +12,9 @@ world = World()
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
-map_file = "maps/test_loop.txt"
+# map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -71,7 +71,7 @@ class Stack():
     def size(self):
         return len(self.stack)
     
-    def previous(self):
+    def direction(self):
         return self.stack[-1]
 
 
@@ -85,7 +85,7 @@ class Stack():
 traversal_path = []
 
 ###########################################################################
-# First Attempt:  Could not figure out how to implement BFS 
+# First Attempt:  Could not figure out how to implement BFS correctly
 
 # def bfs(self, start, end):
 
@@ -147,99 +147,64 @@ traversal_path = []
 # print(path)
 
 # print("STEP 5:")
-# previous = path[-1]
-# print(previous)
-# path.append(previous)
+# direction = path[-1]
+# print(direction)
+# path.append(direction)
 # print(path)
 ############################################################################
 
 
 # Second Attempt: Did not use Stack or Queue classes
 
-# visited = {}                                            ## created a dictionary for visited
-# reverse = []                                            ## keep track of reverse traversal_path
-# opposite = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}     ## define movement in the opposite direction
+visited = {}                                            ## created a dictionary for visited
+reverse = []                                            ## list of reverse traversal_path
+opposite = {'n': 's', 'e': 'w', 's': 'n', 'w': 'e'}     ## set to define movement in the opposite direction
 
-# # print("STARTING ROOM: ", player.current_room)
-# visited[player.current_room.id] = player.current_room.get_exits()  ## sets initial room and defines exit directions 
+# print("STARTING ROOM: ", player.current_room)
+visited[player.current_room.id] = player.current_room.get_exits()  ## sets initial room and defines exit directions 
 
-# while len(visited) < len(room_graph):                   ## Operations to perform while the visited rooms is less than total rooms in the graph
-#     if player.current_room.id not in visited:
+while len(visited) < len(room_graph):                   ## Operations to perform while the visited rooms is less than total rooms in the graph
+    if player.current_room.id not in visited:
         
-#         visited[player.current_room.id] = player.current_room.get_exits()  ## adds players current room to visited
-#         # print("player.current_room.get_exits(): ",player.current_room.get_exits())
-#         previous = reverse[-1]
-#         # print("previous room direction: ", previous)
-#         visited[player.current_room.id].remove(previous)
-#         # print("CURRENT ROOM: ", player.current_room)
+        visited[player.current_room.id] = player.current_room.get_exits()  ## adds players current room to visited
+        # print("player.current_room.get_exits(): ",player.current_room.get_exits())
+        direction = reverse[-1]
+        # print("direction room direction: ", direction)
+        visited[player.current_room.id].remove(direction)
+        # print("CURRENT ROOM: ", player.current_room)
        
-#     if len(visited[player.current_room.id]) > 0:            ## number of rooms not visited is greater than 0
-#         direction = visited[player.current_room.id][-1]     ## grab and assigns the first available exit direction for the room
-#         visited[player.current_room.id].pop()               ## pop the direction from the list
-#         traversal_path.append(direction)                    ## put the direction into traversal_path
-#         reverse.append(opposite[direction])                 ## put the opposite[direction] into reverse
-#         player.travel(direction)                            ## move the player in the direction
-#         # print("player.travel(direction): ", direction)  
-#     else:
-#         previous = reverse[-1]                              ## backup until an unvisited room is found (opposite direction)
-#         traversal_path.append(previous)                     ## put the opposite direction into traversal_path 
-#         player.travel(previous)                             ## move the player in the opposite direction
+    if len(visited[player.current_room.id]) > 0:            ## number of rooms not visited is greater than 0
+        direction = visited[player.current_room.id][-1]     ## grab and assigns the first available exit direction for the room
+        visited[player.current_room.id].pop()               ## pop the [0th] direction from the list
+        traversal_path.append(direction)                    ## put the direction into traversal_path
+        reverse.append(opposite[direction])                 ## put the opposite[direction] into reverse
+        player.travel(direction)                            ## move the player in the direction
+        # print("player.travel(direction): ", direction)  
+    else:
+        direction = reverse[-1]                              ## backup until an unvisited room is found (opposite direction)
+        reverse.pop()                                        ## pop the [0th] direction from the list
+        traversal_path.append(direction)                     ## put the opposite direction into traversal_path 
+        player.travel(direction)                             ## move the player in the opposite direction
 
 
 #####################################################################################
 
-#  Third Attempt: Trying to figure out how to use this; failing miserably !
-
-### LINE: 
-# room = ['0', '1', '2']
-# edges = [(0,1),(1,2) ,(2,1)]
-
-### CROSS:
-# room = ['0', '1', '2', '3', '4', '5', '6', '7', '8']
-# edges = [(0,1), (0,3), (0,5), (0,7), (1,2), (3,4), (5,6), (7,8)]
-
-### LOOP:
-room = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
-edges = [(0,1), (0,3), (0,5), (0,7), (1,2), (3,4), (5,6), (6,11), (7,8), (8,9), (9,10), (10,11)]
-
-graphs = (room, edges)
-
-def dfs(graph, start):
-    room, edges = graph
-    visited = []
-    stack = [start]
-    adjacencyList = [[] for vertex in room]
-
-    for edge in edges:
-        adjacencyList[edge[0]].append(edge[1])
-        print(edge)
-
-    while stack:
-        current = stack.pop()
-        for neighbor in adjacencyList[current]:
-            if not neighbor in visited:
-                stack.append(neighbor)
-        visited.append(current)
-    return visited
-
-print(dfs(graphs, 0))
-
 #--------------------------------------------------
-# # TRAVERSAL TEST - DO NOT MODIFY
-# visited_rooms = set()
-# player.current_room = world.starting_room
-# visited_rooms.add(player.current_room)
+# TRAVERSAL TEST - DO NOT MODIFY
+visited_rooms = set()
+player.current_room = world.starting_room
+visited_rooms.add(player.current_room)
 
 
-# for move in traversal_path:
-#     player.travel(move)
-#     visited_rooms.add(player.current_room)
+for move in traversal_path:
+    player.travel(move)
+    visited_rooms.add(player.current_room)
 
-# if len(visited_rooms) == len(room_graph):
-#     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == len(room_graph):
+    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
 
@@ -255,3 +220,4 @@ print(dfs(graphs, 0))
 #         break
 #     else:
 #         print("I did not understand that command.")
+##########################################################
