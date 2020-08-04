@@ -11,10 +11,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
+map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -79,7 +79,7 @@ class Stack():
 
 # Fill this out with directions to walk
 #traversal_path = ['n', 'n'] # line
-# traversal_path = ['n', 'n', 's', 's', 's', 's', 'n', 'n', 'e', 'e', 'w', 'w', 'w', 'w']
+# traversal_path = ['n', 'n', 's', 's', 's', 's', 'n', 'n', 'e', 'e', 'w', 'w', 'w', 'w'] # cross
 # traversal_path = ['n','n','s','s','s','s', 'w', 'w', 'n', 'n', 'e', 'e', 'e', 'e']  # loop
 # traversal_path = ['e', 'e', 'w', 'w', 'w', 'w', 's', 's', 'e', 'e', 'n', 'n', 'n', 'n', 's', 'e', 'e', 'n', 's', 'w', 'w', 'w', 'w', 'n'] # loop_fork
 traversal_path = []
@@ -167,19 +167,19 @@ while len(visited) < len(room_graph):                   ## Operations to perform
     if player.current_room.id not in visited:
         
         visited[player.current_room.id] = player.current_room.get_exits()  ## adds players current room to visited
-        # print("player.current_room.get_exits(): ",player.current_room.get_exits())
+        print("player.current_room.get_exits(): ",player.current_room.get_exits())
         direction = reverse[-1]
-        # print("direction room direction: ", direction)
+        print("direction room direction: ", direction)
         visited[player.current_room.id].remove(direction)
-        # print("CURRENT ROOM: ", player.current_room)
+        print("CURRENT ROOM: ", player.current_room)
        
-    if len(visited[player.current_room.id]) > 0:            ## number of rooms not visited is greater than 0
+    if len(visited[player.current_room.id]) > 0:            ## if number of rooms not visited is greater than 0
         direction = visited[player.current_room.id][-1]     ## grab and assigns the first available exit direction for the room
         visited[player.current_room.id].pop()               ## pop the [0th] direction from the list
         traversal_path.append(direction)                    ## put the direction into traversal_path
-        reverse.append(opposite[direction])                 ## put the opposite[direction] into reverse
+        reverse.append(opposite[direction])                 ## put the opposite[direction] into reverse path
         player.travel(direction)                            ## move the player in the direction
-        # print("player.travel(direction): ", direction)  
+        print("player.travel(direction): ", direction)  
     else:
         direction = reverse[-1]                              ## backup until an unvisited room is found (opposite direction)
         reverse.pop()                                        ## pop the [0th] direction from the list
@@ -221,3 +221,4 @@ else:
 #     else:
 #         print("I did not understand that command.")
 ##########################################################
+
