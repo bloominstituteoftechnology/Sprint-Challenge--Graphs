@@ -10,8 +10,8 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
+# map_file = "maps/test_line.txt"
+map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -28,34 +28,48 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 
-graph = {}
 
 q = []
-q.append(player.current_room)
+visited = {}
 traversal_path = []
+backtrack = []
+q.append(random.choice(player.current_room.get_exits()))
+while len(q) > 0:
+    current_room = player.current_room.id
+    v = q.pop(0)
 
-# while len(q) > 0:
-#     v = q.pop(0)
+    backtrack.append(v)
+    print(player.current_room.get_exits(), v, "exits, choice")
 
-#     if v is not player.current_room:
-#         player.travel(v)
+    if visited.get(current_room) is not None:
 
-#     if v not in traversal_path:
-#         traversal_path.append(v)
-#         for room in player.current_room.get_exits():
-#             q.append(room)
+        if v not in visited.get(current_room):
+            visited[current_room].add(v)
+            for path in player.current_room.get_exits():
+                q.append(path)
+                break
+        else:
 
-player.travel("n")
-traversal_path.append("n")
-player.travel("n")
-traversal_path.append("n")
-print(player.current_room.get_exits())
+            if player.current_room.get_exits == visited[current_room]:
+
+                player.travel(backtrack[-1])
+                backtrack.pop()
+
+    elif visited.get(current_room) is None:
+        visited[current_room] = set(v)
+
+        for path in player.current_room.get_exits():
+            q.append(path)
+            break
+
+    player.travel(v)
+    backtrack.insert(0, v)
+    traversal_path.append(v)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
-
 for move in traversal_path:
     player.travel(move)
     visited_rooms.add(player.current_room)
