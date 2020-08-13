@@ -39,33 +39,44 @@ while len(q) > 0:
     v = q.pop(0)
 
     backtrack.append(v)
-    print(player.current_room.get_exits(), v, "exits, choice")
+    print(current_room, player.current_room.get_exits(), v, "cr, exits, choice")
 
     if visited.get(current_room) is not None:
 
         if v not in visited.get(current_room):
             visited[current_room].add(v)
             for path in player.current_room.get_exits():
-                q.append(path)
-                break
+                if path not in visited[current_room]:
+                    q.append(path)
+                    break
+                else:
+                    pass
+                player.travel(backtrack[-1])
+                backtrack.pop()
         else:
 
             if player.current_room.get_exits == visited[current_room]:
 
                 player.travel(backtrack[-1])
                 backtrack.pop()
+                q.append(random.choice(player.current_room.get_exits()))
 
     elif visited.get(current_room) is None:
         visited[current_room] = set(v)
 
         for path in player.current_room.get_exits():
-            q.append(path)
-            break
+            if path not in visited[current_room]:
+                q.append(path)
+                break
+            else:
+                pass
+            player.travel(backtrack[-1])
+            backtrack.pop()
+            q.append(random.choice(player.current_room.get_exits()))
 
     player.travel(v)
-    backtrack.insert(0, v)
     traversal_path.append(v)
-
+print(visited)
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
