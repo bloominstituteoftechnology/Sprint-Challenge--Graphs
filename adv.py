@@ -49,7 +49,7 @@ class Queue():
         return len(self.queue)
 
 
-def pathfind_to_room(starting_room, destination_room):
+def find_unvisited_room(starting_room):
     q = Queue()
     room = room_cache[starting_room]
     for direction, id in room.items():
@@ -59,8 +59,8 @@ def pathfind_to_room(starting_room, destination_room):
     while q.size() > 0:
         path = q.dequeue()
         room_id = path[-1][1]
-        if room_id not in visited and room_id is not None:
-            if room_id is destination_room:
+        if room_id not in visited:
+            if room_id is None:
                 path_to_travel = [room[0] for room in path]
                 return path_to_travel
             visited.add(room_id)
@@ -81,8 +81,8 @@ def set_up_exits():
 
 
 def traverse_rooms():
+    set_up_exits()
     current_id = player.current_room.id
-    # print(f"Now in room: {current_id}")
 
     # Check if current room has an unvisited exit and if so visit it
     for direction, room_id in room_cache[current_id].items():
@@ -108,15 +108,13 @@ def traverse_rooms():
     # If current room has no unvisited exits check if any room in cache has one and head there before looping
     for room in room_cache:
         if None in room_cache[room].values():
-            for direction in pathfind_to_room(current_id, room):
-                player.travel(direction)
+            for direction in find_unvisited_room(current_id):
                 traversal_path.append(direction)
+                player.travel(direction)
             return traverse_rooms()
 
 
-set_up_exits()
 traverse_rooms()
-# print(traversal_path)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
