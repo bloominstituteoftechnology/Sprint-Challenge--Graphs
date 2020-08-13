@@ -8,7 +8,6 @@ from ast import literal_eval
 # Load world
 world = World()
 
-
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
@@ -29,7 +28,83 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+class Stack:
+    def __init__(self):
+        self.stack = []
 
+    def size(self):
+        return len(self.stack)
+
+    def push(self, value):
+        self.stack.append(value)
+    
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+
+class PathBuilder:
+    def __init__(self, starting_room):
+        self.path = []
+        self.direction_stack = Stack()
+        self.visited = set()
+        self.starting_room = starting_room
+        self.player = Player(starting_room)
+        self.current_room = self.starting_room
+
+    def get_path(self):
+        return self.path
+
+    def move(self, direction):
+        new_room = self.current_room.get_room_in_direction(direction)
+        self.current_room = new_room
+        player.travel(direction)
+        self.path.append(direction)
+
+    def build_path(self):
+        exits = self.starting_room.get_exits()
+        for i in exits:
+            self.direction_stack.push((i, "Forward"))
+        self.visited.add(self.current_room)
+
+        while self.direction_stack.size() > 0:
+            if len(self.visited) == len(world.rooms):
+                return
+            direction_info = self.direction_stack.pop()
+
+            if direction_info[1] is "Forward":
+                if self.current_room.get_room_in_direction(direction_info[0]) not in self.visited:
+                    self.move(direction_info[0])
+                    self.visited.add(self.current_room)
+                    self.add_directions(direction_info[0])
+            elif direction_info[1] is "Back":
+                self.move(direction_info[0])
+
+    def add_directions(self, last_direction):
+        self.direction_stack.push((opposite(last_direction), "Back"))
+        available_directions = self.current_room.get_exits()
+
+        for available_direction in available_directions:
+            room = self.current_room.get_room_in_direction(available_direction)
+            if room not in self.visited:
+                self.direction_stack.push((available_direction, "Forward"))
+
+def opposite(direction):
+    if direction == "n":
+        return "s"
+    elif direction == "s":
+        return "n"
+    elif direction == "e":
+        return "w"
+    elif direction == "w":
+        return "e"
+    else:
+        return None
+
+path_builder = PathBuilder(world.starting_room)
+path_builder.build_path()
+traversal_path = path_builder.get_path()
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -45,7 +120,6 @@ if len(visited_rooms) == len(room_graph):
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
-
 
 
 #######
