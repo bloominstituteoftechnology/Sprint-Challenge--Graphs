@@ -29,7 +29,94 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+room_cache = {}
 
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
+
+
+def pathfind_to_room(starting_room, destination_room):
+    q = Queue()
+    room = room_cache[starting_room]
+    for direction, id in room.items():
+        q.enqueue([(direction, id)])
+    visited = set()
+
+    while q.size() > 0:
+        path = q.dequeue()
+        room_id = path[-1][1]
+        if room_id not in visited and room_id is not None:
+            if room_id is destination_room:
+                path_to_travel = [room[0] for room in path]
+                return path_to_travel
+            visited.add(room_id)
+            for direction, id in room_cache[room_id].items():
+                new_path = list(path)
+                new_path.append((direction, id))
+                q.enqueue(new_path)
+
+
+def set_up_exits():
+    for room_exit in player.current_room.get_exits():
+        room_id = player.current_room.id
+
+        if room_id not in room_cache:
+            room_cache[room_id] = {}
+        if room_exit not in room_cache[room_id]:
+            room_cache[room_id][room_exit] = None
+
+
+def traverse_rooms():
+    current_id = player.current_room.id
+    # print(f"Now in room: {current_id}")
+
+    # Check if current room has an unvisited exit and if so visit it
+    for direction, room_id in room_cache[current_id].items():
+        if room_id is None:
+            traversal_path.append(direction)
+            player.travel(direction)
+            set_up_exits()
+
+            new_id = player.current_room.id
+            room_cache[current_id][direction] = new_id
+
+            if direction == 'n':
+                room_cache[new_id]['s'] = current_id
+            elif direction == 's':
+                room_cache[new_id]['n'] = current_id
+            elif direction == 'w':
+                room_cache[new_id]['e'] = current_id
+            else:
+                room_cache[new_id]['w'] = current_id
+
+            return traverse_rooms()
+
+    # If current room has no unvisited exits check if any room in cache has one and head there before looping
+    for room in room_cache:
+        if None in room_cache[room].values():
+            for direction in pathfind_to_room(current_id, room):
+                player.travel(direction)
+                traversal_path.append(direction)
+            return traverse_rooms()
+
+
+set_up_exits()
+traverse_rooms()
+# print(traversal_path)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -51,12 +138,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
