@@ -77,7 +77,7 @@ def traverse():
         for direction in exits:
             if current.get_room_in_direction(direction).id not in visited:
                 possible_rooms.append((current.get_room_in_direction(direction), direction))
-        primary_direction_chosen = False
+        
 
         if len(possible_rooms) > 0:
             room_to_traverse = possible_rooms[0]
