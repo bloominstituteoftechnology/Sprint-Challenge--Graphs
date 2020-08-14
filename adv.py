@@ -47,7 +47,7 @@ else:
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
-
+## in progress!
 player.current_room.print_room_description(player)
 while True:
     cmds = input("-> ").lower().split(" ")
