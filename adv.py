@@ -64,32 +64,48 @@ class PathBuilder:
 
     def build_path(self):
         exits = self.starting_room.get_exits()
+        
+        # Loop through the exits
         for i in exits:
             self.direction_stack.push((i, "Forward"))
         self.visited.add(self.current_room)
 
+        # While the stack isn't empty
         while self.direction_stack.size() > 0:
+            # Is the rooms visited is equal to the amount of total rooms
             if len(self.visited) == len(world.rooms):
+                # we can return out
                 return
+            # We'll pop the direction off the direction stack
             direction_info = self.direction_stack.pop()
 
             if direction_info[1] is "Forward":
+                # If the room hasn't been visited yet
                 if self.current_room.get_room_in_direction(direction_info[0]) not in self.visited:
+                    # We move in that direction
                     self.move(direction_info[0])
+                    # add the current room to our set
                     self.visited.add(self.current_room)
+                    # add the direction
                     self.add_directions(direction_info[0])
             elif direction_info[1] is "Back":
                 self.move(direction_info[0])
 
     def add_directions(self, last_direction):
+        # Push previous direction using our opposite function
         self.direction_stack.push((opposite(last_direction), "Back"))
+        # The available direction would be whichever exits are available to us in the current room we're in
         available_directions = self.current_room.get_exits()
 
+        # We'll loop through our available directions
         for available_direction in available_directions:
             room = self.current_room.get_room_in_direction(available_direction)
+            # If the room has not been visited
             if room not in self.visited:
+                # We can push the direction to the stack
                 self.direction_stack.push((available_direction, "Forward"))
 
+# If they can't move in a certain direction, provide the available directions
 def opposite(direction):
     if direction == "n":
         return "s"
@@ -100,6 +116,7 @@ def opposite(direction):
     elif direction == "w":
         return "e"
     else:
+        # if they didn't select any of these options, do nothing
         return None
 
 path_builder = PathBuilder(world.starting_room)
