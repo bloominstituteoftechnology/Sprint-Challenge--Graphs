@@ -32,17 +32,17 @@ traversal_path = []
 # Coding starts from here
 
 class Stack:
-    def __ini__(self):
+    def __init__(self):
         self.stack = []
-    
+
     def size(self):
         return len(self.stack)
 
     def push(self, value):
         self.stack.append(value)
-
+    
     def pop(self):
-        if self.size > 0:
+        if self.size() > 0:
             return self.stack.pop()
         else:
             return None
@@ -68,8 +68,8 @@ class MazeRunner:
     def make_path(self):
         exits = self.starting_room.get_exits()
         #goes through all exits possible at current roon
-        for i in exits:
-            self.direction_stack.push((i, "Forward"))
+        for e in exits:
+            self.direction_stack.push((e, "Ahead"))
         #add as visited room
         self.visited.add(self.current_room)
 
@@ -79,7 +79,7 @@ class MazeRunner:
                 return
             direction_info = self.direction_stack.pop()
 
-            if direction_info[1] is "Forward": #if not visited room, we need to visit it
+            if direction_info[1] is "Ahead": #if not visited room, we need to visit it
                 if self.current_room.get_room_in_direction(direction_info[0]) not in self.visited:
                     self.move(direction_info[0])
                     #once visited, add it to visited list
@@ -96,7 +96,7 @@ class MazeRunner:
         for ad in available_directions:
             room = self.current_room.get_room_in_direction(ad)
             if room not in self.visited:
-                self.direction_stack.push((ad,"Forward"))
+                self.direction_stack.push((ad,"Ahead"))
     
 #if no direction available, move opposite
 def opposite(direction):
