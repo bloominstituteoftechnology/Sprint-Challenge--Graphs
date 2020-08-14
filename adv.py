@@ -85,7 +85,7 @@ def traverse():
                 # if one room ends in an exit, take it
                 if len(possible_rooms[i][0].get_exits()) < 2:
                     room_to_traverse = possible_rooms[i]
-                    break
+                    
 
             # add other rooms to rooms_to_visit
             for room in possible_rooms:
@@ -145,7 +145,7 @@ while len(world.rooms) > len(visited):
             if first_iter:
                 shortest_path = path
                 first_iter = False
-                continue
+                
             if len(path) <= len(shortest_path):
                 shortest_path = path
         # travel to the closest one
