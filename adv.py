@@ -29,6 +29,28 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+# Coding starts from here
+
+Class Stack:
+    def __ini__(self):
+        self.stack = []
+    
+    def size(self):
+        return len(self.stack)
+
+    def push(self, value):
+        self.stack.append(value)
+
+    def pop(self):
+        if self.size > 0:
+            return self.stack.pop()
+        else:
+            return None
+
+class MazeRunner:
+    
+
+# Coding ends here
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
