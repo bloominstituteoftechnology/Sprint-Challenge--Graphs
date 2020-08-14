@@ -14,7 +14,7 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
@@ -35,32 +35,56 @@ traversal_path = []
 visited_rooms = {}
 path = []
 
+# function call that inverts the player direction
+
+
+def trace_back(direction):
+    if direction == 's':
+        return 'n'
+    elif direction == 'n':
+        return 's'
+    elif direction == 'w':
+        return 'e'
+    elif direction == 'e':
+        return 'w'
+
+
 # set the current room exits in the visited room dict
 visited_rooms[player.current_room.id] = player.current_room.get_exits()
 
-
+# all rooms must be visited - so lets make sure the number of visited rooms == the length of the graph
 while len(visited_rooms) < len(room_graph):
     # if room has not been visited
     if player.current_room.id not in visited_rooms:
-        pass
         # add to visited
+        visited_rooms[player.current_room.id] = player.current_room.get_exits()
         # update current move to path - 1 in order to
-        # remove it from the available moves for that room
-    # if no exists or all explored
+        current_move = path[-1]
+        # remove it from the available moves for that room so we don't repeat
+        visited_rooms[player.current_room.id].remove(current_move)
+
+    # if no exits or all exits explored explored
     if len(visited_rooms[player.current_room.id]) == 0:
-        pass
-        # update current move to path - 1 in order to
-        # remove the last move from the path
+        # update current move to path - 1 in order to get the last and final move into the room
+        current_move = path[-1]
+        # remove the last and final move from the path
+        path.pop()
         # then add current move to traversal path
+        traversal_path.append(current_move)
         # move player backwards to get out of rooms with no unexplored choices
+        player.travel(current_move)
     # else
     else:
-        pass
         # choose unexplored exit
+        next_room = visited_rooms[player.current_room.id][-1]
         # and remove it so we don't explore it again
+        visited_rooms[player.current_room.id].pop()
         # move to next room
+        player.travel(next_room)
         # add movement to our path trcker
+        path.append(trace_back(next_room))
         # add movement to traversal path
+        traversal_path.append(next_room)
 
     # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
