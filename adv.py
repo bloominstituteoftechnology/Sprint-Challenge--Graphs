@@ -14,7 +14,7 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+map_file = "/Users/krishnadahal/Sprint-Challenge--Graphs/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -48,7 +48,16 @@ Class Stack:
             return None
 
 class MazeRunner:
-    
+    def __init__(self, starting_room):
+        self.path = []
+        self.direction_stack = Stack()
+        self.visited = set()
+        self.starting_room = starting_room
+        self.player = Player(starting_room)
+        self.current_room = self.starting_room
+
+    def get_path
+
 
 # Coding ends here
 
