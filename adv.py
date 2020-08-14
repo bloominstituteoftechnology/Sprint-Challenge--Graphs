@@ -28,41 +28,54 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 
-'''  
-0) Initialise stack
-1) Get current room and add to stack
-2) Create list adj rooms
-3) Add unvisited rooms to top of stack
-4) Grab top unvisited room mark it visited and add to visited
-5) Get just visited rooms adj rooms
-6) If no adj rooms unvisited move to prev room in stack and check for unvisited adj rooms
-7) Repeat step 5 until unvisited adj room found
-'''
+traversal_path = []
 
-traversal_path = ['n', 'n', 's', 'w',]
-print(traversal_path)
-visited_rooms = []
+opposite_path = {
+    'n': 's',
+    'e': 'w',
+    's': 'n',
+    'w': 'e',
+}
 
-def add_to_map(direction, map):
-    player.travel(direction)
-    map += [player.current_room.id]
-    for e in player.current_room.get_exits():
-        if e.id == map[-2]:
-            continue
-        else:
-            addendum = add_to_map(e.id, map)
-            if(len(map + addendum) == 500):
-                return map + addendum
+# init graph
+graph = {}
 
-final_map = add_to_map(player.current_room, [])
+# Init Stack
+class Stack():
+    def __init__(self):
+        self.stack = []
 
-def travel_directions():
-    return player.current_room.id
-if player.current_room.id == 0:
-    visited_rooms.append(player.current_room.id)
-    print('Visited Rooms: ', visited_rooms)
+    # Add to Stack
+    def push(self, value):
+        self.stack.append(value)
 
-travel_directions()
+    # Remove from stack
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+
+    # Return Stack size
+    def size(self):
+        return len(self.stack)
+
+# Int Queue 
+class Queue():
+    def __init__(self):
+        self.queue = []
+
+    # Remove from queue
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+
+    # Add to queue
+    def enqueue(self, value):
+        self.queue.append(value)
+       
+    # Length of queue
+    def size(self):
+        return len(self.queue)
+
 
 
 
@@ -87,12 +100,12 @@ else:
 # UNCOMMENT TO WALK AROUND
 #######
 
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
