@@ -79,7 +79,7 @@ def traverse():
                 possible_rooms.append((current.get_room_in_direction(direction), direction))
         primary_direction_chosen = False
 
-    if len(possible_rooms) > 0:
+        if len(possible_rooms) > 0:
             room_to_traverse = possible_rooms[0]
             for i in range(len(possible_rooms)):
                 # if one room ends in an exit, take it
@@ -124,17 +124,44 @@ def find_shortest_path_to_unexplored(dest):
                 q2.enqueue(current.get_room_in_direction(direction))
     return None
 
+def find_unexplored(path):
+    # Send player on their way
+    for direction in path:
+        player.travel(direction)
+        traversal_path.append(direction)
+    visited[player.current_room.id] = True
 
+while len(world.rooms) > len(visited):
+    traverse()
+    if len(visited) != len(world.rooms):
+        # Find the closest of the unexplored rooms
+        paths = []
+        for unvisited in rooms_to_visit:
+            paths.append(find_shortest_path_to_unexplored(unvisited))
+        # iterate through all the paths to the remaining unvisited rooms
+        shortest_path = None
+        first_iter = True
+        for path in paths:
+            if first_iter:
+                shortest_path = path
+                first_iter = False
+                continue
+            if len(path) <= len(shortest_path):
+                shortest_path = path
+        # travel to the closest one
+        find_unexplored(shortest_path)
+        # remove that room from rooms_to_visit
+        rooms_to_visit.remove(player.current_room.id)
 
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-# player.current_room.print_room_description(player)
+player.current_room.print_room_description(player)
 # while True:
 #     cmds = input("-> ").lower().split(" ")
 #     if cmds[0] in ["n", "s", "e", "w"]:
-#         player.travel(cmds[0], True)
+#          player.travel(cmds[0], True)
 #     elif cmds[0] == "q":
-#         break
+#          break
 #     else:
-#         print("I did not understand that command.")
+#          print("I did not understand that command.")
