@@ -31,7 +31,7 @@ traversal_path = []
 
 # Coding starts from here
 
-Class Stack:
+class Stack:
     def __ini__(self):
         self.stack = []
     
@@ -48,7 +48,7 @@ Class Stack:
             return None
 
 class MazeRunner:
-    def __init__(self, starting_room):
+    def __init__(self, starting_room): #initializing the props of class MazeRunner
         self.path = []
         self.direction_stack = Stack()
         self.visited = set()
@@ -56,8 +56,64 @@ class MazeRunner:
         self.player = Player(starting_room)
         self.current_room = self.starting_room
 
-    def get_path
+    def find_path(self):
+        return self.path
+    
+    def move(self,direction):
+        new_room = self.current_room.get_room_in_direction(direction)
+        self.current_room = new_room
+        player.travel(direction)
+        self.path.append(direction)
+    
+    def make_path(self):
+        exits = self.starting_room.get_exits()
+        #goes through all exits possible at current roon
+        for i in exits:
+            self.direction_stack.push((i, "Forward"))
+        #add as visited room
+        self.visited.add(self.current_room)
 
+        #check if all rooms are visited
+        while self.direction_stack.size()>0:
+            if len(self.visited) == len(world.rooms):
+                return
+            direction_info = self.direction_stack.pop()
+
+            if direction_info[1] is "Forward": #if not visited room, we need to visit it
+                if self.current_room.get_room_in_direction(direction_info[0]) not in self.visited:
+                    self.move(direction_info[0])
+                    #once visited, add it to visited list
+                    self.visited.add(self.current_room)
+                    self.add_directions(direction_info[0])
+            elif direction_info[1] is "Back": #if already visited
+                self.move(direction_info[0])
+    
+    def add_directions(self,last_direction):
+        self.direction_stack.push((opposite(last_direction),"Back"))
+        #finding available direction
+        available_directions = self.current_room.get_exits()
+
+        for ad in available_directions:
+            room = self.current_room.get_room_in_direction(ad)
+            if room not in self.visited:
+                self.direction_stack.push((ad,"Forward"))
+    
+#if no direction available, move opposite
+def opposite(direction):
+    if direction == "n":
+        return "s"
+    elif direction == "s":
+        return "n"
+    elif direction == "e":
+        return "w"
+    elif direction == "w":
+        return "e"
+    else:
+        return None
+
+maze_Runner = MazeRunner(world.starting_room)
+maze_Runner.make_path()
+traversal_path = maze_Runner.find_path()
 
 # Coding ends here
 
