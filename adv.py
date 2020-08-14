@@ -28,23 +28,33 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 
-# Initialise vert stack
-traversal_path = ['n', 'e', 's', 'w']
+'''  
+0) Initialise stack
+1) Get current room and add to stack
+2) Create list adj rooms
+3) Add unvisited rooms to top of stack
+4) Grab top unvisited room mark it visited and add to visited
+5) Get just visited rooms adj rooms
+6) If no adj rooms unvisited move to prev room in stack and check for unvisited adj rooms
+7) Repeat step 5 until unvisited adj room found
+'''
+
+traversal_path = ['n', 'n', 's', 'w']
 print(traversal_path)
 visited_rooms = []
 
-def add_to_maze(direction, maze):
+def add_to_map(direction, map):
     player.travel(direction)
-    maze += [player.current_room.id]
-    for exit in player.current_room.get_exits():
-        if exit.id == maze[-2]:
+    map += [player.current_room.id]
+    for e in player.current_room.get_exits():
+        if e.id == map[-2]:
             continue
         else:
-            add_on = add_to_maze(exit.id, maze)
-            if(len(maze + add_on) == 500):
-                return maze + add_on
+            addendum = add_to_map(e.id, map)
+            if(len(map + addendum) == 500):
+                return map + addendum
 
-final_maze = add_to_maze(player.current_room, [])
+    final_map = add_to_map(player.current_room, [])
 
 def travel_directions():
     return player.current_room.id
@@ -52,15 +62,6 @@ if player.current_room.id == 0:
     visited_rooms.append(player.current_room.id)
     print('Visited Rooms: ', visited_rooms)
 
-'''  
-0) Get current room and add to stack
-1) Create list adj rooms
-2) Add unvisited rooms to top of stack
-3) Grab top unvisited room mark it visited and add to visited
-4) Get just visited rooms adj rooms
-5) If no adj rooms unvisited move to prev room in stack and check for unvisited adj rooms
-6) Repeat step 5 until unvisited adj room found
-'''
 travel_directions()
 
 
