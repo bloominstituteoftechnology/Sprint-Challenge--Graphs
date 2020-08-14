@@ -39,7 +39,7 @@ player = Player(world.starting_room)
 7) Repeat step 5 until unvisited adj room found
 '''
 
-traversal_path = ['n', 'n', 's', 'w']
+traversal_path = ['n', 'n', 's', 'w',]
 print(traversal_path)
 visited_rooms = []
 
@@ -54,7 +54,7 @@ def add_to_map(direction, map):
             if(len(map + addendum) == 500):
                 return map + addendum
 
-    final_map = add_to_map(player.current_room, [])
+final_map = add_to_map(player.current_room, [])
 
 def travel_directions():
     return player.current_room.id
