@@ -26,8 +26,10 @@ class Room:
         if self.e_to is not None:
             exits.append("e")
         return exits
+
     def get_exits_string(self):
         return f"Exits: [{', '.join(self.get_exits())}]"
+
     def connect_rooms(self, direction, connecting_room):
         if direction == "n":
             self.n_to = connecting_room
@@ -44,6 +46,7 @@ class Room:
         else:
             print("INVALID ROOM CONNECTION")
             return None
+            
     def get_room_in_direction(self, direction):
         if direction == "n":
             return self.n_to
