@@ -98,7 +98,31 @@ def traverse():
             found_exit = True
         # loop until no unexplored direction
 
+def find_shortest_path_to_unexplored(dest):
+    #Create containers for visited rooms and queues
+    visited_room = set()
 
+    q = Queue()
+    q2 = Queue()
+
+    q.enqueue([])
+    q2.enqueue(player.current_room)
+    destination = dest
+
+    while q.size() > 0:
+        path = q.dequeue()
+        current = q2.dequeue()
+        if current.id not in visited_room:
+            visited_room.add(current.id)
+            if current.id == destination:
+                return path
+            exits = current.get_exits()
+            for direction in exits:
+                path_copy = list(path)
+                path_copy.append(direction)
+                q.enqueue(path_copy)
+                q2.enqueue(current.get_room_in_direction(direction))
+    return None
 
 #######
 # UNCOMMENT TO WALK AROUND
