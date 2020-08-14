@@ -52,29 +52,51 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+#Create a dictionary for visited rooms
 visited = {}
+#Set the room player is in to 'visited'
+
 visited[player.current_room.id] = True
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+
+#Create list of rooms to visit
 rooms_to_visit = []
 
+def traverse():
+    found_exit = True  #create 'found_exit variable, set to 'true'.
+    while found_exit:
+        found_exit = False
+        exits = player.current_room.get_exits()  #use room get exits function
+        # go to first unexplored (?) direction or the direction that ends in an exit
+        current = player.current_room
+        possible_rooms = []  #create list of possible rooms
+       #look for rooms - if not visited add to possible rooms
+        for direction in exits:
+            if current.get_room_in_direction(direction).id not in visited:
+                possible_rooms.append((current.get_room_in_direction(direction), direction))
+        primary_direction_chosen = False
 
-# TRAVERSAL TEST - DO NOT MODIFY
-visited_rooms = set()
-player.current_room = world.starting_room
-visited_rooms.add(player.current_room)
+    if len(possible_rooms) > 0:
+            room_to_traverse = possible_rooms[0]
+            for i in range(len(possible_rooms)):
+                # if one room ends in an exit, take it
+                if len(possible_rooms[i][0].get_exits()) < 2:
+                    room_to_traverse = possible_rooms[i]
+                    break
 
-for move in traversal_path:
-    player.travel(move)
-    visited_rooms.add(player.current_room)
-
-if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-else:
-    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+            # add other rooms to rooms_to_visit
+            for room in possible_rooms:
+                if room != room_to_traverse:
+                    rooms_to_visit.append(room[0].id)
+            room, direction = room_to_traverse
+            player.travel(direction)
+            traversal_path.append(direction)
+            visited[room.id] = True
+            found_exit = True
+        # loop until no unexplored direction
 
 
 
