@@ -27,7 +27,41 @@ player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
-traversal_path = []
+
+# Initialise vert stack
+traversal_path = ['n', 'e', 's', 'w']
+print(traversal_path)
+visited_rooms = []
+
+def add_to_maze(direction, maze):
+    player.travel(direction)
+    maze += [player.current_room.id]
+    for exit in player.current_room.get_exits():
+        if exit.id == maze[-2]:
+            continue
+        else:
+            add_on = add_to_maze(exit.id, maze)
+            if(len(maze + add_on) == 500):
+                return maze + add_on
+
+final_maze = add_to_maze(player.current_room, [])
+
+def travel_directions():
+    return player.current_room.id
+if player.current_room.id == 0:
+    visited_rooms.append(player.current_room.id)
+    print('Visited Rooms: ', visited_rooms)
+
+'''  
+0) Get current room and add to stack
+1) Create list adj rooms
+2) Add unvisited rooms to top of stack
+3) Grab top unvisited room mark it visited and add to visited
+4) Get just visited rooms adj rooms
+5) If no adj rooms unvisited move to prev room in stack and check for unvisited adj rooms
+6) Repeat step 5 until unvisited adj room found
+'''
+travel_directions()
 
 
 
@@ -51,6 +85,7 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
+
 player.current_room.print_room_description(player)
 while True:
     cmds = input("-> ").lower().split(" ")
