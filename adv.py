@@ -14,10 +14,10 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
-room_graph=literal_eval(open(map_file, "r").read())
+room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
@@ -29,9 +29,40 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+# need a way to track visited rooms.
+# need a way to record our path to remove later remove rooms we've visited and paths we've explored.
+# track where the player has been and a path to reverse player direction
+visited_rooms = {}
+path = []
+
+# set the current room exits in the visited room dict
+visited_rooms[player.current_room.id] = player.current_room.get_exits()
 
 
-# TRAVERSAL TEST - DO NOT MODIFY
+while len(visited_rooms) < len(room_graph):
+    # if room has not been visited
+    if player.current_room.id not in visited_rooms:
+        pass
+        # add to visited
+        # update current move to path - 1 in order to
+        # remove it from the available moves for that room
+    # if no exists or all explored
+    if len(visited_rooms[player.current_room.id]) == 0:
+        pass
+        # update current move to path - 1 in order to
+        # remove the last move from the path
+        # then add current move to traversal path
+        # move player backwards to get out of rooms with no unexplored choices
+    # else
+    else:
+        pass
+        # choose unexplored exit
+        # and remove it so we don't explore it again
+        # move to next room
+        # add movement to our path trcker
+        # add movement to traversal path
+
+    # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
@@ -41,11 +72,11 @@ for move in traversal_path:
     visited_rooms.add(player.current_room)
 
 if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+    print(
+        f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
-
 
 
 #######
