@@ -52,10 +52,13 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+visited = {}
+visited[player.current_room.id] = True
+
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
-
+rooms_to_visit = []
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
