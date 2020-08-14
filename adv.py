@@ -63,14 +63,15 @@ paths = Stack()
 visited = set()
 # comparing visited to len of rooms to ensure a complete traversal
 while len(visited) < len(world.rooms):
+
     exits = player.current_room.get_exits()
     print('Room:', player.current_room)
     print('exits are', exits)
     path = []
-    for ext in exits:
-        if ext is not None and player.current_room.get_room_in_direction(
-                ext) not in visited:  # if exit exists and we haven't visited
-            path.append(ext)
+    for exit in exits:
+        if exit is not None and player.current_room.get_room_in_direction(exit) not in visited:
+            # if exit exists and we haven't visited
+            path.append(exit)
             print(path, '<~ path')
     visited.add(player.current_room)
     if len(path) > 0:
