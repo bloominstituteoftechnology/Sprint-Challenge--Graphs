@@ -76,6 +76,41 @@ class Queue():
     def size(self):
         return len(self.queue)
 
+def bfs(graph, starting_room):
+    # Init queue
+    q = Queue()
+    # Store visited rooms
+    visited = set()
+    # Start path adding first vert to queue
+    q.enqueue([starting_room])
+    # If vert(s) in queue
+    while q.size():
+        # Remove first vert
+        route = q.dequeue()
+        # Get last vert added to path
+        vertex = route[-1]
+        # If vert unvisited, not in  set()
+        if vertex not in visited:
+            # Mark vert visited, add to set()
+            visited.add(vertex)
+            # Look for unvisited adjacent verts
+            for vert in graph[vertex]:
+                # print(vert)
+                # If unvisited verts found
+                if graph[vertex][vert] == '?':
+                    # print(graph[vertex])
+                    # Return route
+                    return route
+
+            for adjacent_verts in graph[vertex]:
+                # Store adjacent verts
+                surrounding_verts = graph[vertex][adjacent_verts]
+                # !! New route 
+                new_route = list(route)
+                # Add adjacent vert to new route
+                new_route.append(surrounding_verts)
+                # Enqueue route
+                q.enqueue(new_route)
 
 
 
@@ -93,7 +128,6 @@ if len(visited_rooms) == len(room_graph):
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
-
 
 
 #######
