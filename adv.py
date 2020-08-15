@@ -112,6 +112,33 @@ def bfs(graph, starting_room):
                 # Enqueue route
                 q.enqueue(new_route)
 
+# While no. of vertices are less than 500
+while len(graph) < len(room_graph):
+    # Save vert id
+    cur_vert_id = player.current_room.id
+    # If vert id not in graph
+    if cur_vert_id not in graph:
+        # Put vert in graph
+        graph[cur_vert_id] = {}
+        # For all adjacent vertices
+        for vert_exits in player.current_room.get_exits():
+            # Set to '?' while unvisited
+            graph[cur_vert_id][vert_exits] = "?"
+    
+    for direction in graph[cur_vert_id]:
+        # Break route if direction cannot be traversed
+        if direction not in graph[cur_vert_id]:
+            break
+        # If direction can be traveled 
+        if graph[cur_vert_id][direction] == '?':
+            # Set available vert as next direction
+            available_vert = direction
+            
+            if available_vert is not None:
+                # Add direction traveled to traversal_path
+                traversal_path.append(available_vert)
+                # Move to vertex
+               
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
