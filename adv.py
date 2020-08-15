@@ -122,7 +122,7 @@ while len(graph) < len(room_graph):
         graph[cur_vert_id] = {}
         # For all adjacent vertices
         for vert_exits in player.current_room.get_exits():
-            # Set to '?' while unvisited
+            # Set to ? while unvisited
             graph[cur_vert_id][vert_exits] = "?"
     
     for direction in graph[cur_vert_id]:
@@ -138,7 +138,39 @@ while len(graph) < len(room_graph):
                 # Add direction traveled to traversal_path
                 traversal_path.append(available_vert)
                 # Move to vertex
-               
+                player.travel(available_vert)
+                # Set vertex id to the cur vertex
+                new_vert_id = player.current_room.id
+                # If new_vert_id not yet in graph 
+                if new_vert_id not in graph:
+                    # Add to graph 
+                    graph[new_vert_id] = {}
+                    # For all unvisited adjacent verts
+                    for vert_exits in player.current_room.get_exits():
+                        # Set to ?
+                        graph[new_vert_id][vert_exits] = '?'
+            # Set prev vert direction
+            graph[cur_vert_id][available_vert] = new_vert_id
+            # Set cur verts opposite direction
+            graph[new_vert_id][opposite_path[available_vert]] = cur_vert_id
+            # Set cur vert id to the new vert id
+            cur_vert_id = new_vert_id
+
+    vert_traversal = bfs(graph, player.current_room.id)
+    # Store path of verts traversed
+    if vert_traversal is not None:
+        # For verts in vert_traversal
+        for v in vert_traversal:
+            # For all directions available for each vertex
+            for vert_exits in graph[cur_vert_id]:
+                # If vert_exit is vertex in vert_traversal
+                if graph[cur_vert_id][vert_exits] == v:
+                    # Add vert_exits to traversal list
+                    traversal_path.append(vert_exits)
+                    # Move in that direction
+                    player.travel(vert_exits)
+    # Update the current vert id to vertex just traversed
+    cur_vert_id = player.current_room.id
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
