@@ -1,13 +1,88 @@
+from util import Stack, Queue
 from room import Room
 from player import Player
 from world import World
-
 import random
 from ast import literal_eval
 
+class Graph:
+    def __init__(self):
+        self.vertices = {}  # This is our adjacency list
+
+    def dft(self,starting_vertex):
+        """
+        Print each vertex in depth-first order
+        beginning from starting_vertex.
+        """
+        visited = set()
+        # Create a Stack and push starting vertex
+        stack = Stack()
+        stack.push([starting_vertex])
+        # While Queue is not empty:
+        while stack.size() > 0:
+            # pop the last added vertex
+            current_node = stack.pop()
+            # set starting room object
+            room = current_node[-1]
+            # print("visited_id_list\n",[room.id for room in visited])
+            # check if room object is visited list
+            if room not in visited:
+                # set vertice according to room id
+                self.vertices[room.id] ={}
+                # add connecting room and its direction
+                for possible_direction in room.get_exits():
+                    self.vertices[room.id][room.get_room_in_direction(possible_direction).id]= possible_direction
+                # mark as visited
+                visited.add(room)
+                # get its neightbors
+                exits = room.get_exits()
+                while len(exits) > 0:
+                    # choose 1st neighbor on list
+                    direction = exits[0]
+                    # create neighbor object
+                    neighbor_path = list(current_node)
+                    # add possible direction to navigate
+                    neighbor_path.append(room.get_room_in_direction(direction))
+                    # add to stack to explore
+                    stack.push(neighbor_path)
+                    # remove to continue to next direction on list
+                    exits.remove(direction)
+        return self.vertices
+
+    def bfs(self, starting_vertex, destination_vertex):
+            """
+            Return a list containing the shortest path from
+            starting_vertex to destination_vertex in
+            breath-first order.
+            """
+            # create an empty queue
+            q = Queue()
+            # enqueue path to the starting vertex
+            q.enqueue([starting_vertex])
+            # create a set to track vertices we have visited
+            visited = set()
+            # while the queue is not empty
+            while q.size() > 0:
+                # dequeue the first path
+                current_path = q.dequeue()
+                # get last vertex from the path
+                last_vertex = current_path[-1]
+                # if vertex has not been visited:
+                if last_vertex not in visited:
+                    if last_vertex == destination_vertex:
+                        return current_path
+                    # mark is as visited
+                    visited.add(last_vertex)
+                    # enqueue its neightbors
+                    for room_id in self.vertices[last_vertex].keys():
+                        neighbor_path = list(current_path)
+                        # add neighbor room id
+                        neighbor_path.append(room_id)
+                        # enqueue to continue exploring
+                        q.enqueue(neighbor_path)
+
 # Load world
 world = World()
-
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
@@ -24,12 +99,41 @@ world.load_graph(room_graph)
 world.print_rooms()
 
 player = Player(world.starting_room)
+print(player.current_room)
+graph = Graph()
+# use DFT to create graph map of the world
+rooms_obj_dft = graph.dft(player.current_room)
+# Extract room_id to a list
+rooms_list_dft = [room_id for room_id in rooms_obj_dft.keys()]
+
+print("rooms_list_dft\n{}\n".format("-"*100),rooms_list_dft)
+print("rooms_obj_dft\n{}\n".format("-"*100),rooms_obj_dft)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-
+while(len(rooms_list_dft) > 1):
+    # set current room position
+    current_room = rooms_list_dft[0]
+    next_room = rooms_list_dft[1]
+    current_room_neighbors = rooms_obj_dft[current_room]
+    # if they are neighbor, add to traversal_path
+    if next_room in current_room_neighbors.keys():
+        traversal_path.append(current_room_neighbors[next_room])
+    else:
+        # if they are not neighbor, use bfs to find shortest path between them
+        short_path = graph.bfs(current_room,next_room)
+        while len(short_path) > 1:
+            current_room_neighbors = rooms_obj_dft[short_path[0]]
+            next_room = short_path[1]
+            # if they are neighbor, add to traversal_path
+            if next_room in current_room_neighbors.keys():
+                traversal_path.append(current_room_neighbors[next_room])
+            else:
+                traversal_path.append('?')
+            short_path.pop(0)
+    rooms_list_dft.pop(0)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -51,12 +155,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
