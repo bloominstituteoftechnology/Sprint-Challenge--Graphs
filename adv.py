@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 from room import Room
 from player import Player
 from world import World
-
+from pathGenerator import PathGenerator
 import random
 from ast import literal_eval
 
@@ -14,11 +16,15 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
+# map_file = "maps/test_loop_fork2.txt"
+# map_file = "maps/test_loop_fork3.txt"
 map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
+
+# print(world.rooms)
 
 # Print an ASCII map
 world.print_rooms()
@@ -26,9 +32,14 @@ world.print_rooms()
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-traversal_path = []
 
+pathGen = PathGenerator(world)
+
+
+# traversal_path = pathGen.shortestRelativePath(0, 4) + pathGen.shortestRelativePath(4, 0) + pathGen.shortestRelativePath(0, 24) + pathGen.shortestRelativePath(24, 18) + pathGen.shortestRelativePath(18, 11) + pathGen.shortestRelativePath(11, 8) + pathGen.shortestRelativePath(8, 0) + pathGen.shortestRelativePath(0, 2) + pathGen.shortestRelativePath(2, 14) + pathGen.shortestRelativePath(14, 17)
+traversal_path = pathGen.generatePath()
+
+print(traversal_path)
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
