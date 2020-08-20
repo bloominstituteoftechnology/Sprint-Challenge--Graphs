@@ -18,7 +18,7 @@ class Player:
         else:
             print("You cannot move in that direction.")
 ## set up BFS 
-   def bfs(self):
+    def bfs(self):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
@@ -27,23 +27,24 @@ class Player:
         # create an empty queue and enqueue PATH to the starting Vertex ID
         #q.enqueue([starting_vertex]) #making into a list
         q = Queue()
-        q.enqueue([starting_vertex])
-        # create a set to store visited vertices
+        # em q players current room and list out rooms
+        q.enqueue((self.current_room, []))
+        # create a set to store visited rooms
         visited = set()
         #while q is not empty 
         while q.size() > 0:
             # dq the first PATH (list)
-            path = q.dequeue()
+            current, path = q.dequeue()
             # grab the last vertex from the PATH
             v = path[-1]
             # check if the vertex has not been visited
             if v not in visited:
                 # is this the destination
-                if v == destination_vertex:
+                if v == current_room:
                     # return path
                     return path
                 # mark as visited
-                visited.add(v)
+                visited.add(current)
                 # then add a path to its neighbors to the back of the queue
                 for next_v in self.get_neighbors(v):
                     # make a copy of the path
