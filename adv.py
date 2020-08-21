@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from util import Stack, Queue  # These may come in handy
 import random
 from ast import literal_eval
 
@@ -23,11 +23,17 @@ world.load_graph(room_graph)
 # Print an ASCII map
 world.print_rooms()
 
-player = Player(world.starting_room)
-
+# load player into world and get length of the total rooms
+player = Player(world.starting_room, len(world.rooms))
+## start game
+player.start_loop()
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
-traversal_path = []
+## grab and create a copy of the path the player transverses
+traversal_path = player.traversal_path.copy()
+
+Paths = {}
+
 
 
 
@@ -47,10 +53,7 @@ else:
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
-
-#######
-# UNCOMMENT TO WALK AROUND
-#######
+## in progress!
 player.current_room.print_room_description(player)
 while True:
     cmds = input("-> ").lower().split(" ")
