@@ -13,6 +13,9 @@ class Player:
         next_room = self.current_room.get_room_in_direction(direction)
         if next_room is not None:
             self.current_room = next_room
+            # append direction moved
+            self.traversal_path.append(direction)
+            self.entered.add(self.current_room)
             if (show_rooms):
                 next_room.print_room_description(self)
         else:
@@ -35,22 +38,24 @@ class Player:
         while q.size() > 0:
             # dq the first PATH (list)
             current, path = q.dequeue()
-            # grab the last vertex from the PATH
-            v = path[-1]
-            # check if the vertex has not been visited
-            if v not in visited:
-                # is this the destination
-                if v == current_room:
-                    # return path
-                    return path
-                # mark as visited
+            # check if current location has been NOT been entered
+            if current not in self.entered:
+                return path
+            # if current has not been visited add to vistied list
+            elif current not in visited:
                 visited.add(current)
-                # then add a path to its neighbors to the back of the queue
-                for next_v in self.get_neighbors(v):
+                for exit in current.get_exits():
                     # make a copy of the path
-                    path_copy = list(path)
-                    # append neighbor to the back
-                    path_copy.append(next_v)
+                    path_copy = path.copy()
+                    # append exit to the back
+                    path_copy.append(exit)
                     # enqueue new path
-                    q.enqueue(path_copy)
-        return None
+                    q.enqueue((current.get_room_in_direction(exit),path_copy))
+        raise ValueError("No room in that direction")
+
+    def start_loop(self):
+        while len(self.entered) < self.rooms:
+            path = self.bfs()
+            for direction in path:
+                self.travel(direction)
+                print(self.current_room)

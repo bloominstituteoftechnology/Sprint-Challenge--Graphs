@@ -25,7 +25,8 @@ world.print_rooms()
 
 # load player into world and get length of the total rooms
 player = Player(world.starting_room, len(world.rooms))
-
+## start game
+player.start_loop()
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 ## grab and create a copy of the path the player transverses
