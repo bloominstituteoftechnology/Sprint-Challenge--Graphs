@@ -25,20 +25,57 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+# These are the things that i pulled out of the problem to focus on
+
+# First pass solution: 
+# Record the room in visited
+# Get all the exits with the room.
+# Move in one direction, add this to the traversal path and pop it off the directions associated with the room
+# Work out the opposite direction and add this to a reverse path so that backtracking is possible and remove the opposite direction from the unexplored paths
+# Get exits for the new room and keep note of this (in visited)
+# Move in a random direction again and add to the traversal path and pop it off the possible directions
+# Keep moving until you reach a dead end
+# When there are no more unexplored exits - backtrack along the last direction on the backtracked path and remove it from the backtracked path and add it to the traversal path
+# Check that room for unexplored directions and repeat the process again
+# This keeps going until the number of rooms visited reaches the length of the rooms graph
+
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
-
-
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
 visited_rooms.add(player.current_room)
 
-for move in traversal_path:
+next_possible_moves ={'n': 'e',
+            'e': 's',
+            's': 'w',
+            'w': None
+            }
+back_moves ={'n': 's',
+            's': 'n',
+            'e': 'w',
+            'w': 'e'}
+
+steps = ['n']
+
+while len(steps) > 0:
+    move = steps.pop()
     player.travel(move)
-    visited_rooms.add(player.current_room)
+
+    if player.current_room not in visited_rooms:
+        traversal_path.append(back_moves[move])
+        steps.append(back_moves[move])
+        visited_rooms.add(player.current_room)
+
+    for new_move in ['n', 'e', 's', 'w']:
+        new_room = player.current_room.get_room_in_direction(new_move)
+        if new_room and new_room not in visited_rooms:
+            traversal_path.append(new_move)
+            steps.append(new_move)
+            break
+        
 
 if len(visited_rooms) == len(room_graph):
     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
@@ -51,12 +88,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#    cmds = input("-> ").lower().split(" ")
+#    if cmds[0] in ["n", "s", "e", "w"]:
+#        player.travel(cmds[0], True)
+#    elif cmds[0] == "q":
+#        break
+#    else:
+#        print("I did not understand that command.")
