@@ -38,6 +38,17 @@ reverse_direction = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 # appending current room to 'visited;
 visited[player.current_room.id] = player.current_room.get_exits()
 
+# traverse if length of visited room is < than legnth of room
+while len(visited) < len(room_graph) - 1:
+    # see of room is in visted dictionary
+    if player.current_room.id not in visited:
+        # lets add current_room to the dictionary
+        visited[player.current_room.id] = player.current_room.get_exits()
+        # obtain the previous direction
+        previous_direction = my_path[-1]
+        # removing and avoid going previous directions
+        visited[player.current_room.id].remove(previous_direction)
+
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
