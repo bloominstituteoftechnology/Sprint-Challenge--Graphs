@@ -29,6 +29,15 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+# This is the visited rooms
+visited = {}
+
+# list for the path
+my_path = []
+
+# list commands to go back
+back_direction = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
