@@ -42,6 +42,19 @@ back_direction = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 visited[player.current_room.id] = player.current_room.get_exits()
 
 
+# traverse if length of visited room is < than legnth of room
+
+while len(visited) < len(room_graph) - 1:
+    if player.current_room.id not in visited:
+
+        visited[player.current_room.id] = player.current_room.get_exits()
+
+        previous_direction = my_path[-1]
+
+        visited[player.current_room.id].remove(previous_direction)
+
+
+
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
