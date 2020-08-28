@@ -57,12 +57,12 @@ while len(visited) < len(room_graph) - 1:
         # review rooms visited
         player.travel(previous_direction)
     #looks into current_room and finds last room on the list
-    next_move = visited[player.current_room].pop(0)
+    next_move = visited[player.current_room.id].pop(0)
     # appends next_move in the right path
     traversal_path.append(next_move)
     # appends the specific record on next_move
     my_path.append(reverse_direction[next_move])
-
+    # use the directions dictionary to go backwards through rooms
     player.travel(next_move)
 
 # TRAVERSAL TEST - DO NOT MODIFY
