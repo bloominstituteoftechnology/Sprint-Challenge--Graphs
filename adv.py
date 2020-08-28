@@ -63,6 +63,25 @@ visited = set()
 # player.travel('n')
 # room:1   g_room_dir {'s': '?', 'n': '?'}       list_room_dir ['?', '?'] 
 
+def get_avail_directions():
+    # track unexplored exits
+    path = []
+
+    for exits in player.current_room.get_exits():
+        # print(f' >>> player.current_room.id  {player.current_room.id}    exits: {exits}')
+        # print(f' \t g >>room: {g.rooms[player.current_room.id]} >>> g.rooms[player.current_room.id][exits] : {g.rooms[player.current_room.id][exits]}    actual_exits: {exits}')
+
+        # Find known directions NOT travelled yet
+        if g.rooms[player.current_room.id][exits] == '?':
+            print(f' \t current_room:  {player.current_room.id}    exits avail: {exits}')
+            path.append(exits)
+
+    print(f' \t\t\t path choices: {path}')
+    return random.choice(path)
+
+# TEST
+# get_avail_directions()
+
 
 while len(visited) < len(room_graph):
     
