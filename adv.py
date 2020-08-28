@@ -65,6 +65,8 @@ while len(visited) < len(room_graph) - 1:
     my_path.append(reverse_direction[next_move])
     # use the directions dictionary to go backwards through rooms
     player.travel(next_move)
+    #should pass mvp
+
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
