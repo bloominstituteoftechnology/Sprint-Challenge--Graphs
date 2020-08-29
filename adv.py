@@ -63,6 +63,52 @@ visited = set()
 # player.travel('n')
 # room:1   g_room_dir {'s': '?', 'n': '?'}       list_room_dir ['?', '?'] 
 
+def bfs_path(current_room_id):
+    
+    
+    q = Queue()                     # Create a queue
+    q.enqueue([current_room_id])    # enqueue path to starting room
+    visited_rooms = set()           # Create a set to store visited for backtrack
+
+    
+    # While the queue is NOT empty:
+    while q.size() > 0:
+
+    
+        path = q.dequeue()                  # Dequeue the first PATH 
+        print(f' dequeued path is : {path}')
+        room_now = path[-1]                 # get room at end of path
+        print(f' room_now is {room_now} ')
+
+        g_room_dir_vals = g.rooms[room_now].values()
+        g_room_dir_v_list = list(g_room_dir_vals)
+        print(f'>>>>>>> BFS >> g_room_dir_v_list {g_room_dir_v_list} ')
+
+
+        if room_now not in visited_rooms:
+            # add last if NOT in visited_room
+            visited_rooms.add(room_now)
+            
+            #  queue new paths 
+            for room in g_room_dir_vals:    
+                print(f' \t\t g_room_dir_vals   {g_room_dir_vals}')
+                print(f' ^^^^^^^^^^ room  {room}')
+                new_p = path[:]
+                new_p.append(room)
+                print(f'   new_p NOW  {new_p} ')
+                q.enqueue(new_p)
+            print(f' \t\t  NOW equeued paths {q.queue}')
+
+        # does g.rooms still have ? values
+        if  '?'  in g_room_dir_v_list:    
+            # not done, keep building path to get back to starting room
+
+            print(f'\t\t\t BFS DONE  with g_room_dir_v_list  {g_room_dir_v_list} at room {room_now}')
+            return path
+
+
+
+
 exits_taken = 0
 
 def get_avail_directions():
@@ -155,7 +201,9 @@ while len(visited) < len(room_graph):
         # working on
         
     else:
-        print(f' at end?')
+        # backtrack and find other rooms
+        backtrack_path = bfs_path(player.current_room.id)
+        print(f' \t\t *>*>*> backtrack_path  {backtrack_path}') 
         break
 
 
