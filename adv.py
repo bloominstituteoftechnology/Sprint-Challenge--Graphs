@@ -63,9 +63,11 @@ visited = set()
 # player.travel('n')
 # room:1   g_room_dir {'s': '?', 'n': '?'}       list_room_dir ['?', '?'] 
 
+exits_taken = 0
+
 def get_avail_directions():
-    # track unexplored exits
-    path = []
+    # track unexplored available directions
+    avail_dir = []
 
     for exits in player.current_room.get_exits():
         # print(f' >>> player.current_room.id  {player.current_room.id}    exits: {exits}')
@@ -74,10 +76,12 @@ def get_avail_directions():
         # Find known directions NOT travelled yet
         if g.rooms[player.current_room.id][exits] == '?':
             print(f' \t current_room:  {player.current_room.id}    exits avail: {exits}')
-            path.append(exits)
+            avail_dir.append(exits)
+            global exits_taken
+            exits_taken += 1
 
-    print(f' \t\t\t path choices: {path}')
-    return random.choice(path)
+    print(f' \t\t\t avail_dir choices: {avail_dir}')
+    return random.choice(avail_dir)
 
 # TEST
 # get_avail_directions()
@@ -86,14 +90,72 @@ def get_avail_directions():
 while len(visited) < len(room_graph):
     
     # !!!!!   3
-    g_room_dir = g.rooms[player.current_room.id]
-    list_room_dir = list(g_room_dir.values())
+    g_room_dict = g.rooms[player.current_room.id]
+    g_room_dict_vals_list = list(g_room_dict.values())
 
-    print(f' room:{player.current_room.id}   g_room_dir {g_room_dir}       list_room_dir {list_room_dir} ')
+    print(f' room:{player.current_room.id}   g_room_dir {g_room_dict}       list_room_dir {g_room_dict_vals_list} ')
     
 
-    if  '?'  in list_room_dir:
+    if  '?'  in g_room_dict_vals_list:
         print(f' Not Done')
+        
+        # RESET current room
+        current_r = player.current_room.id 
+        print(f' at TOP:  current room  >>>>>>> {current_r}')
+        
+        # find a known direction
+        valid_exit = get_avail_directions()
+
+        print(f' valid_exit  {valid_exit}')
+
+        # find valid direction that has ? to path
+        player.travel(valid_exit)
+        print(f' \t\t\t\t\t\t   HEY, just walk into room  {player.current_room.id}')
+
+        # track exits for TEST
+        traversal_path.append(valid_exit)   # Nice   7 unvisited rooms
+
+        # Check if current NOT yet visited
+        if current_r not in visited:
+            visited.add(current_r)
+            print(f' \t\t visited NOW {visited}')
+
+        # prepare backtrack directions update
+        back_dir = {
+        "n": "s",
+        "s": "n",
+        "e": "w",
+        "w": "e"
+        }        
+
+        # get backtrack direction   
+        back_direction = back_dir[valid_exit]
+
+        # add to current room the previous direction just came from
+        print(f' back_direction   {back_direction}')
+        # print(f' g.rooms[player.current_room.id]  {g.rooms[player.current_room.id]} ')
+        g.rooms[player.current_room.id][back_direction] = current_r
+
+        print(f'  \t\t\t  Just came from room  >>> {g.rooms[player.current_room.id][back_direction]}  ')
+
+
+        # attach info from current room to previous room info in g 
+        print(f' $$ BEFORE g.rooms.current_r   {g.rooms[current_r]}') # {'n': '?', 's': '?', 'e': '?', 'w': '?'}
+        g.rooms[current_r][valid_exit] = player.current_room.id 
+        print(f' \t\t\t   We just entered room >>   {g.rooms[current_r][valid_exit]}')
+        print(f' $$$$ AFTER g.rooms[current_r] {g.rooms[current_r]} ') # {'n': '?', 's': '?', 'e': '?', 'w': 7}
+
+        # !!!!!!!!    apppend room in g to visited if not in visited
+        if g.rooms[current_r][valid_exit] not in visited:
+            visited.add(g.rooms[current_r][valid_exit])
+        print(f' \t\t visited UPDATED {visited}')
+        
+        # update current g.rooms that direction came from (opposite) is also valid_exit
+        print(f' ### g.rooms[player.current_room.id]  {g.rooms[player.current_room.id]}')
+        # working on
+        
+    else:
+        print(f' at end?')
         break
 
 
@@ -119,7 +181,7 @@ else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
-
+print(f' exits_taken  {exits_taken}')
 
 #######
 # UNCOMMENT TO WALK AROUND

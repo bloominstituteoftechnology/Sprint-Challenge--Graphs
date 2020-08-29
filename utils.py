@@ -28,8 +28,9 @@ class Graph:
     def __init__(self):
         self.rooms = {}
 
-    # add each room to graph
+    
     def build_graph(self, room_graph):
+        # add each room to graph
         for room in room_graph:
             if room not in self.rooms:
                 self.rooms[room] = set()
