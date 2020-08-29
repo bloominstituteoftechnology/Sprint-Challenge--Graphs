@@ -13,10 +13,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -127,6 +127,9 @@ def get_avail_directions():
             exits_taken += 1
 
     print(f' \t\t\t avail_dir choices: {avail_dir}')
+    #### Optimizations to minimize backtracking before returning avail_dir, provide optimized_dir ?!?
+    # 1) provide direction that provides farthest dead end, closest, & between so furthest is walked last
+    # 2) detect and prioritize entering a loop
     return random.choice(avail_dir)
 
 # TEST
@@ -204,8 +207,29 @@ while len(visited) < len(room_graph):
         # backtrack and find other rooms
         backtrack_path = bfs_path(player.current_room.id)
         print(f' \t\t *>*>*> backtrack_path  {backtrack_path}') 
-        break
+        
+        for backtrack_room in backtrack_path:
+            # print(f' \t\t **** backtrack_room  {backtrack_room}')
+            if backtrack_room in visited:
+                print(f'\t\t *** Backtracking from  {backtrack_room} ')
 
+            g_room_dict = g.rooms[player.current_room.id]
+            # print(f' \t\t ** g_room_dict {g_room_dict}')
+
+            # loop the backtrack direction if in g room avail directions
+            for backtrack_direction in g_room_dict:
+                print(f'\t\t\t **** g_room_dict >> {g_room_dict} ')
+                print(f'\t\t\t  **** backtrack_room  {backtrack_room}  **** backtrack_direction  {backtrack_direction} ')
+                # if room value pointed to is same as room in back_track path
+                if g_room_dict[backtrack_direction] == backtrack_room:
+                    print(f'\t\t\t g_room_dict[backtrack_direction] {g_room_dict[backtrack_direction]} backtrack_room {backtrack_room}')
+                    # track for TEST
+                    traversal_path.append(backtrack_direction) 
+ 
+                    # step into backtrack direction
+                    player.travel(backtrack_direction)
+
+                    break
 
 
 
@@ -230,6 +254,54 @@ else:
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 print(f' exits_taken  {exits_taken}')
+# print(f' traversal_path {traversal_path}')
+
+
+################################# line
+# TESTS PASSED: 2 moves, 3 rooms visited
+#  exits_taken  2
+#  traversal_path ['n', 'n']
+
+
+#################################  test_cross
+# TESTS PASSED: 14 moves, 9 rooms visited
+#  exits_taken  14
+#  traversal_path ['e', 'e', 'w', 'w', 's', 's', 'n', 'n', 'n', 'n', 's', 's', 'w', 'w']
+
+
+#################################  test_loop    
+# TESTS PASSED: 14 moves, 12 rooms visited
+#  exits_taken  16
+#  traversal_path ['s', 's', 'w', 'w', 'n', 'n', 'e', 'e', 'n', 'n', 's', 's', 'e', 'e']
+
+# TESTS PASSED: 15 moves, 12 rooms visited
+#  exits_taken  17
+#  traversal_path ['n', 'n', 's', 's', 'e', 'e', 'w', 'w', 'w', 'w', 's', 's', 'e', 'e', 'n']
+
+# TESTS PASSED: 14 moves, 12 rooms visited
+#  exits_taken  17
+#  traversal_path ['e', 'e', 'w', 'w', 's', 's', 'w', 'w', 'n', 'n', 'e', 'e', 'n', 'n']
+
+
+################################# test_loop_fork
+# TESTS PASSED: 30 moves, 18 rooms visited
+#  exits_taken  27
+#  traversal_path ['n', 'w', 'w', 'n', 's', 'e', 'e', 'e', 'e', 'n', 's', 'w', 'w', 'n', 's', 's', 'w', 'w', 'e', 'e', 's', 's', 'w', 'w', 'n', 'n', 'e', 'e', 'e', 'e']
+
+# TESTS PASSED: 24 moves, 18 rooms visited
+#  exits_taken  25
+#  traversal_path ['s', 's', 'w', 'w', 'n', 'n', 'e', 'e', 'e', 'e', 'w', 'w', 'n', 'e', 'e', 'n', 's', 'w', 'w', 'n', 's', 'w', 'w', 'n']
+
+
+################################# main_maze
+# TESTS PASSED: 1009 moves, 500 rooms visited
+#  exits_taken  658
+
+# TESTS PASSED: 996 moves, 500 rooms visited
+#  exits_taken  657
+
+# TESTS PASSED: 1013 moves, 500 rooms visited
+#  exits_taken  659
 
 #######
 # UNCOMMENT TO WALK AROUND
