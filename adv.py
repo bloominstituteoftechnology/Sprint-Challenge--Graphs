@@ -12,10 +12,10 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-# map_file = "maps/test_cross.txt"
-# map_file = "maps/test_loop.txt"
-# map_file = "maps/test_loop_fork.txt"
+#map_file = "maps/test_line.txt"
+#map_file = "maps/test_cross.txt"
+#map_file = "maps/test_loop.txt"
+#map_file = "maps/test_loop_fork.txt"
 map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
@@ -43,26 +43,26 @@ def prevPath(dir):
     else:
         print('You enter an invaild response')
 
-def roomTraversal(start):
+def roomTraversal(starting_room):
     stack = Stack()
     visited = set()
 
     # see where the player is starting from
-    start = player.current_room
+    sstarting_room = player.current_room
 
     # loop through all exits until all rooms all visited
     while len(visited) < len(world.rooms):
         #create a path to record prev path traveled
         path = []
 
-        for exit in player.current_room.get_exits():
+        for room_exit in player.current_room.get_exits():
 
-            if exit is not None:
+            if room_exit is not None:
                 if player.current_room.get_room_in_direction(exit) not in visited:
 
-                    path.append(exit)
+                    path.append(room_exit)
                     print('path', path)
-        vivisited.add(player.current_room)
+        visited.add(player.current_room)
 
         if len(path) != 0:
 
@@ -77,6 +77,10 @@ def roomTraversal(start):
 
             player.travel(prevPath(last))
             traversal_path.append(prevPath(last))
+
+
+roomTraversal(0)
+
 
 
                           
