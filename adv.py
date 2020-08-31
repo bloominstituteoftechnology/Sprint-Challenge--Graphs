@@ -2,6 +2,8 @@ from room import Room
 from player import Player
 from world import World
 
+from utils import Stack
+
 import random
 from ast import literal_eval
 
@@ -28,6 +30,56 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+
+def prevPath(dir):
+    if dir == 'n':
+        return 's'
+    elif dir == 's':
+        return 'n'
+    elif dir == 'e':
+        return 'w'
+    elif dir == 'w':
+        return 'e'
+    else:
+        print('You enter an invaild response')
+
+def roomTraversal(start):
+    stack = Stack()
+    visited = set()
+
+    # see where the player is starting from
+    start = player.current_room
+
+    # loop through all exits until all rooms all visited
+    while len(visited) < len(world.rooms):
+        #create a path to record prev path traveled
+        path = []
+
+        for exit in player.current_room.get_exits():
+
+            if exit is not None:
+                if player.current_room.get_room_in_direction(exit) not in visited:
+
+                    path.append(exit)
+                    print('path', path)
+        vivisited.add(player.current_room)
+
+        if len(path) != 0:
+
+            move = random.randint(0, len(path) - 1)
+            stack.push(path[move])
+            player.travel(path[move])
+
+            traversal_path.append(path[move])
+        else:
+
+            last = stack.pop()
+
+            player.travel(prevPath(last))
+            traversal_path.append(prevPath(last))
+
+
+                          
 
 
 
