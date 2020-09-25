@@ -30,7 +30,7 @@ player = Player(world.starting_room)
 traversal_path = []
 
 #setup opposite directions
-opposite_directions = {'n': 's', 's', 'n', 'e', 'w', 'w', 'e'}
+opposite_directions = {'n': 's', 's' : 'n', 'e' : 'w', 'w' :'e'}
 
 reversed_transversal = [None]
 visitedSoFar = {}
@@ -41,6 +41,15 @@ while len(visitedSoFar) < len(room_graph) - 1:
 
     else:
         continue
+    
+    while len(visitedSoFar[player.current_room.id]) == 0:
+        previous_path = reversed_transversal.pop()
+        traversal_path.append(previos_path)
+    
+    next_direction = visitedSoFar[player.current_room.id].pop()
+    traversal_path.append(next_direction)
+    reversed_transversal.append(opposite_directions[next_direction])
+    player.travel(next_direction)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
