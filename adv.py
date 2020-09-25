@@ -32,6 +32,16 @@ traversal_path = []
 #setup opposite directions
 opposite_directions = {'n': 's', 's', 'n', 'e', 'w', 'w', 'e'}
 
+reversed_transversal = [None]
+visitedSoFar = {}
+
+while len(visitedSoFar) < len(room_graph) - 1:
+    if player.current_room.id not in visitedSoFar:
+        visitedSoFar[player.current_room.id].remove(reversed_transversal[-1])
+
+    else:
+        continue
+
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
 player.current_room = world.starting_room
