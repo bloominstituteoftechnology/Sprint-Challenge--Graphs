@@ -14,10 +14,12 @@ world = World()
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
+
+map_file = "/Users/lambdacatalina/Desktop/LAMBDA-SCHOOL/COMPUTER SCIENCE/Unit 6 - Graphs/Sprint-Challenge--Graphs/main_maze.txt"
 
 # Loads the map into a dictionary
-room_graph=literal_eval(open(map_file, "r").read())
+room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
@@ -36,15 +38,20 @@ reversed_transversal = [None]
 visitedSoFar = {}
 
 while len(visitedSoFar) < len(room_graph) - 1:
-    if player.current_room.id not in visitedSoFar:
-        visitedSoFar[player.current_room.id].remove(reversed_transversal[-1])
 
-    else:
-        continue
+    if player.current_room.id not in visitedSoFar:
+        visitedSoFar[player.current_room.id] = player.current_room.get_exits()
+
+        if reversed_transversal[-1]:
+            visitedSoFar[player.current_room.id].remove(reversed_transversal[-1])
+
+        else:
+            continue
     
     while len(visitedSoFar[player.current_room.id]) == 0:
         previous_path = reversed_transversal.pop()
-        traversal_path.append(previos_path)
+        traversal_path.append(previous_path)
+        player.travel(previous_path)
     
     next_direction = visitedSoFar[player.current_room.id].pop()
     traversal_path.append(next_direction)
