@@ -29,7 +29,8 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-
+#setup opposite directions
+opposite_directions = {'n': 's', 's', 'n', 'e', 'w', 'w', 'e'}
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
