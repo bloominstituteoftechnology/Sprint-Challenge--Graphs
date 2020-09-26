@@ -25,9 +25,48 @@ world.print_rooms()
 
 player = Player(world.starting_room)
 
+move_back = {
+    "n": "s",
+    "s": "n",
+    "w": "e",
+    "e": "w"
+}
+
+
+def mazeTraversal(current_room, visited=None):
+    # list for directions when moving rooms
+    directions = []
+# check if visited is none loop and create set to hold visited vertex
+    if visited == None:
+        visited = set()
+# find all exits in current room
+    for move in player.current_room.get_exits():
+        player.travel(move)  # move in selected room
+
+# if room is visited move_back to find the unvisited path
+        if player.current_room in visited:
+            player.travel(move_back[move])
+# if room is unvisited
+        else:
+            # add to visited
+            visited.add(player.current_room)
+# append the move to the directions
+            directions.append(move)
+#  use recursive call to repeat the loop and add directions to path
+            directions = directions + \
+                mazeTraversal(player.current_room, visited)
+            # Move to previous room
+            player.travel(move_back[move])
+            # add move_back to the direction list
+            directions.append(move_back[move])
+
+    return directions
+
+
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
-traversal_path = []
+traversal_path = mazeTraversal(player.current_room)
+print(mazeTraversal)
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
