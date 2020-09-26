@@ -46,7 +46,7 @@ def mazeTraversal(current_room, visited=None):
 # if room is visited move_back to find the unvisited path
         if player.current_room in visited:
             player.travel(move_back[move])
-# if room is unvisited
+# if room is unvisited.
         else:
             # add to visited
             visited.add(player.current_room)
