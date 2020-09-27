@@ -39,6 +39,17 @@ def opposite_path(chosen_path):
     else:
         return None
 
+def prep_room(room_num):
+    my_graph[room_num] = {'n': '?', 'e': '?', 's': '?', 'w': '?'}
+    if 'n' not in rooms[room_num].keys():
+        my_graph[room_num]['n'] = None
+    if 'e' not in rooms[room_num].keys():
+        my_graph[room_num]['e'] = None
+    if 's' not in rooms[room_num].keys():
+        my_graph[room_num]['s'] = None
+    if 'w' not in rooms[room_num].keys():
+        my_graph[room_num]['w'] = None
+
 traversal_path = []
 rooms = [None] * len(room_graph)
 my_graph = {}
@@ -52,21 +63,11 @@ cur_room = 0
 while len(visited_rooms) < len(rooms):
     visited_rooms.add(cur_room)
     if cur_room not in my_graph:
-        my_graph[cur_room] = {'n': '?', 'e': '?', 's': '?', 'w': '?'}
+        prep_room(cur_room)
     print(cur_room, end=" ")
-    
-    if 'n' not in rooms[cur_room].keys():
-        my_graph[cur_room]['n'] = None
-    if 'e' not in rooms[cur_room].keys():
-        my_graph[cur_room]['e'] = None
-    if 's' not in rooms[cur_room].keys():
-        my_graph[cur_room]['s'] = None
-    if 'w' not in rooms[cur_room].keys():
-        my_graph[cur_room]['w'] = None
 
     paths = [k for k in my_graph[cur_room].keys() if my_graph[cur_room][k] is not None]
     new_paths = [p for p in paths if my_graph[cur_room][p] == '?']
-    
 
     if len(new_paths) > 0:
         chosen_path = random.choice(new_paths)
@@ -78,7 +79,7 @@ while len(visited_rooms) < len(rooms):
     next_room = rooms[cur_room][chosen_path]
     my_graph[cur_room][chosen_path] = next_room
     if next_room not in my_graph:
-        my_graph[next_room] = {'n': '?', 'e': '?', 's': '?', 'w': '?'}
+        prep_room(next_room)
     my_graph[next_room][opposite_path(chosen_path)] = cur_room
 
     cur_room = next_room
