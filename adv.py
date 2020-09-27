@@ -80,6 +80,16 @@ def gen_back_up_step(dir_in):
 
     return tmp_dict[dir_in]
 
+# node_paths_exhausted determines if all of the node's directional
+#   pathways have been exhausted
+def node_paths_exhausted(nde):
+    ret_bool = True
+
+    for dir, boul in graph_vst[nde].items():
+        ret_bool = (ret_bool and boul)
+
+    return ret_bool
+
 # trav_graph traverses a constructed graph object starting 
 #   with the passed start node and returns traversed path
 def trav_graph(grph, strt):
@@ -110,7 +120,7 @@ def trav_graph(grph, strt):
             graph_vst[nxt_node][gen_back_up_step(cur_dirt)] = True  # mark the next node's back path to the current node
                                                                     # as visited so we don't double back on ourselves
             foo()
-            
+
             # traverse deeper calling node_dive recursively
             return node_dive(nxt_node)
 
@@ -131,6 +141,17 @@ def trav_graph(grph, strt):
         path_trvse_drt.append(bk_dir)               # add to our running execution of steps ("n","s","e","w"
         current_node = deep_dive(bk_nde)
 
+        # Are we back at the starting node?
+        #   If so: have all paths from the starting node
+        #   been visited? If yes: assume we're done
+        if current_node == strt:
+            if node_paths_exhausted(strt):
+                # We're back to the start and all paths from the node
+                #   have been traversed.  Assume we're done - break out
+                #   of the process
+                break
+
+
 #****************************************
 #* MAIN PROC
 # Load world
@@ -140,8 +161,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
