@@ -7,7 +7,8 @@ import random
 from ast import literal_eval
 from collections import deque
 
-# rooms2obj takes the world's rooms object and produces familiar
+#* HELPER METHODS
+# rooms2obj takes the world's rooms object and produces a familiar
 #    graph adjacency matrix
 def rooms2obj(rms):
     ret_grph_work = {}
@@ -48,7 +49,7 @@ def rooms2obj(rms):
     # Done iterating - return the built graph
     return (ret_grph_work, ret_grph_vstd)
 
-# gen_next_step takes a room and generates the next step to take in the 
+# gen_next_step takes a room and generates the next step to process in the 
 #    traversal
 def gen_next_step(nde):
     # inspect the directive dict for this room (in the working graph)
@@ -119,12 +120,12 @@ def trav_graph(grph, strt):
             graph_vst[cur_node][cur_dirt] = True                    # mark the current node/current directive as visited
             graph_vst[nxt_node][gen_back_up_step(cur_dirt)] = True  # mark the next node's back path to the current node
                                                                     # as visited so we don't double back on ourselves
-            foo()
 
-            # traverse deeper calling node_dive recursively
+            # traverse deeper into the graph thread by calling node_dive recursively 
+            #    on the next node
             return node_dive(nxt_node)
 
-        # Trigger the recursive diving with the passed node
+        # Trigger the recursive deep dive starting with the passed node
         rt_node = node_dive(nde)
         return rt_node
 
@@ -141,6 +142,7 @@ def trav_graph(grph, strt):
         path_trvse_drt.append(bk_dir)               # add to our running execution of steps ("n","s","e","w"
         current_node = deep_dive(bk_nde)
 
+        """
         # Are we back at the starting node?
         #   If so: have all paths from the starting node
         #   been visited? If yes: assume we're done
@@ -150,6 +152,7 @@ def trav_graph(grph, strt):
                 #   have been traversed.  Assume we're done - break out
                 #   of the process
                 break
+        """
 
 
 #****************************************
@@ -173,22 +176,27 @@ world.print_rooms()
 
 # Parse through the "world" object and construct an adjacency matrix
 my_graphs       = rooms2obj(world.rooms)
+# graph_trv is a graph object used to traverse the world
+#   it is a simpler representation of the world
 graph_trv       = my_graphs[0]
+# graph_vst is a dedicated graph object used to determine if node
+#  pathway has already been visited
 graph_vst       = my_graphs[1]
+# path_trvse_id represents the path taken by node (e.g. "0" -> "4" -> "2", etc.)
 path_trvse_id   = []
+# path_trvse_drt represents the path taken by directive (e.g. "n" -> "n" -> "w" -> "s", etc.)
 path_trvse_drt  = []
+# path_bkup is a stack object that represents the steps needed to "back out"
+#   of a deep dive into a graph thread of nodes
 path_bkup       = deque()
 
-# Start traversing
+#* Start traversing
 trav_graph(graph_trv, world.starting_room.id)
-foo()
-quit()
 
 player = Player(world.starting_room)
 
-# Fill this out with directions to walk
-# traversal_path = ['n', 'n']
-traversal_path = []
+# Assign the traversal path (for testing)
+traversal_path = path_trvse_drt
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -206,7 +214,7 @@ else:
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
-
+"""
 #######
 # UNCOMMENT TO WALK AROUND
 #######
@@ -219,3 +227,4 @@ while True:
         break
     else:
         print("I did not understand that command.")
+"""
