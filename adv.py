@@ -1,7 +1,7 @@
 from room import Room
 from player import Player
 from world import World
-
+from random import choice
 import random
 from ast import literal_eval
 
@@ -28,6 +28,29 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+
+rooms_seen = set()
+
+player.current_room = world.starting_room
+rooms_seen.add(player.current_room.id)
+
+
+last_move = ""
+next_move = ''
+fouway_rooms = dict()
+
+
+next_move = "e"
+
+traversal_path.append(next_move)
+
+ # our while loop wil continue until all rooms have been visited
+
+while len(rooms_seen) < 500: 
+    #Player can travel wherever they want and it will be added to the number of rooms
+    player.travel(next_move)
+
+
 
 
 
