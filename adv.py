@@ -67,26 +67,32 @@ while len(visited) < len(world.rooms):
     exits = player.current_room.get_exits()
     print("Room:", player.current_room)
     print("exits are", exits)
-    path = []
+    path = []  # empty list for traversal path
+
+    # loop through the available exits for the player based on the current room
     for exit in exits:
+        # check if exit is valid and the room to travel to has not been visited yet
         if (
             exit is not None
             and player.current_room.get_room_in_direction(exit) not in visited
         ):
             # if exit exists and we haven't visited
-            path.append(exit)
+            path.append(exit)  # append exit to path
             print(path, "<~ path")
-    visited.add(player.current_room)
+    visited.add(player.current_room)  # add current room to visited set
     if len(path) > 0:
         move = random.randint(0, len(path) - 1)  # pick index of move (1 of up to 4)
-        paths.push(path[move])
-        player.travel(path[move])
-        traversal_path.append(path[move])
+        paths.push(path[move])  # push room to move to onto paths stack
+        player.travel(path[move])  # travel to new room
+        traversal_path.append(path[move])  # add new room to traversed path
         print("more rooms to explore")
     else:
-        end = paths.pop()
+        # if no more rooms exist in path
+        end = paths.pop()  # returns and removes last element in paths Stack
         player.travel(travelers_path(end))
-        traversal_path.append(travelers_path(end))
+        traversal_path.append(
+            travelers_path(end)
+        )  # appends the last element from the paths Stack to traversed path
         print("this is the end of this path")
 
 # TRAVERSAL TEST - DO NOT MODIFY
