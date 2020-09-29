@@ -9,6 +9,23 @@ from ast import literal_eval
 world = World()
 
 
+class Stack:
+    def __init__(self):
+        self.stack = []  # empty list
+
+    def push(self, value):
+        self.stack.append(value)
+
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+
+    def size(self):
+        return len(self.stack)
+
+
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
@@ -17,7 +34,7 @@ world = World()
 map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
-room_graph=literal_eval(open(map_file, "r").read())
+room_graph = literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
 
 # Print an ASCII map
@@ -30,6 +47,53 @@ player = Player(world.starting_room)
 traversal_path = []
 
 
+def travelers_path(direction):
+    # save our route back to unvisited exits
+    if direction == "n":
+        return "s"
+    elif direction == "s":
+        return "n"
+    elif direction == "e":
+        return "w"
+    elif direction == "w":
+        return "e"
+
+
+paths = Stack()
+visited = set()
+# comparing visited to len of rooms to ensure a complete traversal
+while len(visited) < len(world.rooms):
+
+    exits = player.current_room.get_exits()
+    print("Room:", player.current_room)
+    print("exits are", exits)
+    path = []  # empty list for traversal path
+
+    # loop through the available exits for the player based on the current room
+    for exit in exits:
+        # check if exit is valid and the room to travel to has not been visited yet
+        if (
+            exit is not None
+            and player.current_room.get_room_in_direction(exit) not in visited
+        ):
+            # if exit exists and we haven't visited
+            path.append(exit)  # append exit to path
+            print(path, "<~ path")
+    visited.add(player.current_room)  # add current room to visited set
+    if len(path) > 0:
+        move = random.randint(0, len(path) - 1)  # pick index of move (1 of up to 4)
+        paths.push(path[move])  # push room to move to onto paths stack
+        player.travel(path[move])  # travel to new room
+        traversal_path.append(path[move])  # add new room to traversed path
+        print("more rooms to explore")
+    else:
+        # if no more rooms exist in path
+        end = paths.pop()  # returns and removes last element in paths Stack
+        player.travel(travelers_path(end))
+        traversal_path.append(
+            travelers_path(end)
+        )  # appends the last element from the paths Stack to traversed path
+        print("this is the end of this path")
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -41,12 +105,12 @@ for move in traversal_path:
     visited_rooms.add(player.current_room)
 
 if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+    print(
+        f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited"
+    )
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
-
-
 
 #######
 # UNCOMMENT TO WALK AROUND
