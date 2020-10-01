@@ -27,7 +27,35 @@ player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
-traversal_path = []
+traversal_path = [] 
+
+#to reverse directions 
+opposites = {"n": "s", "s": "n", "e": "w", "w": "e"}
+
+def traverse(starting_room, visited=set()):
+    # track the path in a list
+    path = []
+    # loop through the get_exits to find all exits
+    for direction in player.current_room.get_exits():
+        player.travel(direction)
+        
+        if player.current_room in visited: 
+            # if a player is in a room that is visited, then turn to another direction by using inverse_direct
+            player.travel(opposites[direction]) 
+        else: 
+            # if the room has not been visited add the new path
+            visited.add(player.current_room)
+            path.append(direction)
+
+            # update current status
+            path = path + traverse(player.current_room, visited)
+            player.travel(opposites[direction])
+            path.append(opposites[direction])
+
+    return path
+
+#fills in the list with the traverse func
+traversal_path = traverse(player.current_room)
 
 
 
