@@ -47,7 +47,7 @@ def traverse(starting_room, visited=set()):
             visited.add(player.current_room)
             path.append(direction)
 
-            # recurse to update current status
+            # update current status
             path = path + traverse(player.current_room, visited)
             player.travel(opposites[direction])
             path.append(opposites[direction])
