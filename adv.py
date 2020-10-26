@@ -47,7 +47,8 @@ else:
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
-
+def travelers_path(direction):
+    return None
 #######
 # UNCOMMENT TO WALK AROUND
 #######
