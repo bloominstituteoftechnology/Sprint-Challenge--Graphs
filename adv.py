@@ -29,7 +29,12 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+# <-- START CODE
 
+# Initialize the graph
+graph = {}
+
+# --> END CODE
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
