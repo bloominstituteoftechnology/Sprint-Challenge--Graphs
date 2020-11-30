@@ -29,6 +29,73 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+
+    def size(self):
+        return len(self.stack)
+
+def reverse(d):
+    if d == "w":
+        return "e"
+    if d == "n":
+        return "s"
+    if d == "s":
+        return "n"
+    if d == "e":
+        return "w"
+    if d == None:
+        return None
+graph = {}
+
+
+def explore(came_from=None):
+    to_visit = Stack()
+
+    if player.current_room.id not in graph:
+        graph[player.current_room.id] = {}
+
+    if came_from is not None:
+        graph[player.current_room.id][reverse(
+            came_from)] = player.current_room.get_room_in_direction(reverse(came_from)).id
+
+    for direction in player.current_room.get_exits():
+        if direction not in graph[player.current_room.id]:
+            graph[player.current_room.id][direction] = '?'
+
+    for direction in player.current_room.get_exits():
+        adj_room = player.current_room.get_room_in_direction(direction).id
+
+        if adj_room not in graph or graph[player.current_room.id][direction] == '?':
+            to_visit.push(direction)
+
+    while to_visit.size() > 0:
+
+        go_to = to_visit.pop()
+
+        if player.current_room.get_room_in_direction(go_to).id not in graph:
+            traversal_path.append(go_to)
+            graph[player.current_room.id][go_to] = player.current_room.get_room_in_direction(
+                go_to).id
+            player.travel(go_to)
+            explore(go_to)
+
+            if len(graph) == len(world.rooms):
+                return
+
+            traversal_path.append(reverse(go_to))
+            player.travel(reverse(go_to))
+
+
+print(explore())
 
 
 # TRAVERSAL TEST - DO NOT MODIFY
