@@ -1,3 +1,5 @@
+#Enayatullah N.
+
 from room import Room
 from player import Player
 from world import World
@@ -5,9 +7,22 @@ from world import World
 import random
 from ast import literal_eval
 
+#Stack class
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
 # Load world
 world = World()
-
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
@@ -29,7 +44,43 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+# Path
+def shortest_path(direction):
+    
+    if direction == "n":
+        return "s"
+    elif direction == "s":
+        return "n"
+    elif direction == "e":
+        return "w"
+    elif direction == "w":
+        return "e"
 
+    ##L
+paths = Stack()
+visited = set()
+
+while len(visited) < len(world.rooms):
+    exits = player.current_room.get_exits()
+    path = []
+   
+    for exit in exits:
+        if exit is not None and player.current_room.get_room_in_direction(exit) not in visited:
+            path.append(exit)
+  
+    visited.add(player.current_room)
+    ##r
+    if len(path) > 0:
+        move = random.randint(0, len(path) -1)
+        paths.push(path[move])
+        player.travel(path[move])
+        traversal_path.append(path[move])
+
+    ##e
+    else:
+        end = paths.pop()
+        player.travel(shortest_path(end))
+        traversal_path.append(shortest_path(end))
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
@@ -48,6 +99,7 @@ else:
 
 
 
+
 #######
 # UNCOMMENT TO WALK AROUND
 #######
@@ -60,3 +112,5 @@ while True:
         break
     else:
         print("I did not understand that command.")
+
+##Test pass
