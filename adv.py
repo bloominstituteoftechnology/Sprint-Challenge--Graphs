@@ -11,11 +11,11 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
+map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-map_file = "maps/main_maze.txt"
+# map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -33,8 +33,17 @@ opposite_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
 
 # Pick a random unexplored direction from current room, travel and log that direction, then loop. When reach dead end, walk back and find nearest room that is unexplored.
 
-exits = player.current_room.get_exits()
-currRoom = player.current_room.id
+def traversal(starting_room=player.current_room):
+    exits = player.current_room.get_exits()
+    currRoom = player.current_room.id
+
+    visited = set()
+    stack = deque()
+    stack.append([starting_room])
+
+    for direction in exits:
+        if currRoom in visited:
+            print(visited)
 
 # Return a list containing the shortest path from starting_vertex to destination_vertex in breath-first order.
 
@@ -59,30 +68,19 @@ currRoom = player.current_room.id
 # return []
 
 def traverse_map(starting_room, visited=[]):
-    #   Define a path with what you start with aka no rooms or possible directions
     path = []
-#   Loop through the exits for the current room
+
     for direction in player.current_room.get_exits():
-        # Have the player travel in the given directions
         player.travel(direction)
-#       Check to see if the current room is already in the `visited` array
         if player.current_room.id in visited:
-            # If it is, move the player in the opposite direction, that room has already been visited so we've already checked all possible directions
             player.travel(opposite_directions[direction])
-#           If it is not
         else:
-            # Add the current room to the `visited` array
             visited.append(player.current_room.id)
-#           Add that direction to the path array
             path.append(direction)
-#           Let the path equal the current path plus the path we just created
             path = path + traverse_map(player.current_room.id, visited)
-#           Have the player travel in the opposite direction of the path
             player.travel(opposite_directions[direction])
-#           Add the opposite directions to the path array
             path.append(opposite_directions[direction])
 
-    # finally, return the path
     return path
 
 
