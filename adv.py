@@ -68,6 +68,48 @@ def bfs(self, starting_room, destination_vertex = "?"):
                     queue.append(newPath)
     return []
 
+# using dft to create the maze
+def dft(starting_room):
+    # reverse the directions
+    reverse_directions = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+    # create counter for rooms the player has been to
+    # while the len of mapDictionary is not equal to the len of the graph...
+        # see the room currently in
+        # find the room id of the current room
+        # create a dict for the rooms
+        # check if the room id is not in the mapDictionary...
+            # then find the possible exits
+                # add the '?' into the room_dict
+            # update the room
+            if traversal_path:
+                # find the previous room
+                # add the previous room to the room counter and the room_dict
+            # add the unexplored rooms to the room id
+        # otherwise...
+            # add the room id from mapDictionary to the inner room dict
+        # create an empyt list of possible exits
+        # iterate throuogh the room dict
+            # check if '?' is at the index direction...
+                # if so, add the direction to the possible exits list
+        # check if there is an unknown direction...
+            # use random and shuffle the possible exits
+            # set the direction to the zero index of possible exits
+            # add the direction to the traversal path
+            # to move the player in that direction, use travel function
+            # Grab player's current room
+            # set mapDictionary current room id and direction to player room id
+            # now set the current room id to the counter
+        # otherwise...
+        else:
+            # going to use bfs to search for next exit or possible rooms
+            # check if the path of the next room is not None and if len of next room not None...
+                # find index in the range of the len on the next room - 1 (not include current room)...
+                    # find direction in mapDictionary of index of next room
+                        # check if the mapDictionary's index of next room and direction is equal to the index + 1 of next room
+                            # if so, then add the direction to traversal path
+                            # then move the player to that room
+            # otherwise, break
+
 # def traverse_map(starting_room, visited=[]):
 #     path = []
 
