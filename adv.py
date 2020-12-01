@@ -20,6 +20,7 @@ map_file = "maps/test_line.txt"
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
 world.load_graph(room_graph)
+map_dict = {}
 
 # Print an ASCII map
 world.print_rooms()
@@ -33,58 +34,58 @@ opposite_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
 
 # Pick a random unexplored direction from current room, travel and log that direction, then loop. When reach dead end, walk back and find nearest room that is unexplored.
 
-def traversal(starting_room=player.current_room):
-    exits = player.current_room.get_exits()
-    currRoom = player.current_room.id
+# def traversal(starting_room=player.current_room):
+#     exits = player.current_room.get_exits()
+#     currRoom = player.current_room.id
 
-    visited = set()
-    stack = deque()
-    stack.append([starting_room])
+#     visited = set()
+#     stack = deque()
+#     stack.append([starting_room])
 
-    for direction in exits:
-        if currRoom in visited:
-            print(visited)
+#     for direction in exits:
+#         if currRoom in visited:
+#             print(visited)
 
 # Return a list containing the shortest path from starting_vertex to destination_vertex in breath-first order.
 
-# def bfs(self, starting_vertex = currRoom, destination_vertex = ?):
-# visited_rooms = set()
-# queue = deque()
-# queue.append ([currRoom])
+def bfs(self, starting_room, destination_vertex = "?"):
+    visited_rooms = set()
+    queue = deque()
+    queue.append ([starting_room])
 
-# while len(queue) > 0:
-#     currPath = queue.popleft()
-#     currNode = currPath[-1]
+    while len(queue) > 0:
+        currPath = queue.popleft()
+        currNode = currPath[-1]
+        visited_rooms.add(currNode)
 
-#     if currNode is ?:
-#         return currPath
+        for direction in map_dict[currNode]: 
+            if currNode == "?":
+                return currPath
+            if currNode not in visited_rooms:
+                for neighbor in self.visited_rooms:
+                    newPath = list(currPath)
+                    newPath.append(neighbor)
+                    queue.append(newPath)
+    return []
 
-#     if currNode not in visited_rooms:
-#         visited_rooms.add(currNode)
-#         for neighbor in self.visited_rooms:
-#             newPath = list(currPath)
-#             newPath.append(neighbor)
-#             queue.append(newPath)
-# return []
+# def traverse_map(starting_room, visited=[]):
+#     path = []
 
-def traverse_map(starting_room, visited=[]):
-    path = []
+#     for direction in player.current_room.get_exits():
+#         player.travel(direction)
+#         if player.current_room.id in visited:
+#             player.travel(opposite_directions[direction])
+#         else:
+#             visited.append(player.current_room.id)
+#             path.append(direction)
+#             path = path + traverse_map(player.current_room.id, visited)
+#             player.travel(opposite_directions[direction])
+#             path.append(opposite_directions[direction])
 
-    for direction in player.current_room.get_exits():
-        player.travel(direction)
-        if player.current_room.id in visited:
-            player.travel(opposite_directions[direction])
-        else:
-            visited.append(player.current_room.id)
-            path.append(direction)
-            path = path + traverse_map(player.current_room.id, visited)
-            player.travel(opposite_directions[direction])
-            path.append(opposite_directions[direction])
-
-    return path
+#     return path
 
 
-traversal_path = traverse_map(player.current_room.id)
+# traversal_path = traverse_map(player.current_room.id)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
