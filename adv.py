@@ -46,6 +46,25 @@ opposite_directions = {'n': 's', 's': 'n', 'w': 'e', 'e': 'w'}
 #         if currRoom in visited:
 #             print(visited)
 
+# def traverse_map(starting_room, visited=[]):
+#     path = []
+
+#     for direction in player.current_room.get_exits():
+#         player.travel(direction)
+#         if player.current_room.id in visited:
+#             player.travel(opposite_directions[direction])
+#         else:
+#             visited.append(player.current_room.id)
+#             path.append(direction)
+#             path = path + traverse_map(player.current_room.id, visited)
+#             player.travel(opposite_directions[direction])
+#             path.append(opposite_directions[direction])
+
+#     return path
+
+
+# traversal_path = traverse_map(player.current_room.id)
+
 # Return a list containing the shortest path from starting_vertex to destination_vertex in breath-first order.
 
 def bfs(self, starting_room, destination_vertex = "?"):
@@ -73,13 +92,25 @@ def dft(starting_room):
     # reverse the directions
     reverse_directions = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
     # create counter for rooms the player has been to
+    visited = set()
+    stack = deque()
+    stack.append([starting_room])
+    exits = player.current_room.get_exits()
+    
     # while the len of mapDictionary is not equal to the len of the graph...
+    while len(map_dict) > len(room_graph):
         # see the room currently in
+        currRoom = stack.pop()
         # find the room id of the current room
         # create a dict for the rooms
+        visited_rooms = {}
+
         # check if the room id is not in the mapDictionary...
+        if player.current_room.id is not in visited_rooms:
             # then find the possible exits
+            if exits = '?':
                 # add the '?' into the room_dict
+                visited_rooms.append(exits)
             # update the room
             if traversal_path:
                 # find the previous room
@@ -109,25 +140,6 @@ def dft(starting_room):
                             # if so, then add the direction to traversal path
                             # then move the player to that room
             # otherwise, break
-
-# def traverse_map(starting_room, visited=[]):
-#     path = []
-
-#     for direction in player.current_room.get_exits():
-#         player.travel(direction)
-#         if player.current_room.id in visited:
-#             player.travel(opposite_directions[direction])
-#         else:
-#             visited.append(player.current_room.id)
-#             path.append(direction)
-#             path = path + traverse_map(player.current_room.id, visited)
-#             player.travel(opposite_directions[direction])
-#             path.append(opposite_directions[direction])
-
-#     return path
-
-
-# traversal_path = traverse_map(player.current_room.id)
 
 # TRAVERSAL TEST - DO NOT MODIFY
 visited_rooms = set()
