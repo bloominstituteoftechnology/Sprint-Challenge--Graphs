@@ -110,8 +110,9 @@ def dft(starting_room):
             # then find the possible exits
             if exits = '?':
                 # add the '?' into the room_dict
-                visited_rooms.append(exits)
+                visited_rooms.add(exits)
             # update the room
+
             if traversal_path:
                 # find the previous room
                 # add the previous room to the room counter and the room_dict
